@@ -17,10 +17,29 @@ const userSchema = mongoose.Schema({
 
     username: String,
     joinDate: Number,
+    story: String,
 
     cohort: [{
         cohortName: String,
         startDate: {type: Number, default: Date.now()},
+    }],
+
+    completed: [{
+        project: String,
+        url: {type: String, default: false},
+        date: Number
+    }],
+
+    current: [{
+        project: String,
+        url: {type: String, default: false},
+        date: Number
+    }],
+
+    certifications: [{
+        name: String,
+        url: {type: String, default: false},
+        date: Number
     }],
 
     checkin: {
@@ -28,13 +47,15 @@ const userSchema = mongoose.Schema({
         pair: [{
             partner: String,
             date: {type: Number, default: Date.now()},
-            task: String
+            task: String,
+            streak: Number
         }],
 
         accountability: [{
             partner: String,
             date: {type: Number, default: Date.now()},
-            task: String
+            task: String,
+            streak: Number
         }],
 
         team: [{
@@ -42,15 +63,24 @@ const userSchema = mongoose.Schema({
                 username: String
             }],
             date: {type: Number, default: Date.now()},
-            project: String
+            project: String,
+            streak: Number
         }]
 
     },
 
+    aptitudes: {
+        languages: [{
+            name: String,
+            level: String
+        }],
+        frameworks: [{
+            name: String,
+            level: String
+        }]
+    },
 
-
-
-
+    sharable: {type: Boolean, default: true}
 
 });
 
