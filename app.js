@@ -5,6 +5,12 @@
 const express = require('express');
 const app = express();
 
+require('dotenv').config();
+
+const mongoose = require('mongoose');
+const dbURL = process.env.dbURL;
+mongoose.connect(dbURL, {useMongoClient : true}, e => e ? console.log(`error: ${e}`) : console.log('connected to database'));
+
 const BP = require('body-parser');
 const EJS = require('ejs');
 

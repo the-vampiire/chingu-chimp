@@ -11,7 +11,7 @@
  *
  */
 
-require('dotenv').config();
+
 
 slash = (tokenID, team = null) => {
 

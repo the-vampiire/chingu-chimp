@@ -25,7 +25,6 @@ const tools = require('./tools/exporter');
 
 router.get('/', (req, res) => {
 
-
     res.render('index');
 
 });
@@ -39,15 +38,49 @@ router.post('/chimp', (req, res) => {
     const body = req.body;
 
     console.log(body);
-    console.log(`token ${body.token}`);
 
-    console.log(`verify: ${tools.verify.slash(body.token)}`);
+    // verify Slack token
+    if(tools.verify.slash(body.token)){
 
-    console.log(body);
-    res.json('test worked');
+        const text = body.text;
+        const user = body.user_name;
+        const command = text.slice(0, text.indexOf(' '));
+        const argument = text.slice(text.indexOf(' ')+1, );
+
+
+        tools.database.getProfile(user).then( profile => {});
+
+        switch(command){
+            case 'setup':
+
+            case 'update':
+                // query db and retrieve metric [argument]
+                    // if no profile exists send back link to form
+                break;
+            case 'delete':
+                // if no argument send back "DELETE" argument request to user
+                break;
+        }
+
+        res.json('test worked');
+    }
+
+    res.end('invalid Slack verification token');
 });
 
 router.post('/profile', (req, res) => {
+    const body = req.body;
+
+    if(tools.verify.slash(body.token)){
+        const text = body.text;
+
+        let argument,
+            user;
+
+
+
+    }
+
     console.log(req.body);
     res.json('got it');
 });

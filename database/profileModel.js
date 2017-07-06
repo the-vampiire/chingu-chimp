@@ -15,9 +15,10 @@
 
 const mongoose = require('mongoose');
 
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
 
-    username: String,
+    userName: String,
+    portfolioURL: {type: String, default: false},
     joinDate: Number,
     story: String,
 
@@ -26,13 +27,13 @@ const userSchema = mongoose.Schema({
         startDate: {type: Number, default: Date.now()},
     }],
 
-    completed: [{
+    current: [{
         project: String,
         url: {type: String, default: false},
-        date: Number
+        date: {type: Number, default: Date.now()}
     }],
 
-    current: [{
+    completed: [{
         project: String,
         url: {type: String, default: false},
         date: Number
@@ -85,4 +86,11 @@ const userSchema = mongoose.Schema({
     sharable: {type: Boolean, default: true}
 
 });
+
+const userProfile = mongoose.model('userProfile', userSchema);
+
+module.exports = {
+    userSchema : userSchema,
+    userProfile : userProfile
+};
 
