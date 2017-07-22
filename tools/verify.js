@@ -12,11 +12,10 @@
  */
 
 
-
 slash = (tokenID, team = null) => {
 
     // expand to include all the available Chingu team ID's in an array
-    // to check alongisde the tokenID
+    // to check alongside the tokenID
 
     const teams = [];
     const token = process.env.slack_verification;
@@ -26,7 +25,5 @@ slash = (tokenID, team = null) => {
 
 
 module.exports = {
-
     slash : slash
-
 };

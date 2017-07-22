@@ -9,7 +9,7 @@
  *
  * FOR ADDITIONAL SECURITY
  *      get list of all chingu team names (team ID's) and add them to the slash verify function
- *      to check alongside the slack token. ensures all requests only occur between slack and bot
+ *      to check alongside the slack token. ensures all requests only occur between chingu teams and bot
  *
  *
  *
@@ -22,6 +22,12 @@ const tools = require('./tools/exporter');
 
 
 // ------------------- SPLASH PAGE ------------------- //
+
+router.get('/form', (req, res) => {
+
+    res.render('form');
+
+});
 
 router.get('/', (req, res) => {
 
