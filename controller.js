@@ -97,13 +97,35 @@ router.post('/checkin', (req, res) => {
 
     if(tools.verify.slash(body.token)){
         res.json(tools.commands.interaction('checkin'));
+    }else{
+        // res.json('invalid Slack token checkin');
     }
 
-    res.json('invalid Slack token');
+
 });
 
-router.post('/options', (req, res) => {
+// used to handle interactive message responses / submissions
+router.post('/interactive', (req, res) => {
 
+    const payload = JSON.parse(req.body.payload);
+
+    if(tools.verify.slash(payload.token)){
+        res.json('interactive worked...');
+    }else{
+        // res.json('invalid Slack token interactive');
+    }
+
+
+    switch(payload.callback_id){
+        case 'checkin':
+            tools.commands.s
+    }
+});
+
+// used to load options for interactive messages
+router.post('/options', (req, res) => {
+    console.log(req.body);
+    res.json('worked');
 });
 
 // ------------------------------------------------ //

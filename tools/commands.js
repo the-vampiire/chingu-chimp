@@ -46,7 +46,6 @@ interaction = type => {
     }
 
     return response;
-
 };
 
 checkIn = document => {

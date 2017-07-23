@@ -20,9 +20,6 @@ slash = (tokenID, team = null) => {
     const teams = [];
     const token = process.env.slack_verification;
 
-    console.log(token);
-    console.log(token === "X0yNAwyR0sfyfH8oOJaE6fKc");
-
     return tokenID === token;
 };
 
