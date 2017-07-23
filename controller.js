@@ -20,6 +20,8 @@ const router = module.exports = express.Router();
 
 const tools = require('./tools/exporter');
 
+// Global Constants
+
 
 // ------------------- SPLASH PAGE ------------------- //
 
@@ -53,7 +55,6 @@ router.post('/chimp', (req, res) => {
         const command = text.slice(0, text.indexOf(' '));
         const argument = text.slice(text.indexOf(' ')+1, );
 
-
         tools.database.getProfile(user).then( profile => {});
 
         switch(command){
@@ -75,6 +76,7 @@ router.post('/chimp', (req, res) => {
 });
 
 router.post('/profile', (req, res) => {
+
     const body = req.body;
 
     if(tools.verify.slash(body.token)){
@@ -83,8 +85,6 @@ router.post('/profile', (req, res) => {
         let argument,
             user;
 
-
-
     }
 
     console.log(req.body);
@@ -92,8 +92,18 @@ router.post('/profile', (req, res) => {
 });
 
 router.post('/checkin', (req, res) => {
-    console.log(req.body);
-    res.json('got it');
+
+    const body = req.body;
+
+    if(tools.verify.slash(body.token)){
+        res.json(tools.commands.interaction('checkin'));
+    }
+
+    res.json('invalid Slack token');
+});
+
+router.post('/options', (req, res) => {
+
 });
 
 // ------------------------------------------------ //

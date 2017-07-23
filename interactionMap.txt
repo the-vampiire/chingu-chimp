@@ -1,0 +1,58 @@
+
+
+
+Checkin slash command notes:
+
+interactive message:
+
+     f-> check user
+         looks for user id
+            if none exists create one
+         f-> get user checkin data
+            tasks dropdown [ pair / accountability / team ] // default to previous
+                number of partners dropdown // default to 1st partner in the list
+                    partner dropdown [channel users] // default to first user
+                if previous task exists default to previous task / project
+                    task / project enter via text field
+         f-> on submit
+
+     1) [user] /checkin
+     2) [bot] interactive message with 1 dropdown
+        tasks dropdown [ pair / accountability / team ] // default to previous
+     3) [user] select a task
+     4) [bot] if its a team selection then return a number of users dropdown
+        if its accountability or pair programming then its a single partner and no dropdown is needed
+    5) [bot] depending on the number of users selection populate that many dropdown menus with the
+        user names of all users in the channel
+            so for the case of 1 teammate it will automatically include the only other use in the channel here
+    6) [bot] add text input field for a task
+    7) [user] select the partner(s) and input the name of the task into the text field
+    8) [user] submit
+     9) [bot] add current date and increment the streak counter
+        check the date of the previous entry
+    10) [server] send the info to the database
+
+    make more sense?
+
+    in case you dont know the way interactive messages work is that the little message window stays the same
+    but it just updates the view (like react) based on user interaction. which is what were exploiting here
+    with all these dropdowns
+
+    the idea is to speed up the process of checking in by using dropdowns and defaulting to previous values
+    that are stored on a per channel basis
+
+
+     what I am working on right now:
+        we need the checkins to be channel based
+            this way we can store the previous checkin info for that channel so it can be
+            defaulted and let the users use /checkin without arguments in the future
+            (assuming that each channel is specific to a certain checkin activity)
+
+            basically setup the checkin data the first time (per channel) and all future times it can
+            just increment the streak for that checkin point
+
+            overall purpose is to first check if the channel has checkin data
+            if so just add a new entry and increment the streak
+            if not then populate a set of sequential dropdowns based on previous choices
+                this can all be done using the interactive message portio nof the
+                slack API

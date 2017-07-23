@@ -18,6 +18,7 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
 
     userName: String,
+    teamID: String,
     portfolioURL: {type: String, default: false},
     joinDate: Number,
     story: String,
@@ -26,6 +27,37 @@ const userSchema = new mongoose.Schema({
         cohortName: String,
         startDate: {type: Number, default: Date.now()},
     }],
+
+    aptitudes: {
+
+        languages: [{
+            name: String,
+            level: String
+        }],
+
+        frameworks: [{
+            name: String,
+            level: String
+        }]
+    },
+
+    checkin: {
+
+        channel: [{
+
+            ID: String,
+
+            log: [{
+                type: String,
+                partner: String,
+                date: {type: Number, default: Date.now()},
+                task: String,
+                streak: Number
+            }],
+
+            streak: Number,
+        }],
+    },
 
     current: [{
         project: String,
@@ -43,47 +75,7 @@ const userSchema = new mongoose.Schema({
         name: String,
         url: {type: String, default: false},
         date: Number
-    }],
-
-    checkin: {
-
-        pair: [{
-            partner: String,
-            date: {type: Number, default: Date.now()},
-            task: String,
-            streak: Number
-        }],
-
-        accountability: [{
-            partner: String,
-            date: {type: Number, default: Date.now()},
-            task: String,
-            streak: Number
-        }],
-
-        team: [{
-            partners: [{
-                username: String
-            }],
-            date: {type: Number, default: Date.now()},
-            project: String,
-            streak: Number
-        }]
-
-    },
-
-    aptitudes: {
-        languages: [{
-            name: String,
-            level: String
-        }],
-        frameworks: [{
-            name: String,
-            level: String
-        }]
-    },
-
-    sharable: {type: Boolean, default: true}
+    }]
 
 });
 
