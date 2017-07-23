@@ -104,22 +104,22 @@ router.post('/checkin', (req, res) => {
 
 });
 
+// ------------ INTERACTIVE MESSAGES ---------------- //
+
 // used to handle interactive message responses / submissions
 router.post('/interactive', (req, res) => {
 
     const payload = JSON.parse(req.body.payload);
 
     if(tools.verify.slash(payload.token)){
-        res.json('interactive worked...');
-    }else{
-        // res.json('invalid Slack token interactive');
+        // console.log(payload);
+
+        res.json(tools.commands.process(payload));
+        res.end('');
     }
 
+    // res.end('invalid Slack token');
 
-    switch(payload.callback_id){
-        case 'checkin':
-            tools.commands.s
-    }
 });
 
 // used to load options for interactive messages
@@ -127,9 +127,6 @@ router.post('/options', (req, res) => {
     console.log(req.body);
     res.json('worked');
 });
-
-// ------------------------------------------------ //
-
 
 
 
