@@ -114,8 +114,10 @@ router.post('/interactive', (req, res) => {
     if(tools.verify.slash(payload.token)){
         // console.log(payload);
 
+        // tools.commands.process(payload);
         res.json(tools.commands.process(payload));
-        res.end('');
+        // res.end(tools.commands.process(payload));
+        // tools.commands.process(payload).then( response => res.json(response));
     }
 
     // res.end('invalid Slack token');

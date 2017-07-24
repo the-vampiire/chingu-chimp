@@ -19,9 +19,14 @@ const userSchema = new mongoose.Schema({
 
     userName: String,
     teamID: String,
+
     portfolioURL: {type: String, default: false},
-    joinDate: Number,
+    gitHubURL: {type: String, default: false},
+    blogURL: {type: String, default: false},
+
     story: String,
+
+    joinDate: Number,
 
     cohort: [{
         cohortName: String,

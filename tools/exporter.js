@@ -5,9 +5,11 @@
 const database = require('./database');
 const commands = require('./commands');
 const verify = require('./verify');
+const respond = require('./responses');
 
 module.exports = {
     database : database,
     commands : commands,
-    verify : verify
+    verify : verify,
+    respond : respond
 };

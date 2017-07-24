@@ -11,86 +11,18 @@
  *
  */
 
-const request = require('request');
+const respond = require('./responses');
 
-convertUser = (userID) => {
-
-    const oAuthToken = process.env.oAuthToken;
-
-    return new Promise((resolve, reject) => {
-        request.post({
-            url: `https://slack.com/api/users.info?token=${oAuthToken}&user=${userID}`,
-        }, (error, response, body) => {
-
-            if(error) reject(error);
-
-
-            let data = JSON.parse(body).user.name;
-            resolve(data);
-        });
-
-    });
-};
-
-channelRequest = (channelID) => {
-
-    const oAuthToken = process.env.oAuthToken;
-
-    return new Promise((resolve, reject) => {
-        request.post({
-            url: `https://slack.com/api/channels.info?token=${oAuthToken}&channel=${channelID}`,
-        }, (error, response, body) => {
-
-            if(error) reject(error);
-
-            let data = JSON.parse(body).channel.members;
-            resolve(data);
-        });
-
-    });
-
-};
-
-privateMessageRequest = () => {
-
-};
+// console.log(tools.response.activitySelect({}));
 
 interaction = type => {
     let response;
 
+    // const valueObject = {};
+
     switch(type){
         case 'checkin':
-            response = {
-                title: "Check In",
-                pretext: "Use the following dropdown menus to define and" +
-                "check into your activity.",
-
-                attachments: [{
-                    text: "Select an activity:",
-                    callback_id: "checkin",
-                    attachment_type: "default",
-                    actions: [{
-
-                        name: "type",
-                        type: "select",
-                        options: [
-                            {
-                                text: "Accountability Buddy check in",
-                                value: "accountability",
-                            },
-                            {
-                                text: "Pair Programming check in",
-                                value: "pair",
-                            },
-                            {
-                                text: "Team Meeting check in",
-                                value: "team",
-                            },
-                        ]
-
-                    }]
-                }]
-            };
+            response = respond.activitySelect({});
             break;
     }
 
@@ -102,98 +34,23 @@ processInteraction = payload => {
     let name = payload.actions[0].name;
     let value = payload.actions[0].selected_options[0].value;
 
-    let response = interaction(type);
-    let attachment;
+    let response;
 
     switch(type){
-        case 'checkin':
-            // console.log('process checkin');
-            switch(true){
-                case value === 'accountability' || value === 'pair':
-
-                   let members;
-
-                   channelRequest(payload.channel.id)
-                        .then( members => members.filter(memberId => memberId !== payload.user.id))
-                        .then( membersAsId => {
-                            let promises = [];
-
-                            membersAsId.forEach( e => promises.push(convertUser(e)));
-
-                            return Promise.all(promises);
-
-                            // for (member of membersAsId) {
-                            //
-                            //     promises.push(new Promise(converUser(member)))
-                            // }
-                            // return {Promise.all(promises), membersAsId})
-                        })
-                        .then( members => members = members)
-                       .catch(e => console.log(`error message ${e}`));
-                   //
-                   // channelRequest(payload.channel.id).then( data => {
-                   //     members = data.filter(e => e !== payload.user.id ).map( e => {
-                   //         let userName;
-                   //         convertUser(e).then( data => {
-                   //             userName = data;
-                   //         });
-                   //         return userName
-                   //     });
-                   // }).catch( e => console.log(`error message ${e}`));
-                   //
-                   // console.log(members);
-
-                    // attachment = {
-                    //     text: "Pick a user:",
-                    //     callback_id: "checkin",
-                    //     attachment_type: "default",
-                    //     actions: [{
-                    //
-                    //         name: "partner",
-                    //         type: "select",
-                    //         options: [
-                    //             {
-                    //                 text: "Vampiire",
-                    //                 value: "vampiire",
-                    //             },
-                    //             {
-                    //                 text: "JesseC",
-                    //                 value: "JesseC",
-                    //             }
-                    //         ]
-                    //
-                    //     }]
-                    // }
-            }
-
+        case 'activitySelect':
+           response = respond.userSelect(value);
+           break;
+        case 'userSelect':
+            response = respond.taskSelect(value);
 
     }
 
-    response.attachments.push(attachment);
+    console.log(value);
 
     return response;
 };
 
-checkIn = document => {
-
-    if(!document){
-        // respond with link to signup form
-            // if profile doesnt exist
-    }
-
-    let attachment;
-
-
-
-};
-
-buildProfile = data => {
-
-};
-
-
 module.exports = {
     interaction: interaction,
-    buildProfile: buildProfile,
     process: processInteraction
 };
