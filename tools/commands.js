@@ -14,18 +14,22 @@
 const request = require('request');
 
 convertUser = (userID) => {
+
     const oAuthToken = process.env.oAuthToken;
 
-    let userName;
+    return new Promise((resolve, reject) => {
+        request.post({
+            url: `https://slack.com/api/users.info?token=${oAuthToken}&user=${userID}`,
+        }, (error, response, body) => {
 
-    request.post({
-        url: `https://slack.com/api/users.info?token=${oAuthToken}&user=${userID}`,
-    }, (error, response, body) => {
-        if(error) throw error;
-        userName = JSON.parse(body).user.name;
+            if(error) reject(error);
+
+
+            let data = JSON.parse(body).user.name;
+            resolve(data);
+        });
+
     });
-
-    return userName;
 };
 
 channelRequest = (channelID) => {
@@ -44,6 +48,10 @@ channelRequest = (channelID) => {
         });
 
     });
+
+};
+
+privateMessageRequest = () => {
 
 };
 
@@ -105,11 +113,34 @@ processInteraction = payload => {
 
                    let members;
 
-                   channelRequest(payload.channel.id).then( data => {
-                       // members = data.filter(e => e !== payload.user.id ).map( e => convertUser(e));
-                       console.log(`channel request: ${data}`);
-                   }).catch( e => console.log(`error message ${e}`));
+                   channelRequest(payload.channel.id)
+                        .then( members => members.filter(memberId => memberId !== payload.user.id))
+                        .then( membersAsId => {
+                            let promises = [];
 
+                            membersAsId.forEach( e => promises.push(convertUser(e)));
+
+                            return Promise.all(promises);
+
+                            // for (member of membersAsId) {
+                            //
+                            //     promises.push(new Promise(converUser(member)))
+                            // }
+                            // return {Promise.all(promises), membersAsId})
+                        })
+                        .then( members => members = members)
+                       .catch(e => console.log(`error message ${e}`));
+                   //
+                   // channelRequest(payload.channel.id).then( data => {
+                   //     members = data.filter(e => e !== payload.user.id ).map( e => {
+                   //         let userName;
+                   //         convertUser(e).then( data => {
+                   //             userName = data;
+                   //         });
+                   //         return userName
+                   //     });
+                   // }).catch( e => console.log(`error message ${e}`));
+                   //
                    // console.log(members);
 
                     // attachment = {
