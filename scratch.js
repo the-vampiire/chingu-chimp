@@ -1,17 +1,23 @@
-/**
- * Created by Vampiire on 7/5/17.
- */
 
-const t = { test : [{testkey : 'test value'}]};
+activitySelect = (valueObject) => {
 
-// console.log(t);
-// console.log(t.test[0].testkey);
-// console.log(t.test[0].hasOwnProperty('testkey'));
+    const fields = {
+        text: 'testing attacher',
+        callback_id: 'activitySelect',
+        actions: [{
+            name: 'type',
+            type: 'select',
+            data_source: 'static'
+        }]
+    };
 
-try {
-    t.aaahasOwnProperty('test2key');
-    console.log('worked');
-} catch(e){
-    console.log(e);
-}
+    const options = ['test 1', 'test 2', 'test 3'];
 
+    return {
+        title: "Check In",
+        pretext: "Use the following dropdown menus to define and" +
+        "check into your activity.",
+
+        attachments: [val.attachment(valueObject, fields, options)]
+    };
+};

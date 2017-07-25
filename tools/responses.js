@@ -2,117 +2,116 @@
  * Created by Vampiire on 7/24/17.
  */
 
-const valStringer = require('./valueStringer');
+const val = require('./valueStringer');
 
-activitySelect = (valueObject) => {
-    return {
-        title: "Check In",
-        pretext: "Use the following dropdown menus to define and" +
-        "check into your activity.",
+// generic submit
+    submit = (responseObject, valueObject, formatObject) => {
+        let response = responseObject;
+    };
 
-        attachments: [{
-            text: "Select an activity:",
-            callback_id: "activitySelect",
+// ------------ checkin ------------------ //
+
+    checkIn = () => {
+        return {
+            title: "Check In",
+            pretext: "Use the following dropdown menus to define and" +
+            "check into your activity.",
+        };
+    };
+
+    activitySelect = valueObject => {
+
+        const fields = {
+            text: 'Select an activity',
+            callback_id: 'activitySelect',
             attachment_type: "default",
             actions: [{
-
-                name: "type",
-                type: "select",
-                data_source: 'static',
-                options: [
-                    {
-                        text: "Accountability Buddy check in",
-                        value: valStringer(valueObject, 'type', 'accountability'),
-                    },
-                    {
-                        text: "Pair Programming check in",
-                        value: valStringer(valueObject, 'type', 'pair'),
-                    },
-                    {
-                        text: "Team Meeting check in",
-                        value: valStringer(valueObject, 'type', 'team'),
-                    }
-                ],
+                name: 'type',
+                type: 'select',
+                data_source: 'static'
             }]
-        }]
+        };
+
+        const options = ['accountability', 'pair programming', 'team meeting'];
+
+        let response = checkIn();
+        response.attachments = [val.attachment(valueObject, fields, options )];
+
+        return response;
     };
-};
 
-userSelect = (valueObject) => {
-    return {
-        title: "Check In",
-            pretext: "Use the following dropdown menus to define and check into your activity.",
+    userSelect = valueObject => {
 
-        attachments: [{
-        text: "Select a partner:",
-        callback_id: "userSelect",
-        attachment_type: "default",
-        actions: [{
+        const fields = {
+            text: "Select a partner:",
+            callback_id: "userSelect",
+            attachment_type: "default",
+            actions: [{
+                name: "partner",
+                type: "select",
+                data_source: 'static'
+            }]
+        };
 
-            name: "type",
-            type: "select",
-            data_source: 'static',
-            options: [
-                {
-                    text: "Accountability Buddy check in",
-                    value: valStringer(valueObject, 'partner', 'accountability'),
-                },
-                {
-                    text: "Pair Programming check in",
-                    value: valStringer(valueObject, 'partner', 'pair'),
-                },
-                {
-                    text: "Team Meeting check in",
-                    value: valStringer(valueObject, 'partner', 'team'),
-                }
-            ],
-        }]
-    }]
+        const options = ['vampiire', 'dsglovia', 'jessec'];
+
+        let response = checkIn();
+        response.attachments = [val.attachment(valueObject, fields, options )];
+
+        return response;
     };
-};
 
-taskSelect = (valueObject, tasksArray = null) => {
+    taskSelect = valueObject => {
 
-    tasksArray ? tasks = tasksArray : tasks = ['code wars', 'tutorial', 'other'];
-
-    return {
-        title: "Check In",
-        pretext: "Use the following dropdown menus to define and check into your activity.",
-
-        attachments: [{
+        const fields = {
             text: "Select a task:",
             callback_id: "taskSelect",
             attachment_type: "default",
             actions: [{
                 name: "task",
                 type: "select",
-                data_source: 'static',
-                options : populateOptions(tasks, 'task', valueObject)
+                data_source: 'static'
             }]
-        }]
+        };
+
+        const options = ['code wars', 'tutorial', 'other'];
+
+        let response = checkIn();
+        response.attachments = [val.attachment(valueObject, fields, options )];
+
+        return response;
     };
-};
 
-populateOptions = (dataArray, key, valueObject) => {
-    let options = [];
+    submitCheckin = valueObject => {
 
-    dataArray.forEach( e => {
+        const stuff = JSON.parse(valueObject);
 
-        let textValuePair = {};
-        textValuePair.text = e;
-        textValuePair.value = valStringer(valueObject, key, e);
+        const fields = {
+            text: `Check into: ${stuff.type} Session with ${stuff.partner} to work on ${stuff.task}`,
+            callback_id: "checkInSubmit",
+            color: "#3AA3E3",
+            attachment_type: "default",
+            actions: [{
+                text: 'Check in',
+                name: "task",
+                type: "button",
+                value: val.stringer(valueObject, 'submit', 'true')
+            }]
+        };
 
-        options.push(textValuePair);
-    });
+        let response = checkIn();
+        response.attachments = [fields];
 
-    return options;
-};
+        console.log(response);
 
+        return response;
 
-
+    };
 
 module.exports = {
+    submit : submit,
     activitySelect : activitySelect,
     userSelect : userSelect,
-    taskSelect : taskSelect
+    taskSelect : taskSelect,
+    submitCheckin : submitCheckin
 };

@@ -36,3 +36,8 @@ channelRequest = (channelID) => {
         });
     });
 };
+
+module.exports = {
+    channelRequest : channelRequest,
+    convertUser : convertUser
+};

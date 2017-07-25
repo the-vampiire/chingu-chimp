@@ -30,11 +30,18 @@ interaction = type => {
 };
 
 processInteraction = payload => {
-    let type = payload.callback_id;
-    let name = payload.actions[0].name;
-    let value = payload.actions[0].selected_options[0].value;
 
+
+    const type = payload.callback_id;
+    let value;
     let response;
+
+    if(type === 'checkInSubmit') {
+        value = payload.actions[0].value;
+       return `Your checkin is being processed for yourself and ${JSON.parse(value).partner}`;
+    }else{
+        value = payload.actions[0].selected_options[0].value;
+    }
 
     switch(type){
         case 'activitySelect':
@@ -42,10 +49,16 @@ processInteraction = payload => {
            break;
         case 'userSelect':
             response = respond.taskSelect(value);
-
+            break;
+        case 'taskSelect':
+            response = respond.submitCheckin(value);
+            break;
+        case 'checkInSubmit':
+            console.log(payload);
+            response = `Your checkin is being processed for yourself and @${JSON.parse(value).partner}`;
+            // process database submission
+            break;
     }
-
-    console.log(value);
 
     return response;
 };
