@@ -8,16 +8,12 @@ const mongoose = require('mongoose');
 
 const formSchema = new mongoose.Schema({
 
-    cohorts : [{
-        cohort: String
-    }],
+    cohorts : [String],
 
-    languages : [{
-        language: String
-    }],
+    languages : [String],
 
-    frameworks : [{
-
-    }],
+    frameworks : [String],
 
 });
+
+

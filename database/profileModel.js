@@ -67,12 +67,14 @@ const userSchema = new mongoose.Schema({
     current: [{
         project: String,
         url: {type: String, default: false},
+        gitHubURL: {type: String, default: false},
         date: {type: Number, default: Date.now()}
     }],
 
     completed: [{
         project: String,
         url: {type: String, default: false},
+        gitHubURL: {type: String, default: false},
         date: Number
     }],
 

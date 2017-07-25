@@ -3,18 +3,16 @@ valStringer = (valueObject, key, value) => {
 
 // on the first call of valStringer the valueObject is an object. However on subsequent calls
 // it will be returned in the payload as a string and must be converted before being processed;
-    typeof valueObject === 'string' ? valueObject = JSON.parse(valObject) : false;
+    if(typeof valueObject === 'string') valueObject = JSON.parse(valueObject);
 
     valueObject[key] = value;
-
     return JSON.stringify(valueObject);
 };
 
-populateOptions = (dataArray, key, valueObject) => {
+valOptions = (dataArray, key, valueObject) => {
     let options = [];
 
     dataArray.forEach( e => {
-
         let textValuePair = {};
         textValuePair.text = e;
         textValuePair.value = valStringer(valueObject, key, e);
@@ -76,6 +74,18 @@ populateOptions = (dataArray, key, valueObject) => {
 
 valAttacher = (valueObject, attachmentFields, optionsTextArray = null) => {
 
+    const minimum = ['text', 'callback_id', 'actions', 'actions[0].'];
+    const actionsMinimum = [{key: 'type', value: 'select'}];
+
+    try {
+
+    } catch(e){
+
+    }
+
+
+
+
 // tests the attachmentFields object to ensure that all minimum field requirements have been met;
     // could split this into a switch or chained if to give better feedback on which property is missing
     if(!(attachmentFields.hasOwnProperty('text')
@@ -89,19 +99,26 @@ valAttacher = (valueObject, attachmentFields, optionsTextArray = null) => {
         }
     }
 
+
+
 // handle attachment fields
     let attachment = {};
     let keys = Object.keys(attachmentFields);
     keys.forEach( key => attachment[key] = attachmentFields[key] );
 
 // handle "select" options
+    // Default is used in the case of an external source array failing
     let Default = [ / hardcode a default array of text strings here / ];
-    let a;
-    optionsTextArray ? a = optionsTextArray : a = Default;
 
-    attachment.options = populateOptions(a, attachmentFields.name, valueObject);
+    let textArray;
+    optionsTextArray ? textArray = optionsTextArray : textArray = Default;
 
+    attachment.options = populateOptions(textArray, attachmentFields.name, valueObject);
     return attachment;
 };
 
-module.exports = valStringer;
+module.exports = {
+    stringer : valStringer,
+    options : valOptions,
+    attachment : valAttacher
+};

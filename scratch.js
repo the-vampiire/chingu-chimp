@@ -2,6 +2,16 @@
  * Created by Vampiire on 7/5/17.
  */
 
-const minimum = ['a', 'b', 'c'];
+const t = { test : [{testkey : 'test value'}]};
 
-console.log(minimum.indexOf('d') !== -1);
+// console.log(t);
+// console.log(t.test[0].testkey);
+// console.log(t.test[0].hasOwnProperty('testkey'));
+
+try {
+    t.aaahasOwnProperty('test2key');
+    console.log('worked');
+} catch(e){
+    console.log(e);
+}
+
