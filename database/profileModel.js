@@ -7,6 +7,7 @@
  * cohort array will hold all cohorts user has been a part of
  *      new cohorts are pushed to the end
  *      current display cohort is last in list (latest cohort)
+ *      number of cohorts display is cohorts.length
  *
  *
  *
