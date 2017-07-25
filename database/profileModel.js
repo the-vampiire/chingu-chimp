@@ -19,13 +19,16 @@ const userSchema = new mongoose.Schema({
 
     userName: String,
     teamID: String,
+
     portfolioURL: {type: String, default: false},
+    gitHubURL : {type: String, default: false},
+    blogHubURL : {type: String, default: false},
+
     joinDate: Number,
     story: String,
 
     cohort: [{
-        cohortName: String,
-        startDate: {type: Number, default: Date.now()},
+        cohortName: String
     }],
 
     aptitudes: {
@@ -51,31 +54,21 @@ const userSchema = new mongoose.Schema({
                 type: String,
                 partner: String,
                 date: {type: Number, default: Date.now()},
-                task: String,
-                streak: Number
+                task: String
             }],
 
             streak: Number,
         }],
     },
 
-    current: [{
-        project: String,
-        url: {type: String, default: false},
-        date: {type: Number, default: Date.now()}
-    }],
-
-    completed: [{
-        project: String,
-        url: {type: String, default: false},
-        date: Number
-    }],
-
-    certifications: [{
+    projects: [{
         name: String,
         url: {type: String, default: false},
+        gitHubURL : {type: String, default: false},
         date: Number
-    }]
+    }],
+
+    points: {type: Number, default: 1}
 
 });
 

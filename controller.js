@@ -23,11 +23,16 @@ const tools = require('./tools/exporter');
 // Global Constants
 
 
-// ------------------- SPLASH PAGE ------------------- //
+// ------------------- FRONT END ------------------- //
 
 router.get('/form', (req, res) => {
 
     res.render('form');
+
+});
+
+router.post ('/form', (req, res) => {
+
 
 });
 
@@ -37,7 +42,9 @@ router.get('/', (req, res) => {
 
 });
 
-// -------------------------------------------------- //
+
+
+// ------------------- BACK END -------------------- //
 
 
 // ------------ INCOMING SLASH COMMANDS ------------- //
