@@ -22,15 +22,15 @@ activitySelect = (valueObject) => {
                 options: [
                     {
                         text: "Accountability Buddy check in",
-                        value: valStringer(valueObject, 'value', 'accountability'),
+                        value: valStringer(valueObject, 'type', 'accountability'),
                     },
                     {
                         text: "Pair Programming check in",
-                        value: valStringer(valueObject, 'value', 'pair'),
+                        value: valStringer(valueObject, 'type', 'pair'),
                     },
                     {
                         text: "Team Meeting check in",
-                        value: valStringer(valueObject, 'value', 'team'),
+                        value: valStringer(valueObject, 'type', 'team'),
                     }
                 ],
             }]
@@ -55,15 +55,15 @@ userSelect = (valueObject) => {
             options: [
                 {
                     text: "Accountability Buddy check in",
-                    value: valStringer(valueObject, 'val1', 'accountability'),
+                    value: valStringer(valueObject, 'partner', 'accountability'),
                 },
                 {
                     text: "Pair Programming check in",
-                    value: valStringer(valueObject, 'val1', 'pair'),
+                    value: valStringer(valueObject, 'partner', 'pair'),
                 },
                 {
                     text: "Team Meeting check in",
-                    value: valStringer(valueObject, 'val1', 'team'),
+                    value: valStringer(valueObject, 'partner', 'team'),
                 }
             ],
         }]
@@ -71,7 +71,10 @@ userSelect = (valueObject) => {
     };
 };
 
-taskSelect = (valueObject) => {
+taskSelect = (valueObject, tasksArray = null) => {
+
+    tasksArray ? tasks = tasksArray : tasks = ['code wars', 'tutorial', 'other'];
+
     return {
         title: "Check In",
         pretext: "Use the following dropdown menus to define and check into your activity.",
@@ -81,28 +84,30 @@ taskSelect = (valueObject) => {
             callback_id: "taskSelect",
             attachment_type: "default",
             actions: [{
-
-                name: "type",
+                name: "task",
                 type: "select",
                 data_source: 'static',
-                options: [
-                    {
-                        text: "code wars",
-                        value: valStringer(valueObject, 'val2', 'code wars'),
-                    },
-                    {
-                        text: "tutorial",
-                        value: valStringer(valueObject, 'val2', 'tutorial'),
-                    },
-                    {
-                        text: "other",
-                        value: valStringer(valueObject, 'val2', 'other'),
-                    }
-                ],
+                options : populateOptions(tasks, 'task', valueObject)
             }]
         }]
     };
 };
+
+populateOptions = (dataArray, key, valueObject) => {
+    let options = [];
+
+    dataArray.forEach( e => {
+
+        let textValuePair = {};
+        textValuePair.text = e;
+        textValuePair.value = valStringer(valueObject, key, e);
+
+        options.push(textValuePair);
+    });
+
+    return options;
+};
+
 
 
 
