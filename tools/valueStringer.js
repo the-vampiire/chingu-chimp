@@ -59,21 +59,16 @@ valAttacher = (valueObject, attachmentFields, optionsTextArray = null) => {
         }
     }
 
-    // handle attachment fields
-    let attachment = {};
-    let keys = Object.keys(attachmentFields);
-    keys.forEach( key => attachment[key] = attachmentFields[key] );
-
     // handle "select" options
     // Default is used in the case of an external source array failing
     let Default = [ / hardcode a default array of text strings here / ];
     let textArray;
     optionsTextArray ? textArray = optionsTextArray : textArray = Default;
 
-    const actions = attachment.actions[0];
+    const actions = attachmentFields.actions[0];
     actions.options = valOptions(textArray, actions.name, valueObject);
 
-    return attachment;
+    return attachmentFields;
 };
 
 // verifies that the field object passed into valAttacher is correctly formatted
