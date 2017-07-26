@@ -30,6 +30,9 @@ processInteraction = payload => {
 
     switch(type){
         case 'activitySelect':
+            // use API call to get partners
+                // remove chance and pass all members [including user] to partners array
+                    // pass partners array into the valueObject
             response = respond.userSelect(value);
             break;
         case 'userSelect':
@@ -39,7 +42,8 @@ processInteraction = payload => {
             response = respond.submitCheckin(value);
             break;
         case 'checkInSubmit':
-            database.getProfile()
+            // database update all elements in the partners array value by passing the valueObject
+                // generate logic to only include partners that dont match the userName of the user being updated
             response = `Your checkin is being processed for yourself and ${JSON.parse(value).partner}`;
             break;
     }

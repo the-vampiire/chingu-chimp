@@ -72,5 +72,5 @@
  };
 
  module.exports = {
-     getProfile : getProfile
+
  };
