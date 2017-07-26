@@ -60,7 +60,8 @@ const userSchema = new mongoose.Schema({
                 streak: Number
             }],
 
-            streak: Number,
+            currentStreak: Number,
+            bestStreak: Number
         }],
     },
 

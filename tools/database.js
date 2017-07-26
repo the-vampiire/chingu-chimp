@@ -59,16 +59,6 @@
 
  };
 
- const bulkModel = require('../database/bulkTest').model;
- testBulk = (data) => {
-     let bulk = bulkModel.initializeOrderedBulkOp();
-     bulk.insert({field1: data.field1});
- };
-
-
  module.exports = {
-
-     getProfile : getProfile,
-     testBulk : testBulk
-
+     getProfile : getProfile
  };

@@ -1,9 +1,9 @@
 
+// ---------------------------- CORE EXPORTS --------------------------------- //
+
 // builds or extends and returns the value object
 valStringer = (valueObject, key, value) => {
 
-    // on the first call of valStringer the valueObject is an object. However on subsequent calls
-    // it will be returned in the payload as a string and must be converted before being processed;
     if(typeof valueObject === 'string') valueObject = JSON.parse(valueObject);
 
     valueObject[key] = value;
@@ -25,53 +25,117 @@ valOptions = (dataArray, key, valueObject) => {
     return options;
 };
 
-/*
- builds and returns a populated message menu attachment
- attachmentFields template:
 
- {
- text: replaceMe,
- callback_id: replaceMe,
- actions: [{
- name: replaceMe,
- type: 'select',
- data_source: 'static'
- }]
- }
- */
 
-valAttacher = (valueObject, attachmentFields, optionsTextArray = null) => {
+// builds and returns an attachment object
 
-    // verify the attachment fields object is correctly formatted
-    // return meaningful details about the error encountered
-    const expectedKeys = ['text', 'callback_id', 'actions'];
-    const keysError = verifyKeys(attachmentFields, expectedKeys);
+valMenu = (headerText, callbackID, menuName, valueObject, menuItemsArray, customAttachment) => {
+
+    let attachment = customAttachment ? errorScan(customAttachment) ? errorScan(customAttachment) :
+        customAttachment :
+        menuAttachment(headerText, callbackID, menuName);
+
+    let actions = attachment.actions[0];
+    actions.options = valOptions(menuItemsArray, actions.name, valueObject);
+
+    return attachment;
+};
+
+valButton = (headerText, callbackID, buttonText, buttonName, buttonValue, valueObject, customAttachment) => {
+
+    let attachment = customAttachment ? errorScan(customAttachment) ? errorScan(customAttachment) :
+        customAttachment :
+        buttonAttachment(headerText, callbackID, buttonText, buttonName, buttonValue, valueObject);
+
+    if(customAttachment) customAttachment.actions[0].value = valStringer(valueObject, buttonName, buttonValue);
+
+    return attachment;
+};
+
+valMessage = valObject => {
+
+};
+
+// ---------------------------- TOOLS --------------------------------- //
+
+// builds the shell of a menu attachment
+menuAttachment = (headerText, callbackID, menuName) => {
+
+    return {
+        text: headerText,
+        callback_id: callbackID,
+        actions: [{
+            name: menuName,
+            type: 'select',
+            data_source: 'static'
+        }]
+    }
+
+};
+
+// builds the shell of a button attachment
+buttonAttachment = (headerText, callbackID, buttonText, buttonName, buttonValue, valueObject) => {
+
+    return {
+        text: headerText,
+        callback_id: callbackID,
+        actions: [{
+            text: buttonText,
+            name: buttonName,
+            type: 'button',
+            value: valStringer(valueObject, buttonName, buttonValue)
+        }]
+    }
+};
+
+// scans a custom attachment object for errors
+errorScan = (type, customAttachment) => {
+
+    const expectedKeys = type === 'menu' ?
+        ['text', 'callback_id', 'actions'] :
+        ['text', 'callback_id', 'actions', 'button'];
+
+    const expectedSubKeys = type === 'menu' ?
+        ['name', 'type', 'datasource'] :
+        ['text', 'name', 'type'];
+
+    const actions = customAttachment.actions[0];
+
+    const keysError = verifyKeys(customAttachment, expectedKeys);
+    const subKeysError = verifyKeys(actions, expectedSubKeys);
 
     if(keysError){
         return keysError;
-    }else {
-        const actions = attachmentFields.actions[0];
-        switch(true){
-            case actions.type !== 'select':
-                return `invalid action type, must be 'select'`;
-            case actions.data_source !== 'static':
-                return `invalid action data_source, must be 'static'`;
+    }
+
+    else if (subKeysError){
+        return subKeysError;
+    }
+
+    else {
+        switch(type){
+            case 'menu':
+                switch(true) {
+                    case actions.type !== 'select':
+                        return `invalid action type, must be 'select' for interactive menus`;
+                    case actions.data_source !== 'static':
+                        return `invalid action data_source, must be 'static'`;
+                }
+                break;
+            case 'button':
+                switch(true){
+                    case actions.type !== 'button':
+                        return `invalid action type, must be 'button' for interactive buttons`;
+                }
+                break;
         }
     }
 
-    // handle "select" options
-    // Default is used in the case of an external source array failing
-    let Default = [ / hardcode a default array of text strings here / ];
-    let textArray;
-    optionsTextArray ? textArray = optionsTextArray : textArray = Default;
-
-    const actions = attachmentFields.actions[0];
-    actions.options = valOptions(textArray, actions.name, valueObject);
-
-    return attachmentFields;
+    return false;
 };
 
-// verifies that the field object passed into valAttacher is correctly formatted
+
+// verifies the keys of a custom attachment object
 verifyKeys = (object, expectedKeys) => {
     let error;
 
@@ -87,5 +151,6 @@ verifyKeys = (object, expectedKeys) => {
 module.exports = {
     stringer : valStringer,
     options : valOptions,
-    attachment : valAttacher
+    menu : valMenu,
+    button : valButton
 };

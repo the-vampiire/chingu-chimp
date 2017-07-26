@@ -1,0 +1,15 @@
+cross origin resource sharing
+    look into this
+        whitelist the website IP
+
+post [read from database]
+    points
+    story
+    aptitudes
+    checkin
+        length: total checkins
+        best streak
+        current streak
+    certifications [free code camp]
+    URLs
+        blog / github / personal portfolio
