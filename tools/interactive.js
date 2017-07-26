@@ -39,7 +39,7 @@ processInteraction = payload => {
             response = respond.submitCheckin(value);
             break;
         case 'checkInSubmit':
-            database.
+            database.getProfile()
             response = `Your checkin is being processed for yourself and ${JSON.parse(value).partner}`;
             break;
     }

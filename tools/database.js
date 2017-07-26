@@ -7,10 +7,26 @@
 
  const userProfile = require('../database/profileModel').userProfile;
 
- getProfile = (userName) => {
+ // ------------------- CORE EXPORTS --------------- //
+
+ getProfileDoc = userName => {
      return userProfile.find({userName : userName});
  };
 
+ getProfileItem = (userName, item) => {
+     // does this need to be parsed back into JSON from BSON? can't remember
+     return userProfile.find({userName: userName})[item];
+ };
+
+ addProfile = profileData => {
+    return userProfile.insert(buildProfile(profileData));
+ };
+
+ updateProfile = (userName, updateObject) => {
+     return userProfile.find({userName : userName}).update(updateObject);
+ };
+
+ // --------------------- TOOLS ---------------------- //
  buildProfile = (data) => {
 
      return {
@@ -53,10 +69,6 @@
 
          sharable: data.sharable
      };
- };
-
- addProfile = (profileData) => {
-
  };
 
  module.exports = {
