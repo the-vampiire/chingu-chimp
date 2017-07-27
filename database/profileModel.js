@@ -54,7 +54,7 @@ const userSchema = new mongoose.Schema({
 
             log: [{
                 type: String,
-                partner: String,
+                partners: [String],
                 date: {type: Number, default: Date.now()},
                 task: String,
                 streak: Number

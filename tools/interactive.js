@@ -42,8 +42,18 @@ processInteraction = payload => {
             response = respond.submitCheckin(value);
             break;
         case 'checkInSubmit':
-            // database update all elements in the partners array value by passing the valueObject
-                // generate logic to only include partners that dont match the userName of the user being updated
+
+            /*
+             get user IDs
+             create array of user ID convert promises
+             resolve all into an array of user names
+
+             for each user call the checkin update function
+             pass a scrubbed array of users filter the [current user] and [chance] out of the array
+             set the partners property of the checkin data to the array
+             update mongodb
+             */
+
             response = `Your checkin is being processed for yourself and ${JSON.parse(value).partner}`;
             break;
     }

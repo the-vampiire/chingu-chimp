@@ -15,7 +15,6 @@ convertUser = (userID) => {
 
             if(error) reject(error);
 
-
             let data = JSON.parse(body).user.name;
             resolve(data);
         });
