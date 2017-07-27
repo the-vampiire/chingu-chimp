@@ -37,6 +37,6 @@ channelRequest = (channelID) => {
 };
 
 module.exports = {
-    channelRequest : channelRequest,
-    convertUser : convertUser
+    channel : channelRequest,
+    convertID : convertUser
 };
