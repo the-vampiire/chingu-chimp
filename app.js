@@ -12,7 +12,7 @@ const dbURL = process.env.dbURL;
 mongoose.connect(dbURL, {useMongoClient : true}, e => e ? console.log(`error: ${e}`) : console.log('connected to database'));
 
 const BP = require('body-parser');
-// const logger = require('morgan');
+const logger = require('morgan');
 const EJS = require('ejs');
 
 const controller = require('./controller');
