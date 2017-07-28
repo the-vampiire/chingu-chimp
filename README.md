@@ -35,6 +35,11 @@ TODO: add instructions for installing app for use in development
 - Configuring It
 - Running it
 
+| Scripts              | Use                                           |
+|----------------------|-----------------------------------------------|
+| `npm start`          | start server locally                          |
+| `npm run dev`        | start persistent server locally using nodemon |
+
 
 ### TODO
 TODO: populate this column with next steps asap
