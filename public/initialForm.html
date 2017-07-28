@@ -1,16 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title></title>
+    <title>Sign Up</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <!--materialize css-->
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   </head>
   <body>
     <div id="app">
-      {{message}}
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <h1>Enter Your Chingu Profile Information:</h1>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6">
+            <form>
+              <div class="form-group">
+                <label for="portfolioURL">Link to Your Portfolio:</label>
+                <input 
+                  type="url" 
+                  class="form-control" 
+                  placeholder="www.example.com"
+                  v-model="userData.portfolioURL"
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="gitHubURL">Link to Your GitHub:</label>
+                <input 
+                  type="url" 
+                  class="form-control" 
+                  placeholder="www.github.com/example"
+                  v-model="userData.gitHubURL"
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="blogURL">Link to Your Coding Blog:</label>
+                <input 
+                  type="url" 
+                  class="form-control" 
+                  placeholder="www.example-blog.com"
+                  v-model="userData.blogURL"
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="userStory">* Enter Your Chingu Cohort Intro: (It's best to copy & past this from Slack)</label>
+                <textarea 
+                  class="form-control" 
+                  placeholder="My story begins...."
+                  v-model.lazy="userData.story"
+                  rows="3"
+                  required
+                >
+                </textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="cohorts">* Cohorts:</label>
+                <select 
+                  name="cohortList" 
+                  class="form-control"
+                  v-model="selectedCohort"
+                >
+                  <option v-for="cohort of ajaxData.cohorts" :key="cohort.name" :value="cohort.name">
+                    {{cohort.name}}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="cohorts">* Technologies:</label>
+                <select 
+                  name="technologyList" 
+                  class="form-control"
+                  v-model="selectedTechnology"
+                >
+                  <option v-for="technology of ajaxData.technologies" :key="technology" :value="technology">
+                    {{technology}}
+                  </option>
+                </select>
+              </div>
+
+
+              <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- TEMPORARY ROW -->
+        <div class="row text-center">
+          <div>{{userData}}</div>
+        </div>
+      </div>
     </div>
   </body>
   <script src="https://unpkg.com/vue@2.4.2"></script>
@@ -20,7 +108,69 @@
   var app = new Vue({
     el: '#app',
     data: {
-      message: 'hello world'
+      userData: {
+        portfolioURL: '',
+        gitHubURL: '',
+        blogURL: '',
+        story: '', // chingu intro
+        cohorts: [],
+        aptitudes: {
+          languages: [],
+          frameworks: []
+        }
+      },
+      // temp fake data
+      ajaxData: {
+        "cohorts": [
+          {
+            "name": "Ewoks",
+          },
+          {
+            "name": "Tapirs",
+          },
+          {
+            "name": "Sloths",
+          },
+          {
+            "name": "Kiwis",
+          },
+          {
+            "name": "Platypus",
+          },
+          {
+            "name": "Bearded-Dragons",
+          },
+          {
+            "name": "Armadillos",
+          },
+          {
+            "name": "Red-Pandas",
+          },
+          {
+            "name": "Honey-Badgers",
+          },
+          {
+            "name": "Elephants",
+          },
+          {
+            "name": "Dolphins",
+          },
+          {
+            "name": "Pumas",
+          },
+          {
+            "name": "Llamas",
+          }
+        ],
+        "technologies": [
+          "React",
+          "Angular",
+          "JavaScript",
+          "Python"
+        ]
+      },
+      selectedCohort: 'Red-Pandas', // needs to be wired to userData.cohorts
+      selectedTechnology: 'React' // needs to be wired to userData.cohorts
     }
   })
 </script>
