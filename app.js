@@ -13,6 +13,7 @@ mongoose.connect(dbURL, {useMongoClient : true}, e => e ? console.log(`error: ${
 
 const BP = require('body-parser');
 const logger = require('morgan');
+const faviocon = require('serve-favicon');
 const EJS = require('ejs');
 
 const controller = require('./controller');
@@ -23,7 +24,9 @@ app.listen(port, e => e ? console.log(e) : console.log(`Server listening on port
 // Middleware
 app.use(BP.urlencoded({extended:false}));
 app.use(BP.json());
-// app.use(logger('dev'));
+app.use(logger('dev'));
+// TODO: uncomment after adding favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use('/public', express.static('public'));
 app.set('view engine', 'ejs');
 
