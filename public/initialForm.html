@@ -62,34 +62,69 @@
                 </textarea>
               </div>
 
-              <div class="form-group">
+              <div class="form-group" v-for="(userCohort, index) of userData.cohorts" :key="index"> <!-- FIXME: can we establish a better key for iteration? -->
                 <label for="cohorts">* Cohorts:</label>
                 <select 
                   name="cohortList" 
                   class="form-control"
-                  v-model="selectedCohort"
+                  v-model="userCohort.cohortName"
                 >
                   <option v-for="cohort of ajaxData.cohorts" :key="cohort.name" :value="cohort.name">
                     {{cohort.name}}
                   </option>
                 </select>
               </div>
-
               <div class="form-group">
-                <label for="cohorts">* Technologies:</label>
-                <select 
-                  name="technologyList" 
-                  class="form-control"
-                  v-model="selectedTechnology"
+                <button 
+                  type="button"
+                  class="btn btn-default"
+                  @click="addNewCohort"
                 >
-                  <option v-for="technology of ajaxData.technologies" :key="technology" :value="technology">
-                    {{technology}}
-                  </option>
-                </select>
+                  Add a New Cohort
+                </button>
               </div>
 
+              <div class="form-group row" v-for="(userTechs, index) of userData.technologies" :key="index"> <!-- FIXME: can we establish a better key for iteration? -->
+                <!-- populate techs -->
+                <div class="col-lg-6">
+                  <label for="techSkill">* Technology:</label>
+                  <select 
+                    name="technologyList" 
+                    class="form-control"
+                    v-model="userTechs.name"
+                    required
+                  >
+                    <option v-for="technology of ajaxData.technologies" :key="technology" :value="technology">
+                      {{technology}}
+                    </option>
+                  </select>
+                </div>
+                <!-- populate skill levels -->
+                <div class="col-lg-6" >
+                  <label for="cohorts">* Skill Level:</label>
+                  <select 
+                    name="skillSelect"
+                    class="form-control"
+                    v-model="userTechs.level"
+                    required
+                  >
+                    <option v-for="skillLevel of ajaxData.levels" :key="skillLevel" :value="skillLevel">
+                      {{skillLevel}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <button 
+                  type="button"
+                  class="btn btn-default"
+                  @click="addNewTechnology"
+                >
+                  Add a New Technology
+                </button>
+              </div>
 
-              <button type="submit" class="btn btn-default">Submit</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
             </form>
           </div>
         </div>
@@ -114,10 +149,7 @@
         blogURL: '',
         story: '', // chingu intro
         cohorts: [],
-        aptitudes: {
-          languages: [],
-          frameworks: []
-        }
+        technologies: []
       },
       // temp fake data
       ajaxData: {
@@ -167,10 +199,27 @@
           "Angular",
           "JavaScript",
           "Python"
+        ],
+        levels: [
+          "Beginner",
+          "Intermediate",
+          "Expert",
+          "Wizard"
         ]
       },
-      selectedCohort: 'Red-Pandas', // needs to be wired to userData.cohorts
-      selectedTechnology: 'React' // needs to be wired to userData.cohorts
+    },
+    methods: {
+      addNewCohort() {
+        const defaultCohort = this.ajaxData.cohorts[0].name;
+
+        this.userData.cohorts.push({cohortName: defaultCohort});
+      },
+      addNewTechnology() {
+        const defaultTechnology = this.ajaxData.technologies[0]
+        const defaultSkillLevel = 'Intermediate'
+
+        this.userData.technologies.push({name: defaultTechnology, level: defaultSkillLevel})
+      }
     }
   })
 </script>
