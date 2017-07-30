@@ -1,0 +1,35 @@
+{
+  "name": "chinguchimp",
+  "version": "1.0.0",
+  "description": "Chingu Chimp is a profiling bot for use in the Chingu slack team and website",
+  "main": "server",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/the-vampiire/ChinguChimp.git"
+  },
+  "keywords": [
+    "ChinguChimp",
+    "Chingu",
+    "profile",
+    "slack",
+    "bot"
+  ],
+  "author": "Vampiire",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/the-vampiire/ChinguChimp/issues"
+  },
+  "homepage": "https://github.com/the-vampiire/ChinguChimp#readme",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "dotenv": "^4.0.0",
+    "ejs": "^2.5.6",
+    "express": "^4.15.3",
+    "mongoose": "^4.11.1",
+    "request": "^2.81.0"
+  }
+}
