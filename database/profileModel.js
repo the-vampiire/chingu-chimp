@@ -22,11 +22,12 @@ const userSchema = new mongoose.Schema({
     teamID: String,
 
     portfolioURL: {type: String, default: false},
-    gitHubURL : {type: String, default: false},
-    blogHubURL : {type: String, default: false},
+    gitHubURL: {type: String, default: false},
+    blogURL: {type: String, default: false},
+
+    story: String,
 
     joinDate: Number,
-    story: String,
 
     cohort: [{
         cohortName: String
@@ -58,7 +59,8 @@ const userSchema = new mongoose.Schema({
                 task: String
             }],
 
-            streak: Number,
+            currentStreak: Number,
+            bestStreak: Number
         }],
     },
 

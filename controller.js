@@ -103,7 +103,7 @@ router.post('/checkin', (req, res) => {
     const body = req.body;
 
     if(tools.verify.slash(body.token)){
-        res.json(tools.commands.interaction('checkin'));
+        res.json(tools.interactive.interaction('checkin'));
     }else{
         // res.json('invalid Slack token checkin');
     }
@@ -119,13 +119,8 @@ router.post('/interactive', (req, res) => {
     const payload = JSON.parse(req.body.payload);
 
     if(tools.verify.slash(payload.token)){
-        // console.log(payload);
-
-        res.json(tools.commands.process(payload));
-        res.end('');
+        res.json(tools.interactive.process(payload));
     }
-
-    // res.end('invalid Slack token');
 
 });
 

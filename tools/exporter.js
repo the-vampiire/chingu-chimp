@@ -3,11 +3,17 @@
  */
 
 const database = require('./database');
-const commands = require('./commands');
+const interactive = require('./interactive');
 const verify = require('./verify');
+const respond = require('./respond');
+const helper = require('./helpers');
+const requests = require('./requests');
 
 module.exports = {
     database : database,
-    commands : commands,
-    verify : verify
+    interactive : interactive,
+    verify : verify,
+    respond : respond,
+    helper : helper,
+    requests : requests
 };

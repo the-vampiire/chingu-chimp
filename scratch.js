@@ -1,9 +1,23 @@
-/**
- * Created by Vampiire on 7/5/17.
- */
 
+activitySelect = (valueObject) => {
 
-const text = 'command argument 5';
+    const fields = {
+        text: 'testing attacher',
+        callback_id: 'activitySelect',
+        actions: [{
+            name: 'type',
+            type: 'select',
+            data_source: 'static'
+        }]
+    };
 
-console.log(text.slice(0, text.indexOf(' ')));
-console.log(text.slice(text.indexOf(' ')+1));
+    const options = ['test 1', 'test 2', 'test 3'];
+
+    return {
+        title: "Check In",
+        pretext: "Use the following dropdown menus to define and" +
+        "check into your activity.",
+
+        attachments: [val.attachment(valueObject, fields, options)]
+    };
+};

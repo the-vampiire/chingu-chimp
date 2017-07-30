@@ -59,9 +59,6 @@
 
  };
 
-
  module.exports = {
-
      getProfile : getProfile
-
  };
