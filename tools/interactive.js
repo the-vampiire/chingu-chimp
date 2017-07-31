@@ -4,8 +4,8 @@
  */
 
 const respond = require('./respond');
-const database = require('./exporter').database;
-const requests = require('./exporter').requests;
+const database = require('./database');
+const requests = require('./requests');
 
 interaction = type => {
     let response;
@@ -56,23 +56,26 @@ processInteraction = payload => {
             //             update mongodb
             //  */
             //
-            requests.channel(channelID).then( IDs => {
-                let promises = [];
-                IDs.forEach( ID => promises.push(requests.convertID(ID)));
-                return Promise.all(promises);
-            }).then( partners => {
-                partners.forEach( (user, index, partners) => {
-                   JSON.parse(value).partners =  partners.filter(e !== user);
-                   console.log(value);
-                   // database update function
-                        // search for user
-                        // pass value object
-                });
-            });
+            // console.log(payload);
+           // requests.channel(payload.channel.id).then( IDs => {
+           //      let promises = [];
+           //      IDs.forEach( ID => promises.push(requests.convertID(ID)));
+           //      return Promise.all(promises);
+           //  }).then( partners => {
+           //      value = JSON.parse(value);
+           //      value.partners = partners.filter( partner => partner !== payload.user.name && partner !== 'chance' );
+           //
+           //      let partnersString;
+           //      value.partners.forEach(e => partnersString += `e \n`);
+           //      response = `Your checkin is being processed for yourself and ${partnersString}`;
+           //      // database update function
+           //      //         // search for user
+           //      //         // pass value object
+           //  });
 
-            response = `Your checkin is being processed for yourself and ${JSON.parse(value).partners.forEach( e => `${e}\n`)}`;
-            break;
+            // break;
     }
+
 
     return response;
 };

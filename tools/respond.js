@@ -50,10 +50,10 @@ const val = require('./valueStringer');
 
     submitCheckin = valueObject => {
 
-        const message = JSON.parse(valueObject);
+        const bulkData = JSON.parse(valueObject);
 
         let response = checkIn();
-        response.attachments = [val.button(`Check into: ${message.type} session with ${message.partner} to work on ${message.task}`,
+        response.attachments = [val.button(`Check into: ${bulkData.type} session with ${bulkData.partner} to work on ${bulkData.task}`,
                                 'checkInSubmit', 'Check In', 'submit', true, valueObject)];
         return response;
 

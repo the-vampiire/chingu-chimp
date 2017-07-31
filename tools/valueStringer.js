@@ -25,10 +25,7 @@ valOptions = (dataArray, key, valueObject) => {
     return options;
 };
 
-
-
-// builds and returns an attachment object
-
+// builds and returns a message attachment object
 valMenu = (headerText, callbackID, menuName, valueObject, menuItemsArray, customAttachment) => {
 
     let attachment = customAttachment ? errorScan(customAttachment) ? errorScan(customAttachment) :
@@ -41,6 +38,7 @@ valMenu = (headerText, callbackID, menuName, valueObject, menuItemsArray, custom
     return attachment;
 };
 
+// builds and returns a button attachment object
 valButton = (headerText, callbackID, buttonText, buttonName, buttonValue, valueObject, customAttachment) => {
 
     let attachment = customAttachment ? errorScan(customAttachment) ? errorScan(customAttachment) :
@@ -52,6 +50,7 @@ valButton = (headerText, callbackID, buttonText, buttonName, buttonValue, valueO
     return attachment;
 };
 
+// builds and returns a message attachment object
 valMessage = valObject => {
 
 };
