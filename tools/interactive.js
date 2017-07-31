@@ -43,34 +43,34 @@ processInteraction = payload => {
             response = respond.submitCheckin(value);
             break;
         case 'checkInSubmit':
-            const channelID = payload.channel;
-            const user = payload.user;
-            /*
-             get user IDs
-                create array of user ID convert promises
-                    resolve all into an array of user names
-
-             for each user call the checkin update function
-                pass a scrubbed array of users filter the [current user] and [chance] out of the array
-                    set the partners property of the checkin data to the array
-                        update mongodb
-             */
-
+            // const channelID = payload.channel.id;
+            // const user = payload.user.name;
+            // /*
+            //  get user IDs
+            //     create array of user ID convert promises
+            //         resolve all into an array of user names
+            //
+            //  for each user call the checkin update function
+            //     pass a scrubbed array of users filter the [current user] and [chance] out of the array
+            //         set the partners property of the checkin data to the array
+            //             update mongodb
+            //  */
+            //
             requests.channel(channelID).then( IDs => {
                 let promises = [];
                 IDs.forEach( ID => promises.push(requests.convertID(ID)));
                 return Promise.all(promises);
             }).then( partners => {
-                partners.forEach( (user, i, partners) => {
-                   value.partners =  partners.filter(e !== user);
+                partners.forEach( (user, index, partners) => {
+                   JSON.parse(value).partners =  partners.filter(e !== user);
+                   console.log(value);
                    // database update function
                         // search for user
                         // pass value object
-
                 });
             });
 
-            response = `Your checkin is being processed for yourself and ${JSON.parse(value).partner}`;
+            response = `Your checkin is being processed for yourself and ${JSON.parse(value).partners.forEach( e => `${e}\n`)}`;
             break;
     }
 
