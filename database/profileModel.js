@@ -55,34 +55,26 @@ const userSchema = new mongoose.Schema({
             log: [{
                 type: String,
                 partners: [String],
-                date: {type: Number, default: Date.now()},
-                task: String,
-                streak: Number
+                task: String
+                date: {type: Number, default: Date.now()}
             }],
 
-            currentStreak: Number,
-            bestStreak: Number
+            currentStreak: {type: Number, default: 0},
+            bestStreak: {type: Number, default: 0}
         }],
     },
 
-    current: [{
-        project: String,
-        url: {type: String, default: false},
-        gitHubURL: {type: String, default: false},
-        date: {type: Number, default: Date.now()}
-    }],
-
-    completed: [{
-        project: String,
-        url: {type: String, default: false},
-        gitHubURL: {type: String, default: false},
-        date: Number
+    projects: [{
+        name: String,
+        url: {type: String, default: null},
+        gitHubURL: {type: String, default: null},
+        completedDate: {type: Number, default: Date.now()}
     }],
 
     certifications: [{
         name: String,
         url: {type: String, default: false},
-        date: Number
+        date: {type: Number, default: Date.now()}
     }]
 
 });

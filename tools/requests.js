@@ -4,10 +4,10 @@
 
 const request = require('request');
 
-convertUser = (userID) => {
+// OAuth Token from Slack stored in the .env file
+const oAuthToken = process.env.oAuthToken;
 
-    const oAuthToken = process.env.oAuthToken;
-
+convertID = (userID) => {
     return new Promise((resolve, reject) => {
         request.post({
             url: `https://slack.com/api/users.info?token=${oAuthToken}&user=${userID}`,
@@ -23,9 +23,6 @@ convertUser = (userID) => {
 };
 
 channelRequest = (channelID) => {
-
-    const oAuthToken = process.env.oAuthToken;
-
     return new Promise((resolve, reject) => {
         request.post({
             url: `https://slack.com/api/channels.info?token=${oAuthToken}&channel=${channelID}`,
@@ -38,5 +35,5 @@ channelRequest = (channelID) => {
 
 module.exports = {
     channel : channelRequest,
-    convertID : convertUser
+    convertID : convertID,
 };
