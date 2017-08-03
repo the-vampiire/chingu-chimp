@@ -108,9 +108,9 @@ userSchema.statics.checkin = function(userName, channelID, valueObject){
             }
         });
 
-        doc.save( e => console.log(e));
+        doc.save( e => console.log(`eror during checkin update save \n ${e})`));
 
-    }, e => console.log(e));
+    }, e => console.log(e);
 };
 
 const userProfile = mongoose.model('userProfile', userSchema);
