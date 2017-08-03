@@ -95,7 +95,18 @@ userSchema.statics.checkin = function(userName, channelID, valueObject){
         channel ? channel.sessions.push(valueObject) :
             checkins.push(new checkinModel({channelID : channelID, sessions : [valueObject]}));
 
-        // check and update the current and best streaks before saving
+    // update current and best streak fields
+        checkins.some( checkin => {
+            let lastDate = checkin.sessions[checkin.sessions.length-1].date;
+            let currentDate = Number(Date.now());
+            if(currentDate - lastDate <= 86400000){
+                doc.currentStreak++;
+                doc.bestStreak < doc.currentStreak ? doc.bestStreak = doc.currentStreak : false;
+                return true;
+            }else{
+                doc.currentStreak = 0;
+            }
+        });
 
         doc.save( e => console.log(e));
 

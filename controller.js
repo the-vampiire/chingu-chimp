@@ -130,13 +130,16 @@ router.post('/checkin', (req, res) => {
     const body = req.body;
 
     let valueObject = {};
-    valueObject.partners = body.text.replace(/\@/g, '').split(' ');
-    valueObject.partners.push(body.user_name);
+
+    // filter results to only pass @userName tags then strip the '@' symbol
+    let filtered = body.text.split(' ').filter( e => /@[A-Za-z]+/g.test(e));
+    filtered.forEach( (e, i, a) => a[i] = e.replace(/\@/g, ''));
+    valueObject.partners = filtered;
 
     if(tools.verify.slash(body.token)){
         res.json(tools.interactive.interaction('checkin', valueObject));
     }else{
-        // res.json('invalid Slack token checkin');
+        res.end('invalid Slack token checkin');
     }
 
 
