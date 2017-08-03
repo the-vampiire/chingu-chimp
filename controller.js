@@ -33,57 +33,65 @@ router.get('/form', (req, res) => {
 
 router.get('/', (req, res) => {
 
-    // let data = {
-    //     userName : 'DSegovia',
-    //
-    //     portfolioURL : 'https://www.vampiire.org',
-    //     gitHubURL: 'https://www.github.com/the-vampiire',
-    //     blogURL: 'https://medium.com/@vampiire',
-    //
-    //     story: 'empty',
-    //
-    //     joinDate: 5,
-    //
-    //     cohort: [{
-    //         cohortName : 'Walruses',
-    //         startDate : 5
-    //     }],
-    //
-    //     aptitudes: {
-    //
-    //         languages : [{
-    //             name : 'javascript',
-    //             level : 'intermediate'
-    //         }],
-    //
-    //         frameworks: [{
-    //             name : 'bootstrap',
-    //             level : 'intermediate'
-    //         }]
-    //     },
-    //
-    //     projects: [{
-    //         name : 'portfolio',
-    //         url : 'https://www.vampiire.org',
-    //     }],
-    //
-    //     certifications: [{
-    //         name: 'Front End Certification'
-    //     }]
-    // };
+    let data = {
+        userName : 'jessec',
+
+        portfolioURL : 'https://www.vampiire.org',
+        gitHubURL: 'https://www.github.com/the-vampiire',
+        blogURL: 'https://medium.com/@vampiire',
+
+        story: 'empty',
+
+        joinDate: 5,
+
+        cohort: [{
+            cohortName : 'Walruses',
+            startDate : 5
+        }],
+
+        aptitudes: {
+
+            languages : [{
+                name : 'javascript',
+                level : 'intermediate'
+            }],
+
+            frameworks: [{
+                name : 'bootstrap',
+                level : 'intermediate'
+            }]
+        },
+
+        projects: [{
+            name : 'portfolio',
+            url : 'https://www.vampiire.org',
+        }],
+
+        certifications: [{
+            name: 'Front End Certification'
+        }]
+    };
+
+
+
     //
     // tools.database.addProfile(data);
 
-    tools.database.checkin('DSegovia', '5Ab33D', {
-        type: 'Pair Programming',
-        partners: ['dsegovia', 'vampiire'],
-        task: 'codewars'
-    });
-    tools.database.getProfileItem('dSegovia', 'points').then( item => res.send(item));
-    // res.send('got it');
-    // tools.database.getProfile('dsegovia').then( profile => res.send(profile[0]));
 
-    // res.render('index');
+    const userProfile = require('./database/profileModel').userProfile;
+    //
+    // userProfile.addProfile(data).then( e => console.log(e));
+    // userProfile.getProfile('jessec').then( e => res.send(e));
+    //
+    // // userProfile.find().userName('dsegovia').then( e => res.send(e));
+    // userProfile.getItem('dsegovia', 'points').then( e => res.send(e));
+
+
+    userProfile.checkIn('jessec', '5AA9dE', {
+        kind: 'pair',
+        task: 'codewars',
+        partners: ['vampiire']
+    });
 
 });
 

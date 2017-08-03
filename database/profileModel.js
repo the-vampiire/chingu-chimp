@@ -19,10 +19,10 @@ const checkinSchema = new mongoose.Schema({
 
     channelID : String,
 
-    log: [{
-        type: String,
-        partners: [String],
+    sessions: [{
+        kind: String,
         task: String,
+        partners: [String],
         date: {type: Number, default: Date.now()}
     }]
 });
@@ -80,6 +80,34 @@ const userSchema = new mongoose.Schema({
     bestStreak: {type: Number, default: 0}
 
 }, { runSettersOnQuery : true});
+
+// ----------------- PROFILE MODEL METHODS ---------------- //
+        // ----- embedded database methods ----- //
+
+userSchema.statics.addProfile = function(formData){
+    return this.create(formData, e => e ? console.log(e) : false);
+};
+
+userSchema.statics.getProfile = function(userName){
+    return this.findOne({userName : userName})
+};
+
+userSchema.statics.getItem = function(userName, item){
+    return this.findOne({userName : userName}, `${item} -_id`);
+};
+
+userSchema.statics.checkIn = function(userName, channelID, valueObject){
+    this.findOne({userName:userName}).then( doc => {
+        const checkins = doc.checkins;
+        let channel = checkins.find( e => e.channelID === channelID);
+
+        channel ?
+            channel.sessions.push(valueObject) :
+            checkins.push(new checkinModel({channelID : channelID, sessions : [valueObject]}));
+
+        doc.save( e => console.log(e));
+    });
+};
 
 const userProfile = mongoose.model('userProfile', userSchema);
 
