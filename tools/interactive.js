@@ -40,40 +40,30 @@ processInteraction = payload => {
             response = respond.taskSelect(value);
             break;
         case 'taskSelect':
-            response = respond.submitCheckin(value);
+            response = respond.submitCheckin(payload, value);
             break;
         case 'checkInSubmit':
             // const channelID = payload.channel.id;
             // const user = payload.user.name;
             // /*
-            //  get user IDs
-            //     create array of user ID convert promises
-            //         resolve all into an array of user names
             //
-            //  for each user call the checkin update function
-            //     pass a scrubbed array of users filter the [current user] and [chance] out of the array
-            //         set the partners property of the checkin data to the array
+            // make a request for the users in the channel passing the channel ID from the payload object
+            //      get user IDs array and iterate through to create
+            //           array of user ID convert promises which will resolve into an array of usernames
+            //                return this Promise.all array of promises
+            //
+            //
+            //  then for each user call the checkin update function
+            //     pass a scrubbed array of users filter the [current user] and [chance, autobot] out of the array
+            //         set the partners property of the checkin data to the array of scrubbed partners
             //             update mongodb
             //  */
             //
-            // console.log(payload);
-           // requests.channel(payload.channel.id).then( IDs => {
-           //      let promises = [];
-           //      IDs.forEach( ID => promises.push(requests.convertID(ID)));
-           //      return Promise.all(promises);
-           //  }).then( partners => {
-           //      value = JSON.parse(value);
-           //      value.partners = partners.filter( partner => partner !== payload.user.name && partner !== 'chance' );
-           //
-           //      let partnersString;
-           //      value.partners.forEach(e => partnersString += `e \n`);
-           //      response = `Your checkin is being processed for yourself and ${partnersString}`;
-           //      // database update function
-           //      //         // search for user
-           //      //         // pass value object
-           //  });
 
-            // break;
+
+
+            response = 'The check-in session is being processed for yourself and all teammates within the channel';
+            break;
     }
 
 

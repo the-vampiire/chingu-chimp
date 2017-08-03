@@ -1,23 +1,88 @@
+/**
+ * Created by Vampiire on 7/3/17.
+ *
+ * stores all of the tracked metrics
+ *
+ *
+ * cohort array will hold all cohorts user has been a part of
+ *      new cohorts are pushed to the end
+ *      current display cohort is last in list (latest cohort)
+ *
+ *
+ *
+ */
 
-activitySelect = (valueObject) => {
 
-    const fields = {
-        text: 'testing attacher',
-        callback_id: 'activitySelect',
-        actions: [{
-            name: 'type',
-            type: 'select',
-            data_source: 'static'
+const mongoose = require('mongoose');
+
+const checkinSchema = new mongoose.Schema({
+    channelID : String,
+
+    log: [{
+        channelID: String,
+        type: String,
+        partners: [String],
+        task: String,
+        date: {type: Number, default: Date.now()}
+    }]
+});
+
+const userSchema = new mongoose.Schema({
+
+    userName: String,
+    teamID: String,
+
+    portfolioURL: {type: String, default: null},
+    gitHubURL: {type: String, default: null},
+    blogURL: {type: String, default: null},
+
+    story: String,
+
+    joinDate: Number,
+
+    cohort: [{
+        cohortName: String,
+        startDate: {type: Number, default: Date.now()},
+    }],
+
+    aptitudes: {
+
+        languages: [{
+            name: String,
+            level: String
+        }],
+
+        frameworks: [{
+            name: String,
+            level: String
         }]
-    };
+    },
 
-    const options = ['test 1', 'test 2', 'test 3'];
+    checkins: [{type: checkinSchema, default: null}],
 
-    return {
-        title: "Check In",
-        pretext: "Use the following dropdown menus to define and" +
-        "check into your activity.",
+    projects: [{
+        name: String,
+        url: {type: String, default: null},
+        gitHubURL: {type: String, default: null},
+        completedDate: {type: Number, default: Date.now()}
+    }],
 
-        attachments: [val.attachment(valueObject, fields, options)]
-    };
+    certifications: [{
+        name: String,
+        url: {type: String, default: null},
+        date: {type: Number, default: Date.now()}
+    }],
+
+    points: {type: Number, default: 1},
+    currentStreak: {type: Number, default: 0},
+    bestStreak: {type: Number, default: 0}
+
+});
+
+const userProfile = mongoose.model('userProfile', userSchema);
+
+module.exports = {
+    userSchema : userSchema,
+    userProfile : userProfile
 };
+

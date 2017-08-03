@@ -9,3 +9,9 @@
  *
  */
 
+
+
+module.exports = {
+    injectPartners : injectPartners,
+};
+

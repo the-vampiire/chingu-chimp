@@ -15,14 +15,28 @@
 
 const mongoose = require('mongoose');
 
+const checkinSchema = new mongoose.Schema({
+
+    channelID : String,
+
+    log: [{
+        type: String,
+        partners: [String],
+        task: String,
+        date: {type: Number, default: Date.now()}
+    }]
+});
+
+const checkinModel = mongoose.model('checkinModel', checkinSchema);
+
 const userSchema = new mongoose.Schema({
 
-    userName: String,
+    userName: {type: String, lowercase: true},
     teamID: String,
 
-    portfolioURL: {type: String, default: false},
-    gitHubURL: {type: String, default: false},
-    blogURL: {type: String, default: false},
+    portfolioURL: {type: String, default: null},
+    gitHubURL: {type: String, default: null},
+    blogURL: {type: String, default: null},
 
     story: String,
 
@@ -46,23 +60,7 @@ const userSchema = new mongoose.Schema({
         }]
     },
 
-    checkin: {
-
-        channel: [{
-
-            ID: String,
-
-            log: [{
-                type: String,
-                partners: [String],
-                task: String
-                date: {type: Number, default: Date.now()}
-            }],
-
-            currentStreak: {type: Number, default: 0},
-            bestStreak: {type: Number, default: 0}
-        }],
-    },
+    checkins: [checkinSchema],
 
     projects: [{
         name: String,
@@ -73,16 +71,22 @@ const userSchema = new mongoose.Schema({
 
     certifications: [{
         name: String,
-        url: {type: String, default: false},
+        url: {type: String, default: null},
         date: {type: Number, default: Date.now()}
-    }]
+    }],
 
-});
+    points: {type: Number, default: 1},
+    currentStreak: {type: Number, default: 0},
+    bestStreak: {type: Number, default: 0}
+
+}, { runSettersOnQuery : true});
 
 const userProfile = mongoose.model('userProfile', userSchema);
 
 module.exports = {
     userSchema : userSchema,
-    userProfile : userProfile
+    userProfile : userProfile,
+    checkinSchema : checkinSchema,
+    checkinModel : checkinModel
 };
 

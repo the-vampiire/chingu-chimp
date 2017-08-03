@@ -3,6 +3,7 @@
  */
 
 const val = require('./valueStringer');
+const helpers = require('./helpers');
 
 // generic submit
     submit = (responseObject, valueObject, formatObject) => {
@@ -26,6 +27,7 @@ const val = require('./valueStringer');
         response.attachments = [val.menu('Select an activity', 'activitySelect', 'type', valueObject, menuItems)];
 
         return response;
+
     };
 
     userSelect = valueObject => {
@@ -33,7 +35,7 @@ const val = require('./valueStringer');
         const menuItems = ['vampiire', 'dsglovia', 'jessec'];
 
         let response = checkIn();
-        response.attachments = [val.menu('Select a partner', 'userSelect', 'partner', valueObject, menuItems)];
+        response.attachments = [val.menu('Select a partner', 'userSelect', 'partners', valueObject, menuItems)];
 
         return response;
     };
@@ -48,12 +50,16 @@ const val = require('./valueStringer');
         return response;
     };
 
-    submitCheckin = valueObject => {
+    submitCheckin = (payload, valueObject) => {
 
-        const bulkData = JSON.parse(valueObject);
+        // const bulkData = ;
+
+        console.log(helpers.asyncPartners(payload, valueObject));
+
+        // console.log(bulkData);
 
         let response = checkIn();
-        response.attachments = [val.button(`Check into: ${bulkData.type} session with ${bulkData.partner} to work on ${bulkData.task}`,
+        response.attachments = [val.button(`Check-in confirmation: ${bulkData.type} session with ${bulkData.partners} to work on ${bulkData.task}`,
                                 'checkInSubmit', 'Check In', 'submit', true, valueObject)];
         return response;
 
