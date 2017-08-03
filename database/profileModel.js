@@ -1,15 +1,6 @@
 /**
  * Created by Vampiire on 7/3/17.
  *
- * stores all of the tracked metrics
- *
- *
- * cohort array will hold all cohorts user has been a part of
- *      new cohorts are pushed to the end
- *      current display cohort is last in list (latest cohort)
- *
- *
- *
  */
 
 
@@ -85,29 +76,27 @@ const userSchema = new mongoose.Schema({
         // ----- embedded database methods ----- //
 
 userSchema.statics.addProfile = function(formData){
-    return this.create(formData, e => e ? console.log(e) : false);
+    this.create(formData, e => e ? console.log(e) : false);
 };
 
 userSchema.statics.getProfile = function(userName){
-    return this.findOne({userName : userName})
+    return this.findOne({userName : userName});
 };
 
 userSchema.statics.getItem = function(userName, item){
     return this.findOne({userName : userName}, `${item} -_id`);
 };
 
-userSchema.statics.checkIn = function(userName, channelID, valueObject){
+userSchema.statics.checkin = function(userName, channelID, valueObject){
     this.findOne({userName:userName}).then( doc => {
         const checkins = doc.checkins;
         let channel = checkins.find( e => e.channelID === channelID);
 
-        channel ?
-            channel.sessions.push(valueObject) :
+        channel ? channel.sessions.push(valueObject) :
             checkins.push(new checkinModel({channelID : channelID, sessions : [valueObject]}));
 
-        // console.log(checkins);
-
         doc.save( e => console.log(e));
+
     }, e => console.log(e));
 };
 

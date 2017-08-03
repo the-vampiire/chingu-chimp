@@ -41,7 +41,7 @@ processInteraction = payload => {
             value = JSON.parse(value);
             const partners = value.partners;
             partners.forEach( user => {
-                userProfile.checkIn(user, payload.channel.id, value)
+                userProfile.checkin(user, payload.channel.id, value)
             });
             response = `Successfully checked in ${partners.join(', ')}.`;
             break;
