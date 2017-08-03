@@ -1,28 +1,33 @@
 /**
  * Created by Vampiire on 7/3/17.
  *
- * stores all of the tracked metrics
- *
- *
- * cohort array will hold all cohorts user has been a part of
- *      new cohorts are pushed to the end
- *      current display cohort is last in list (latest cohort)
- *
- *
- *
  */
 
 
 const mongoose = require('mongoose');
 
+const checkinSchema = new mongoose.Schema({
+
+    channelID : String,
+
+    sessions: [{
+        kind: String,
+        task: String,
+        partners: [String],
+        date: {type: Number, default: Date.now()}
+    }]
+});
+
+const checkinModel = mongoose.model('checkinModel', checkinSchema);
+
 const userSchema = new mongoose.Schema({
 
-    userName: String,
+    userName: {type: String, lowercase: true},
     teamID: String,
 
-    portfolioURL: {type: String, default: false},
-    gitHubURL: {type: String, default: false},
-    blogURL: {type: String, default: false},
+    portfolioURL: {type: String, default: null},
+    gitHubURL: {type: String, default: null},
+    blogURL: {type: String, default: null},
 
     story: String,
 
@@ -46,51 +51,61 @@ const userSchema = new mongoose.Schema({
         }]
     },
 
-    checkin: {
+    checkins: [checkinSchema],
 
-        channel: [{
-
-            ID: String,
-
-            log: [{
-                type: String,
-                partner: String,
-                date: {type: Number, default: Date.now()},
-                task: String,
-                streak: Number
-            }],
-
-            currentStreak: Number,
-            bestStreak: Number
-        }],
-    },
-
-    current: [{
-        project: String,
-        url: {type: String, default: false},
-        gitHubURL: {type: String, default: false},
-        date: {type: Number, default: Date.now()}
-    }],
-
-    completed: [{
-        project: String,
-        url: {type: String, default: false},
-        gitHubURL: {type: String, default: false},
-        date: Number
+    projects: [{
+        name: String,
+        url: {type: String, default: null},
+        gitHubURL: {type: String, default: null},
+        completedDate: {type: Number, default: Date.now()}
     }],
 
     certifications: [{
         name: String,
-        url: {type: String, default: false},
-        date: Number
-    }]
+        url: {type: String, default: null},
+        date: {type: Number, default: Date.now()}
+    }],
 
-});
+    points: {type: Number, default: 1},
+    currentStreak: {type: Number, default: 0},
+    bestStreak: {type: Number, default: 0}
+
+}, { runSettersOnQuery : true});
+
+// ----------------- PROFILE MODEL METHODS ---------------- //
+        // ----- embedded database methods ----- //
+
+userSchema.statics.addProfile = function(formData){
+    this.create(formData, e => e ? console.log(e) : false);
+};
+
+userSchema.statics.getProfile = function(userName){
+    return this.findOne({userName : userName});
+};
+
+userSchema.statics.getItem = function(userName, item){
+    return this.findOne({userName : userName}, `${item} -_id`);
+};
+
+userSchema.statics.checkin = function(userName, channelID, valueObject){
+    this.findOne({userName:userName}).then( doc => {
+        const checkins = doc.checkins;
+        let channel = checkins.find( e => e.channelID === channelID);
+
+        channel ? channel.sessions.push(valueObject) :
+            checkins.push(new checkinModel({channelID : channelID, sessions : [valueObject]}));
+
+        doc.save( e => console.log(e));
+
+    }, e => console.log(e));
+};
 
 const userProfile = mongoose.model('userProfile', userSchema);
 
 module.exports = {
     userSchema : userSchema,
-    userProfile : userProfile
+    userProfile : userProfile,
+    checkinSchema : checkinSchema,
+    checkinModel : checkinModel
 };
 

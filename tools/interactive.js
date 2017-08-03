@@ -4,16 +4,15 @@
  */
 
 const respond = require('./respond');
-const database = require('./exporter').database;
+const requests = require('./requests');
+const userProfile = require('../database/profileModel').userProfile;
 
-interaction = type => {
+interaction = (type, valueObject) => {
     let response;
-
-    // const valueObject = {};
 
     switch(type){
         case 'checkin':
-            response = respond.activitySelect({});
+            response = respond.activitySelect(valueObject);
             break;
     }
 
@@ -30,17 +29,21 @@ processInteraction = payload => {
 
     switch(type){
         case 'activitySelect':
-            response = respond.userSelect(value);
-            break;
-        case 'userSelect':
             response = respond.taskSelect(value);
             break;
+        // case 'userSelect':
+        //     response = respond.taskSelect(value);
+        //     break;
         case 'taskSelect':
-            response = respond.submitCheckin(value);
+            response = respond.submitCheckin(payload, value);
             break;
         case 'checkInSubmit':
-            database.
-            response = `Your checkin is being processed for yourself and ${JSON.parse(value).partner}`;
+            value = JSON.parse(value);
+            const partners = value.partners;
+            partners.forEach( user => {
+                userProfile.checkin(user, payload.channel.id, value)
+            });
+            response = `Successfully checked in ${partners.join(', ')}.`;
             break;
     }
 

@@ -9,9 +9,9 @@ const val = require('./valueStringer');
         let response = responseObject;
     };
 
-// ------------ checkin ------------------ //
+// ------------ CHECKIN RESPONSES ------------------ //
 
-    checkIn = () => {
+    checkinResponse = () => {
         return {
             title: "Check In",
             pretext: "Use the following dropdown menus to define and check into your activity.",
@@ -20,40 +20,46 @@ const val = require('./valueStringer');
 
     activitySelect = valueObject => {
 
+        // console.log(`activity select \n ${JSON.stringify(valueObject)}`);
+
         const menuItems = ['accountability', 'pair programming', 'team meeting'];
 
-        let response = checkIn();
-        response.attachments = [val.menu('Select an activity', 'activitySelect', 'type', valueObject, menuItems)];
+        let response = checkinResponse();
+        response.attachments = [val.menu('Select an activity', 'activitySelect', 'kind', valueObject, menuItems)];
 
         return response;
+
     };
 
-    userSelect = valueObject => {
-
-        const menuItems = ['vampiire', 'dsglovia', 'jessec'];
-
-        let response = checkIn();
-        response.attachments = [val.menu('Select a partner', 'userSelect', 'partner', valueObject, menuItems)];
-
-        return response;
-    };
+    // userSelect = valueObject => {
+    //
+    //     const menuItems = ['vampiire', 'dsglovia', 'jessec'];
+    //
+    //     let response = checkinResponse();
+    //     response.attachments = [val.menu('Select a partner', 'userSelect', 'partners', valueObject, menuItems)];
+    //
+    //     return response;
+    // };
 
     taskSelect = valueObject => {
 
+        // console.log(`task select \n ${valueObject}`);
+
         const menuItems = ['code wars', 'tutorial', 'other'];
 
-        let response = checkIn();
+        let response = checkinResponse();
         response.attachments = [val.menu('Select a task', 'taskSelect', 'task', valueObject, menuItems)];
 
         return response;
     };
 
-    submitCheckin = valueObject => {
+    submitCheckin = (payload, valueObject) => {
 
-        const message = JSON.parse(valueObject);
+        // console.log(`submit checkin \n ${valueObject}`);
 
-        let response = checkIn();
-        response.attachments = [val.button(`Check into: ${message.type} session with ${message.partner} to work on ${message.task}`,
+        valueObject = JSON.parse(valueObject);
+        let response = checkinResponse();
+        response.attachments = [val.button(`Check-in confirmation: ${valueObject.kind} session with ${valueObject.partners.join(', ')} to work on ${valueObject.task}`,
                                 'checkInSubmit', 'Check In', 'submit', true, valueObject)];
         return response;
 
@@ -62,7 +68,7 @@ const val = require('./valueStringer');
 module.exports = {
     submit : submit,
     activitySelect : activitySelect,
-    userSelect : userSelect,
+    // userSelect : userSelect,
     taskSelect : taskSelect,
     submitCheckin : submitCheckin
 };
