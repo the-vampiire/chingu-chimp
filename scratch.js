@@ -88,6 +88,8 @@
 //
 
 
-let arr = [];
+let a = '@vampiire @vampiire';
 
-console.log(Array.isArray(arr));
+console.log(a.join(' '));
+
+

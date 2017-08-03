@@ -34,7 +34,7 @@ router.get('/form', (req, res) => {
 router.get('/', (req, res) => {
 
     let data = {
-        userName : 'jessec',
+        userName : 'vampiire',
 
         portfolioURL : 'https://www.vampiire.org',
         gitHubURL: 'https://www.github.com/the-vampiire',
@@ -73,25 +73,8 @@ router.get('/', (req, res) => {
     };
 
 
-
-    //
-    // tools.database.addProfile(data);
-
-
     const userProfile = require('./database/profileModel').userProfile;
-    //
-    // userProfile.addProfile(data).then( e => console.log(e));
-    // userProfile.getProfile('jessec').then( e => res.send(e));
-    //
-    // // userProfile.find().userName('dsegovia').then( e => res.send(e));
-    // userProfile.getItem('dsegovia', 'points').then( e => res.send(e));
-
-
-    userProfile.checkIn('jessec', '5AA9dE', {
-        kind: 'pair',
-        task: 'codewars',
-        partners: ['vampiire']
-    });
+    userProfile.addProfile(data).then( e => console.log(e));
 
 });
 
@@ -153,8 +136,12 @@ router.post('/checkin', (req, res) => {
 
     const body = req.body;
 
+    let valueObject = {};
+    valueObject.partners = body.text.replace(/\@/g, '').split(' ');
+    valueObject.partners.push(body.user_name);
+
     if(tools.verify.slash(body.token)){
-        res.json(tools.interactive.interaction('checkin'));
+        res.json(tools.interactive.interaction('checkin', valueObject));
     }else{
         // res.json('invalid Slack token checkin');
     }

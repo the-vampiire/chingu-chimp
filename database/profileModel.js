@@ -105,8 +105,10 @@ userSchema.statics.checkIn = function(userName, channelID, valueObject){
             channel.sessions.push(valueObject) :
             checkins.push(new checkinModel({channelID : channelID, sessions : [valueObject]}));
 
+        // console.log(checkins);
+
         doc.save( e => console.log(e));
-    });
+    }, e => console.log(e));
 };
 
 const userProfile = mongoose.model('userProfile', userSchema);
