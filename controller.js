@@ -119,10 +119,32 @@ router.post('/chimp', (req, res) => {
 router.post('/profile', (req, res) => {
 
     const body = req.body;
+    const user = body.text;
 
     if(tools.verify.slash(body.token)){
-
+        if(/^\@[A-Za-z]+$/.test(user)){
+            res.send('worked');
+        }else{
+            res.send(`[${user}] is not a valid username. try again with the format <@userName>`);
+        }
+    }else{
+        res.end('invalid Slack token');
     }
+});
+
+router.post('/update', (req, res) => {
+
+    const respond = require('./tools/respond');
+
+    const body = req.body;
+    const arguments = body.text;
+
+    if(tools.verify.slash(body.token)){
+        if(!arguments) res.send(respond.helpResponse('general'));
+    }else{
+        res.end('invalid Slack token');
+    }
+
 });
 
 router.post('/checkin', (req, res) => {
@@ -139,7 +161,7 @@ router.post('/checkin', (req, res) => {
     if(tools.verify.slash(body.token)){
         res.json(tools.interactive.interaction('checkin', valueObject));
     }else{
-        res.end('invalid Slack token checkin');
+        res.end('invalid Slack token');
     }
 
 
@@ -154,6 +176,8 @@ router.post('/interactive', (req, res) => {
 
     if(tools.verify.slash(payload.token)){
         res.json(tools.interactive.process(payload));
+    }else{
+        res.end('invalid Slack token');
     }
 
 });
