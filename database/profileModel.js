@@ -95,6 +95,8 @@ userSchema.statics.checkin = function(userName, channelID, valueObject){
         channel ? channel.sessions.push(valueObject) :
             checkins.push(new checkinModel({channelID : channelID, sessions : [valueObject]}));
 
+        // check and update the current and best streaks before saving
+
         doc.save( e => console.log(e));
 
     }, e => console.log(e));
