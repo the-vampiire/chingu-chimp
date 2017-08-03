@@ -33,48 +33,48 @@ router.get('/form', (req, res) => {
 
 router.get('/', (req, res) => {
 
-    let data = {
-        userName : 'vampiire',
-
-        portfolioURL : 'https://www.vampiire.org',
-        gitHubURL: 'https://www.github.com/the-vampiire',
-        blogURL: 'https://medium.com/@vampiire',
-
-        story: 'empty',
-
-        joinDate: 5,
-
-        cohort: [{
-            cohortName : 'Walruses',
-            startDate : 5
-        }],
-
-        aptitudes: {
-
-            languages : [{
-                name : 'javascript',
-                level : 'intermediate'
-            }],
-
-            frameworks: [{
-                name : 'bootstrap',
-                level : 'intermediate'
-            }]
-        },
-
-        projects: [{
-            name : 'portfolio',
-            url : 'https://www.vampiire.org',
-        }],
-
-        certifications: [{
-            name: 'Front End Certification'
-        }]
-    };
-
-
-    const userProfile = require('./database/profileModel').userProfile;
-    userProfile.addProfile(data).then( e => console.log(e));
+    // let data = {
+    //     userName : 'vampiire',
+    //
+    //     portfolioURL : 'https://www.vampiire.org',
+    //     gitHubURL: 'https://www.github.com/the-vampiire',
+    //     blogURL: 'https://medium.com/@vampiire',
+    //
+    //     story: 'empty',
+    //
+    //     joinDate: 5,
+    //
+    //     cohort: [{
+    //         cohortName : 'Walruses',
+    //         startDate : 5
+    //     }],
+    //
+    //     aptitudes: {
+    //
+    //         languages : [{
+    //             name : 'javascript',
+    //             level : 'intermediate'
+    //         }],
+    //
+    //         frameworks: [{
+    //             name : 'bootstrap',
+    //             level : 'intermediate'
+    //         }]
+    //     },
+    //
+    //     projects: [{
+    //         name : 'portfolio',
+    //         url : 'https://www.vampiire.org',
+    //     }],
+    //
+    //     certifications: [{
+    //         name: 'Front End Certification'
+    //     }]
+    // };
+    //
+    //
+    // const userProfile = require('./database/profileModel').userProfile;
+    // userProfile.addProfile(data).then( e => console.log(e));
 
 });
 
@@ -121,15 +121,8 @@ router.post('/profile', (req, res) => {
     const body = req.body;
 
     if(tools.verify.slash(body.token)){
-        const text = body.text;
-
-        let argument,
-            user;
 
     }
-
-    console.log(req.body);
-    res.json('got it');
 });
 
 router.post('/checkin', (req, res) => {
