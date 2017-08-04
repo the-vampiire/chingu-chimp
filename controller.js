@@ -135,16 +135,24 @@ router.post('/profile', (req, res) => {
 router.post('/update', (req, res) => {
 
     const respond = require('./tools/respond');
+    const update = require('./tools/update');
 
     const body = req.body;
     const arguments = body.text;
 
     if(tools.verify.slash(body.token)){
         if(~arguments.indexOf(' ')){
-            // do stuff with argument parser
+            let response = update.parse(arguments);
+            console.log(response);
+            if(typeof response === 'string') res.end(response);
+
         }else{
             if(!arguments) res.send(respond.helpResponse('help'));
-            res.send(respond.helpResponse(arguments));
+            if(arguments === 'aptitudes'){
+                console.log('aptitudes');
+                res.json(tools.interactive.interaction('update'));
+            }else res.end(respond.helpResponse(arguments));
+
         }
     }else{
         res.end('invalid Slack token');

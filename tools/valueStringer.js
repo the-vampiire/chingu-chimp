@@ -83,8 +83,7 @@ buttonAttachment = (headerText, callbackID, buttonText, buttonName, buttonValue,
         actions: [{
             text: buttonText,
             name: buttonName,
-            type: 'button',
-            value: valStringer(valueObject, buttonName, buttonValue)
+            type: 'button'
         }]
     }
 };

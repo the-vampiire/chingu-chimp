@@ -1,6 +1,3 @@
-let t = '08/08/17';
+let t = 'www.tits.com';
 
-let d = new Date(t);
-
-console.log(Date.parse(d)/1000);
-
+console.log(/(http:\/\/|https:\/\/)?(www\.)/.test(t));

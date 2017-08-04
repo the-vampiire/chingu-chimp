@@ -14,6 +14,9 @@ interaction = (type, valueObject) => {
         case 'checkin':
             response = respond.activitySelect(valueObject);
             break;
+        case 'update':
+            response = respond.aptitudeSelect();
+            break;
     }
 
     return response;
@@ -28,6 +31,8 @@ processInteraction = payload => {
     let response;
 
     switch(type){
+
+    // -------------- CHECKIN -------------- //
         case 'activitySelect':
             response = respond.taskSelect(value);
             break;
@@ -35,16 +40,38 @@ processInteraction = payload => {
         //     response = respond.taskSelect(value);
         //     break;
         case 'taskSelect':
-            response = respond.submitCheckin(payload, value);
+            response = respond.submitCheckin(value);
             break;
+    // submit
         case 'checkInSubmit':
             value = JSON.parse(value);
-            const partners = value.partners;
-            partners.forEach( user => {
-                userProfile.checkin(user, payload.channel.id, value)
-            });
-            response = `Successfully checked in ${partners.join(', ')}.`;
+
+            if(value.submit){
+                delete value.submit;
+                console.log(JSON.stringify(value));
+                const partners = value.partners;
+                partners.forEach( user => {
+                    userProfile.checkin(user, payload.channel.id, value)
+                });
+                response = `Successfully checked in ${partners.join(', ')}.`;
+
+            }
+
+            else response = respond.activitySelect(value);
+
             break;
+    // -------------- UPDATE -------------- //
+        case 'aptitudeSelect':
+            response = JSON.parse(value).aptitude === 'languages' ? respond.languageSelect(value) : respond.frameworkSelect(value);
+            break;
+        case 'languageSelect':
+        case 'frameworkSelect':
+            response = respond.skillSelect(value);
+            break;
+    // submit
+        case 'levelSelect':
+            response = `You have chosen ${value.name} at the ${value.level} skill level. Is this correct?`;
+
     }
 
     return response;
