@@ -143,8 +143,10 @@ router.post('/update', (req, res) => {
     if(tools.verify.slash(body.token)){
         if(~arguments.indexOf(' ')){
             let response = update.parse(arguments);
-            console.log(response);
             if(typeof response === 'string') res.end(response);
+            else{
+                // database update the profile item passing the expected data
+            }
 
         }else{
             if(!arguments) res.send(respond.helpResponse('help'));
