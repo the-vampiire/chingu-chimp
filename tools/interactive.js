@@ -68,9 +68,12 @@ processInteraction = payload => {
         case 'frameworkSelect':
             response = respond.skillSelect(value);
             break;
-    // submit
         case 'levelSelect':
-            response = `You have chosen ${value.name} at the ${value.level} skill level. Is this correct?`;
+            response = respond.submitAptitude(value);
+            break;
+        case 'aptitudeSubmit':
+            // handle database update or reset
+            break;
 
     }
 

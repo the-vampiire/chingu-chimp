@@ -111,10 +111,13 @@ const val = require('./valueStringer');
         return response;
     };
 
-    aptitudeSubmit = valueObject => {
+    submitAptitude = valueObject => {
         valueObject = JSON.parse(valueObject);
         let response = updateAptitudesResponse();
-        response.attachments = [val.button(`You have selected ${valueObject.name} at the ${valueObject.level} skill level`, 'aptitudeSubmit', 'Submit', 'submit', 'true', valueObject)]
+        response.attachments = [val.button(`You have selected ${valueObject.name} at the ${valueObject.level} skill level`,
+            'aptitudeSubmit', 'Submit', 'submit', true, valueObject)];
+
+        return response;
     };
 
     helpResponse = (type) => {
@@ -286,5 +289,6 @@ module.exports = {
     aptitudeSelect : aptitudeSelect,
     languageSelect : languageSelect,
     frameworkSelect : frameworkSelect,
-    skillSelect : skillSelect
+    skillSelect : skillSelect,
+    submitAptitude : submitAptitude
 };
