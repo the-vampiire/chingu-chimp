@@ -140,7 +140,12 @@ router.post('/update', (req, res) => {
     const arguments = body.text;
 
     if(tools.verify.slash(body.token)){
-        if(!arguments) res.send(respond.helpResponse('general'));
+        if(~arguments.indexOf(' ')){
+            // do stuff with argument parser
+        }else{
+            if(!arguments) res.send(respond.helpResponse('help'));
+            res.send(respond.helpResponse(arguments));
+        }
     }else{
         res.end('invalid Slack token');
     }

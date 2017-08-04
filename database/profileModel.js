@@ -84,7 +84,7 @@ userSchema.statics.getProfile = function(userName){
 };
 
 userSchema.statics.getItem = function(userName, item){
-    return this.findOne({userName : userName}, `${item} -_id`);
+    return this.findOne({userName : userName}, item);
 };
 
 userSchema.statics.checkin = function(userName, channelID, valueObject){
@@ -108,7 +108,7 @@ userSchema.statics.checkin = function(userName, channelID, valueObject){
             }
         });
 
-        doc.save( e => console.log(`eror during checkin update save \n ${e})`));
+        doc.save( e => console.log(`error during checkin update save \n ${e})`));
 
     }, e => console.log(e));
 };
