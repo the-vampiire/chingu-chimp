@@ -83,14 +83,14 @@ errorScanAndModify = (item, flag, data) => {
     }
 
     if(!~expectedFlags.indexOf(flag)){
-        return `invalid update flag [-${flag}] for update item [${item}] try \`/update ${item}\` for a list of required and optional flags`
+        return `invalid update flag [--${flag}] for update item [${item}] try \`/update ${item}\` for a list of required and optional flags`
     }
 
     // modification step (as needed)
     switch(true){
         case flag === 'git' || flag === 'g':
             if(!data.includes('https://www.github.com/'))
-                return `invalid data [${data}] associated with flag [-${flag}] does not begin with \`https://www.github.com/\``;
+                return `invalid data [${data}] associated with flag [--${flag}] does not begin with \`https://www.github.com/\``;
             flag = 'gitHubURL';
             break;
         case flag === 'url' || flag === 'u':
@@ -98,7 +98,7 @@ errorScanAndModify = (item, flag, data) => {
                 if(!data.includes('https://www.github.com/')) return `invalid gitHub profile url, ensure the url entered is of the form [\`https://www.github.com/yourUserName\`]`
             }
             if(!/(http:\/\/|https:\/\/)(www\.)/.test(data))
-                return `invalid data [${data}] associated with flag [-${flag}]. ensure the full [\`http://www.\`] or [\`https://www.\`] url is being passed`;
+                return `invalid data [${data}] associated with flag [--${flag}]. ensure the full [\`http://www.\`] or [\`https://www.\`] url is being passed`;
             flag = 'url';
             break;
         case flag === 'date' || flag === 'd':
