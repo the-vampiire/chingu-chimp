@@ -2,7 +2,8 @@
  * Created by Vampiire on 7/24/17.
  */
 
-const val = require('./valueStringer');
+// pull in the valStringer tool
+const val = require('./valStringer');
 
 // generic submit
     submit = (responseObject, valueObject, formatObject) => {
@@ -57,6 +58,9 @@ const val = require('./valueStringer');
         valueObject = JSON.parse(valueObject);
 
         let response = checkinResponse();
+
+    // IMPORTANT ----- these need to be passed custom attachments. proof of concept works but they look ugly as shit
+        // SEE NOTE BELOW ON LINE 124
         response.attachments = [
             val.button(`Check-in confirmation: ${valueObject.kind} session with ${valueObject.partners.join(', ')} to work on ${valueObject.task}`,
                                 'checkInSubmit', 'Check In', 'submit', true, valueObject),
@@ -104,16 +108,22 @@ const val = require('./valueStringer');
         return response;
     };
 
-    skillSelect = valueObject => {
+    levelSelect = valueObject => {
         const levels = ['novice', 'intermediate', 'expert', 'wizard'];
         let response = updateAptitudesResponse();
-        response.attachments = [val.menu('Select your skill level', 'skillSelect', 'level', valueObject, levels)];
+        response.attachments = [val.menu('Select your skill level', 'levelSelect', 'level', valueObject, levels)];
         return response;
     };
 
     submitAptitude = valueObject => {
         valueObject = JSON.parse(valueObject);
         let response = updateAptitudesResponse();
+
+    // IMPORTANT -----  these need to be passed custom attachments. proof of concept works but they look ugly as shit
+// DO EVERYTHING BELOW THIS LINE. MAKE IT HAPPEN
+        // valStringer note: add a "submit / restart" valStringer method as an option alongise valMenu and valButton
+            // implement a dropdown that lets you select which part of the menu you would like to edit
+            // add a final method that accepts and parses the valueObject
         response.attachments = [val.button(`You have selected ${valueObject.name} at the ${valueObject.level} skill level`,
             'aptitudeSubmit', 'Submit', 'submit', true, valueObject)];
 
@@ -123,130 +133,145 @@ const val = require('./valueStringer');
     helpResponse = (type) => {
 
         let help =
-        `*How to use the \`/update\` command:* \n\nUpdating works like git in stringing together mandatory and/or optional \`[--flag] [data]\` pairs to build your update command\nGeneral form: \`/update [profile item to update] [[--flag] [data]]\`
-        \n*Available profile items and associated flags*:
+        `*How to use the \`/update\` command:* \n\nUpdating works like git in stringing together mandatory and/or optional \`[-flag] [data]\` pairs to build your update command\n
+        *General form: \`/update [profile item] [[-flag] [data]]\`*\n
+        *List of update items: \`aptitudes\`, \`blog\`, \`certifications\`, \`gitHub\`, \`portfolio\`, \`projects\`, \`story\`*\n
+        *List of update flags: \`-date\` or \`-d\`, \`-git\` or \`-g\`, \`-name\` or \`-d\`, \`-url\` or \`-u\`*\n
+        
         *Updating GitHub, Blog, or Portfolio URLs*
         \t*Item(s)*
         \t\t[\`gitHub\`]: your github profile url
         \t\t[\`blog\`]: your blog url
         \t\t[\`portfolio\`]: your portfolio url
         \t*Flag(s)*
-        \t\t[\`--url\`] [\`full url\`] _example:_ \`--url https://www.github.com/yourUserName\`
-        \t_example update of blog url:_ \`/update blog --url https://medium.com/@yourUserName\`
-        \t_example *shorthand* update of blog url:_ \`/update blog --u https://medium.com/@yourUserName\`
+        \t\t[\`-url\`] [\`full url\`] _example:_ \`-url https://www.github.com/yourUserName\`
+        
+        \t_example update of blog url:_ \`/update blog -url https://medium.com/@yourUserName\`
+        \t_example *shorthand* update of blog url:_ \`/update blog -u https://medium.com/@yourUserName\`
         \n
         *Updating User Story*
         \t*Item(s)*
         \t\t[\`story\`]: your user story (that you entered in the Intro channel)
         \t*Flag(s)*
         \t\tNone. You can paste your story and preserve the markdown by copying from the edit message window in your Intro post
+        
         \t_example update of user story:_ \`/update story ...your pasted story here...\`
         \n
         *Adding Projects*
         \t*Item(s)*
         \t\t[\`projects\`]
         \t*Flag(s)*
-        \t\t[\`--name\`] [\`project name\`] _example:_ \`--name Project Name\`
-        \t\t[\`--url\`] [\`project front end url\`] _example:_ \`--url https://www.domain.com/projectName\`
-        \t\t[\`--git\`] [\`project GitHub repo\`] _example:_ \`--git https://www.github.com/yourUserName/projectName\`
+        \t\t[\`-name\`] [\`project name\`] _example:_ \`-name Project Name\`
+        \t\t[\`-url\`] [\`project front end url\`] _example:_ \`-url https://www.domain.com/projectName\`
+        \t\t[\`-git\`] [\`project GitHub repo\`] _example:_ \`-git https://www.github.com/yourUserName/projectName\`
         \t\t\t*Either git, url, or both must be supplied*
-        \t\t[\`--date\`] [\`date of completion\`] _example:_ \`--date 01/01/17\`
+        \t\t[\`-date\`] [\`date of completion\`] _example:_ \`-date 01/01/17\`
         \t\t\t *OPTIONAL: If no date is passed - today's date is inserted. Date must be mm/dd/yy format.*
+        
         \t_example adding a project:_
-        \t\t\`/update projects --name New Project --url https://www.domain.com/newProject\` 
-        \t\t\`--git https://www.github.com/yourUserName/newProject --date 08/08/17\`
+        \t\t\`/update projects -name New Project -url https://www.domain.com/newProject\` 
+        \t\t\`-git https://www.github.com/yourUserName/newProject -date 08/08/17\`
         \t_example *shorthand* adding a project:_
-        \t\t\`/update projects --n New Project --u https://www.domain.com/newProject\` 
-        \t\t\`--g https://www.github.com/yourUserName/newProject --d 08/08/17\`
+        \t\t\`/update projects -n New Project -u https://www.domain.com/newProject\` 
+        \t\t\`-g https://www.github.com/yourUserName/newProject -d 08/08/17\`
         \n
         *Adding or Updating Aptitudes*
         \t*Item(s)*
         \t\t[\`aptitudes\`]: your languages and frameworks and their associated skill levels
         \t*Flag(s)*
-        \t\tNone. An interactive message will be sent back where you can choose to update a language or framework. 
-        \t\tPer this choice a dropdown menu of the languages or frameworks will be supplied. 
-        \t\tAfter one is chosen from the list a skill level dropdown will be provided for selection.
-        \t\tOn submit the new language or framework and its skill level will be added to the aptitudes section of your profile
-        \t\t\tNote: to update an existing skill level select the language or framework then select the new skill level.
+        \t\tNone. 
+        
+        \tAn interactive message will be sent back where you can choose to update a language or framework. 
+        \tAfter making your choice a dropdown menu of the languages or frameworks will be supplied. 
+        \tAfter one is chosen from the list a skill level dropdown will be provided for selection.
+        \tOn submit the new language or framework and its skill level will be added to the aptitudes section of your profile
+        \t\t*Note*: to update an existing skill level select the language or framework then select the new skill level.
         \n
         *Adding Free Code Camp Certifications*
         \t*Item(s)*
         \t\t[\`certifications\`]: your Free Code Camp certifications
         \t*Flag(s)*
-        \t\t[\`--url\`] [\`certificate url\`] _example:_ \`--url https://www.freecodecamp.org/fccUserName/front-end-certification\`
-        \t\t[\`--date\`] [\`date of completion\`] _example:_ \`--date 01/01/17\`
+        \t\t[\`-url\`] [\`certificate url\`] _example:_ \`-url https://www.freecodecamp.org/fccUserName/front-end-certification\`
+        \t\t[\`-date\`] [\`date of completion\`] _example:_ \`-date 01/01/17\`
         \t\t\t *OPTIONAL: If no date is passed - today's date is inserted. Date must be mm/dd/yy format.*
+        
         \t_example adding a new certificate:_
-        \t\t\`/update certifications --url https://www.freecodecamp.org/fccUserName/front-end-certification --date 08/08/17\`
+        \t\t\`/update certifications -url https://www.freecodecamp.org/fccUserName/front-end-certification -date 08/08/17\`
         \t_example *shorthand* adding a new certificate:_
-        \t\t\`/update certifications --u https://www.freecodecamp.org/fccUserName/front-end-certification --d 08/08/17\`
+        \t\t\`/update certifications -u https://www.freecodecamp.org/fccUserName/front-end-certification -d 08/08/17\`
         
         If you need more help or have constructive criticism to share please contact @vampiire`;
 
-        let url = `General form: \`/update [profile item] [[--flag] [data]]\`\n
+        let url = `*General form: \`/update [profile item] [[-flag] [data]]\`*\n
         *Updating GitHub, Blog, or Portfolio URLs*
         \t*Item(s)*
         \t\t[\`gitHub\`]: your github profile url
         \t\t[\`blog\`]: your blog url
         \t\t[\`portfolio\`]: your portfolio url
         \t*Flag(s)*
-        \t\t[\`--url\`] [\`full url\`] _example:_ \`--url https://www.github.com/yourUserName\`
-        \t_example update of blog url:_ \`/update blog --url https://medium.com/@yourUserName\`
-        \t_example *shorthand* update of blog url:_ \`/update blog --u https://medium.com/@yourUserName\`
+        \t\t[\`-url\`] [\`full url\`] _example:_ \`-url https://www.github.com/yourUserName\`
+        
+        \t_example update of blog url:_ \`/update blog -url https://medium.com/@yourUserName\`
+        \t_example *shorthand* update of blog url:_ \`/update blog -u https://medium.com/@yourUserName\`
         \n`;
 
-        let story = `General form: \`/update [profile item] [[--flag] [data]]\`\n
+        let story = `*General form: \`/update [profile item] [[-flag] [data]]\`*\n
         *Updating User Story*
         \t*Item(s)*
         \t\t[\`story\`]: your user story (that you entered in the Intro channel)
         \t*Flag(s)*
         \t\tNone. You can paste your story and preserve the markdown by copying from the edit message window in your Intro post
+        
         \t_example update of user story:_ \`/update story ...your pasted story here...\`
         \n`;
 
-        let projects = `General form: \`/update [profile item] [[--flag] [data]]\`\n
+        let projects = `*General form: \`/update [profile item] [[-flag] [data]]\`*\n
         *Adding Projects*
         \t*Item(s)*
         \t\t[\`projects\`]
         \t*Flag(s)*
-        \t\t[\`--name\`] [\`project name\`] _example:_ \`--name Project Name\`
-        \t\t[\`--url\`] [\`project front end url\`] _example:_ \`--url https://www.domain.com/projectName\`
-        \t\t[\`--git\`] [\`project GitHub repo\`] _example:_ \`--git https://www.github.com/yourUserName/projectName\`
+        \t\t[\`-name\`] [\`project name\`] _example:_ \`-name Project Name\`
+        \t\t[\`-url\`] [\`project front end url\`] _example:_ \`-url https://www.domain.com/projectName\`
+        \t\t[\`-git\`] [\`project GitHub repo\`] _example:_ \`-git https://www.github.com/yourUserName/projectName\`
         \t\t\t*Either git, url, or both must be supplied*
-        \t\t[\`--date\`] [\`date of completion\`] _example:_ \`--date 01/01/17\`
+        \t\t[\`-date\`] [\`date of completion\`] _example:_ \`-date 01/01/17\`
         \t\t\t *OPTIONAL: If no date is passed - today's date is inserted. Date must be mm/dd/yy format.*
+        
         \t_example adding a project:_
-        \t\t\`/update projects --name New Project --url https://www.domain.com/newProject\` 
-        \t\t\`--git https://www.github.com/yourUserName/newProject --date 08/08/17\`
+        \t\t\`/update projects -name New Project -url https://www.domain.com/newProject\` 
+        \t\t\`-git https://www.github.com/yourUserName/newProject -date 08/08/17\`
         \t_example *shorthand* adding a project:_
-        \t\t\`/update projects --n New Project --u https://www.domain.com/newProject\` 
-        \t\t\`--g https://www.github.com/yourUserName/newProject --d 08/08/17\`
+        \t\t\`/update projects -n New Project -u https://www.domain.com/newProject\` 
+        \t\t\`-g https://www.github.com/yourUserName/newProject -d 08/08/17\`
         \n`;
 
-        let aptitudes = `General form: \`/update [profile item] [[--flag] [data]]\`\n
+        let aptitudes = `*General form: \`/update [profile item] [[-flag] [data]]\`*\n
         *Adding or Updating Aptitudes*
         \t*Item(s)*
         \t\t[\`aptitudes\`]: your languages and frameworks and their associated skill levels
         \t*Flag(s)*
-        \t\tNone. An interactive message will be sent back where you can choose to update a language or framework. 
-        \t\tPer this choice a dropdown menu of the languages or frameworks will be supplied. 
-        \t\tAfter one is chosen from the list a skill level dropdown will be provided for selection.
-        \t\tOn submit the new language or framework and its skill level will be added to the aptitudes section of your profile
-        \t\t\tNote: to update an existing skill level select the language or framework then select the new skill level.
+        \t\tNone. 
+        
+        \tAn interactive message will be sent back where you can choose to update a language or framework. 
+        \tAfter making your choice a dropdown menu of the languages or frameworks will be supplied. 
+        \tAfter one is chosen from the list a skill level dropdown will be provided for selection.
+        \tOn submit the new language or framework and its skill level will be added to the aptitudes section of your profile
+        \t\t*Note*: to update an existing skill level select the language or framework then select the new skill level.
         \n`;
 
-        let certifications = `General form: \`/update [profile item] [[--flag] [data]]\`\n
+        let certifications = `*General form: \`/update [profile item] [[-flag] [data]]\`*\n
         *Adding Free Code Camp Certifications*
         \t*Item(s)*
         \t\t[\`certifications\`]: your Free Code Camp certifications
         \t*Flag(s)*
-        \t\t[\`--url\`] [\`certificate url\`] _example:_ \`--url https://www.freecodecamp.org/fccUserName/front-end-certification\`
-        \t\t[\`--date\`] [\`date of completion\`] _example:_ \`--date 01/01/17\`
+        \t\t[\`-url\`] [\`certificate url\`] _example:_ \`-url https://www.freecodecamp.org/fccUserName/front-end-certification\`
+        \t\t[\`-date\`] [\`date of completion\`] _example:_ \`-date 01/01/17\`
         \t\t\t *OPTIONAL: If no date is passed - today's date is inserted. Date must be mm/dd/yy format.*
+        
         \t_example adding a new certificate:_
-        \t\t\`/update certifications --url https://www.freecodecamp.org/fccUserName/front-end-certification --date 08/08/17\`
+        \t\t\`/update certifications -url https://www.freecodecamp.org/fccUserName/front-end-certification -date 08/08/17\`
         \t_example *shorthand* adding a new certificate:_
-        \t\t\`/update certifications --u https://www.freecodecamp.org/fccUserName/front-end-certification --d 08/08/17\``;
+        \t\t\`/update certifications -u https://www.freecodecamp.org/fccUserName/front-end-certification -d 08/08/17\``;
 
         let response;
         switch(type){
@@ -289,6 +314,6 @@ module.exports = {
     aptitudeSelect : aptitudeSelect,
     languageSelect : languageSelect,
     frameworkSelect : frameworkSelect,
-    skillSelect : skillSelect,
+    levelSelect,
     submitAptitude : submitAptitude
 };

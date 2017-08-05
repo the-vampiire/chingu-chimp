@@ -33,48 +33,49 @@ router.get('/form', (req, res) => {
 
 router.get('/', (req, res) => {
 
-    // let data = {
-    //     userName : 'vampiire',
-    //
-    //     portfolioURL : 'https://www.vampiire.org',
-    //     gitHubURL: 'https://www.github.com/the-vampiire',
-    //     blogURL: 'https://medium.com/@vampiire',
-    //
-    //     story: 'empty',
-    //
-    //     joinDate: 5,
-    //
-    //     cohort: [{
-    //         cohortName : 'Walruses',
-    //         startDate : 5
-    //     }],
-    //
-    //     aptitudes: {
-    //
-    //         languages : [{
-    //             name : 'javascript',
-    //             level : 'intermediate'
-    //         }],
-    //
-    //         frameworks: [{
-    //             name : 'bootstrap',
-    //             level : 'intermediate'
-    //         }]
-    //     },
-    //
-    //     projects: [{
-    //         name : 'portfolio',
-    //         url : 'https://www.vampiire.org',
-    //     }],
-    //
-    //     certifications: [{
-    //         name: 'Front End Certification'
-    //     }]
-    // };
-    //
-    //
-    // const userProfile = require('./database/profileModel').userProfile;
+    let data = {
+        userName : 'vampiire',
+
+        portfolio : 'https://www.vampiire.org',
+        gitHub: 'https://www.github.com/the-vampiire',
+        blog: 'https://medium.com/@vampiire',
+
+        story: 'empty',
+
+        joinDate: 5,
+
+        cohort: [{
+            cohortName : 'Walruses',
+            startDate : 5
+        }],
+
+        aptitudes: {
+
+            languages : [{
+                name : 'javascript',
+                level : 'intermediate'
+            }],
+
+            frameworks: [{
+                name : 'bootstrap',
+                level : 'intermediate'
+            }]
+        },
+
+        projects: [{
+            name : 'portfolio',
+            url : 'https://www.vampiire.org',
+        }],
+
+        certifications: [{
+            name: 'Front End Certification'
+        }]
+    };
+
+
+    const userProfile = require('./database/profileModel').userProfile;
     // userProfile.addProfile(data).then( e => console.log(e));
+    userProfile.addProfile(data);
 
 });
 
@@ -136,16 +137,20 @@ router.post('/update', (req, res) => {
 
     const respond = require('./tools/respond');
     const update = require('./tools/update');
+    const userProfile = require('./database/profileModel').userProfile;
 
     const body = req.body;
+    const userName = body.user_name;
     const arguments = body.text;
 
     if(tools.verify.slash(body.token)){
         if(~arguments.indexOf(' ')){
-            let response = update.parse(arguments);
-            if(typeof response === 'string') res.end(response);
+            let parserOutput = update.parse(arguments);
+            if(typeof parserOutput === 'string') res.end(parserOutput);
             else{
                 // database update the profile item passing the expected data
+                userProfile.processUpdate(userName, parserOutput);
+                res.end('got it');
             }
 
         }else{
@@ -165,6 +170,7 @@ router.post('/update', (req, res) => {
 router.post('/checkin', (req, res) => {
 
     const body = req.body;
+    const user = body.user_name;
 
     let valueObject = {};
 
@@ -174,6 +180,7 @@ router.post('/checkin', (req, res) => {
 
     // inject the filtered and stripped partners array into the valueObject
     valueObject.partners = filtered;
+    valueObject.partners.push(user);
 
     if(tools.verify.slash(body.token)){
         res.json(tools.interactive.interaction('checkin', valueObject));

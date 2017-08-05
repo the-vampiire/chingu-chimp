@@ -24,9 +24,10 @@ interaction = (type, valueObject) => {
 
 processInteraction = payload => {
     const type = payload.callback_id;
+    const userName = payload.user.name;
 
-    let value;
-    payload.actions[0].selected_options ? value = payload.actions[0].selected_options[0].value : value = payload.actions[0].value;
+    let value = payload.actions[0].selected_options ?
+        payload.actions[0].selected_options[0].value : payload.actions[0].value;
 
     let response;
 
@@ -48,10 +49,9 @@ processInteraction = payload => {
 
             if(value.submit){
                 delete value.submit;
-                console.log(JSON.stringify(value));
                 const partners = value.partners;
                 partners.forEach( user => {
-                    userProfile.checkin(user, payload.channel.id, value)
+                    userProfile.processCheckin(user, payload.channel.id, value)
                 });
                 response = `Successfully checked in ${partners.join(', ')}.`;
 
@@ -60,20 +60,35 @@ processInteraction = payload => {
             else response = respond.activitySelect(value);
 
             break;
-    // -------------- UPDATE -------------- //
+
+    // -------------- UPDATE APTITUDE -------------- //
         case 'aptitudeSelect':
             response = JSON.parse(value).aptitude === 'languages' ? respond.languageSelect(value) : respond.frameworkSelect(value);
             break;
         case 'languageSelect':
         case 'frameworkSelect':
-            response = respond.skillSelect(value);
+            response = respond.levelSelect(value);
             break;
         case 'levelSelect':
             response = respond.submitAptitude(value);
             break;
         case 'aptitudeSubmit':
-            // handle database update or reset
+            value = JSON.parse(value);
+        // form the item and updateData pair expected by the userProfile processUpdate() method
+            let processUpdateData = {};
+            processUpdateData.item = `aptitudes`;
+            processUpdateData.subItem = value.aptitude;
+            processUpdateData.updateData = {
+                name : value.name,
+                level : value.level
+            };
+
+            userProfile.processUpdate(userName, processUpdateData);
+
+            response = `Stored ${value.aptitude}: ${processUpdateData.updateData.name} at skill level: ${processUpdateData.updateData.level}`;
             break;
+
+    // -------------- UPDATE X -------------- //
 
     }
 
