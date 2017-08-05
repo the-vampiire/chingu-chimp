@@ -144,7 +144,7 @@ const mongoose = require('mongoose');
                     // console.log(`profileDoc ${profileDoc[updateItem]}\nupdate item ${updateItem}\n updateData${updateData}`);
                     profileDoc[updateItem].push(updateData);
                     break;
-            // case where both an item and subitem must be specified
+            // pushing updateData into a nested profile item array
                 case 'aptitudes':
                     let subUpdateItem = data.subItem;
                     profileDoc[updateItem][subUpdateItem].push(updateData);
