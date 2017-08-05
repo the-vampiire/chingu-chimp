@@ -108,6 +108,10 @@ const mongoose = require('mongoose');
                 checkins.push(new checkinModel({channelID : channelID, sessions : [valueObject]}));
 
         // update current and best streak fields
+// ----- URGENT ------ //
+    // this logic allows for the streak to be increased for EACH checkin. meaning it is tracking
+    // "checkin points" rather than the streak. fix the code to handle the streak and discuss the option of
+    // either having checkin points or incrementing user points by some value per checkin
             checkins.some( checkin => {
                 let lastDate = checkin.sessions[checkin.sessions.length-1].date;
                 let currentDate = Number(Date.now());
