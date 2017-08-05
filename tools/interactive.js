@@ -14,6 +14,9 @@ interaction = (type, valueObject) => {
         case 'checkin':
             response = respond.activitySelect(valueObject);
             break;
+        case 'update':
+            response = respond.aptitudeSelect();
+            break;
     }
 
     return response;
@@ -21,13 +24,16 @@ interaction = (type, valueObject) => {
 
 processInteraction = payload => {
     const type = payload.callback_id;
+    const userName = payload.user.name;
 
-    let value;
-    payload.actions[0].selected_options ? value = payload.actions[0].selected_options[0].value : value = payload.actions[0].value;
+    let value = payload.actions[0].selected_options ?
+        payload.actions[0].selected_options[0].value : payload.actions[0].value;
 
     let response;
 
     switch(type){
+
+    // -------------- CHECKIN -------------- //
         case 'activitySelect':
             response = respond.taskSelect(value);
             break;
@@ -35,16 +41,55 @@ processInteraction = payload => {
         //     response = respond.taskSelect(value);
         //     break;
         case 'taskSelect':
-            response = respond.submitCheckin(payload, value);
+            response = respond.submitCheckin(value);
             break;
+    // submit
         case 'checkInSubmit':
             value = JSON.parse(value);
-            const partners = value.partners;
-            partners.forEach( user => {
-                userProfile.checkin(user, payload.channel.id, value)
-            });
-            response = `Successfully checked in ${partners.join(', ')}.`;
+
+            if(value.submit){
+                delete value.submit;
+                const partners = value.partners;
+                partners.forEach( user => {
+                    userProfile.processCheckin(user, payload.channel.id, value)
+                });
+                response = `Successfully checked in ${partners.join(', ')}.`;
+
+            }
+
+            else response = respond.activitySelect(value);
+
             break;
+
+    // -------------- UPDATE APTITUDE -------------- //
+        case 'aptitudeSelect':
+            response = JSON.parse(value).aptitude === 'languages' ? respond.languageSelect(value) : respond.frameworkSelect(value);
+            break;
+        case 'languageSelect':
+        case 'frameworkSelect':
+            response = respond.levelSelect(value);
+            break;
+        case 'levelSelect':
+            response = respond.submitAptitude(value);
+            break;
+        case 'aptitudeSubmit':
+            value = JSON.parse(value);
+        // form the item and updateData pair expected by the userProfile processUpdate() method
+            let processUpdateData = {};
+            processUpdateData.item = `aptitudes`;
+            processUpdateData.subItem = value.aptitude;
+            processUpdateData.updateData = {
+                name : value.name,
+                level : value.level
+            };
+
+            userProfile.processUpdate(userName, processUpdateData);
+
+            response = `Stored ${value.aptitude}: ${processUpdateData.updateData.name} at skill level: ${processUpdateData.updateData.level}`;
+            break;
+
+    // -------------- UPDATE X -------------- //
+
     }
 
     return response;

@@ -33,48 +33,49 @@ router.get('/form', (req, res) => {
 
 router.get('/', (req, res) => {
 
-    // let data = {
-    //     userName : 'vampiire',
-    //
-    //     portfolioURL : 'https://www.vampiire.org',
-    //     gitHubURL: 'https://www.github.com/the-vampiire',
-    //     blogURL: 'https://medium.com/@vampiire',
-    //
-    //     story: 'empty',
-    //
-    //     joinDate: 5,
-    //
-    //     cohort: [{
-    //         cohortName : 'Walruses',
-    //         startDate : 5
-    //     }],
-    //
-    //     aptitudes: {
-    //
-    //         languages : [{
-    //             name : 'javascript',
-    //             level : 'intermediate'
-    //         }],
-    //
-    //         frameworks: [{
-    //             name : 'bootstrap',
-    //             level : 'intermediate'
-    //         }]
-    //     },
-    //
-    //     projects: [{
-    //         name : 'portfolio',
-    //         url : 'https://www.vampiire.org',
-    //     }],
-    //
-    //     certifications: [{
-    //         name: 'Front End Certification'
-    //     }]
-    // };
-    //
-    //
-    // const userProfile = require('./database/profileModel').userProfile;
+    let data = {
+        userName : 'vampiire',
+
+        portfolio : 'https://www.vampiire.org',
+        gitHub: 'https://www.github.com/the-vampiire',
+        blog: 'https://medium.com/@vampiire',
+
+        story: 'empty',
+
+        joinDate: 5,
+
+        cohort: [{
+            cohortName : 'Walruses',
+            startDate : 5
+        }],
+
+        aptitudes: {
+
+            languages : [{
+                name : 'javascript',
+                level : 'intermediate'
+            }],
+
+            frameworks: [{
+                name : 'bootstrap',
+                level : 'intermediate'
+            }]
+        },
+
+        projects: [{
+            name : 'portfolio',
+            url : 'https://www.vampiire.org',
+        }],
+
+        certifications: [{
+            name: 'Front End Certification'
+        }]
+    };
+
+
+    const userProfile = require('./database/profileModel').userProfile;
     // userProfile.addProfile(data).then( e => console.log(e));
+    userProfile.addProfile(data);
 
 });
 
@@ -119,24 +120,72 @@ router.post('/chimp', (req, res) => {
 router.post('/profile', (req, res) => {
 
     const body = req.body;
+    const user = body.text;
 
     if(tools.verify.slash(body.token)){
-
+        if(/^\@[A-Za-z]+$/.test(user)){
+            res.send('worked');
+        }else{
+            res.send(`[${user}] is not a valid username. try again with the format <@userName>`);
+        }
+    }else{
+        res.end('invalid Slack token');
     }
+});
+
+router.post('/update', (req, res) => {
+
+    const respond = require('./tools/respond');
+    const update = require('./tools/update');
+    const userProfile = require('./database/profileModel').userProfile;
+
+    const body = req.body;
+    const userName = body.user_name;
+    const arguments = body.text;
+
+    if(tools.verify.slash(body.token)){
+        if(~arguments.indexOf(' ')){
+            let parserOutput = update.parse(arguments);
+            if(typeof parserOutput === 'string') res.end(parserOutput);
+            else{
+                // database update the profile item passing the expected data
+                userProfile.processUpdate(userName, parserOutput);
+                res.end('got it');
+            }
+
+        }else{
+            if(!arguments) res.send(respond.helpResponse('help'));
+            if(arguments === 'aptitudes'){
+                console.log('aptitudes');
+                res.json(tools.interactive.interaction('update'));
+            }else res.end(respond.helpResponse(arguments));
+
+        }
+    }else{
+        res.end('invalid Slack token');
+    }
+
 });
 
 router.post('/checkin', (req, res) => {
 
     const body = req.body;
+    const user = body.user_name;
 
     let valueObject = {};
-    valueObject.partners = body.text.replace(/\@/g, '').split(' ');
-    valueObject.partners.push(body.user_name);
+
+    // filter results to only pass @userName tags then strip the '@' symbol
+    let filtered = body.text.split(' ').filter( e => /@[A-Za-z]+/g.test(e));
+    filtered.forEach( (e, i, a) => a[i] = e.replace(/\@/g, ''));
+
+    // inject the filtered and stripped partners array into the valueObject
+    valueObject.partners = filtered;
+    valueObject.partners.push(user);
 
     if(tools.verify.slash(body.token)){
         res.json(tools.interactive.interaction('checkin', valueObject));
     }else{
-        // res.json('invalid Slack token checkin');
+        res.end('invalid Slack token');
     }
 
 
@@ -151,6 +200,8 @@ router.post('/interactive', (req, res) => {
 
     if(tools.verify.slash(payload.token)){
         res.json(tools.interactive.process(payload));
+    }else{
+        res.end('invalid Slack token');
     }
 
 });
