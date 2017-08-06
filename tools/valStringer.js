@@ -1,4 +1,3 @@
-
 // ---------------------------- CORE EXPORTS --------------------------------- //
 
 // builds or extends and returns the value object
@@ -26,28 +25,30 @@ valOptions = (dataArray, key, valueObject) => {
 };
 
 
-
 // builds and returns an attachment object
 
 valMenu = (headerText, callbackID, menuName, valueObject, menuItemsArray, customAttachment) => {
 
-    let attachment = customAttachment ? errorScan(customAttachment) ? errorScan(customAttachment) :
+    let attachment = customAttachment ? errorScan('menu', customAttachment) ? errorScan('menu', customAttachment) :
         customAttachment :
         menuAttachment(headerText, callbackID, menuName);
 
-    let actions = attachment.actions[0];
-    actions.options = valOptions(menuItemsArray, actions.name, valueObject);
+    if(typeof attachment === "object"){
+        let actions = attachment.actions[0];
+        actions.options = valOptions(menuItemsArray, actions.name, valueObject);
+    }
 
     return attachment;
 };
 
 valButton = (headerText, callbackID, buttonText, buttonName, buttonValue, valueObject, customAttachment) => {
 
-    let attachment = customAttachment ? errorScan(customAttachment) ? errorScan(customAttachment) :
+    let attachment = customAttachment ? errorScan('button', customAttachment) ? errorScan('button', customAttachment) :
         customAttachment :
         buttonAttachment(headerText, callbackID, buttonText, buttonName, buttonValue, valueObject);
 
-    if(customAttachment) customAttachment.actions[0].value = valStringer(valueObject, buttonName, buttonValue);
+    if(typeof attachment === "object")
+        attachment.actions[0].value = valStringer(valueObject, buttonName, buttonValue);
 
     return attachment;
 };
@@ -82,8 +83,7 @@ buttonAttachment = (headerText, callbackID, buttonText, buttonName, buttonValue,
         actions: [{
             text: buttonText,
             name: buttonName,
-            type: 'button',
-            value: valStringer(valueObject, buttonName, buttonValue)
+            type: 'button'
         }]
     }
 };
@@ -91,24 +91,17 @@ buttonAttachment = (headerText, callbackID, buttonText, buttonName, buttonValue,
 // scans a custom attachment object for errors
 errorScan = (type, customAttachment) => {
 
-    const expectedKeys = type === 'menu' ?
-        ['text', 'callback_id', 'actions'] :
-        ['text', 'callback_id', 'actions', 'button'];
+    const expectedKeys = ['text', 'callback_id', 'actions'];
+    const expectedSubKeys = type === 'menu' ? ['name', 'type', 'data_source'] : ['text', 'name', 'type'];
 
-    const expectedSubKeys = type === 'menu' ?
-        ['name', 'type', 'datasource'] :
-        ['text', 'name', 'type'];
-
-    const actions = customAttachment.actions[0];
-
-    const keysError = verifyKeys(customAttachment, expectedKeys);
-    const subKeysError = verifyKeys(actions, expectedSubKeys);
-
+    const keysError = verifyKeys(customAttachment, expectedKeys, 'outer attachment properties');
     if(keysError){
         return keysError;
     }
 
-    else if (subKeysError){
+    const actions = customAttachment.actions[0];
+    const subKeysError = verifyKeys(actions, expectedSubKeys, 'actions array object');
+    if(subKeysError){
         return subKeysError;
     }
 
@@ -117,15 +110,15 @@ errorScan = (type, customAttachment) => {
             case 'menu':
                 switch(true) {
                     case actions.type !== 'select':
-                        return `invalid action type, must be 'select' for interactive menus`;
+                        return `invalid custom attachment: action type must be "select" for interactive menus`;
                     case actions.data_source !== 'static':
-                        return `invalid action data_source, must be 'static'`;
+                        return `invalid custom attachment: data_source must be "static" for interactive menus`;
                 }
                 break;
             case 'button':
                 switch(true){
                     case actions.type !== 'button':
-                        return `invalid action type, must be 'button' for interactive buttons`;
+                        return `invalid custom attachment: action type must be "button" for interactive buttons`;
                 }
                 break;
         }
@@ -136,12 +129,12 @@ errorScan = (type, customAttachment) => {
 
 
 // verifies the keys of a custom attachment object
-verifyKeys = (object, expectedKeys) => {
+verifyKeys = (object, expectedKeys, location) => {
     let error;
 
     expectedKeys.forEach( e => {
         if(!object.hasOwnProperty(e)){
-            error = `invalid object, missing the key ${e}`;
+            error = `invalid custom attachment: missing the property "${e}" in the ${location}`;
         }
     });
 

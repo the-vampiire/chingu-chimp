@@ -1,23 +1,4 @@
 
-activitySelect = (valueObject) => {
-
-    const fields = {
-        text: 'testing attacher',
-        callback_id: 'activitySelect',
-        actions: [{
-            name: 'type',
-            type: 'select',
-            data_source: 'static'
-        }]
-    };
-
-    const options = ['test 1', 'test 2', 'test 3'];
-
-    return {
-        title: "Check In",
-        pretext: "Use the following dropdown menus to define and" +
-        "check into your activity.",
-
-        attachments: [val.attachment(valueObject, fields, options)]
-    };
-};
+let data = 'https://www.freecodecamp.org/fccUserName/front-end-certification';
+let rawCertificateString = data.slice(data.lastIndexOf('/')+1).split('-').map(e => e = `${e.slice(0,1).toUpperCase()}${e.slice(1)}`).join(' ');
+console.log(rawCertificateString);
