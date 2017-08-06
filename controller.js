@@ -34,19 +34,19 @@ router.get('/form', (req, res) => {
 router.get('/', (req, res) => {
 
     let data = {
-        userName : 'vampiire',
+        userName : 'jessec',
 
-        portfolio : 'https://www.vampiire.org',
-        gitHub: 'https://www.github.com/the-vampiire',
-        blog: 'https://medium.com/@vampiire',
+        portfolio : 'https://www.jessec.org',
+        gitHub: 'https://www.github.com/jessec',
+        blog: 'https://medium.com/@jessec',
 
-        story: 'empty',
+        story: 'I am the story',
 
-        joinDate: 5,
+        joinDate: 4,
 
         cohort: [{
             cohortName : 'Walruses',
-            startDate : 5
+            startDate : 4
         }],
 
         aptitudes: {
@@ -64,7 +64,7 @@ router.get('/', (req, res) => {
 
         projects: [{
             name : 'portfolio',
-            url : 'https://www.vampiire.org',
+            url : 'https://www.jessec.org',
         }],
 
         certifications: [{
@@ -76,6 +76,8 @@ router.get('/', (req, res) => {
     const userProfile = require('./database/profileModel').userProfile;
     // userProfile.addProfile(data).then( e => console.log(e));
     userProfile.addProfile(data);
+
+    res.end('made a profile');
 
 });
 
@@ -141,6 +143,7 @@ router.post('/update', (req, res) => {
 
     const body = req.body;
     const userName = body.user_name;
+    const cohortName = body.team_domain;
     const arguments = body.text;
 
     if(tools.verify.slash(body.token)){
@@ -148,8 +151,7 @@ router.post('/update', (req, res) => {
             let parserOutput = update.parse(arguments);
             if(typeof parserOutput === 'string') res.end(parserOutput);
             else{
-                // database update the profile item passing the expected data
-                userProfile.processUpdate(userName, parserOutput);
+                userProfile.processUpdate(userName, cohortName, parserOutput);
                 res.end('got it');
             }
 
@@ -199,7 +201,23 @@ router.post('/interactive', (req, res) => {
     const payload = JSON.parse(req.body.payload);
 
     if(tools.verify.slash(payload.token)){
-        res.json(tools.interactive.process(payload));
+        let output = tools.interactive.process(payload);
+
+        // try{
+        //     output.then( response => {
+        //         console.log(response);
+        //         res.end(response)
+        //     });
+        // }catch(e){
+        //     res.json(output);
+        // }
+
+        if(output instanceof Promise) {
+            output.then( response => res.end(response));
+        }else{
+            res.json(output);
+        }
+        // if(!output.then( saveResponse => res.end(saveResponse)))res.json(output);
     }else{
         res.end('invalid Slack token');
     }

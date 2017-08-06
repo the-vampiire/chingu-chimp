@@ -98,9 +98,19 @@ const mongoose = require('mongoose');
 
 // ----------------- CUSTOM METHODS ----------------- //
 
-    // ------- CHECKIN PROCESSING ------- //
-    userSchema.statics.processCheckin = function(userName, channelID, valueObject){
-        this.findOne({userName:userName}).then( profileDoc => {
+// ------- CHECKIN PROCESSING ------- //
+    userSchema.statics.processCheckin = function(userName, cohortName, channelID, valueObject){
+
+        return this.findOne({userName:userName}).then( profileDoc => {
+
+            let error;
+            let currentStreak;
+            let bestStreak;
+
+        // if the cohort the user is checking in from is not in their profile then it is added in this step
+            let cohorts = profileDoc.cohorts;
+            profileDoc.cohorts = injectCohort(cohorts, cohortName);
+
             const checkins = profileDoc.checkins;
             let channel = checkins.find( e => e.channelID === channelID);
 
@@ -124,14 +134,29 @@ const mongoose = require('mongoose');
                 }
             });
 
-            profileDoc.save( saveError => console.log(`error during checkin update saving \n ${saveError})`));
+            currentStreak = profileDoc.currentStreak;
+            bestStreak = profileDoc.bestStreak;
 
-        }, userFindError => console.log(userFindError));
+            profileDoc.save( saveError => saveError ? error = saveError : null);
+
+            return { error, currentStreak, bestStreak };
+
+        }, profileFindError => profileFindError ? error = profileFindError : null ).then( responseData => {
+            console.log(responseData);
+            return responseData.error ? `sorry the user ${userName} does not have a profile` : `succesfully saved the checkin for @${userName}. current streak: ${responseData.currentStreak}. best streak: ${responseData.bestStreak}`;
+        });
+
     };
 
-    // ------- UPDATE PROCESSING ------- //
-    userSchema.statics.processUpdate = function(userName, data){
+// ------- UPDATE PROCESSING ------- //
+    userSchema.statics.processUpdate = function(userName, cohortName, data){
         this.findOne({userName: userName}).then( profileDoc => {
+
+            console.log(cohortName);
+
+        // if the cohort the user is updating from is not in their profile then it is added in this step
+            let cohorts = profileDoc.cohorts;
+            profileDoc.cohorts = injectCohort(cohorts, cohortName);
 
             let updateItem = data.item;
             let updateData = data.updateData;
@@ -157,7 +182,7 @@ const mongoose = require('mongoose');
                     profileDoc[updateItem] = updateData.url;
                     break;
 
-            // simple string
+            // simple string/number passing
                 case 'story':
                     profileDoc[updateItem] = updateData;
                     break;
@@ -167,6 +192,22 @@ const mongoose = require('mongoose');
 
         }, error => error ? console.log(error) : false)
     };
+
+injectCohort = (cohorts, cohortName) => {
+
+// cohortName comes in in the form [cohort-name-style] and must be processed to be readable
+    cohortName = cohortName.slice(cohortName.lastIndexOf('/')+1)
+        .split('-')
+        .map(e => e = `${e.slice(0,1).toUpperCase()}${e.slice(1)}`)
+        .join(' ');
+
+// if the passed cohortName does not exist in the array of user cohorts then add it
+   if(!cohorts.some( cohort => cohort.cohortName === cohortName)){
+       cohorts.push({cohortName: cohortName});
+   }
+
+   return cohorts;
+};
 
     const userProfile = mongoose.model('userProfile', userSchema);
 

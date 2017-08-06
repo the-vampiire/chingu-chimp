@@ -25,6 +25,7 @@ interaction = (type, valueObject) => {
 processInteraction = payload => {
     const type = payload.callback_id;
     const userName = payload.user.name;
+    const cohortName = payload.team.domain;
 
     let value = payload.actions[0].selected_options ?
         payload.actions[0].selected_options[0].value : payload.actions[0].value;
@@ -37,24 +38,29 @@ processInteraction = payload => {
         case 'activitySelect':
             response = respond.taskSelect(value);
             break;
-        // case 'userSelect':
-        //     response = respond.taskSelect(value);
-        //     break;
         case 'taskSelect':
             response = respond.submitCheckin(value);
             break;
     // submit
         case 'checkInSubmit':
             value = JSON.parse(value);
-
             if(value.submit){
                 delete value.submit;
                 const partners = value.partners;
-                partners.forEach( user => {
-                    userProfile.processCheckin(user, payload.channel.id, value)
-                });
-                response = `Successfully checked in ${partners.join(', ')}.`;
 
+                let promises = [];
+                partners.forEach( user => {
+                    promises.push(userProfile.processCheckin(user, cohortName, payload.channel.id, value));
+                });
+
+                return Promise.all(promises).then( responses => {
+                    let saveResponse = ``;
+                    responses.forEach( response => {
+                        saveResponse += `${response}\n`
+                    });
+
+                    return saveResponse;
+                });
             }
 
             else response = respond.activitySelect(value);
@@ -83,7 +89,7 @@ processInteraction = payload => {
                 level : value.level
             };
 
-            userProfile.processUpdate(userName, processUpdateData);
+            userProfile.processUpdate(userName, cohortName, processUpdateData);
 
             response = `Stored ${value.aptitude}: ${processUpdateData.updateData.name} at skill level: ${processUpdateData.updateData.level}`;
             break;
