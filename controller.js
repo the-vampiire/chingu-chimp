@@ -33,51 +33,50 @@ router.get('/form', (req, res) => {
 
 router.get('/', (req, res) => {
 
-    let data = {
-        userName : 'jessec',
-
-        portfolio : 'https://www.jessec.org',
-        gitHub: 'https://www.github.com/jessec',
-        blog: 'https://medium.com/@jessec',
-
-        story: 'I am the story',
-
-        joinDate: 4,
-
-        cohort: [{
-            cohortName : 'Walruses',
-            startDate : 4
-        }],
-
-        aptitudes: {
-
-            languages : [{
-                name : 'javascript',
-                level : 'intermediate'
-            }],
-
-            frameworks: [{
-                name : 'bootstrap',
-                level : 'intermediate'
-            }]
-        },
-
-        projects: [{
-            name : 'portfolio',
-            url : 'https://www.jessec.org',
-        }],
-
-        certifications: [{
-            name: 'Front End Certification'
-        }]
-    };
-
-
-    const userProfile = require('./database/profileModel').userProfile;
-    // userProfile.addProfile(data).then( e => console.log(e));
-    userProfile.addProfile(data);
-
-    res.end('made a profile');
+    // let data = {
+    //     userName : 'jessec',
+    //
+    //     portfolio : 'https://www.jessec.org',
+    //     gitHub: 'https://www.github.com/jessec',
+    //     blog: 'https://medium.com/@jessec',
+    //
+    //     story: 'I am the story',
+    //
+    //     joinDate: 4,
+    //
+    //     cohort: [{
+    //         cohortName : 'Walruses',
+    //         startDate : 4
+    //     }],
+    //
+    //     aptitudes: {
+    //
+    //         languages : [{
+    //             name : 'javascript',
+    //             level : 'intermediate'
+    //         }],
+    //
+    //         frameworks: [{
+    //             name : 'bootstrap',
+    //             level : 'intermediate'
+    //         }]
+    //     },
+    //
+    //     projects: [{
+    //         name : 'portfolio',
+    //         url : 'https://www.jessec.org',
+    //     }],
+    //
+    //     certifications: [{
+    //         name: 'Front End Certification'
+    //     }]
+    // };
+    //
+    //
+    // const userProfile = require('./database/profileModel').userProfile;
+    // userProfile.addProfile(data);
+    //
+    // res.end('made a profile');
 
 });
 
@@ -116,7 +115,8 @@ router.post('/chimp', (req, res) => {
         res.json('test worked');
     }
 
-    res.end('invalid Slack verification token');
+    else res.end('invalid Slack verification token');
+
 });
 
 router.post('/profile', (req, res) => {
@@ -130,9 +130,10 @@ router.post('/profile', (req, res) => {
         }else{
             res.send(`[${user}] is not a valid username. try again with the format <@userName>`);
         }
-    }else{
-        res.end('invalid Slack token');
     }
+
+    else res.end('invalid Slack token');
+
 });
 
 router.post('/update', (req, res) => {
@@ -149,23 +150,28 @@ router.post('/update', (req, res) => {
     if(tools.verify.slash(body.token)){
         if(~arguments.indexOf(' ')){
             let parserOutput = update.parse(arguments);
+
             if(typeof parserOutput === 'string') res.end(parserOutput);
             else{
                 userProfile.processUpdate(userName, cohortName, parserOutput);
                 res.end('got it');
             }
 
-        }else{
+        }
+
+        else{
             if(!arguments) res.send(respond.helpResponse('help'));
             if(arguments === 'aptitudes'){
                 console.log('aptitudes');
                 res.json(tools.interactive.interaction('update'));
-            }else res.end(respond.helpResponse(arguments));
+            }
+            else res.end(respond.helpResponse(arguments));
 
         }
-    }else{
-        res.end('invalid Slack token');
     }
+
+    else res.end('invalid Slack token');
+
 
 });
 
@@ -176,19 +182,18 @@ router.post('/checkin', (req, res) => {
 
     let valueObject = {};
 
-    // filter results to only pass @userName tags then strip the '@' symbol
+// filter results to only pass @userName tags then strip the '@' symbol
     let filtered = body.text.split(' ').filter( e => /@[A-Za-z]+/g.test(e));
     filtered.forEach( (e, i, a) => a[i] = e.replace(/\@/g, ''));
 
-    // inject the filtered and stripped partners array into the valueObject
+// inject the filtered and stripped partners array into the valueObject
     valueObject.partners = filtered;
+// inject the user calling the checkin so they dont have to tag themselves
     valueObject.partners.push(user);
 
-    if(tools.verify.slash(body.token)){
-        res.json(tools.interactive.interaction('checkin', valueObject));
-    }else{
-        res.end('invalid Slack token');
-    }
+    if(tools.verify.slash(body.token)) res.json(tools.interactive.interaction('checkin', valueObject));
+    else res.end('invalid Slack token');
+
 
 
 });
@@ -203,24 +208,12 @@ router.post('/interactive', (req, res) => {
     if(tools.verify.slash(payload.token)){
         let output = tools.interactive.process(payload);
 
-        // try{
-        //     output.then( response => {
-        //         console.log(response);
-        //         res.end(response)
-        //     });
-        // }catch(e){
-        //     res.json(output);
-        // }
+        if(output instanceof Promise) output.then( response => res.end(response));
+        else res.json(output);
 
-        if(output instanceof Promise) {
-            output.then( response => res.end(response));
-        }else{
-            res.json(output);
-        }
-        // if(!output.then( saveResponse => res.end(saveResponse)))res.json(output);
-    }else{
-        res.end('invalid Slack token');
     }
+
+    else res.end('invalid Slack token');
 
 });
 
