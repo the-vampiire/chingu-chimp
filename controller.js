@@ -32,7 +32,8 @@ router.get('/form', (req, res) => {
 });
 
 router.post ('/form', (req, res) => {
-
+    console.log(req.body);
+    res.send('success')
 
 });
 

@@ -19,7 +19,7 @@
 
         <div class="row">
           <div class="col-lg-6">
-            <form>
+            <form @submit="submitForm" action="/form" method="post">
               <div class="form-group">
                 <label for="portfolioURL">Link to Your Portfolio:</label>
                 <input 
@@ -84,18 +84,18 @@
                 </button>
               </div>
 
-              <div class="form-group row" v-for="(userTechs, index) of userData.technologies" :key="index"> <!-- FIXME: can we establish a better key for iteration? -->
+              <div class="form-group row" v-for="(userTechs, index) of userData.languages" :key="index"> <!-- FIXME: can we establish a better key for iteration? -->
                 <!-- populate techs -->
                 <div class="col-lg-6">
-                  <label for="techSkill">* Technology:</label>
+                  <label for="techSkill">* Language:</label>
                   <select 
-                    name="technologyList" 
+                    name="langaugeList" 
                     class="form-control"
                     v-model="userTechs.name"
                     required
                   >
-                    <option v-for="technology of ajaxData.technologies" :key="technology" :value="technology">
-                      {{technology}}
+                    <option v-for="langauge of ajaxData.languages" :key="langauge" :value="langauge">
+                      {{langauge}}
                     </option>
                   </select>
                 </div>
@@ -118,9 +118,9 @@
                 <button 
                   type="button"
                   class="btn btn-default"
-                  @click="addNewTechnology"
+                  @click="addNewLanguage"
                 >
-                  Add a New Technology
+                  Add a New Language
                 </button>
               </div>
 
@@ -137,6 +137,7 @@
     </div>
   </body>
   <script src="https://unpkg.com/vue@2.4.2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.js"></script>
 </html>
 
 <script>
@@ -149,7 +150,7 @@
         blogURL: '',
         story: '', // chingu intro
         cohorts: [],
-        technologies: []
+        languages: []
       },
       // temp fake data
       ajaxData: {
@@ -194,7 +195,7 @@
             "name": "Llamas",
           }
         ],
-        "technologies": [
+        "languages": [
           "React",
           "Angular",
           "JavaScript",
@@ -214,12 +215,22 @@
 
         this.userData.cohorts.push({cohortName: defaultCohort});
       },
-      addNewTechnology() {
-        const defaultTechnology = this.ajaxData.technologies[0]
+      addNewLanguage() {
+        const defaultLanguage = this.ajaxData.languages[0]
         const defaultSkillLevel = 'Intermediate'
 
-        this.userData.technologies.push({name: defaultTechnology, level: defaultSkillLevel})
+        this.userData.languages.push({name: defaultLanguage, level: defaultSkillLevel})
+      },
+      submitForm(event) {
+        event.preventDefault()
+        console.log('I was clicked') //FIXME:
+        axios.post('/form', {userData: this.userData})
+          .then(response => console.log(response))
       }
+    },
+    created() {
+      this.addNewCohort()
+      
     }
   })
 </script>
