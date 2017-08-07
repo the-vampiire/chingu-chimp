@@ -20,8 +20,6 @@ const router = module.exports = express.Router();
 
 const tools = require('./tools/exporter');
 
-// Global Constants
-
 
 // ------------------- FRONT END ------------------- //
 
@@ -42,17 +40,17 @@ router.get('/', (req, res) => {
     let data = {
         userName : 'vampiire',
 
-        portfolio : 'https://www.vampiire.org',
-        gitHub: 'https://www.github.com/the-vampiire',
-        blog: 'https://medium.com/@vampiire',
+        portfolio : 'https://www.jessec.org',
+        gitHub: 'https://www.github.com/jessec',
+        blog: 'https://medium.com/@jessec',
 
-        story: 'empty',
+        story: 'I am the story',
 
-        joinDate: 5,
+        joinDate: 4,
 
         cohort: [{
             cohortName : 'Walruses',
-            startDate : 5
+            startDate : 4
         }],
 
         aptitudes: {
@@ -70,7 +68,7 @@ router.get('/', (req, res) => {
 
         projects: [{
             name : 'portfolio',
-            url : 'https://www.vampiire.org',
+            url : 'https://www.jessec.org',
         }],
 
         certifications: [{
@@ -80,8 +78,9 @@ router.get('/', (req, res) => {
 
 
     const userProfile = require('./database/profileModel').userProfile;
-    // userProfile.addProfile(data).then( e => console.log(e));
     userProfile.addProfile(data);
+
+    res.end('made a new profile');
 
 });
 
@@ -122,7 +121,8 @@ router.post('/chimp', (req, res) => {
         res.json('test worked');
     }
 
-    res.end('invalid Slack verification token');
+    else res.end('invalid Slack verification token');
+
 });
 
 router.post('/profile', (req, res) => {
@@ -136,9 +136,10 @@ router.post('/profile', (req, res) => {
         }else{
             res.send(`[${user}] is not a valid username. try again with the format <@userName>`);
         }
-    }else{
-        res.end('invalid Slack token');
     }
+
+    else res.end('invalid Slack token');
+
 });
 
 router.post('/update', (req, res) => {
@@ -149,29 +150,31 @@ router.post('/update', (req, res) => {
 
     const body = req.body;
     const userName = body.user_name;
+    const cohortName = body.team_domain;
     const arguments = body.text;
 
     if(tools.verify.slash(body.token)){
         if(~arguments.indexOf(' ')){
             let parserOutput = update.parse(arguments);
-            if(typeof parserOutput === 'string') res.end(parserOutput);
-            else{
-                // database update the profile item passing the expected data
-                userProfile.processUpdate(userName, parserOutput);
-                res.end('got it');
-            }
 
-        }else{
+            if(typeof parserOutput === 'string') res.end(parserOutput);
+            else userProfile.processUpdate(userName, cohortName, parserOutput).then( response => res.end(response));
+
+        }
+
+        else{
             if(!arguments) res.send(respond.helpResponse('help'));
             if(arguments === 'aptitudes'){
                 console.log('aptitudes');
                 res.json(tools.interactive.interaction('update'));
-            }else res.end(respond.helpResponse(arguments));
+            }
+            else res.end(respond.helpResponse(arguments));
 
         }
-    }else{
-        res.end('invalid Slack token');
     }
+
+    else res.end('invalid Slack token');
+
 
 });
 
@@ -182,19 +185,18 @@ router.post('/checkin', (req, res) => {
 
     let valueObject = {};
 
-    // filter results to only pass @userName tags then strip the '@' symbol
+// filter results to only pass @userName tags then strip the '@' symbol
     let filtered = body.text.split(' ').filter( e => /@[A-Za-z]+/g.test(e));
     filtered.forEach( (e, i, a) => a[i] = e.replace(/\@/g, ''));
 
-    // inject the filtered and stripped partners array into the valueObject
+// inject the filtered and stripped partners array into the valueObject
     valueObject.partners = filtered;
+// inject the user calling the checkin so they dont have to tag themselves
     valueObject.partners.push(user);
 
-    if(tools.verify.slash(body.token)){
-        res.json(tools.interactive.interaction('checkin', valueObject));
-    }else{
-        res.end('invalid Slack token');
-    }
+    if(tools.verify.slash(body.token)) res.json(tools.interactive.interaction('checkin', valueObject));
+    else res.end('invalid Slack token');
+
 
 
 });
@@ -207,10 +209,13 @@ router.post('/interactive', (req, res) => {
     const payload = JSON.parse(req.body.payload);
 
     if(tools.verify.slash(payload.token)){
-        res.json(tools.interactive.process(payload));
-    }else{
-        res.end('invalid Slack token');
+        let output = tools.interactive.process(payload);
+
+        if(output instanceof Promise) output.then( response => res.end(response));
+        else res.json(output);
     }
+
+    else res.end('invalid Slack token');
 
 });
 
@@ -219,6 +224,9 @@ router.post('/options', (req, res) => {
     console.log(req.body);
     res.json('worked');
 });
+
+
+// ------------ INCOMING API CALLS ---------------- //
 
 
 
