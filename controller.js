@@ -120,16 +120,34 @@ router.post('/chimp', (req, res) => {
 router.post('/profile', (req, res) => {
 
     const body = req.body;
-    const user = body.text;
+    const text = body.text;
 
     if(tools.verify.slash(body.token)){
-        if(/^\@[A-Za-z]+$/.test(user)){
-            res.send('worked');
-        }else{
-            res.send(`[${user}] is not a valid username. try again with the format <@userName>`);
+
+        if(!text || text === 'help'){
+            // send back help response
+        }
+
+        let user;
+        let share = false;
+
+        if(text) {
+            if (/^\@[A-Za-z]+( share)?$/.test(text)) {
+                if (~text.indexOf(' ')) {
+                    user = text.slice(0, text.indexOf(' '));
+                    share = true;
+                    // call / return profile builder
+                }
+                else {
+                    user = text;
+                    // call / return profile builder
+                }
+            }
+            else res.send(`[\`${text}\`] is not a valid username.
+            try again with the format \`/update @userName [share]\`
+            you may only call one profile look-up at a time`);
         }
     }
-
     else res.end('invalid Slack token');
 
 });
@@ -161,12 +179,10 @@ router.post('/update', (req, res) => {
                 res.json(tools.interactive.interaction('update'));
             }
             else res.end(respond.helpResponse(arguments));
-
         }
     }
 
     else res.end('invalid Slack token');
-
 
 });
 

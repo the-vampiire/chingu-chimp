@@ -1,12 +1,10 @@
-// console.log(new Date(1501976018258));
+let t = '@vampiire stuff';
+if(~t.indexOf(' ')){
+    console.log('stuff');
+}
 
-const a = ['one', 'two', 'three'];
-let found;
-console.log(a.some( e => {
-    if(e === 'seven') {
-        found = e;
-        return true
-    }
-}));
+if(-10){
+    console.log('stuff too')
+}
 
-console.log(found);
+console.log(~t.indexOf(' '));
