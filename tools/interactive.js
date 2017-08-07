@@ -44,6 +44,7 @@ processInteraction = payload => {
     // submit
         case 'checkInSubmit':
             value = JSON.parse(value);
+
             if(value.submit){
                 delete value.submit;
                 const partners = value.partners;

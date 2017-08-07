@@ -20,8 +20,6 @@ const router = module.exports = express.Router();
 
 const tools = require('./tools/exporter');
 
-// Global Constants
-
 
 // ------------------- SPLASH PAGE ------------------- //
 
@@ -33,50 +31,50 @@ router.get('/form', (req, res) => {
 
 router.get('/', (req, res) => {
 
-    // let data = {
-    //     userName : 'jessec',
-    //
-    //     portfolio : 'https://www.jessec.org',
-    //     gitHub: 'https://www.github.com/jessec',
-    //     blog: 'https://medium.com/@jessec',
-    //
-    //     story: 'I am the story',
-    //
-    //     joinDate: 4,
-    //
-    //     cohort: [{
-    //         cohortName : 'Walruses',
-    //         startDate : 4
-    //     }],
-    //
-    //     aptitudes: {
-    //
-    //         languages : [{
-    //             name : 'javascript',
-    //             level : 'intermediate'
-    //         }],
-    //
-    //         frameworks: [{
-    //             name : 'bootstrap',
-    //             level : 'intermediate'
-    //         }]
-    //     },
-    //
-    //     projects: [{
-    //         name : 'portfolio',
-    //         url : 'https://www.jessec.org',
-    //     }],
-    //
-    //     certifications: [{
-    //         name: 'Front End Certification'
-    //     }]
-    // };
-    //
-    //
-    // const userProfile = require('./database/profileModel').userProfile;
-    // userProfile.addProfile(data);
-    //
-    // res.end('made a profile');
+    let data = {
+        userName : 'vampiire',
+
+        portfolio : 'https://www.jessec.org',
+        gitHub: 'https://www.github.com/jessec',
+        blog: 'https://medium.com/@jessec',
+
+        story: 'I am the story',
+
+        joinDate: 4,
+
+        cohort: [{
+            cohortName : 'Walruses',
+            startDate : 4
+        }],
+
+        aptitudes: {
+
+            languages : [{
+                name : 'javascript',
+                level : 'intermediate'
+            }],
+
+            frameworks: [{
+                name : 'bootstrap',
+                level : 'intermediate'
+            }]
+        },
+
+        projects: [{
+            name : 'portfolio',
+            url : 'https://www.jessec.org',
+        }],
+
+        certifications: [{
+            name: 'Front End Certification'
+        }]
+    };
+
+
+    const userProfile = require('./database/profileModel').userProfile;
+    userProfile.addProfile(data);
+
+    res.end('made a new profile');
 
 });
 
@@ -152,10 +150,7 @@ router.post('/update', (req, res) => {
             let parserOutput = update.parse(arguments);
 
             if(typeof parserOutput === 'string') res.end(parserOutput);
-            else{
-                userProfile.processUpdate(userName, cohortName, parserOutput);
-                res.end('got it');
-            }
+            else userProfile.processUpdate(userName, cohortName, parserOutput).then( response => res.end(response));
 
         }
 
@@ -210,7 +205,6 @@ router.post('/interactive', (req, res) => {
 
         if(output instanceof Promise) output.then( response => res.end(response));
         else res.json(output);
-
     }
 
     else res.end('invalid Slack token');
@@ -222,6 +216,9 @@ router.post('/options', (req, res) => {
     console.log(req.body);
     res.json('worked');
 });
+
+
+// ------------ INCOMING API CALLS ---------------- //
 
 
 
