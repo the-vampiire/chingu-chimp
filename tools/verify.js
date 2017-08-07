@@ -11,7 +11,6 @@
  *
  */
 
-
 slash = (tokenID, team = null) => {
 
     // expand to include all the available Chingu team ID's in an array

@@ -132,7 +132,8 @@ errorScanAndModify = (item, flag, data) => {
             if(!/[0-9]{2}\/[0-9]{2}\/[0-9]{2}/.test(data))
                 return `invalid date format [${data}]. must be in \`mm/dd/yy\` format`;
             data = Date.parse(new Date(data))/1000;
-            flag = 'completedDate';
+            if(item === 'projects')flag = 'completedDate';
+
             break;
         case flag === 'n':
             flag = 'name';
