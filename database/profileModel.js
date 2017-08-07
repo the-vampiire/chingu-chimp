@@ -5,6 +5,7 @@
 
 
 const mongoose = require('mongoose');
+const requests = require('../tools/requests');
 
     const checkinSchema = new mongoose.Schema({
 
@@ -29,6 +30,11 @@ const mongoose = require('mongoose');
     const userSchema = new mongoose.Schema({
 
         userName: {type: String, lowercase: true},
+
+        profilePic : {
+            size_72 : {type: String, default: null},
+            size_192 : {type: String, default: null}
+        },
 
         portfolio: {type: String, default: null},
         gitHub: {type: String, default: null},
@@ -103,11 +109,6 @@ const mongoose = require('mongoose');
 // ------- CHECKIN PROCESSING ------- //
 userSchema.statics.processCheckin = function(userName, cohortName, channelID, checkinSessionData){
 
-// ----- URGENT, checkins.some line 126 ------ //
-        // this logic allows for the streak to be increased for EACH checkin. meaning it is tracking
-        // "checkin points" rather than the streak. fix the code to handle the streak and discuss the option of
-        // either having checkin points or incrementing user points by some value per checkin
-
     return this.findOne({userName:userName}).then( profileDoc => {
 
         if(profileDoc){
@@ -126,17 +127,14 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
             let currentStreak = streakUpdate.currentStreak;
             let bestStreak = streakUpdate.bestStreak;
 
-            return profileDoc.save( (saveError, success) => saveError ?
-                   saveError :
-                   channel ?
-                        { currentStreak, bestStreak, numOfCheckins: channel.sessions.length } :
-                        { currentStreak, bestStreak });
+            return profileDoc.save( (saveError, success) => {
+                if(saveError) return saveError;
+                if(channel) return { currentStreak, bestStreak, numOfCheckins: channel.sessions.length };
+                else return { currentStreak, bestStreak };
+            })
         }
 
-        else{
-            // alert the AutoBot to message the user who does not have an account. pass on the link to set up their profile
-            return `Checkin for \`@${userName}\` failed:\nprofile \`@${userName}\` not found please visit ENTER FORM WEBSITE HERE to create a profile`;
-        }
+        else return `Checkin for \`@${userName}\` failed:\nprofile \`@${userName}\` not found please visit ENTER FORM WEBSITE HERE to create a profile`;
 
     }).then( responseData => {
 
@@ -186,6 +184,7 @@ streakUpdater = (checkins, currentStreak, bestStreak) => {
         return this.findOne({userName: userName}).then( profileDoc => {
 
             if(profileDoc){
+
                 // if the cohort the user is updating from is not in their profile then it is added in this step
                 let cohorts = profileDoc.cohorts;
                 profileDoc.cohorts = checkAndAddCohort(cohorts, cohortName);
@@ -198,9 +197,9 @@ streakUpdater = (checkins, currentStreak, bestStreak) => {
                     // pushing updateData into a profile item array
                     case 'certifications':
                     case 'projects':
-                        // console.log(`profileDoc ${profileDoc[updateItem]}\nupdate item ${updateItem}\n updateData${updateData}`);
                         profileDoc[updateItem].push(updateData);
                         break;
+
                     // pushing updateData into a nested profile item array
                     case 'aptitudes':
                         let subUpdateItem = data.subItem;
@@ -214,7 +213,8 @@ streakUpdater = (checkins, currentStreak, bestStreak) => {
                         profileDoc[updateItem] = updateData.url;
                         break;
 
-                    // simple string/number passing
+                    // simple string/number/object
+                    case 'profilePic':
                     case 'story':
                         profileDoc[updateItem] = updateData;
                         break;

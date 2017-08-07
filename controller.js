@@ -2,16 +2,9 @@
  * Created by Vampiire on 7/2/17.
  *
  *
- * Interactive Messages
- *  SET: request URL
- *      optional: options load [for populating interactive messages with details from an external source]
- *
- *
  * FOR ADDITIONAL SECURITY
  *      get list of all chingu team names (team ID's) and add them to the slash verify function
  *      to check alongside the slack token. ensures all requests only occur between chingu teams and bot
- *
- *
  *
  */
 
@@ -62,19 +55,24 @@ router.get('/', (req, res) => {
 
         projects: [{
             name : 'portfolio',
-            url : 'https://www.jessec.org',
+            url : 'https://www.jessec.org'
         }],
 
         certifications: [{
             name: 'Front End Certification'
         }]
+
     };
 
 
     const userProfile = require('./database/profileModel').userProfile;
+
     userProfile.addProfile(data);
 
     res.end('made a new profile');
+
+    // userProfile.getProfile('vampiire').then( doc => console.log(doc.checkins[0].sessions));
+
 
 });
 
@@ -83,40 +81,31 @@ router.get('/', (req, res) => {
 
 // ------------ INCOMING SLASH COMMANDS ------------- //
 
-router.post('/chimp', (req, res) => {
+// ----- CHECK-IN ----- //
+router.post('/checkin', (req, res) => {
+
     const body = req.body;
+    const user = body.user_name;
 
-    console.log(body);
+    let valueObject = {};
 
-    // verify Slack token
-    if(tools.verify.slash(body.token)){
+// filter results to only pass @userName tags then strip the '@' symbol
+    let filtered = body.text.split(' ').filter( e => /@[A-Za-z]+/g.test(e));
+    filtered.forEach( (e, i, a) => a[i] = e.replace(/\@/g, ''));
 
-        const text = body.text;
-        const user = body.user_name;
-        const command = text.slice(0, text.indexOf(' '));
-        const argument = text.slice(text.indexOf(' ')+1, );
+// inject the filtered and stripped partners array into the valueObject
+    valueObject.partners = filtered;
+// inject the user calling the checkin so they dont have to tag themselves
+    valueObject.partners.push(user);
 
-        tools.database.getProfile(user).then( profile => {});
+    if(tools.verify.slash(body.token)) res.json(tools.interactive.interaction('checkin', valueObject));
+    else res.end('invalid Slack token');
 
-        switch(command){
-            case 'setup':
 
-            case 'update':
-                // query db and retrieve metric [argument]
-                    // if no profile exists send back link to form
-                break;
-            case 'delete':
-                // if no argument send back "DELETE" argument request to user
-                break;
-        }
-
-        res.json('test worked');
-    }
-
-    else res.end('invalid Slack verification token');
 
 });
 
+// ----- DISPLAY PROFILE / ITEM ----- //
 router.post('/profile', (req, res) => {
 
     const body = req.body;
@@ -143,6 +132,7 @@ router.post('/profile', (req, res) => {
                     // call / return profile builder
                 }
             }
+
             else res.send(`[\`${text}\`] is not a valid username.
             try again with the format \`/update @userName [share]\`
             you may only call one profile look-up at a time`);
@@ -152,6 +142,7 @@ router.post('/profile', (req, res) => {
 
 });
 
+// ----- UPDATE PROFILE ----- //
 router.post('/update', (req, res) => {
 
     const respond = require('./tools/respond');
@@ -178,34 +169,20 @@ router.post('/update', (req, res) => {
                 console.log('aptitudes');
                 res.json(tools.interactive.interaction('update'));
             }
+            if(arguments === 'picture'){
+                const userID = body.user_id;
+                const userProfile = require('./database/profileModel').userProfile;
+
+                tools.requests.userData('pic', userID).then( picObject => {
+                    let data = { item: 'profilePic', updateData : picObject };
+                    userProfile.processUpdate(userName, cohortName, data).then( response => res.end(response));
+                });
+            }
             else res.end(respond.helpResponse(arguments));
         }
     }
 
     else res.end('invalid Slack token');
-
-});
-
-router.post('/checkin', (req, res) => {
-
-    const body = req.body;
-    const user = body.user_name;
-
-    let valueObject = {};
-
-// filter results to only pass @userName tags then strip the '@' symbol
-    let filtered = body.text.split(' ').filter( e => /@[A-Za-z]+/g.test(e));
-    filtered.forEach( (e, i, a) => a[i] = e.replace(/\@/g, ''));
-
-// inject the filtered and stripped partners array into the valueObject
-    valueObject.partners = filtered;
-// inject the user calling the checkin so they dont have to tag themselves
-    valueObject.partners.push(user);
-
-    if(tools.verify.slash(body.token)) res.json(tools.interactive.interaction('checkin', valueObject));
-    else res.end('invalid Slack token');
-
-
 
 });
 

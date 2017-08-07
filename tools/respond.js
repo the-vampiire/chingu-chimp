@@ -70,6 +70,30 @@ const val = require('./valStringer');
         return response;
 
     };
+
+// ------------ PROFILE RESPONSES ------------------ //
+
+fullProfile = userName => {
+    // build message with multiple attachments
+        // split into categories of attachments
+            // start with main attachment [dashboard]
+                // profile photo, username, points, streaks, number of cohorts, member since,
+};
+
+profileItem = (userName, item) => {
+
+};
+
+// ------ PROFILE ATTACHMENTS ------ //
+
+dashboard = () => {
+
+};
+
+
+
+
+
 // ------------ UPDATE RESPONSES ------------------ //
 
     updateAptitudesResponse = () => {

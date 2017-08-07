@@ -4,7 +4,6 @@
  */
 
 const respond = require('./respond');
-const requests = require('./requests');
 const userProfile = require('../database/profileModel').userProfile;
 
 interaction = (type, valueObject) => {
@@ -41,7 +40,7 @@ processInteraction = payload => {
         case 'taskSelect':
             response = respond.submitCheckin(value);
             break;
-    // submit
+    // SUBMIT
         case 'checkInSubmit':
             value = JSON.parse(value);
 
@@ -81,7 +80,7 @@ processInteraction = payload => {
             break;
         case 'aptitudeSubmit':
             value = JSON.parse(value);
-        // form the item and updateData pair expected by the userProfile processUpdate() method
+
             let processUpdateData = {};
             processUpdateData.item = `aptitudes`;
             processUpdateData.subItem = value.aptitude;

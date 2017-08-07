@@ -1,10 +1,3 @@
-let t = '@vampiire stuff';
-if(~t.indexOf(' ')){
-    console.log('stuff');
-}
+let t = '@vampiire stuff-and-stuff what about -stuff dude';
 
-if(-10){
-    console.log('stuff too')
-}
-
-console.log(~t.indexOf(' '));
+t.match(//g);
