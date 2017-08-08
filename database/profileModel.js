@@ -112,50 +112,42 @@ const requests = require('../tools/requests');
 // ------- CHECKIN PROCESSING ------- //
 userSchema.statics.processCheckin = function(userName, cohortName, channelID, checkinSessionData){
 
-    return this.findOne({userName:userName}).then( profileDoc => {
+    return new Promise( (resolve, reject) => {
+        this.findOne({userName: userName}).then( profileDoc => {
+            if(profileDoc){
 
-        if(profileDoc){
-            let error;
-            let cohorts = profileDoc.cohorts;
-            profileDoc.cohorts = checkAndAddCohort(cohorts, cohortName);
+                let cohorts = profileDoc.cohorts;
+                profileDoc.cohorts = checkAndAddCohort(cohorts, cohortName);
 
-            const checkins = profileDoc.checkins;
-            let channel = checkins.find( e => e.channelID === channelID);
+                const checkins = profileDoc.checkins;
+                let channel = checkins.find( e => e.channelID === channelID);
 
-            channel ?
-                channel.sessions.push(checkinSessionData) :
-                checkins.push(new checkinModel({channelID : channelID, sessions : [checkinSessionData]}));
+                channel ?
+                    channel.sessions.push(checkinSessionData) :
+                    checkins.push(new checkinModel({channelID : channelID, sessions : [checkinSessionData]}));
 
-            const streakUpdate = streakUpdater(checkins, profileDoc.currentStreak, profileDoc.bestStreak);
-            let currentStreak = streakUpdate.currentStreak;
-            let bestStreak = streakUpdate.bestStreak;
+                const streakUpdate = streakUpdater(checkins, profileDoc.currentStreak, profileDoc.bestStreak);
+                let currentStreak = streakUpdate.currentStreak;
+                let bestStreak = streakUpdate.bestStreak;
 
-            profileDoc.lastCheckin = checkinSessionData;
 
-            return profileDoc.save( (saveError, success) => {
-                if(saveError) return saveError;
-                if(channel) return { currentStreak, bestStreak, numOfCheckins: channel.sessions.length };
-                else return { currentStreak, bestStreak };
-            })
-        }
+                profileDoc.lastCheckin = checkinSessionData;
 
-        else return `Checkin for \`@${userName}\` failed:\nprofile \`@${userName}\` not found please visit ENTER FORM WEBSITE HERE to create a profile`;
+                profileDoc.save( (saveError, success) => {
 
-    }).then( responseData => {
+                    if(saveError) resolve(saveError);
+                    if(success){
+                       if(channel) resolve(`succesfully saved the checkin for \`@${userName}\`. you have \`${channel.sessions.length}\` checkins on this channel!
+             \`current streak\`: ${currentStreak.value} || \`best streak\`: ${bestStreak}\n`);
+                       else resolve(`succesfully saved the checkin for \`@${userName}\`. This is your first checkin on this channel, keep it up!
+             \`current streak\`: ${currentStreak.value} || \`best streak\`: ${bestStreak}\n`);
+                    }
+                });
+            }
 
-        if(typeof responseData === 'string') return responseData;
-
-        if(!responseData.numOfCheckins){
-            return responseData.error ? `sorry the user \`${userName}\` does not have a profile` :
-                `succesfully saved the checkin for \`@${userName}\`. this is your first checkin on this channel, keep it up
-             \`current streak\`: ${responseData.currentStreak.value} || \`best streak\`: ${responseData.bestStreak}\n`;
-        }
-
-        return responseData.error ? `sorry the user \`${userName}\` does not have a profile` :
-            `succesfully saved the checkin for \`@${userName}\`. you have \`${responseData.numOfCheckins}\` checkins on this channel!
-             \`current streak\`: ${responseData.currentStreak.value} || \`best streak\`: ${responseData.bestStreak}\n`;
+            else resolve(`Checkin for \`@${userName}\` failed:\nprofile \`@${userName}\` not found\nplease share this link ENTER FORM WEBSITE HERE to with ${userName} to create a profile\n`);
+        });
     });
-
 };
 
 streakUpdater = (checkins, currentStreak, bestStreak) => {
@@ -269,4 +261,3 @@ module.exports = {
     checkinSchema : checkinSchema,
     checkinModel : checkinModel
 };
-

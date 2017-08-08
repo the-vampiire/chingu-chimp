@@ -14,6 +14,7 @@ const val = require('./valStringer');
 
     checkinResponse = () => {
         return {
+            response_type: 'in_channel',
             text: "Check In \nUse the following interactive message sequence to define and check into your activity."
         };
     };
@@ -31,16 +32,6 @@ const val = require('./valStringer');
 
     };
 
-    // userSelect = valueObject => {
-    //
-    //     const menuItems = ['vampiire', 'dsglovia', 'jessec'];
-    //
-    //     let response = checkinResponse();
-    //     response.attachments = [val.menu('Select a partner', 'userSelect', 'partners', valueObject, menuItems)];
-    //
-    //     return response;
-    // };
-
     taskSelect = valueObject => {
 
         // console.log(`task select \n ${valueObject}`);
@@ -54,21 +45,27 @@ const val = require('./valStringer');
     };
 
     submitCheckin = valueObject => {
-
         valueObject = JSON.parse(valueObject);
+        const partners = valueObject.partners;
 
-        let response = checkinResponse();
+        let kind = `${valueObject.kind.slice(0,1).toUpperCase()}${valueObject.kind.slice(1)}`;
+        switch(kind){
+            case 'Accountability':
+            case 'Pair programming':
+                console.log('called');
+                kind = `${kind} session`;
+                break;
+        }
 
-    // IMPORTANT ----- these need to be passed custom attachments. proof of concept works but they look ugly as shit
-        // SEE NOTE BELOW ON LINE 124
-        response.attachments = [
-            val.button(`Check-in confirmation: ${valueObject.kind} session with ${valueObject.partners.join(', ')} to work on ${valueObject.task}`,
-                                'checkInSubmit', 'Check In', 'submit', true, valueObject),
-            val.button(`If this information is incorrect you can start over (preserving the partners) with the "Start Over" button below \nIf you want to completely reset then issue a new \`/checkin [@partnerName]\` command`,
-                'checkInSubmit', 'Start over', 'submit', false, valueObject)
-        ];
-        return response;
+        let partnerString = ``;
+        partners.forEach( (partner, index) => {
+            if(partners.length === 1) partnerString += `@${partner}`;
+            else if(index === partners.length-1) partnerString += `and @${partner}`;
+            else partnerString += `@${partner} `;
+        });
 
+        return valSubmit(valueObject, 'checkin', true,
+            `Check-in to *${kind}* to work on *${valueObject.task}*\nCheck-in will be processed for: *${partnerString}*`);
     };
 
 // ------------ PROFILE RESPONSES ------------------ //
@@ -212,9 +209,9 @@ const userProfile = require('../database/profileModel').userProfile;
         return response;
     };
 
-    skillSelect = () => {
+    skillSelect = valueObject => {
         let response = updateSkillsResponse();
-        response.attachments = [val.menu('Select a skill to add or update', 'skillSelect', 'skill', {}, ['languages', 'frameworks'])];
+        response.attachments = [val.menu('Select a skill to add or update', 'skillSelect', 'skill', valueObject, ['languages', 'frameworks'])];
         return response;
     };
 
@@ -249,17 +246,17 @@ const userProfile = require('../database/profileModel').userProfile;
 
     submitSkill = valueObject => {
         valueObject = JSON.parse(valueObject);
-        let response = updateSkillsResponse();
+        // let response = updateSkillsResponse();
 
     // IMPORTANT -----  these need to be passed custom attachments. proof of concept works but they look ugly as shit
 // DO EVERYTHING BELOW THIS LINE. MAKE IT HAPPEN
         // valStringer note: add a "submit / restart" valStringer method as an option alongise valMenu and valButton
             // implement a dropdown that lets you select which part of the menu you would like to edit
             // add a final method that accepts and parses the valueObject
-        response.attachments = [val.button(`You have selected ${valueObject.name} at the ${valueObject.level} skill level`,
-            'skillSubmit', 'Submit', 'submit', true, valueObject)];
+        // response.attachments = [val.button(`You have selected ${valueObject.name} at the ${valueObject.level} skill level`,
+        //     'skillSubmit', 'Submit', 'submit', true, valueObject)];
 
-        return response;
+        return valSubmit(valueObject, 'skill', true, `You have selected *${valueObject.name}* at the *${valueObject.level}* skill level`);
     };
 
     helpResponse = (type) => {

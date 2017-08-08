@@ -135,8 +135,8 @@ router.post('/profile', (req, res) => {
                     else item = arguments[1].replace(/#/, '');
                 }
 
-                if(item) tools.respond.profileItem(userName, share, item).then( response => typeof response === 'string' ?
-                    res.end(response) : res.json(response));
+                // if(item) tools.respond.profileItem(userName, share, item).then( response => typeof response === 'string' ?
+                //     res.end(response) : res.json(response));
 
                 else tools.respond.profileCard(userName, share).then( response => res.json(response));
 
@@ -204,7 +204,10 @@ router.post('/interactive', (req, res) => {
     if(tools.verify.slash(payload.token)){
         let output = tools.interactive.process(payload);
 
-        if(output instanceof Promise) output.then( response => res.end(response));
+        if(output instanceof Promise) output.then( response => {
+            if(typeof response === 'string') res.end(response);
+            else res.json(response);
+        });
         else res.json(output);
     }
 

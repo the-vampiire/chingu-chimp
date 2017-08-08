@@ -14,7 +14,7 @@ interaction = (type, valueObject) => {
             response = respond.activitySelect(valueObject);
             break;
         case 'update':
-            response = respond.skillSelect();
+            response = respond.skillSelect({});
             break;
     }
 
@@ -41,7 +41,7 @@ processInteraction = payload => {
             response = respond.submitCheckin(value);
             break;
     // SUBMIT
-        case 'checkInSubmit':
+        case 'checkinSubmit':
             value = JSON.parse(value);
 
             if(value.submit){
@@ -56,11 +56,11 @@ processInteraction = payload => {
                 return Promise.all(promises).then( responses => {
                     let saveResponse = ``;
                     responses.forEach( response => {
-                        saveResponse += `${response}\n`
+                        saveResponse += `\n${response}`
                     });
 
                     return saveResponse;
-                });
+                })
             }
 
             else response = respond.activitySelect(value);
@@ -81,17 +81,24 @@ processInteraction = payload => {
         case 'skillSubmit':
             value = JSON.parse(value);
 
-            let processUpdateData = {};
-            processUpdateData.item = `skills`;
-            processUpdateData.subItem = value.skill;
-            processUpdateData.updateData = {
-                name : value.name,
-                level : value.level
-            };
+            if(value.submit){
+                delete value.submit;
 
-            userProfile.processUpdate(userName, cohortName, processUpdateData);
+                const processUpdateData = {};
+                processUpdateData.item = `skills`;
+                processUpdateData.subItem = value.skill;
+                processUpdateData.updateData = {
+                    name : value.name,
+                    level : value.level
+                };
 
-            response = `Stored ${value.skill}: ${processUpdateData.updateData.name} at skill level: ${processUpdateData.updateData.level}`;
+                userProfile.processUpdate(userName, cohortName, processUpdateData);
+
+                response = `Updated profile skills item *${value.skill}* with: *${value.name}* at skill level: *${value.level}*`;
+            }
+
+            else response = respond.skillSelect(JSON.stringify(value));
+
             break;
 
     // -------------- UPDATE X -------------- //

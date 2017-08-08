@@ -53,7 +53,37 @@ valButton = (headerText, callbackID, buttonText, buttonName, buttonValue, valueO
     return attachment;
 };
 
-valMessage = valObject => {
+valSubmit = (valueObject, type, reset = false, customText) => {
+
+    let response = {
+        text: `${customText ? customText : 'Confirm or Reset'}`,
+
+        attachments: [
+            {
+                text: '',
+                callback_id: `${type}Submit`,
+                actions: [{
+                    text: 'Submit',
+                    name: 'submit',
+                    type: 'button',
+                    style: 'primary',
+                    value: valStringer(valueObject, 'submit', true)
+                }]
+            }
+        ]
+    };
+
+    if(reset) response.attachments[0].actions.push({
+            text: 'Reset',
+            name: 'submit',
+            type: 'button',
+            style: 'danger',
+            value: valStringer(valueObject, 'submit', false)
+        }
+    );
+
+
+    return response;
 
 };
 
@@ -87,6 +117,7 @@ buttonAttachment = (headerText, callbackID, buttonText, buttonName, buttonValue,
         }]
     }
 };
+
 
 // scans a custom attachment object for errors
 errorScan = (type, customAttachment) => {
@@ -145,5 +176,6 @@ module.exports = {
     stringer : valStringer,
     options : valOptions,
     menu : valMenu,
-    button : valButton
+    button : valButton,
+    submit : valSubmit
 };
