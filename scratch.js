@@ -1,3 +1,12 @@
-let t = '@vampiire stuff-and-stuff what about -stuff dude';
+let t = `a dog`;
 
-t.match(//g);
+console.log(~t.indexOf('dog'));
+console.log(Boolean(!~t.indexOf('cat')) === true);
+
+/*
+*
+*
+* ~
+*   (value * -1) + -1
+*
+* */

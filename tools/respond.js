@@ -74,14 +74,19 @@ const val = require('./valStringer');
 // ------------ PROFILE RESPONSES ------------------ //
 const userProfile = require('../database/profileModel').userProfile;
 
-    profileCard = userName => {
+    profileItem = (userName, share, item) => {
+
+    };
+
+    profileCard = (userName, share) => {
 
         return userProfile.getProfile(userName).then( user => {
+
             const profilePic = user.profilePic.size_192;
             const points = user.points;
             const currentStreak = user.currentStreak.value;
             const bestStreak = user.bestStreak;
-            const joinDate = user.joinDate;
+            const joinDate = `<!date^${Math.round((user.joinDate/1000))}^{date_pretty}|Failed to load date>`;
             const blog = user.blog;
             const gitHub = user.gitHub;
             const portfolio = user.portfolio;
@@ -97,24 +102,27 @@ const userProfile = require('../database/profileModel').userProfile;
             });
 
             const response = {
+
+                response_type: `${share ? `in_channel` : `ephemeral`}`,
                 text: `*${userName.toUpperCase()}'s PROFILE*`,
 
                 attachments: [
 
                     {
                         fallback: `${userName} join date, previous project, and last check-in`,
-                        markdwn_in: ['text', 'pretext'],
-                        pretext: '*Dashboard*',
-                        color: '#000000',
-                        // text: `*Member Since:* ${joinDate}\n*Previous Project:* ${lastProject.name}\n*Last Check-in:* ${lastCheckin.kind} with ${lastCheckinPartners}`,
-                        text: "*Member Since: *"+joinDate+"\n"+"*Previous Project:* "+lastProject.name+"\n"+"*Last Check-in* "+lastCheckin.kind+"with "+lastCheckinPartners,
+                        mrkdwn_in: ["text", "pretext"],
+                        color: '#15df89',
+                        text: `*Member Since:* ${joinDate}\n*Previous Project:*`
+                        +"<"+`${lastProject.url}|${lastProject.name}`+">"+
+                        `\n*Last Check-in:* ${lastCheckin.kind} with ${lastCheckinPartners}`,
                         thumb_url: profilePic,
 
                     },
 
                     {
                         fallback: `${userName} points, completed projects, best streak, current streak`,
-                        markdwn_in: ['text', 'pretext'],
+                        mrkdwn_in: ['text', 'pretext'],
+                        pretext: "*Dashboard*",
                         color: '#15df89',
                         fields: [
                             {
@@ -144,7 +152,7 @@ const userProfile = require('../database/profileModel').userProfile;
 
             if(gitHub || blog || portfolio) response.attachments.push({
                 fallback: `${userName} social media links`,
-                markdwn_in: ['text', 'pretext'],
+                mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Social Media*',
                 color: '#000000',
                 text: `*GitHub:* ${gitHub ? `${gitHub}\n`: `No GitHub profile available\n`}*Portfolio:* ${portfolio ? `${portfolio}\n` : `No portfolio link available\n`}*Blog:* ${blog ? `${blog}` : `No blog link available\n`}`
@@ -152,7 +160,11 @@ const userProfile = require('../database/profileModel').userProfile;
 
             if(certifications.length) {
 
+                certifications.shift();
+
                 certifications.forEach( (certificate, index) => {
+
+                    console.log(certificate);
 
                     let attachment = {
                         color: '#15df89',
@@ -192,17 +204,17 @@ const userProfile = require('../database/profileModel').userProfile;
 
 // ------------ UPDATE RESPONSES ------------------ //
 
-    updateAptitudesResponse = () => {
+    updateSkillsResponse = () => {
         let response = {
-            text: 'Add or update your aptitudes \nAdd a new aptitude or select an existing one and submit an updated skill level'
+            text: 'Add or update your skills \nAdd a new skill or select an existing one and submit an updated skill level'
         };
 
         return response;
     };
 
-    aptitudeSelect = () => {
-        let response = updateAptitudesResponse();
-        response.attachments = [val.menu('Select an aptitude to add or update', 'aptitudeSelect', 'aptitude', {}, ['languages', 'frameworks'])];
+    skillSelect = () => {
+        let response = updateSkillsResponse();
+        response.attachments = [val.menu('Select a skill to add or update', 'skillSelect', 'skill', {}, ['languages', 'frameworks'])];
         return response;
     };
 
@@ -213,7 +225,7 @@ const userProfile = require('../database/profileModel').userProfile;
         const languages = ['JavaScript', 'Java', 'Python', 'Ruby', 'C++', 'C#.Net', 'Assembly', 'Bash', 'Basic', 'C', 'C#',
             'Fortran', 'Go', 'MATLAB', 'Objective-C', 'Perl', 'PHP', 'Powershell', 'VBA'];
 
-        let response = updateAptitudesResponse();
+        let response = updateSkillsResponse();
         response.attachments = [val.menu('Select a language', 'languageSelect', 'name', valueObject, languages)];
         return response;
     };
@@ -223,21 +235,21 @@ const userProfile = require('../database/profileModel').userProfile;
 
         const frameworks = ['jQuery', 'Bootstrap', 'Angular2/4', 'AngularJS', 'Electron', 'jQueryUI', 'React', 'React Native', 'Vue'];
 
-        let response = updateAptitudesResponse();
+        let response = updateSkillsResponse();
         response.attachments = [val.menu('Select a framework', 'frameworkSelect', 'name', valueObject, frameworks)];
         return response;
     };
 
     levelSelect = valueObject => {
         const levels = ['novice', 'intermediate', 'expert', 'wizard'];
-        let response = updateAptitudesResponse();
+        let response = updateSkillsResponse();
         response.attachments = [val.menu('Select your skill level', 'levelSelect', 'level', valueObject, levels)];
         return response;
     };
 
-    submitAptitude = valueObject => {
+    submitSkill = valueObject => {
         valueObject = JSON.parse(valueObject);
-        let response = updateAptitudesResponse();
+        let response = updateSkillsResponse();
 
     // IMPORTANT -----  these need to be passed custom attachments. proof of concept works but they look ugly as shit
 // DO EVERYTHING BELOW THIS LINE. MAKE IT HAPPEN
@@ -245,7 +257,7 @@ const userProfile = require('../database/profileModel').userProfile;
             // implement a dropdown that lets you select which part of the menu you would like to edit
             // add a final method that accepts and parses the valueObject
         response.attachments = [val.button(`You have selected ${valueObject.name} at the ${valueObject.level} skill level`,
-            'aptitudeSubmit', 'Submit', 'submit', true, valueObject)];
+            'skillSubmit', 'Submit', 'submit', true, valueObject)];
 
         return response;
     };
@@ -255,7 +267,7 @@ const userProfile = require('../database/profileModel').userProfile;
         let help =
         `*How to use the \`/update\` command:* \n\nUpdating works like git in stringing together mandatory and/or optional \`[-flag] [data]\` pairs to build your update command\n
         *General form: \`/update [profile item] [[-flag] [data]]\`*\n
-        *List of update items: \`aptitudes\`, \`blog\`, \`certifications\`, \`gitHub\`, \`portfolio\`, \`projects\`, \`story\`*\n
+        *List of update items: \`skills\`, \`blog\`, \`certifications\`, \`gitHub\`, \`portfolio\`, \`projects\`, \`story\`*\n
         *List of update flags: \`-date\` or \`-d\`, \`-git\` or \`-g\`, \`-name\` or \`-d\`, \`-url\` or \`-u\`*\n
         
         *Updating GitHub, Blog, or Portfolio URLs*
@@ -295,16 +307,16 @@ const userProfile = require('../database/profileModel').userProfile;
         \t\t\`/update projects -n New Project -u https://www.domain.com/newProject\` 
         \t\t\`-g https://www.github.com/yourUserName/newProject -d 08/08/17\`
         \n
-        *Adding or Updating Aptitudes*
+        *Adding or Updating Skills*
         \t*Item(s)*
-        \t\t[\`aptitudes\`]: your languages and frameworks and their associated skill levels
+        \t\t[\`skills\`]: your languages and frameworks and their associated skill levels
         \t*Flag(s)*
         \t\tNone. 
         
         \tAn interactive message will be sent back where you can choose to update a language or framework. 
         \tAfter making your choice a dropdown menu of the languages or frameworks will be supplied. 
         \tAfter one is chosen from the list a skill level dropdown will be provided for selection.
-        \tOn submit the new language or framework and its skill level will be added to the aptitudes section of your profile
+        \tOn submit the new language or framework and its skill level will be added to the skills section of your profile
         \t\t*Note*: to update an existing skill level select the language or framework then select the new skill level.
         \n
         *Adding Free Code Camp Certifications*
@@ -365,17 +377,17 @@ const userProfile = require('../database/profileModel').userProfile;
         \t\t\`-g https://www.github.com/yourUserName/newProject -d 08/08/17\`
         \n`;
 
-        let aptitudes = `*General form: \`/update [profile item] [[-flag] [data]]\`*\n
-        *Adding or Updating Aptitudes*
+        let skills = `*General form: \`/update [profile item] [[-flag] [data]]\`*\n
+        *Adding or Updating Skills*
         \t*Item(s)*
-        \t\t[\`aptitudes\`]: your languages and frameworks and their associated skill levels
+        \t\t[\`skills\`]: your languages and frameworks and their associated skill levels
         \t*Flag(s)*
         \t\tNone. 
         
         \tAn interactive message will be sent back where you can choose to update a language or framework. 
         \tAfter making your choice a dropdown menu of the languages or frameworks will be supplied. 
         \tAfter one is chosen from the list a skill level dropdown will be provided for selection.
-        \tOn submit the new language or framework and its skill level will be added to the aptitudes section of your profile
+        \tOn submit the new language or framework and its skill level will be added to the skills section of your profile
         \t\t*Note*: to update an existing skill level select the language or framework then select the new skill level.
         \n`;
 
@@ -409,8 +421,8 @@ const userProfile = require('../database/profileModel').userProfile;
             case 'projects':
                 response = projects;
                 break;
-            case 'aptitudes':
-                response = aptitudes;
+            case 'skills':
+                response = skills;
                 break;
             case 'certifications':
                 response = certifications;
@@ -436,9 +448,9 @@ module.exports = {
 
 // UPDATE
     helpResponse : helpResponse,
-    aptitudeSelect : aptitudeSelect,
+    skillSelect : skillSelect,
     languageSelect : languageSelect,
     frameworkSelect : frameworkSelect,
     levelSelect,
-    submitAptitude : submitAptitude
+    submitSkill : submitSkill
 };

@@ -118,17 +118,28 @@ router.post('/profile', (req, res) => {
         }
 
         if(text) {
-            if (/^\@[A-Za-z]+( share)?$/.test(text)) {
-                if (~text.indexOf(' ')) {
-                    let userName = text.slice(0, text.indexOf(' '));
-                    share = true;
-                    // call / return profile builder
+            if (/^\@[0-9A-Za-z-_.]+( share)?( #(story|projects|skills))?$/.test(text)) {
+
+                let share = false;
+                let item;
+
+                const arguments = text.split(' ');
+
+                let userName = arguments[0].replace(/@/, '');
+
+                if(arguments[1]){
+                    if(~arguments[1].indexOf(/share/)){
+                        share = true;
+                        if(arguments[2]) item = arguments[2].replace(/#/, '');
+                    }
+                    else item = arguments[1].replace(/#/, '');
                 }
-                else {
-                    let userName = text.replace(/@/, '');
-                    tools.respond.profileCard(userName).then( response => res.json(response));
-                    // call / return profile builder
-                }
+
+                if(item) tools.respond.profileItem(userName, share, item).then( response => typeof response === 'string' ?
+                    res.end(response) : res.json(response));
+
+                else tools.respond.profileCard(userName, share).then( response => res.json(response));
+
             }
 
             else res.send(`[\`${text}\`] is not a valid username.
@@ -163,7 +174,7 @@ router.post('/update', (req, res) => {
 
         else{
             if(!arguments) res.send(respond.helpResponse('help'));
-            if(arguments === 'aptitudes'){
+            if(arguments === 'skills'){
                 res.json(tools.interactive.interaction('update'));
             }
             if(arguments === 'picture'){
@@ -203,7 +214,7 @@ router.post('/interactive', (req, res) => {
 
 // used to load options for interactive messages
 router.post('/options', (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     res.json('worked');
 });
 

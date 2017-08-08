@@ -14,7 +14,7 @@ interaction = (type, valueObject) => {
             response = respond.activitySelect(valueObject);
             break;
         case 'update':
-            response = respond.aptitudeSelect();
+            response = respond.skillSelect();
             break;
     }
 
@@ -67,23 +67,23 @@ processInteraction = payload => {
 
             break;
 
-    // -------------- UPDATE APTITUDE -------------- //
-        case 'aptitudeSelect':
-            response = JSON.parse(value).aptitude === 'languages' ? respond.languageSelect(value) : respond.frameworkSelect(value);
+    // -------------- UPDATE SKILL -------------- //
+        case 'skillSelect':
+            response = JSON.parse(value).skill === 'languages' ? respond.languageSelect(value) : respond.frameworkSelect(value);
             break;
         case 'languageSelect':
         case 'frameworkSelect':
             response = respond.levelSelect(value);
             break;
         case 'levelSelect':
-            response = respond.submitAptitude(value);
+            response = respond.submitSkill(value);
             break;
-        case 'aptitudeSubmit':
+        case 'skillSubmit':
             value = JSON.parse(value);
 
             let processUpdateData = {};
-            processUpdateData.item = `aptitudes`;
-            processUpdateData.subItem = value.aptitude;
+            processUpdateData.item = `skills`;
+            processUpdateData.subItem = value.skill;
             processUpdateData.updateData = {
                 name : value.name,
                 level : value.level
@@ -91,7 +91,7 @@ processInteraction = payload => {
 
             userProfile.processUpdate(userName, cohortName, processUpdateData);
 
-            response = `Stored ${value.aptitude}: ${processUpdateData.updateData.name} at skill level: ${processUpdateData.updateData.level}`;
+            response = `Stored ${value.skill}: ${processUpdateData.updateData.name} at skill level: ${processUpdateData.updateData.level}`;
             break;
 
     // -------------- UPDATE X -------------- //

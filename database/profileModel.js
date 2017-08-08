@@ -52,7 +52,7 @@ const requests = require('../tools/requests');
             startDate: {type: Number, default: Date.now()},
         }],
 
-        aptitudes: {
+        skills: {
 
             languages: [{
                 name: String,
@@ -206,7 +206,7 @@ streakUpdater = (checkins, currentStreak, bestStreak) => {
                         break;
 
                     // pushing updateData into a nested profile item array
-                    case 'aptitudes':
+                    case 'skills':
                         let subUpdateItem = data.subItem;
                         profileDoc[updateItem][subUpdateItem].push(updateData);
                         break;
