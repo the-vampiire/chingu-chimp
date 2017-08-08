@@ -72,27 +72,123 @@ const val = require('./valStringer');
     };
 
 // ------------ PROFILE RESPONSES ------------------ //
+const userProfile = require('../database/profileModel').userProfile;
 
-fullProfile = userName => {
-    // build message with multiple attachments
-        // split into categories of attachments
-            // start with main attachment [dashboard]
-                // profile photo, username, points, streaks, number of cohorts, member since,
-};
+    profileCard = userName => {
 
-profileItem = (userName, item) => {
+        return userProfile.getProfile(userName).then( user => {
+            const profilePic = user.profilePic.size_192;
+            const points = user.points;
+            const currentStreak = user.currentStreak.value;
+            const bestStreak = user.bestStreak;
+            const joinDate = user.joinDate;
+            const blog = user.blog;
+            const gitHub = user.gitHub;
+            const portfolio = user.portfolio;
+            const projectsLength = user.projects.length;
+            const lastProject = user.projects.pop();
+            const certifications = user.certifications;
 
-};
+            const lastCheckin = user.lastCheckin;
+            let lastCheckinPartners = ``;
+            lastCheckin.partners.forEach( (partner, index) => {
+                if(index === lastCheckin.partners.length-1 && lastCheckinPartners) lastCheckinPartners += `and ${partner}`;
+                else lastCheckinPartners += `${partner}, `;
+            });
 
-// ------ PROFILE ATTACHMENTS ------ //
+            const response = {
+                text: `*${userName.toUpperCase()}'s PROFILE*`,
 
-dashboard = () => {
+                attachments: [
 
-};
+                    {
+                        fallback: `${userName} join date, previous project, and last check-in`,
+                        markdwn_in: ['text', 'pretext'],
+                        pretext: '*Dashboard*',
+                        color: '#000000',
+                        // text: `*Member Since:* ${joinDate}\n*Previous Project:* ${lastProject.name}\n*Last Check-in:* ${lastCheckin.kind} with ${lastCheckinPartners}`,
+                        text: "*Member Since: *"+joinDate+"\n"+"*Previous Project:* "+lastProject.name+"\n"+"*Last Check-in* "+lastCheckin.kind+"with "+lastCheckinPartners,
+                        thumb_url: profilePic,
+
+                    },
+
+                    {
+                        fallback: `${userName} points, completed projects, best streak, current streak`,
+                        markdwn_in: ['text', 'pretext'],
+                        color: '#15df89',
+                        fields: [
+                            {
+                                title: 'Chingu Points',
+                                value: `${points}`,
+                                short: true
+                            },
+                            {
+                                title: 'Completed Projects',
+                                value: `${projectsLength > 0 ? projectsLength : "No project data available"}`,
+                                short: true
+                            },
+                            {
+                                title: 'Current Streak',
+                                value: `${currentStreak}`,
+                                short: true
+                            },
+                            {
+                                title: 'Best Streak',
+                                value: `${bestStreak}`,
+                                short: true
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            if(gitHub || blog || portfolio) response.attachments.push({
+                fallback: `${userName} social media links`,
+                markdwn_in: ['text', 'pretext'],
+                pretext: '*Social Media*',
+                color: '#000000',
+                text: `*GitHub:* ${gitHub ? `${gitHub}\n`: `No GitHub profile available\n`}*Portfolio:* ${portfolio ? `${portfolio}\n` : `No portfolio link available\n`}*Blog:* ${blog ? `${blog}` : `No blog link available\n`}`
+            });
+
+            if(certifications.length) {
+
+                certifications.forEach( (certificate, index) => {
+
+                    let attachment = {
+                        color: '#15df89',
+                        mrkdwn_in: ['pretext', 'text'],
+                        title: `${certificate.name}`,
+                        title_link: `${certificate.url}`
+                    };
+
+                    if(index === 0){
+                        attachment.pretext = '*Free Code Camp Certifications*'
+                    }
+
+                    response.attachments.push(attachment);
+                });
+            }
+
+            return response;
+
+        });
+    };
 
 
 
+    getAttachmentItem = (userName, item) => {
 
+        switch(item){
+            case 'dashboard':
+                return dashboard(userName);
+            case 'points':
+                return points(userName);
+                break;
+            default:
+                console.log('invalid profile item requested');
+        }
+
+    };
 
 // ------------ UPDATE RESPONSES ------------------ //
 
@@ -328,12 +424,17 @@ dashboard = () => {
 
 
 module.exports = {
+// CHECKIN
     submit : submit,
     activitySelect : activitySelect,
     // userSelect : userSelect,
     taskSelect : taskSelect,
     submitCheckin : submitCheckin,
 
+// PROFILE
+    profileCard,
+
+// UPDATE
     helpResponse : helpResponse,
     aptitudeSelect : aptitudeSelect,
     languageSelect : languageSelect,

@@ -117,18 +117,16 @@ router.post('/profile', (req, res) => {
             // send back help response
         }
 
-        let user;
-        let share = false;
-
         if(text) {
             if (/^\@[A-Za-z]+( share)?$/.test(text)) {
                 if (~text.indexOf(' ')) {
-                    user = text.slice(0, text.indexOf(' '));
+                    let userName = text.slice(0, text.indexOf(' '));
                     share = true;
                     // call / return profile builder
                 }
                 else {
-                    user = text;
+                    let userName = text.replace(/@/, '');
+                    tools.respond.profileCard(userName).then( response => res.json(response));
                     // call / return profile builder
                 }
             }
@@ -166,7 +164,6 @@ router.post('/update', (req, res) => {
         else{
             if(!arguments) res.send(respond.helpResponse('help'));
             if(arguments === 'aptitudes'){
-                console.log('aptitudes');
                 res.json(tools.interactive.interaction('update'));
             }
             if(arguments === 'picture'){

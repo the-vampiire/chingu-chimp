@@ -7,6 +7,13 @@
 const mongoose = require('mongoose');
 const requests = require('../tools/requests');
 
+    const sessionSchema = new mongoose.Schema({
+        kind: String,
+        task: String,
+        partners: [String],
+        date: {type: Number, default: Date.now()}
+    });
+
     const checkinSchema = new mongoose.Schema({
 
     // uncomment to separate session streaks by channel
@@ -16,12 +23,7 @@ const requests = require('../tools/requests');
 
         channelID : String,
 
-        sessions: [{
-            kind: String,
-            task: String,
-            partners: [String],
-            date: {type: Number, default: Date.now()}
-        }]
+        sessions: [sessionSchema]
 
     });
 
@@ -64,6 +66,7 @@ const requests = require('../tools/requests');
         },
 
         checkins: [checkinSchema],
+        lastCheckin: sessionSchema,
 
         projects: [{
             name: String,
@@ -126,6 +129,8 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
             const streakUpdate = streakUpdater(checkins, profileDoc.currentStreak, profileDoc.bestStreak);
             let currentStreak = streakUpdate.currentStreak;
             let bestStreak = streakUpdate.bestStreak;
+
+            profileDoc.lastCheckin = checkinSessionData;
 
             return profileDoc.save( (saveError, success) => {
                 if(saveError) return saveError;
