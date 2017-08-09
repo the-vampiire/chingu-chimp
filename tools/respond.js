@@ -72,11 +72,12 @@ const userProfile = require('../database/profileModel').userProfile;
 
             // this is a stupid fix. need to strip the mongodb fluff
                 profileItem = profileItem[item];
-
                 let response = { attachments: [] };
                 response.response_type = share ? 'in_channel' : 'ephemeral';
                 switch(item){
                     case 'projects':
+                        if(profileItem) response = projectsItemResponse(profileItem, response, userName);
+                        else response.text = `${userName} does not currently have any projects`
                         // identify with userName
                         // a series of attachments
                             // each attachment:
@@ -84,27 +85,8 @@ const userProfile = require('../database/profileModel').userProfile;
                                     // name should be hyperlinked <url property|name property>
                         break;
                     case 'certifications':
-                        // clone the output of the profile card
-                        if(profileItem.length) {
-                            // put this in because i have a blank cert url
-                            profileItem.shift();
-
-                            profileItem.forEach( (certificate, index) => {
-
-                                let attachment = {
-                                    color: '#15df89',
-                                    mrkdwn_in: ['pretext', 'text'],
-                                    title: `${certificate.name}`,
-                                    title_link: `${certificate.url}`
-                                };
-
-                                if(index === 0){
-                                    attachment.pretext = `*${userName}'s Free Code Camp Certifications*`
-                                }
-
-                                response.attachments.push(attachment);
-                            });
-                        }
+                        if(profileItem.length) response = certificationsItemResponse(profileItem, response, userName); 
+                        else response.text = `${userName} does not currently have any Free Code Camp certifications`
                         break;
                     case 'skills':
                         break;
@@ -221,27 +203,8 @@ const userProfile = require('../database/profileModel').userProfile;
                 text: `*GitHub:* ${gitHub ? `${gitHub}\n`: `No GitHub profile available\n`}*Portfolio:* ${portfolio ? `${portfolio}\n` : `No portfolio link available\n`}*Blog:* ${blog ? `${blog}` : `No blog link available\n`}`
             });
 
-            if(certifications.length) {
+            if(certifications.length) certificationsItemResponse(certifications, response);
 
-                // put this in because i have a blank cert url
-                    certifications.shift();
-
-                certifications.forEach( (certificate, index) => {
-
-                    let attachment = {
-                        color: '#15df89',
-                        mrkdwn_in: ['pretext', 'text'],
-                        title: `${certificate.name}`,
-                        title_link: `${certificate.url}`
-                    };
-
-                    if(index === 0){
-                        attachment.pretext = '*Free Code Camp Certifications*'
-                    }
-
-                    response.attachments.push(attachment);
-                });
-            }
 
             return response;
 
@@ -257,12 +220,40 @@ const userProfile = require('../database/profileModel').userProfile;
             }
         };
 
-        certificationsItemResponse = () => {
+        certificationsItemResponse = (certifications, response, username) => {
+            // put this in because i have a blank cert url
+            certifications.shift();
 
+            certifications.forEach( (certificate, index) => {
+
+                let attachment = {
+                    color: '#15df89',
+                    mrkdwn_in: ['pretext', 'text'],
+                    title: `${certificate.name}`,
+                    title_link: `${certificate.url}`
+                };
+
+                if(index === 0) attachment.pretext = username ? `*${userName}'s Free Code Camp Certifications*` : `*Free Code Camp Certifications*`
+
+                    response.attachments.push(attachment);
+            });
+            return response;
         };
 
-        projectsItemResponse = () => {
+        projectsItemResponse = (projects, response, userName) => {
 
+            projects.forEach( (project, index) => {
+                let attachment = {
+                    color: '#15df89',
+                    mrkdwn_in: ['pretext', 'text'],
+                    text: `*Project Name:* ${project.name}\n*GitHub Repo:* <${project.gitHub}|${project.gitHub.slice(project.gitHub.indexOf('.com/')+5)}\n*Project Link:* ${ project.url ?  `<${project.url}|${project.name}>` : `No Link Available`}\n*Completed Date:* <!date^${Math.round((project.completedDate/1000))}^{date_pretty}|Failed to load date>`
+                };
+
+                if(index === 0) attachment.pretext = `*${userName}'s Completed Projects*`;
+
+                response.attachments.push(attachment);
+            });
+            return response;
         };
 
         skillsItemResponse = () => {
@@ -355,7 +346,7 @@ const userProfile = require('../database/profileModel').userProfile;
         \t\t[\`-name\`] [\`project name\`] _example:_ \`-name Project Name\`
         \t\t[\`-url\`] [\`project front end url\`] _example:_ \`-url https://www.domain.com/projectName\`
         \t\t[\`-git\`] [\`project GitHub repo\`] _example:_ \`-git https://www.github.com/yourUserName/projectName\`
-        \t\t\t*Either git, url, or both must be supplied*
+        \t\t\t*Github Link required but you may also include a frontend url optional*
         \t\t[\`-date\`] [\`date of completion\`] _example:_ \`-date 01/01/17\`
         \t\t\t *OPTIONAL: If no date is passed - today's date is inserted. Date must be mm/dd/yy format.*
         
@@ -424,7 +415,7 @@ const userProfile = require('../database/profileModel').userProfile;
         \t\t[\`-name\`] [\`project name\`] _example:_ \`-name Project Name\`
         \t\t[\`-url\`] [\`project front end url\`] _example:_ \`-url https://www.domain.com/projectName\`
         \t\t[\`-git\`] [\`project GitHub repo\`] _example:_ \`-git https://www.github.com/yourUserName/projectName\`
-        \t\t\t*Either git, url, or both must be supplied*
+        \t\t\t*Github Link required but you may also include a frontend url optional*
         \t\t[\`-date\`] [\`date of completion\`] _example:_ \`-date 01/01/17\`
         \t\t\t *OPTIONAL: If no date is passed - today's date is inserted. Date must be mm/dd/yy format.*
         
