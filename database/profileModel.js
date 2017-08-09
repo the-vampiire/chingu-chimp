@@ -184,7 +184,7 @@ streakUpdater = (checkins, currentStreak, bestStreak) => {
 
             if(profileDoc){
 
-                // if the cohort the user is updating from is not in their profile then it is added in this step
+            // if the cohort the user is updating from is not in their profile then it is added in this step
                 let cohorts = profileDoc.cohorts;
                 profileDoc.cohorts = checkAndAddCohort(cohorts, cohortName);
 
@@ -193,26 +193,36 @@ streakUpdater = (checkins, currentStreak, bestStreak) => {
 
                 switch(updateItem){
 
-                    // pushing updateData into a profile item array
+                // pushing updateData into a profile item array
                     case 'certifications':
                     case 'projects':
                         profileDoc[updateItem].push(updateData);
                         break;
 
-                    // pushing updateData into a nested profile item array
+                // pushing updateData into a nested profile item array
                     case 'skills':
-                        let subUpdateItem = data.subItem;
-                        profileDoc[updateItem][subUpdateItem].push(updateData);
+                        const subUpdateItem = data.subItem;
+                        const skillsItem = profileDoc[updateItem][subUpdateItem];
+                    // handles updating an existing skill
+                        let skillsItemIndex;
+                        if(skillsItem.some( (skill, index) => {
+                            if(skill.name === updateData.name){
+                                skillsItemIndex = index;
+                                return true
+                            }
+                        })) skillsItem[skillsItemIndex].level = updateData.level;
+                    // no existing skill, add a new one
+                        else skillsItem.push(updateData);
                         break;
 
-                    // setting the url field
+                // setting the url field
                     case 'blog':
                     case 'gitHub':
                     case 'portfolio':
                         profileDoc[updateItem] = updateData.url;
                         break;
 
-                    // simple string/number/object
+                // simple string/number/object
                     case 'profilePic':
                     case 'story':
                         profileDoc[updateItem] = updateData;

@@ -35,6 +35,7 @@ processInteraction = payload => {
     switch(type){
 
     // -------------- CHECKIN -------------- //
+
         case 'activitySelect':
             response = checkinResponse.taskSelect(value);
             break;
@@ -68,7 +69,8 @@ processInteraction = payload => {
 
             break;
 
-    // -------------- UPDATE SKILL -------------- //
+    // -------------- UPDATE SKILLS -------------- //
+
         case 'skillSelect':
             response = JSON.parse(value).skill === 'languages' ?
                 updateResponse.languageSelect(value) :

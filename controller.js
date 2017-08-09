@@ -123,7 +123,7 @@ router.post('/checkin', (req, res) => {
 
             res.json(tools.interactive.interaction('checkin', valueObject));
         }
-        else res.end('Invalid checkin command format. Try `/checkin <@userName> [@otherUserName]` or `/checkin help` for more detailed instruction');
+        else res.end('Invalid checkin command format. Try `/checkin <@userName> [@otherUserName(s)]` or `/checkin help` for more detailed instruction');
 
 
     }
