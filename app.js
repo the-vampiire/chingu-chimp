@@ -19,10 +19,9 @@ mongoose.connect(dbURL, {useMongoClient : true}, e => e ? console.log(`error: ${
 
 // Middleware
 const BP = require('body-parser');
-
-app.use('/public', express.static('public'));
 app.use(BP.urlencoded({extended:false}));
 app.use(BP.json());
+app.use('/public', express.static('public'));
 
 // Pass all routing to the controller
 const controller = require('./controller');

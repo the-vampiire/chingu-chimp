@@ -4,12 +4,10 @@
 
 const interactive = require('./interactive');
 const verify = require('./verify');
-const respond = require('./respond');
 const requests = require('./requests');
 
 module.exports = {
     interactive : interactive,
     verify : verify,
-    respond : respond,
     requests : requests
 };

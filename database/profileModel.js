@@ -5,6 +5,14 @@
 
 
 const mongoose = require('mongoose');
+const requests = require('../tools/requests');
+
+    const sessionSchema = new mongoose.Schema({
+        kind: String,
+        task: String,
+        partners: [String],
+        date: {type: Number, default: Date.now()}
+    });
 
     const checkinSchema = new mongoose.Schema({
 
@@ -15,12 +23,7 @@ const mongoose = require('mongoose');
 
         channelID : String,
 
-        sessions: [{
-            kind: String,
-            task: String,
-            partners: [String],
-            date: {type: Number, default: Date.now()}
-        }]
+        sessions: [sessionSchema]
 
     });
 
@@ -29,6 +32,11 @@ const mongoose = require('mongoose');
     const userSchema = new mongoose.Schema({
 
         userName: {type: String, lowercase: true},
+
+        profilePic : {
+            size_72 : {type: String, default: null},
+            size_192 : {type: String, default: null}
+        },
 
         portfolio: {type: String, default: null},
         gitHub: {type: String, default: null},
@@ -44,7 +52,7 @@ const mongoose = require('mongoose');
             startDate: {type: Number, default: Date.now()},
         }],
 
-        aptitudes: {
+        skills: {
 
             languages: [{
                 name: String,
@@ -58,6 +66,8 @@ const mongoose = require('mongoose');
         },
 
         checkins: [checkinSchema],
+        lastCheckin: sessionSchema,
+        totalCheckins: {type: Number, default: 0},
 
         projects: [{
             name: String,
@@ -94,7 +104,7 @@ const mongoose = require('mongoose');
         return this.findOne({userName : userName});
     };
 
-    userSchema.statics.getItem = function(userName, item){
+    userSchema.statics.getProfileItem = function(userName, item){
         return this.findOne({userName : userName}, item);
     };
 
@@ -103,56 +113,43 @@ const mongoose = require('mongoose');
 // ------- CHECKIN PROCESSING ------- //
 userSchema.statics.processCheckin = function(userName, cohortName, channelID, checkinSessionData){
 
-// ----- URGENT, checkins.some line 126 ------ //
-        // this logic allows for the streak to be increased for EACH checkin. meaning it is tracking
-        // "checkin points" rather than the streak. fix the code to handle the streak and discuss the option of
-        // either having checkin points or incrementing user points by some value per checkin
+    return new Promise( (resolve, reject) => {
+        this.findOne({userName: userName}).then( profileDoc => {
+            if(profileDoc){
 
-    return this.findOne({userName:userName}).then( profileDoc => {
+                let cohorts = profileDoc.cohorts;
+                profileDoc.cohorts = checkAndAddCohort(cohorts, cohortName);
 
-        if(profileDoc){
-            let error;
-            let cohorts = profileDoc.cohorts;
-            profileDoc.cohorts = checkAndAddCohort(cohorts, cohortName);
+                const checkins = profileDoc.checkins;
+                let channel = checkins.find( e => e.channelID === channelID);
 
-            const checkins = profileDoc.checkins;
-            let channel = checkins.find( e => e.channelID === channelID);
+                channel ?
+                    channel.sessions.push(checkinSessionData) :
+                    checkins.push(new checkinModel({channelID : channelID, sessions : [checkinSessionData]}));
 
-            channel ?
-                channel.sessions.push(checkinSessionData) :
-                checkins.push(new checkinModel({channelID : channelID, sessions : [checkinSessionData]}));
+                const streakUpdate = streakUpdater(checkins, profileDoc.currentStreak, profileDoc.bestStreak);
+                let currentStreak = streakUpdate.currentStreak;
+                let bestStreak = streakUpdate.bestStreak;
 
-            const streakUpdate = streakUpdater(checkins, profileDoc.currentStreak, profileDoc.bestStreak);
-            let currentStreak = streakUpdate.currentStreak;
-            let bestStreak = streakUpdate.bestStreak;
 
-            return profileDoc.save( (saveError, success) => saveError ?
-                   saveError :
-                   channel ?
-                        { currentStreak, bestStreak, numOfCheckins: channel.sessions.length } :
-                        { currentStreak, bestStreak });
-        }
+                profileDoc.lastCheckin = checkinSessionData;
+                profileDoc.totalCheckins++;
 
-        else{
-            // alert the AutoBot to message the user who does not have an account. pass on the link to set up their profile
-            return `Checkin for \`@${userName}\` failed:\nprofile \`@${userName}\` not found please visit ENTER FORM WEBSITE HERE to create a profile`;
-        }
+                profileDoc.save( (saveError, success) => {
 
-    }).then( responseData => {
+                    if(saveError) resolve(saveError);
+                    if(success){
+                       if(channel) resolve(`succesfully saved the checkin for \`@${userName}\`. you have \`${channel.sessions.length}\` checkins on this channel!
+             \`current streak\`: ${currentStreak.value} || \`best streak\`: ${bestStreak}\n`);
+                       else resolve(`succesfully saved the checkin for \`@${userName}\`. This is your first checkin on this channel, keep it up!
+             \`current streak\`: ${currentStreak.value} || \`best streak\`: ${bestStreak}\n`);
+                    }
+                });
+            }
 
-        if(typeof responseData === 'string') return responseData;
-
-        if(!responseData.numOfCheckins){
-            return responseData.error ? `sorry the user \`${userName}\` does not have a profile` :
-                `succesfully saved the checkin for \`@${userName}\`. this is your first checkin on this channel, keep it up
-             \`current streak\`: ${responseData.currentStreak.value} || \`best streak\`: ${responseData.bestStreak}\n`;
-        }
-
-        return responseData.error ? `sorry the user \`${userName}\` does not have a profile` :
-            `succesfully saved the checkin for \`@${userName}\`. you have \`${responseData.numOfCheckins}\` checkins on this channel!
-             \`current streak\`: ${responseData.currentStreak.value} || \`best streak\`: ${responseData.bestStreak}\n`;
+            else resolve(`Checkin for \`@${userName}\` failed:\nprofile \`@${userName}\` not found\nplease share this link ENTER FORM WEBSITE HERE to with ${userName} to create a profile\n`);
+        });
     });
-
 };
 
 streakUpdater = (checkins, currentStreak, bestStreak) => {
@@ -183,58 +180,76 @@ streakUpdater = (checkins, currentStreak, bestStreak) => {
 // ------- UPDATE PROCESSING ------- //
     userSchema.statics.processUpdate = function(userName, cohortName, data){
 
-        return this.findOne({userName: userName}).then( profileDoc => {
+        return new Promise((resolve, reject) => {
 
-            if(profileDoc){
-                // if the cohort the user is updating from is not in their profile then it is added in this step
-                let cohorts = profileDoc.cohorts;
-                profileDoc.cohorts = checkAndAddCohort(cohorts, cohortName);
+            this.findOne({userName: userName}).then( profileDoc => {
 
-                let updateItem = data.item;
-                let updateData = data.updateData;
+                if(profileDoc){
 
-                switch(updateItem){
+                    // if the cohort the user is updating from is not in their profile then it is added in this step
+                    let cohorts = profileDoc.cohorts;
+                    profileDoc.cohorts = checkAndAddCohort(cohorts, cohortName);
 
-                    // pushing updateData into a profile item array
-                    case 'certifications':
-                    case 'projects':
-                        // console.log(`profileDoc ${profileDoc[updateItem]}\nupdate item ${updateItem}\n updateData${updateData}`);
-                        profileDoc[updateItem].push(updateData);
-                        break;
-                    // pushing updateData into a nested profile item array
-                    case 'aptitudes':
-                        let subUpdateItem = data.subItem;
-                        profileDoc[updateItem][subUpdateItem].push(updateData);
-                        break;
+                    let updateItem = data.item;
+                    let updateData = data.updateData;
 
-                    // setting the url field
-                    case 'blog':
-                    case 'gitHub':
-                    case 'portfolio':
-                        profileDoc[updateItem] = updateData.url;
-                        break;
+                    switch(updateItem){
 
-                    // simple string/number passing
-                    case 'story':
-                        profileDoc[updateItem] = updateData;
-                        break;
+                        // pushing updateData into a profile item array
+                        case 'certifications':
+                        case 'projects':
+                            profileDoc[updateItem].push(updateData);
+                            break;
+
+                        // pushing updateData into a nested profile item array
+                        case 'skills':
+                            const subUpdateItem = data.subItem;
+                            const skillsItem = profileDoc[updateItem][subUpdateItem];
+
+                            // handles updating an existing skill
+                            let skillsItemIndex;
+                            if(skillsItem.some( (skill, index) => {
+                                    if(skill.name === updateData.name){
+                                        skillsItemIndex = index;
+                                        return true
+                                    }
+                                })) skillsItem[skillsItemIndex].level = updateData.level;
+
+                            // no existing skill, add a new one
+                            else skillsItem.push(updateData);
+                            break;
+
+                        // setting the url field
+                        case 'blog':
+                        case 'gitHub':
+                        case 'portfolio':
+                            profileDoc[updateItem] = updateData.url;
+                            break;
+
+                        // simple string/number/object
+                        case 'profilePic':
+                        case 'story':
+                            profileDoc[updateItem] = updateData;
+                            break;
+                    }
+
+                    return profileDoc.save( (saveError, doc) => {
+                        if(saveError) resolve(`error updating ${updateItem} for ${userName}`);
+                        else if(updateItem === 'skills')
+                            resolve(`*Successfully updated your ${data.subItem}: ${updateData.name} at the ${updateData.level} skill level*`);
+                        else resolve(`*Successfully updated your ${updateItem}*`);
+
+                    });
                 }
 
-                return profileDoc.save( (saveError, doc) => saveError ? saveError : false)
-            }
+                else{
+                    // alert the AutoBot to message the user who does not have an account. pass on the link to set up their profile
+                    resolve (`*Update for \`@${userName}\` failed:\nprofile \`@${userName}\` not found. Please visit ENTER FORM WEBSITE HERE <link|name> to create a profile*`);
+                }
 
-            else{
-                // alert the AutoBot to message the user who does not have an account. pass on the link to set up their profile
-                return `Update for \`@${userName}\` failed:\nprofile \`@${userName}\` not found. Please visit ENTER FORM WEBSITE HERE to create a profile`;
-            }
+            })
 
-        }).then( responseData => {
-
-            if(typeof responseData === 'string') return responseData;
-
-            return `Successfully updated the \`${data.item}\` profile item for \`${userName}\``
-
-        });
+        })
     };
 
 
@@ -264,4 +279,3 @@ module.exports = {
     checkinSchema : checkinSchema,
     checkinModel : checkinModel
 };
-
