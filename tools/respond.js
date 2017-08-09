@@ -89,6 +89,9 @@ const userProfile = require('../database/profileModel').userProfile;
                         else response.text = `${userName} does not currently have any Free Code Camp certifications`
                         break;
                     case 'skills':
+                        if(profileItem.languages.length || profileItem.frameworks.length)
+                            response = skillsItemResponse(profileItem, response, userName);
+                        else response = `${userName} has not added any skills`;
                         break;
                     case 'story':
                         share = false;
@@ -242,7 +245,7 @@ const userProfile = require('../database/profileModel').userProfile;
 
             projects.forEach( (project, index) => {
                 let attachment = {
-                    color: alternateAttachmentColor(index),
+                    color: index % 2 ? '#666666' : '#15df89',
                     mrkdwn_in: ['pretext', 'text'],
                     text: `*Project Name:* ${project.name}\n*GitHub Repo:* <${project.gitHub}|${project.gitHub.slice(project.gitHub.indexOf('.com/')+5)}>\n*Project Link:* ${ project.url ?  `<${project.url}|${project.name}>` : `No Link Available`}\n*Completed Date:* <!date^${Math.round((project.completedDate/1000))}^{date_pretty}|Failed to load date>`
                 };
@@ -254,12 +257,62 @@ const userProfile = require('../database/profileModel').userProfile;
             return response;
         };
 
-        skillsItemResponse = () => {
+        skillsItemResponse = (skills, response, userName) => {
+
+            response.text = `*${userName}'s Languages and Frameworks*`;
+
+            const languages = skills.languages;
+            if(languages.length) {
+
+                const languageAttachment = {
+                    mrkdwn_in: ['text', 'pretext'],
+                    color: '#15df89',
+                    pretext: '*Languages*',
+                    fields: []
+                };
+
+                response.attachments.push(insertFields(languageAttachment, languages, 'Language', 'Skill Level'));
+            }
+
+
+            const frameworks = skills.frameworks;
+            if(frameworks.length){
+                const frameworkAttachment = {
+                    mrkdwn_in: ['text', 'pretext'],
+                    color: '#666666',
+                    pretext: '*Frameworks*',
+                    fields: []
+                };
+
+                response.attachments.push(insertFields(frameworkAttachment, frameworks, 'Framework', 'Skill Level'));
+            }
+
+            return response;
 
         };
 
-        // every even index will be green, every odd index will be gray
-        alternateAttachmentColor = index => index % 2 ? '#666666' : '#15df89'
+        // ------------ HELPERS -------------- //
+        insertFields = (attachment, fieldsArray, title1, title2) => {
+            fieldsArray.forEach( (field, index) => {
+
+                attachment.fields.push({
+                    value: field.name,
+                    short: true
+                });
+
+                attachment.fields.push({
+                    value: field.level,
+                    short: true
+                });
+
+                if(index === 0) {
+                    attachment.fields[0].title = title1;
+                    attachment.fields[1].title = title2;
+                }
+            });
+
+            return attachment;
+        };
 
 // ------------------------------------------------------ UPDATE RESPONSES ------------------------------------------------------ //
 
