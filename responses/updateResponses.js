@@ -55,9 +55,9 @@ submitSkill = valueObject => {
 helpResponse = (type) => {
 
     let help =
-        `*How to use the \`/update\` command:* \n\nUpdating works like git in stringing together mandatory and/or optional \`[-flag] [data]\` pairs to build your update command\n
-        *General form: \`/update [profile item] [[-flag] [data]]\`*\n
-        *List of update items: \`skills\`, \`blog\`, \`certifications\`, \`gitHub\`, \`portfolio\`, \`projects\`, \`story\`*\n
+        `*How to use the \`/update\` command:* \n\nUpdating functions similarly to git in stringing together mandatory and/or optional \`[-flag data]\` pairs to build the update command\n
+        *General form: \`/update [profile item] [-flag data]\`*\n
+        *List of update items: \`blog\`, \`certifications\`, \`gitHub\`, \`picture\`, \`portfolio\`, \`projects\`, \`skills\`, \`story\`*\n
         *List of update flags: \`-date\` or \`-d\`, \`-git\` or \`-g\`, \`-name\` or \`-d\`, \`-url\` or \`-u\`*\n
         
         *Updating GitHub, Blog, or Portfolio URLs*
@@ -75,20 +75,23 @@ helpResponse = (type) => {
         \t*Item(s)*
         \t\t[\`story\`]: your user story (that you entered in the Intro channel)
         \t*Flag(s)*
-        \t\tNone. You can paste your story and preserve the markdown by copying from the edit message window in your Intro post
+        \t\tNone. 
+        \t\t*Note:* You can preserve the formatting [markdown] by copying directly from the edit message window in your intro post
         
-        \t_example update of user story:_ \`/update story ...your pasted story here...\`
+        \t_example update of user story:_ \`/update story Hello you can call me Vamp I am a...\`
         \n
         *Adding Projects*
         \t*Item(s)*
         \t\t[\`projects\`]
         \t*Flag(s)*
         \t\t[\`-name\`] [\`project name\`] _example:_ \`-name Project Name\`
-        \t\t[\`-url\`] [\`project front end url\`] _example:_ \`-url https://www.domain.com/projectName\`
+        \t\t[\`-url\`] [\`project homepage\`] _example:_ \`-url https://www.domain.com/projectName\`
+        \t\t\t *Optional*: including a project url is recommended but not required
         \t\t[\`-git\`] [\`project GitHub repo\`] _example:_ \`-git https://www.github.com/yourUserName/projectName\`
-        \t\t\t*Github Link required but you may also include a frontend url optional*
+        \t\t\t*Note*: a gitHub repo link is required for every project
         \t\t[\`-date\`] [\`date of completion\`] _example:_ \`-date 01/01/17\`
-        \t\t\t *OPTIONAL: If no date is passed - today's date is inserted. Date must be mm/dd/yy format.*
+        \t\t\t *Optional*: If no date is passed - today's date is inserted. 
+        \t\t\t *Note:* Date must be mm/dd/yy format.
         
         \t_example adding a project:_
         \t\t\`/update projects -name New Project -url https://www.domain.com/newProject\` 
@@ -102,11 +105,7 @@ helpResponse = (type) => {
         \t\t[\`skills\`]: your languages and frameworks and their associated skill levels
         \t*Flag(s)*
         \t\tNone. 
-        
-        \tAn interactive message will be sent back where you can choose to update a language or framework. 
-        \tAfter making your choice a dropdown menu of the languages or frameworks will be supplied. 
-        \tAfter one is chosen from the list a skill level dropdown will be provided for selection.
-        \tOn submit the new language or framework and its skill level will be added to the skills section of your profile
+        \tAn interactive form will be sent back to you to add or update a language or framework skill.
         \t\t*Note*: to update an existing skill level select the language or framework then select the new skill level.
         \n
         *Adding Free Code Camp Certifications*
@@ -115,7 +114,8 @@ helpResponse = (type) => {
         \t*Flag(s)*
         \t\t[\`-url\`] [\`certificate url\`] _example:_ \`-url https://www.freecodecamp.org/fccUserName/front-end-certification\`
         \t\t[\`-date\`] [\`date of completion\`] _example:_ \`-date 01/01/17\`
-        \t\t\t *OPTIONAL: If no date is passed - today's date is inserted. Date must be mm/dd/yy format.*
+        \t\t\t *Optional*: If no date is passed - today's date is inserted.
+        \t\t\t *Note:* Date must be mm/dd/yy format.
         
         \t_example adding a new certificate:_
         \t\t\`/update certifications -url https://www.freecodecamp.org/fccUserName/front-end-certification -date 08/08/17\`
@@ -127,12 +127,11 @@ helpResponse = (type) => {
         \t\t[\`picture\`]: the profile picture that is displayed on your profile card
         \t*Flag(s)*
         \t\tNone.
-        
         \tUse the command \`/update picture\` and your current Slack profile picture will be automatically added to your profile card.
         
-        If you need more help, have suggestions for improvement, or would like to issue a complaint please contact @vampiire`;
+        If you need more help, have suggestions for improvement, or would like to report a bug please contact @vampiire`;
 
-    let url = `*General form: \`/update [profile item] [[-flag] [data]]\`*\n
+    let url = `*General form: \`/update [profile item] [-flag data]\`*\n
         *Updating GitHub, Blog, or Portfolio URLs*
         \t*Item(s)*
         \t\t[\`gitHub\`]: your github profile url
@@ -145,27 +144,19 @@ helpResponse = (type) => {
         \t_example *shorthand* update of blog url:_ \`/update blog -u https://medium.com/@yourUserName\`
         \n`;
 
-    let story = `*General form: \`/update [profile item] [[-flag] [data]]\`*\n
-        *Updating User Story*
-        \t*Item(s)*
-        \t\t[\`story\`]: your user story (that you entered in the Intro channel)
-        \t*Flag(s)*
-        \t\tNone. You can paste your story and preserve the markdown by copying from the edit message window in your Intro post
-        
-        \t_example update of user story:_ \`/update story ...your pasted story here...\`
-        \n`;
-
-    let projects = `*General form: \`/update [profile item] [[-flag] [data]]\`*\n
+    let projects = `*General form: \`/update [profile item] [-flag data]\`*\n
         *Adding Projects*
         \t*Item(s)*
         \t\t[\`projects\`]
         \t*Flag(s)*
         \t\t[\`-name\`] [\`project name\`] _example:_ \`-name Project Name\`
-        \t\t[\`-url\`] [\`project front end url\`] _example:_ \`-url https://www.domain.com/projectName\`
+        \t\t[\`-url\`] [\`project homepage\`] _example:_ \`-url https://www.domain.com/projectName\`
+        \t\t\t *Optional*: including a project url is recommended but not required
         \t\t[\`-git\`] [\`project GitHub repo\`] _example:_ \`-git https://www.github.com/yourUserName/projectName\`
-        \t\t\t*Github Link required but you may also include a frontend url optional*
+        \t\t\t*Note*: a gitHub repo link is required for every project
         \t\t[\`-date\`] [\`date of completion\`] _example:_ \`-date 01/01/17\`
-        \t\t\t *OPTIONAL: If no date is passed - today's date is inserted. Date must be mm/dd/yy format.*
+        \t\t\t *Optional*: If no date is passed - today's date is inserted. 
+        \t\t\t *Note:* Date must be mm/dd/yy format.
         
         \t_example adding a project:_
         \t\t\`/update projects -name New Project -url https://www.domain.com/newProject\` 
@@ -175,7 +166,7 @@ helpResponse = (type) => {
         \t\t\`-g https://www.github.com/yourUserName/newProject -d 08/08/17\`
         \n`;
 
-    let skills = `*General form: \`/update [profile item] [[-flag] [data]]\`*\n
+    let skills = `*General form: \`/update [profile item] [-flag data]\`*\n
         *Adding or Updating Skills*
         \t*Item(s)*
         \t\t[\`skills\`]: your languages and frameworks and their associated skill levels
@@ -189,14 +180,15 @@ helpResponse = (type) => {
         \t\t*Note*: to update an existing skill level select the language or framework then select the new skill level.
         \n`;
 
-    let certifications = `*General form: \`/update [profile item] [[-flag] [data]]\`*\n
+    let certifications = `*General form: \`/update [profile item] [-flag data]\`*\n
         *Adding Free Code Camp Certifications*
         \t*Item(s)*
         \t\t[\`certifications\`]: your Free Code Camp certifications
         \t*Flag(s)*
         \t\t[\`-url\`] [\`certificate url\`] _example:_ \`-url https://www.freecodecamp.org/fccUserName/front-end-certification\`
         \t\t[\`-date\`] [\`date of completion\`] _example:_ \`-date 01/01/17\`
-        \t\t\t *OPTIONAL: If no date is passed - today's date is inserted. Date must be mm/dd/yy format.*
+        \t\t\t *Optional*: If no date is passed - today's date is inserted.
+        \t\t\t *Note:* Date must be mm/dd/yy format.
         
         \t_example adding a new certificate:_
         \t\t\`/update certifications -url https://www.freecodecamp.org/fccUserName/front-end-certification -date 08/08/17\`
@@ -212,9 +204,6 @@ helpResponse = (type) => {
         case 'blog':
         case 'portfolio':
             response = url;
-            break;
-        case 'story':
-            response = story;
             break;
         case 'projects':
             response = projects;
