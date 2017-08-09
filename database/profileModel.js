@@ -67,6 +67,7 @@ const requests = require('../tools/requests');
 
         checkins: [checkinSchema],
         lastCheckin: sessionSchema,
+        totalCheckins: {type: Number, default: 0},
 
         projects: [{
             name: String,
@@ -103,7 +104,7 @@ const requests = require('../tools/requests');
         return this.findOne({userName : userName});
     };
 
-    userSchema.statics.getItem = function(userName, item){
+    userSchema.statics.getProfileItem = function(userName, item){
         return this.findOne({userName : userName}, item);
     };
 
@@ -132,6 +133,7 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
 
 
                 profileDoc.lastCheckin = checkinSessionData;
+                profileDoc.totalCheckins++;
 
                 profileDoc.save( (saveError, success) => {
 

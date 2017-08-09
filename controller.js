@@ -85,20 +85,30 @@ router.get('/', (req, res) => {
 router.post('/checkin', (req, res) => {
 
     const body = req.body;
-    const user = body.user_name;
 
-    let valueObject = {};
+    if(tools.verify.slash(body.token)) {
+        // if(body.text === 'help') // send help response
 
-// filter results to only pass @userName tags then strip the '@' symbol
-    let filtered = body.text.split(' ').filter( e => /@[A-Za-z]+/g.test(e));
-    filtered.forEach( (e, i, a) => a[i] = e.replace(/\@/g, ''));
+        if(!body.text || /^(@[0-9A-Za-z-_.]+( )?)+$/.test(body.text)){
+            const user = body.user_name;
 
-// inject the filtered and stripped partners array into the valueObject
-    valueObject.partners = filtered;
-// inject the user calling the checkin so they dont have to tag themselves
-    valueObject.partners.push(user);
+            let valueObject = {};
 
-    if(tools.verify.slash(body.token)) res.json(tools.interactive.interaction('checkin', valueObject));
+        // filter results to only pass @userName tags then strip the '@' symbol
+            let filtered = body.text.split(' ').filter( e => /@[0-9A-Za-z-_.]+/g.test(e));
+            filtered.forEach( (e, i, a) => a[i] = e.replace(/\@/g, ''));
+
+        // inject the filtered and stripped partners array into the valueObject
+            valueObject.partners = filtered;
+        // inject the user calling the checkin so they dont have to tag themselves
+            valueObject.partners.push(user);
+
+            res.json(tools.interactive.interaction('checkin', valueObject));
+        }
+        else res.end('Invalid checkin command format. Try `/checkin <@userName> [@otherUserName]` or `/checkin help` for more detailed instruction');
+
+
+    }
     else res.end('invalid Slack token');
 
 
@@ -118,27 +128,30 @@ router.post('/profile', (req, res) => {
         }
 
         if(text) {
-            if (/^\@[0-9A-Za-z-_.]+( share)?( #(story|projects|skills))?$/.test(text)) {
+            if (/^\@[0-9A-Za-z-_.]+( share)?( #(story|projects|skills|certifications|gitHub|blog|portfolio|))?$/.test(text)) {
 
                 let share = false;
                 let item;
 
                 const arguments = text.split(' ');
-
                 let userName = arguments[0].replace(/@/, '');
 
                 if(arguments[1]){
-                    if(~arguments[1].indexOf(/share/)){
+                    if(~arguments[1].indexOf('share')){
                         share = true;
-                        if(arguments[2]) item = arguments[2].replace(/#/, '');
+
+                        if(arguments[2]) item = arguments[2];
                     }
-                    else item = arguments[1].replace(/#/, '');
+                    else item = arguments[1];
                 }
 
-                // if(item) tools.respond.profileItem(userName, share, item).then( response => typeof response === 'string' ?
-                //     res.end(response) : res.json(response));
+                console.log(item);
 
+                if(item) tools.respond.profileItem(userName, item.replace(/#/, ''), share).then( response => typeof response === 'string' ?
+                    res.end(response) : res.json(response));
                 else tools.respond.profileCard(userName, share).then( response => res.json(response));
+                // console.log(`share value at route ${share}`);
+                // tools.respond.profileCard(userName, share).then( response => res.json(response));
 
             }
 

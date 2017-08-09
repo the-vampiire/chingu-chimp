@@ -2,15 +2,10 @@
  * Created by Vampiire on 7/24/17.
  */
 
-// pull in the valStringer tool
 const val = require('./valStringer');
 
-// generic submit
-    submit = (responseObject, valueObject, formatObject) => {
-        let response = responseObject;
-    };
+// ------------------------------------------------------ CHECKIN RESPONSES ------------------------------------------------------ //
 
-// ------------ CHECKIN RESPONSES ------------------ //
 
     checkinResponse = () => {
         return {
@@ -21,20 +16,16 @@ const val = require('./valStringer');
 
     activitySelect = valueObject => {
 
-        // console.log(`activity select \n ${JSON.stringify(valueObject)}`);
-
-        const menuItems = ['accountability', 'pair programming', 'team meeting'];
+        const menuItems = ['Accountability', 'Pair programming', 'Team meeting'];
 
         let response = checkinResponse();
-        response.attachments = [val.menu('Select an activity', 'activitySelect', 'kind', valueObject, menuItems)];
+        response.attachments = [val.menu('Select a check-in type', 'activitySelect', 'kind', valueObject, menuItems)];
 
         return response;
 
     };
 
     taskSelect = valueObject => {
-
-        // console.log(`task select \n ${valueObject}`);
 
         const menuItems = ['code wars', 'tutorial', 'other'];
 
@@ -48,12 +39,13 @@ const val = require('./valStringer');
         valueObject = JSON.parse(valueObject);
         const partners = valueObject.partners;
 
-        let kind = `${valueObject.kind.slice(0,1).toUpperCase()}${valueObject.kind.slice(1)}`;
-        switch(kind){
+        // let kind = `${valueObject.kind.slice(0,1).toUpperCase()}${valueObject.kind.slice(1)}`;
+        let kind;
+        switch(valueObject.kind){
             case 'Accountability':
             case 'Pair programming':
                 console.log('called');
-                kind = `${kind} session`;
+                kind = `${valueObject.kind} session`;
                 break;
         }
 
@@ -68,11 +60,36 @@ const val = require('./valStringer');
             `Check-in to *${kind}* to work on *${valueObject.task}*\nCheck-in will be processed for: *${partnerString}*`);
     };
 
-// ------------ PROFILE RESPONSES ------------------ //
+
+// ------------------------------------------------------ PROFILE RESPONSES ------------------------------------------------------ //
+
 const userProfile = require('../database/profileModel').userProfile;
 
-    profileItem = (userName, share, item) => {
+    profileItem = (userName, item, share) => {
 
+        return new Promise((resolve, reject) => {
+            userProfile.getProfileItem(userName, item).then( profileItem => {
+
+                console.log(profileItem);
+
+                let response;
+                switch(item){
+                    case 'projects':
+                        break;
+                    case 'certifications':
+                        break;
+                    case 'skills':
+                        break;
+                    case 'story':
+                        share = false;
+                    default:
+                        response = simpleItemResponse(profileItem[item], share);
+                }
+
+                resolve(response);
+
+            });
+        });
     };
 
     profileCard = (userName, share) => {
@@ -87,11 +104,13 @@ const userProfile = require('../database/profileModel').userProfile;
             const blog = user.blog;
             const gitHub = user.gitHub;
             const portfolio = user.portfolio;
-            const projectsLength = user.projects.length;
+            // const projectsLength = user.projects.length;
             const lastProject = user.projects.pop();
             const certifications = user.certifications;
 
             const lastCheckin = user.lastCheckin;
+            const totalCheckins = user.totalCheckins;
+
             let lastCheckinPartners = ``;
             lastCheckin.partners.forEach( (partner, index) => {
                 if(index === lastCheckin.partners.length-1 && lastCheckinPartners) lastCheckinPartners += `and ${partner}`;
@@ -127,9 +146,14 @@ const userProfile = require('../database/profileModel').userProfile;
                                 value: `${points}`,
                                 short: true
                             },
+                            // {
+                            //     title: 'Completed Projects',
+                            //     value: `${projectsLength > 0 ? projectsLength : "No project data available"}`,
+                            //     short: true
+                            // },
                             {
-                                title: 'Completed Projects',
-                                value: `${projectsLength > 0 ? projectsLength : "No project data available"}`,
+                                title: 'Total Check-ins',
+                                value: `${totalCheckins > 0 ? totalCheckins : "No check-in data available"}`,
                                 short: true
                             },
                             {
@@ -183,23 +207,17 @@ const userProfile = require('../database/profileModel').userProfile;
         });
     };
 
+    // ------------------ CUSTOM ATTACHMENTS ------------------ //
+
+        simpleItemResponse = (profileItemString, share) => {
+            return {
+                response_type: `${share ? 'in_channel' : 'ephemeral'}`,
+                text: profileItemString
+            }
+        };
 
 
-    getAttachmentItem = (userName, item) => {
-
-        switch(item){
-            case 'dashboard':
-                return dashboard(userName);
-            case 'points':
-                return points(userName);
-                break;
-            default:
-                console.log('invalid profile item requested');
-        }
-
-    };
-
-// ------------ UPDATE RESPONSES ------------------ //
+// ------------------------------------------------------ UPDATE RESPONSES ------------------------------------------------------ //
 
     updateSkillsResponse = () => {
         let response = {
@@ -246,16 +264,6 @@ const userProfile = require('../database/profileModel').userProfile;
 
     submitSkill = valueObject => {
         valueObject = JSON.parse(valueObject);
-        // let response = updateSkillsResponse();
-
-    // IMPORTANT -----  these need to be passed custom attachments. proof of concept works but they look ugly as shit
-// DO EVERYTHING BELOW THIS LINE. MAKE IT HAPPEN
-        // valStringer note: add a "submit / restart" valStringer method as an option alongise valMenu and valButton
-            // implement a dropdown that lets you select which part of the menu you would like to edit
-            // add a final method that accepts and parses the valueObject
-        // response.attachments = [val.button(`You have selected ${valueObject.name} at the ${valueObject.level} skill level`,
-        //     'skillSubmit', 'Submit', 'submit', true, valueObject)];
-
         return valSubmit(valueObject, 'skill', true, `You have selected *${valueObject.name}* at the *${valueObject.level}* skill level`);
     };
 
@@ -434,7 +442,6 @@ const userProfile = require('../database/profileModel').userProfile;
 
 module.exports = {
 // CHECKIN
-    submit : submit,
     activitySelect : activitySelect,
     // userSelect : userSelect,
     taskSelect : taskSelect,
@@ -442,6 +449,7 @@ module.exports = {
 
 // PROFILE
     profileCard,
+    profileItem,
 
 // UPDATE
     helpResponse : helpResponse,

@@ -1,12 +1,12 @@
-let t = `a dog`;
 
-console.log(~t.indexOf('dog'));
-console.log(Boolean(!~t.indexOf('cat')) === true);
 
-/*
-*
-*
-* ~
-*   (value * -1) + -1
-*
-* */
+let user = require('./database/profileModel').userProfile;
+
+let a = new Promise( (resolve, reject) => {
+    user.getProfileItem('vampiire', 'story').then( profileItem => {
+        resolve('worked');
+        reject('failed');
+    })
+});
+
+a.then( e => console.log(e)).catch( e => console.log(e));
