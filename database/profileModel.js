@@ -205,6 +205,7 @@ streakUpdater = (checkins, currentStreak, bestStreak) => {
                         case 'skills':
                             const subUpdateItem = data.subItem;
                             const skillsItem = profileDoc[updateItem][subUpdateItem];
+
                             // handles updating an existing skill
                             let skillsItemIndex;
                             if(skillsItem.some( (skill, index) => {
@@ -213,6 +214,7 @@ streakUpdater = (checkins, currentStreak, bestStreak) => {
                                         return true
                                     }
                                 })) skillsItem[skillsItemIndex].level = updateData.level;
+
                             // no existing skill, add a new one
                             else skillsItem.push(updateData);
                             break;

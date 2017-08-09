@@ -122,7 +122,15 @@ helpResponse = (type) => {
         \t_example *shorthand* adding a new certificate:_
         \t\t\`/update certifications -u https://www.freecodecamp.org/fccUserName/front-end-certification -d 08/08/17\`
         
-        If you need more help or have constructive criticism to share please contact @vampiire`;
+        *Updating Your Profile Picture*
+        \t*Item(s)*
+        \t\t[\`picture\`]: the profile picture that is displayed on your profile card
+        \t*Flag(s)*
+        \t\tNone.
+        
+        \tUse the command \`/update picture\` and your current Slack profile picture will be automatically added to your profile card.
+        
+        If you need more help, have suggestions for improvement, or would like to issue a complaint please contact @vampiire`;
 
     let url = `*General form: \`/update [profile item] [[-flag] [data]]\`*\n
         *Updating GitHub, Blog, or Portfolio URLs*
