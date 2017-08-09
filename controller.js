@@ -105,7 +105,6 @@ router.post('/checkin', (req, res) => {
     const body = req.body;
 
     if(tools.verify.slash(body.token)) {
-        // if(body.text === 'help') // send help response
 
         if(!body.text || /^(@[0-9A-Za-z-_.]+( )?)+$/.test(body.text)){
             const user = body.user_name;
@@ -123,7 +122,7 @@ router.post('/checkin', (req, res) => {
 
             res.json(tools.interactive.interaction('checkin', valueObject));
         }
-        else res.end('Invalid checkin command format. Try `/checkin <@userName> [@otherUserName(s)]` or `/checkin help` for more detailed instruction');
+        else res.end('*Invalid checkin command format. Try `/checkin [@userName] [@otherUserName(s)]`. you do not need to tag yourself, the user calling the check-in command is automatically included*');
 
 
     }
@@ -144,10 +143,10 @@ router.post('/profile', (req, res) => {
         const profileResponse = require('./responses/profileResponses');
 
         if(!text || text === 'help'){
-            // send back help response
+            res.end(profileResponse.profileHelp());
         }
 
-        if(text) {
+        if(text && text !== 'help') {
             if (/^\@[0-9A-Za-z-_.]+( share)?( (story|projects|skills|certifications|gitHub|blog|portfolio|))?$/.test(text)) {
 
                 let share = false;
@@ -203,9 +202,9 @@ router.post('/update', (req, res) => {
         }
 
         else{
-            if(!arguments) res.send(updateResponse.helpResponse('help'));
-            if(arguments === 'skills'){
-                // res.json(tools.interactive.interaction('update'));
+            if(!arguments || arguments === 'help') res.send(updateResponse.helpResponse('help'));
+
+            else if(arguments === 'skills'){
                 const output = tools.interactive.interaction(('update'));
                 if(output instanceof Promise) output.then( response => {
                     if(typeof response === 'string') res.end(response);
@@ -213,7 +212,8 @@ router.post('/update', (req, res) => {
                 });
                 else res.json(output);
             }
-            if(arguments === 'picture'){
+
+            else if(arguments === 'picture'){
                 const userID = body.user_id;
                 const userProfile = require('./database/profileModel').userProfile;
 
@@ -222,7 +222,6 @@ router.post('/update', (req, res) => {
                     userProfile.processUpdate(userName, cohortName, data).then( response => res.end(response));
                 });
             }
-            else res.end(updateResponse.helpResponse(arguments));
         }
     }
 

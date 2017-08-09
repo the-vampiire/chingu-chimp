@@ -4,7 +4,6 @@
 
 const val = require('../tools/valStringer');
 
-
 checkinResponse = () => {
     return {
         response_type: 'in_channel',
