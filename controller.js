@@ -205,7 +205,13 @@ router.post('/update', (req, res) => {
         else{
             if(!arguments) res.send(updateResponse.helpResponse('help'));
             if(arguments === 'skills'){
-                res.json(tools.interactive.interaction('update'));
+                // res.json(tools.interactive.interaction('update'));
+                const output = tools.interactive.interaction(('update'));
+                if(output instanceof Promise) output.then( response => {
+                    if(typeof response === 'string') res.end(response);
+                    else res.json(response);
+                });
+                else res.json(output);
             }
             if(arguments === 'picture'){
                 const userID = body.user_id;

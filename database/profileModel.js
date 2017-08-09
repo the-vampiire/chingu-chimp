@@ -180,70 +180,74 @@ streakUpdater = (checkins, currentStreak, bestStreak) => {
 // ------- UPDATE PROCESSING ------- //
     userSchema.statics.processUpdate = function(userName, cohortName, data){
 
-        return this.findOne({userName: userName}).then( profileDoc => {
+        return new Promise((resolve, reject) => {
 
-            if(profileDoc){
+            this.findOne({userName: userName}).then( profileDoc => {
 
-            // if the cohort the user is updating from is not in their profile then it is added in this step
-                let cohorts = profileDoc.cohorts;
-                profileDoc.cohorts = checkAndAddCohort(cohorts, cohortName);
+                if(profileDoc){
 
-                let updateItem = data.item;
-                let updateData = data.updateData;
+                    // if the cohort the user is updating from is not in their profile then it is added in this step
+                    let cohorts = profileDoc.cohorts;
+                    profileDoc.cohorts = checkAndAddCohort(cohorts, cohortName);
 
-                switch(updateItem){
+                    let updateItem = data.item;
+                    let updateData = data.updateData;
 
-                // pushing updateData into a profile item array
-                    case 'certifications':
-                    case 'projects':
-                        profileDoc[updateItem].push(updateData);
-                        break;
+                    switch(updateItem){
 
-                // pushing updateData into a nested profile item array
-                    case 'skills':
-                        const subUpdateItem = data.subItem;
-                        const skillsItem = profileDoc[updateItem][subUpdateItem];
-                    // handles updating an existing skill
-                        let skillsItemIndex;
-                        if(skillsItem.some( (skill, index) => {
-                            if(skill.name === updateData.name){
-                                skillsItemIndex = index;
-                                return true
-                            }
-                        })) skillsItem[skillsItemIndex].level = updateData.level;
-                    // no existing skill, add a new one
-                        else skillsItem.push(updateData);
-                        break;
+                        // pushing updateData into a profile item array
+                        case 'certifications':
+                        case 'projects':
+                            profileDoc[updateItem].push(updateData);
+                            break;
 
-                // setting the url field
-                    case 'blog':
-                    case 'gitHub':
-                    case 'portfolio':
-                        profileDoc[updateItem] = updateData.url;
-                        break;
+                        // pushing updateData into a nested profile item array
+                        case 'skills':
+                            const subUpdateItem = data.subItem;
+                            const skillsItem = profileDoc[updateItem][subUpdateItem];
+                            // handles updating an existing skill
+                            let skillsItemIndex;
+                            if(skillsItem.some( (skill, index) => {
+                                    if(skill.name === updateData.name){
+                                        skillsItemIndex = index;
+                                        return true
+                                    }
+                                })) skillsItem[skillsItemIndex].level = updateData.level;
+                            // no existing skill, add a new one
+                            else skillsItem.push(updateData);
+                            break;
 
-                // simple string/number/object
-                    case 'profilePic':
-                    case 'story':
-                        profileDoc[updateItem] = updateData;
-                        break;
+                        // setting the url field
+                        case 'blog':
+                        case 'gitHub':
+                        case 'portfolio':
+                            profileDoc[updateItem] = updateData.url;
+                            break;
+
+                        // simple string/number/object
+                        case 'profilePic':
+                        case 'story':
+                            profileDoc[updateItem] = updateData;
+                            break;
+                    }
+
+                    return profileDoc.save( (saveError, doc) => {
+                        if(saveError) resolve(`error updating ${updateItem} for ${userName}`);
+                        else if(updateItem === 'skills')
+                            resolve(`*Successfully updated your ${data.subItem}: ${updateData.name} at the ${updateData.level} skill level*`);
+                        else resolve(`*Successfully updated your ${updateItem}*`);
+
+                    });
                 }
 
-                return profileDoc.save( (saveError, doc) => saveError ? saveError : false)
-            }
+                else{
+                    // alert the AutoBot to message the user who does not have an account. pass on the link to set up their profile
+                    resolve (`*Update for \`@${userName}\` failed:\nprofile \`@${userName}\` not found. Please visit ENTER FORM WEBSITE HERE <link|name> to create a profile*`);
+                }
 
-            else{
-                // alert the AutoBot to message the user who does not have an account. pass on the link to set up their profile
-                return `Update for \`@${userName}\` failed:\nprofile \`@${userName}\` not found. Please visit ENTER FORM WEBSITE HERE to create a profile`;
-            }
+            })
 
-        }).then( responseData => {
-
-            if(typeof responseData === 'string') return responseData;
-
-            return `Successfully updated the \`${data.item}\` profile item for \`${userName}\``
-
-        });
+        })
     };
 
 

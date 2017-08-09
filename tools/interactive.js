@@ -97,9 +97,7 @@ processInteraction = payload => {
                     level : value.level
                 };
 
-                userProfile.processUpdate(userName, cohortName, processUpdateData);
-
-                response = `Updated profile skills item *${value.skill}* with: *${value.name}* at skill level: *${value.level}*`;
+                response = userProfile.processUpdate(userName, cohortName, processUpdateData);
             }
 
             else response = updateResponse.skillSelect(JSON.stringify(value));
