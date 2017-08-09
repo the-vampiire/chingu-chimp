@@ -199,7 +199,7 @@ const userProfile = require('../database/profileModel').userProfile;
                 fallback: `${userName} social media links`,
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Social Media*',
-                color: '#000000',
+                color: '#666666',
                 text: `*GitHub:* ${gitHub ? `${gitHub}\n`: `No GitHub profile available\n`}*Portfolio:* ${portfolio ? `${portfolio}\n` : `No portfolio link available\n`}*Blog:* ${blog ? `${blog}` : `No blog link available\n`}`
             });
 
@@ -220,9 +220,7 @@ const userProfile = require('../database/profileModel').userProfile;
             }
         };
 
-        certificationsItemResponse = (certifications, response, username) => {
-            // put this in because i have a blank cert url
-            certifications.shift();
+        certificationsItemResponse = (certifications, response, userName) => {
 
             certifications.forEach( (certificate, index) => {
 
@@ -233,9 +231,9 @@ const userProfile = require('../database/profileModel').userProfile;
                     title_link: `${certificate.url}`
                 };
 
-                if(index === 0) attachment.pretext = username ? `*${userName}'s Free Code Camp Certifications*` : `*Free Code Camp Certifications*`
+                if(index === 0) attachment.pretext = userName ? `*${userName}'s Free Code Camp Certifications*` : `*Free Code Camp Certifications*`
 
-                    response.attachments.push(attachment);
+                response.attachments.push(attachment);
             });
             return response;
         };
@@ -244,9 +242,9 @@ const userProfile = require('../database/profileModel').userProfile;
 
             projects.forEach( (project, index) => {
                 let attachment = {
-                    color: '#15df89',
+                    color: alternateAttachmentColor(index),
                     mrkdwn_in: ['pretext', 'text'],
-                    text: `*Project Name:* ${project.name}\n*GitHub Repo:* <${project.gitHub}|${project.gitHub.slice(project.gitHub.indexOf('.com/')+5)}\n*Project Link:* ${ project.url ?  `<${project.url}|${project.name}>` : `No Link Available`}\n*Completed Date:* <!date^${Math.round((project.completedDate/1000))}^{date_pretty}|Failed to load date>`
+                    text: `*Project Name:* ${project.name}\n*GitHub Repo:* <${project.gitHub}|${project.gitHub.slice(project.gitHub.indexOf('.com/')+5)}>\n*Project Link:* ${ project.url ?  `<${project.url}|${project.name}>` : `No Link Available`}\n*Completed Date:* <!date^${Math.round((project.completedDate/1000))}^{date_pretty}|Failed to load date>`
                 };
 
                 if(index === 0) attachment.pretext = `*${userName}'s Completed Projects*`;
@@ -260,7 +258,8 @@ const userProfile = require('../database/profileModel').userProfile;
 
         };
 
-
+        // every even index will be green, every odd index will be gray
+        alternateAttachmentColor = index => index % 2 ? '#666666' : '#15df89'
 
 // ------------------------------------------------------ UPDATE RESPONSES ------------------------------------------------------ //
 
