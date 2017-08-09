@@ -23,6 +23,9 @@ argumentParser = arguments => {
     let error;
 
     let output = argumentSplitter(arguments);
+// catches any error messsages supplied by the argumentSplitter
+    if(typeof output === 'string') return output;
+
     let item = output.item;
 
 // initial check to ensure the update item is valid
@@ -75,17 +78,18 @@ argumentParser = arguments => {
 argumentSplitter = arguments => {
 
     const item = arguments.slice(0, arguments.indexOf(' '));
+    const flagsAndData = arguments.slice(arguments.indexOf('-'));
 
 // story is a simple string with no flags
     if(item === 'story'){
-        let storyString = arguments.slice(arguments.indexOf(' ')+1);
-        console.log(storyString);
+        const storyString = arguments.slice(arguments.indexOf(' ')+1);
         return { item : item, storyString: storyString }
     }
 
-    const pairsArray = arguments.slice(arguments.indexOf('-'))
-        .split(/ (?=-)/)
-        .map( e => e.replace(/-/, ''));
+    if(item === 'projects' && !(flagsAndData.includes('-g') || flagsAndData.includes('-git')))
+        return `*No GitHub repo link detected for this project. All projects require at minimum a name and GitHub repo link.*\n*Try again or type \`/update projects\` for help*`;
+
+    const pairsArray = flagsAndData.split(/ (?=-)/).map( e => e.replace(/-/, ''));
 
     return {item: item, pairsArray: pairsArray};
 };
@@ -126,13 +130,13 @@ argumentSplitter = arguments => {
             if(item === 'gitHub'){
                 if(!data.includes('https://www.github.com/')) return `invalid gitHub profile url, ensure the url entered is of the form [\`https://www.github.com/yourUserName\`]`
             }
-            if(!/(http:\/\/|https:\/\/)(www\.)/.test(data))
+            if(!/(http:\/\/|https:\/\/)(www\.)?/.test(data))
                 return `invalid data: \`${data}\` associated with flag [\`-${flag}\`]. ensure the full [\`http://www.\`] or [\`https://www.\`] url is being passed`;
             flag = 'url';
             break;
         case flag === 'date' || flag === 'd':
             if(!/[0-9]{2}\/[0-9]{2}\/[0-9]{2}/.test(data))
-                return `invalid date format [${data}]. must be in \`mm/dd/yy\` format`;
+                return `*invalid date format [${data}]. must be in \`mm/dd/yy\` format*`;
             data = Date.parse(new Date(data));
             if(item === 'projects')flag = 'completedDate';
 
