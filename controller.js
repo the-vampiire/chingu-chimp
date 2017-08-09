@@ -128,7 +128,7 @@ router.post('/profile', (req, res) => {
         }
 
         if(text) {
-            if (/^\@[0-9A-Za-z-_.]+( share)?( #(story|projects|skills|certifications|gitHub|blog|portfolio|))?$/.test(text)) {
+            if (/^\@[0-9A-Za-z-_.]+( share)?( (story|projects|skills|certifications|gitHub|blog|portfolio|))?$/.test(text)) {
 
                 let share = false;
                 let item;
@@ -147,7 +147,7 @@ router.post('/profile', (req, res) => {
 
                 console.log(item);
 
-                if(item) tools.respond.profileItem(userName, item.replace(/#/, ''), share).then( response => typeof response === 'string' ?
+                if(item) tools.respond.profileItem(userName, item, share).then( response => typeof response === 'string' ?
                     res.end(response) : res.json(response));
                 else tools.respond.profileCard(userName, share).then( response => res.json(response));
                 // console.log(`share value at route ${share}`);
