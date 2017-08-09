@@ -68,21 +68,50 @@ const userProfile = require('../database/profileModel').userProfile;
 
         return new Promise((resolve, reject) => {
             userProfile.getProfileItem(userName, item).then( profileItem => {
+                userName = `${userName.slice(0,1).toUpperCase()}${userName.slice(1)}`;
 
-                console.log(profileItem);
+            // this is a stupid fix. need to strip the mongodb fluff
+                profileItem = profileItem[item];
 
-                let response;
+                let response = { attachments: [] };
+                response.response_type = share ? 'in_channel' : 'ephemeral';
                 switch(item){
                     case 'projects':
+                        // identify with userName
+                        // a series of attachments
+                            // each attachment:
+                                // all the project fields
+                                    // name should be hyperlinked <url property|name property>
                         break;
                     case 'certifications':
+                        // clone the output of the profile card
+                        if(profileItem.length) {
+                            // put this in because i have a blank cert url
+                            profileItem.shift();
+
+                            profileItem.forEach( (certificate, index) => {
+
+                                let attachment = {
+                                    color: '#15df89',
+                                    mrkdwn_in: ['pretext', 'text'],
+                                    title: `${certificate.name}`,
+                                    title_link: `${certificate.url}`
+                                };
+
+                                if(index === 0){
+                                    attachment.pretext = `*${userName}'s Free Code Camp Certifications*`
+                                }
+
+                                response.attachments.push(attachment);
+                            });
+                        }
                         break;
                     case 'skills':
                         break;
                     case 'story':
                         share = false;
                     default:
-                        response = simpleItemResponse(profileItem[item], share);
+                        response = simpleItemResponse(profileItem, share);
                 }
 
                 resolve(response);
@@ -194,11 +223,10 @@ const userProfile = require('../database/profileModel').userProfile;
 
             if(certifications.length) {
 
-                certifications.shift();
+                // put this in because i have a blank cert url
+                    certifications.shift();
 
                 certifications.forEach( (certificate, index) => {
-
-                    console.log(certificate);
 
                     let attachment = {
                         color: '#15df89',
@@ -228,6 +256,19 @@ const userProfile = require('../database/profileModel').userProfile;
                 text: profileItemString
             }
         };
+
+        certificationsItemResponse = () => {
+
+        };
+
+        projectsItemResponse = () => {
+
+        };
+
+        skillsItemResponse = () => {
+
+        };
+
 
 
 // ------------------------------------------------------ UPDATE RESPONSES ------------------------------------------------------ //
