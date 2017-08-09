@@ -44,7 +44,6 @@ const val = require('./valStringer');
         switch(valueObject.kind){
             case 'Accountability':
             case 'Pair programming':
-                console.log('called');
                 kind = `${valueObject.kind} session`;
                 break;
         }
@@ -111,11 +110,26 @@ const userProfile = require('../database/profileModel').userProfile;
             const lastCheckin = user.lastCheckin;
             const totalCheckins = user.totalCheckins;
 
+        // format the check-in partners and kind
             let lastCheckinPartners = ``;
             lastCheckin.partners.forEach( (partner, index) => {
-                if(index === lastCheckin.partners.length-1 && lastCheckinPartners) lastCheckinPartners += `and ${partner}`;
+                partner = `${partner.slice(0, 1).toUpperCase()}${partner.slice(1)}`;
+
+                if(lastCheckin.partners.length === 1) lastCheckinPartners += `${partner}`;
+                else if(index === lastCheckin.partners.length-1 && lastCheckinPartners){
+                    if(lastCheckin.partners.length === 2) lastCheckinPartners = lastCheckinPartners.replace(/,/, '');
+                    lastCheckinPartners += `and ${partner}`;
+                }
                 else lastCheckinPartners += `${partner}, `;
             });
+
+            switch(lastCheckin.kind){
+                case 'Accountability':
+                case 'Pair programming':
+                    lastCheckin.kind = `${lastCheckin.kind} session`;
+                    break;
+            }
+        // end formatting
 
             const response = {
 
@@ -128,9 +142,8 @@ const userProfile = require('../database/profileModel').userProfile;
                         fallback: `${userName} join date, previous project, and last check-in`,
                         mrkdwn_in: ["text", "pretext"],
                         color: '#15df89',
-                        text: `*Member Since:* ${joinDate}\n*Previous Project:*`
-                        +"<"+`${lastProject.url}|${lastProject.name}`+">"+
-                        `\n*Last Check-in:* ${lastCheckin.kind} with ${lastCheckinPartners}`,
+                        text: `*Member Since:* ${joinDate}\n*Last Completed Project:* <${lastProject.url}|${lastProject.name}>
+*Last Check-in:* ${lastCheckin.kind} with ${lastCheckinPartners}`,
                         thumb_url: profilePic,
 
                     },
