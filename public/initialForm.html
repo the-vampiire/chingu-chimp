@@ -30,7 +30,7 @@ i think we already discussed this but just so all the notes are in one place:
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Sign Up</title>
+    <title>Chingu | Create Profile</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
@@ -45,16 +45,34 @@ i think we already discussed this but just so all the notes are in one place:
             <h1>Enter Your Chingu Profile Information:</h1>
           </div>
         </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <p class="text-danger">* Required</p>
+          </div>
+        </div>
 
         <div class="row">
           <div class="col-lg-6">
             <form @submit="submitForm" action="/form" method="post">
+
+              <!-- username -->
+              <div class="form-group">
+                <label for="username">Username:</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  placeholder="the-happy-meerkat"
+                  v-model="userData.username"
+                >
+              </div>
+              
+              <!-- personnal links -->
               <div class="form-group">
                 <label for="portfolioURL">Link to Your Portfolio:</label>
                 <input 
                   type="url" 
                   class="form-control" 
-                  placeholder="www.example.com"
+                  placeholder="www.my-portfolio.com"
                   v-model="userData.portfolioURL"
                 >
               </div>
@@ -79,6 +97,7 @@ i think we already discussed this but just so all the notes are in one place:
                 >
               </div>
 
+              <!-- cohort intro -->
               <div class="form-group">
                 <label for="userStory">* Enter Your Chingu Cohort Intro: (It's best to copy & past this from Slack)</label>
                 <textarea 
@@ -91,12 +110,14 @@ i think we already discussed this but just so all the notes are in one place:
                 </textarea>
               </div>
 
-              <div class="form-group" v-for="(userCohort, index) of userData.cohorts" :key="index"> <!-- FIXME: can we establish a better key for iteration? -->
-                <label for="cohorts">* Cohorts:</label>
+              <!-- cohort list -->
+              <div class="form-group" v-for="(userCohort, index) of userData.cohorts" :key="index">
+                <label for="cohorts"><span class="text-danger">*</span> Cohorts:</label>
                 <select 
                   name="cohortList" 
                   class="form-control"
                   v-model="userCohort.cohortName"
+                  required
                 >
                   <option v-for="cohort of ajaxData.cohorts" :key="cohort.name" :value="cohort.name">
                     {{cohort.name}}
@@ -113,24 +134,49 @@ i think we already discussed this but just so all the notes are in one place:
                 </button>
               </div>
 
-              <div class="form-group row" v-for="(userTechs, index) of userData.languages" :key="index"> <!-- FIXME: can we establish a better key for iteration? -->
-                <!-- populate techs -->
+                <!-- populate coding languages -->
+              <div class="form-group row" v-for="(language, index) of userData.skills.languages" :key="index">
                 <div class="col-lg-6">
-                  <label for="techSkill">* Language:</label>
+                  <label for="language"><span class="text-danger">*</span> Language:</label>
                   <select 
-                    name="langaugeList" 
+                    name="languageList" 
                     class="form-control"
-                    v-model="userTechs.name"
+                    v-model="language.name"
                     required
                   >
-                    <option v-for="langauge of ajaxData.languages" :key="langauge" :value="langauge">
-                      {{langauge}}
+                    <option v-for="language of ajaxData.languages" :key="language" :value="language">
+                      {{language}}
                     </option>
                   </select>
                 </div>
-                <!-- populate skill levels -->
+                
                 <div class="col-lg-6" >
-                  <label for="cohorts">* Skill Level:</label>
+                  <label for="cohorts"><span class="text-danger">*</span> Skill Level:</label>
+                  <select 
+                    name="skillSelect"
+                    class="form-control"
+                    v-model="language.level"
+                    required
+                  >
+                    <option v-for="skillLevel of ajaxData.levels" :key="skillLevel" :value="skillLevel">
+                      {{skillLevel}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <button 
+                  type="button"
+                  class="btn btn-default"
+                  @click="addNewLanguage"
+                >
+                  Add a New Language
+                </button>
+              </div>
+
+              <!-- populate frameworks -->
+               <!-- <div class="col-lg-6" >
+                  <label for="cohorts"><span class="text-danger">*</span> Skill Level:</label>
                   <select 
                     name="skillSelect"
                     class="form-control"
@@ -151,7 +197,7 @@ i think we already discussed this but just so all the notes are in one place:
                 >
                   Add a New Language
                 </button>
-              </div>
+              </div>  -->
 
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
@@ -174,12 +220,19 @@ i think we already discussed this but just so all the notes are in one place:
     el: '#app',
     data: {
       userData: {
+        username: '',
         portfolioURL: '',
         gitHubURL: '',
         blogURL: '',
-        story: '', // chingu intro
+        joinDate: '',
+        story: '', // chingu slack intro
         cohorts: [],
-        languages: []
+        skills: {
+          languages: [],
+          levels: []
+        },
+        projects: [],
+        certifications: []
       },
       // temp fake data
       ajaxData: {
@@ -225,10 +278,16 @@ i think we already discussed this but just so all the notes are in one place:
           }
         ],
         "languages": [
+          "JavaScript",
+          "Python",
+          "Java",
+          "C++"
+        ],
+        frameworks: [
           "React",
           "Angular",
-          "JavaScript",
-          "Python"
+          "Vue",
+          "Flask"
         ],
         levels: [
           "Beginner",
@@ -248,7 +307,7 @@ i think we already discussed this but just so all the notes are in one place:
         const defaultLanguage = this.ajaxData.languages[0]
         const defaultSkillLevel = 'Intermediate'
 
-        this.userData.languages.push({name: defaultLanguage, level: defaultSkillLevel})
+        this.userData.skills.languages.push({name: defaultLanguage, level: defaultSkillLevel})
       },
       submitForm(event) {
         event.preventDefault()
@@ -263,3 +322,42 @@ i think we already discussed this but just so all the notes are in one place:
     }
   })
 </script>
+<!-- 
+let data = {
+        userName : 'vampiire',
+
+        portfolio : 'https://www.jessec.org',
+        gitHub: 'https://www.github.com/jessec',
+        blog: 'https://medium.com/@jessec',
+
+        story: 'I am the story',
+
+        joinDate: 4, //TODO:
+
+        cohort: [{ //TODO:
+            cohortName : 'Walruses',
+            startDate : 4
+        }],
+
+        aptitudes: {
+
+            languages : [{
+                name : 'javascript',
+                level : 'intermediate'
+            }],
+
+            frameworks: [{//TODO:
+                name : 'bootstrap',
+                level : 'intermediate'
+            }]
+        },
+
+        projects: [{//TODO:
+            name : 'portfolio',
+            url : 'https://www.jessec.org',
+        }],
+
+        certifications: [{//TODO:
+            name: 'Front End Certification'
+        }]
+    }; -->
