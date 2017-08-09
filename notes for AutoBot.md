@@ -10,8 +10,6 @@ run python script in node using python-shell package
         write a script to send the data into python on an interval
 
 
-
-
 scoring
 
 [ add other tags here ]
@@ -73,6 +71,12 @@ scoring
         how to score a user based on activity
 
 
+Project Milestones
+
+    autobot would checkin in at set intervals and request deliverables
+        conversation style requests / responses
+            score based on deliverables met
+                actions on deliverables failed
 
 Automatic tasks
 
@@ -113,10 +117,6 @@ Dashboard [admin]
         add / move / remove users
         handle tickets
         view / export[formatted] most reacted message quotes for "heard around chingu"
-
-
-
-Milestones
 
 
 

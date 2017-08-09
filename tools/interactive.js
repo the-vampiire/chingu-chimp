@@ -3,7 +3,8 @@
  *
  */
 
-const respond = require('./respond');
+const checkinResponse = require('../responses/checkinResponses');
+const updateResponse = require('../responses/updateResponses');
 const userProfile = require('../database/profileModel').userProfile;
 
 interaction = (type, valueObject) => {
@@ -11,10 +12,10 @@ interaction = (type, valueObject) => {
 
     switch(type){
         case 'checkin':
-            response = respond.activitySelect(valueObject);
+            response = checkinResponse.activitySelect(valueObject);
             break;
         case 'update':
-            response = respond.skillSelect({});
+            response = updateResponse.skillSelect({});
             break;
     }
 
@@ -35,10 +36,10 @@ processInteraction = payload => {
 
     // -------------- CHECKIN -------------- //
         case 'activitySelect':
-            response = respond.taskSelect(value);
+            response = checkinResponse.taskSelect(value);
             break;
         case 'taskSelect':
-            response = respond.submitCheckin(value);
+            response = checkinResponse.submitCheckin(value);
             break;
     // SUBMIT
         case 'checkinSubmit':
@@ -63,20 +64,22 @@ processInteraction = payload => {
                 })
             }
 
-            else response = respond.activitySelect(value);
+            else response = checkinResponse.activitySelect(value);
 
             break;
 
     // -------------- UPDATE SKILL -------------- //
         case 'skillSelect':
-            response = JSON.parse(value).skill === 'languages' ? respond.languageSelect(value) : respond.frameworkSelect(value);
+            response = JSON.parse(value).skill === 'languages' ?
+                updateResponse.languageSelect(value) :
+                updateResponse.frameworkSelect(value);
             break;
         case 'languageSelect':
         case 'frameworkSelect':
-            response = respond.levelSelect(value);
+            response = updateResponse.levelSelect(value);
             break;
         case 'levelSelect':
-            response = respond.submitSkill(value);
+            response = updateResponse.submitSkill(value);
             break;
         case 'skillSubmit':
             value = JSON.parse(value);
@@ -97,11 +100,9 @@ processInteraction = payload => {
                 response = `Updated profile skills item *${value.skill}* with: *${value.name}* at skill level: *${value.level}*`;
             }
 
-            else response = respond.skillSelect(JSON.stringify(value));
+            else response = updateResponse.skillSelect(JSON.stringify(value));
 
             break;
-
-    // -------------- UPDATE X -------------- //
 
     }
 
