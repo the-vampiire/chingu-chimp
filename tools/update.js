@@ -90,7 +90,10 @@ argumentSplitter = arguments => {
     return {item: item, pairsArray: pairsArray};
 };
 
-errorScanAndModify = (item, flag, data) => {
+// * only one of each flag
+// * gitHub URL is required for projects
+
+ errorScanAndModify = (item, flag, data) => {
 
     let expectedFlags;
     switch(item){
