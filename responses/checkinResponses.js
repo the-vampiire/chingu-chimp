@@ -16,7 +16,7 @@ activitySelect = valueObject => {
     const menuItems = ['Accountability', 'Pair programming', 'Team meeting'];
 
     let response = checkinResponse();
-    response.attachments = [val.menu('Select a check-in type', 'activitySelect', 'kind', valueObject, menuItems)];
+    response.attachments = [val.menu( null, valueObject, menuItems, 'Select a check-in type', 'activitySelect', 'kind')];
 
     return response;
 
@@ -27,7 +27,7 @@ taskSelect = valueObject => {
     const menuItems = ['code wars', 'tutorial', 'other'];
 
     let response = checkinResponse();
-    response.attachments = [val.menu('Select a task', 'taskSelect', 'task', valueObject, menuItems)];
+    response.attachments = [val.menu( null, valueObject, menuItems, 'Select a task', 'taskSelect', 'task')];
 
     return response;
 };
@@ -36,11 +36,11 @@ submitCheckin = valueObject => {
     valueObject = JSON.parse(valueObject);
     const partners = valueObject.partners;
 
-    let kind;
+    let kind = valueObject.kind;
     switch(valueObject.kind){
         case 'Accountability':
         case 'Pair programming':
-            kind = `${valueObject.kind} session`;
+            kind = `${kind} session`;
             break;
     }
 

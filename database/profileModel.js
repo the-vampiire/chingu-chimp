@@ -137,17 +137,17 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
 
                 profileDoc.save( (saveError, success) => {
 
+                    userName = `${userName.slice(0,1).toUpperCase()}${userName.slice(1)}`;
+
                     if(saveError) resolve(saveError);
                     if(success){
-                       if(channel) resolve(`succesfully saved the checkin for \`@${userName}\`. you have \`${channel.sessions.length}\` checkins on this channel!
-             \`current streak\`: ${currentStreak.value} || \`best streak\`: ${bestStreak}\n`);
-                       else resolve(`succesfully saved the checkin for \`@${userName}\`. This is your first checkin on this channel, keep it up!
-             \`current streak\`: ${currentStreak.value} || \`best streak\`: ${bestStreak}\n`);
+                       if(channel) resolve(`succesfully saved the checkin for ${userName}. you have \`${channel.sessions.length}\` checkins on this channel!\n*current streak:* \`${currentStreak.value}\`\n*best streak:* \`${bestStreak}\`\n`);
+                       else resolve(`succesfully saved the checkin for ${userName}. This is your first checkin on this channel, keep it up!\n*current streak:* \` ${currentStreak.value}\`\n*best streak:* \`${bestStreak}\`\n`);
                     }
                 });
             }
 
-            else resolve(`Checkin for \`@${userName}\` failed:\nprofile \`@${userName}\` not found\nplease share this link ENTER FORM WEBSITE HERE to with ${userName} to create a profile\n`);
+            else resolve(`*Checkin for \`@${userName}\` failed:*\n*profile \`@${userName}\` not found*\n*create a profile <url|here>*\n`);
         });
     });
 };
@@ -155,6 +155,8 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
 streakUpdater = (checkins, currentStreak, bestStreak) => {
 
     let currentDate = Number(Date.now());
+
+    console.log(currentDate - currentStreak.lastUpdate);
 
     if(currentDate - currentStreak.lastUpdate >= 86400000){
 
@@ -244,7 +246,7 @@ streakUpdater = (checkins, currentStreak, bestStreak) => {
 
                 else{
                     // alert the AutoBot to message the user who does not have an account. pass on the link to set up their profile
-                    resolve (`*Update for \`@${userName}\` failed:\nprofile \`@${userName}\` not found. Please visit ENTER FORM WEBSITE HERE <link|name> to create a profile*`);
+                    resolve (`*Update for \`@${userName}\` failed:*\n*profile \`@${userName}\` not found.*\ncreate a profile <url|here>*\n`);
                 }
 
             })

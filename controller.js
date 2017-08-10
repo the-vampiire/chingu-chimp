@@ -25,7 +25,7 @@ router.get('/form', (req, res) => {
 router.get('/', (req, res) => {
 
     let data = {
-        userName : 'vampiire',
+        userName : 'jessec',
 
         portfolio : 'https://www.vampiire.org',
         gitHub: 'https://www.github.com/the-vampiire',
@@ -202,7 +202,7 @@ router.post('/update', (req, res) => {
         }
 
         else{
-            if(!arguments || arguments === 'help') res.send(updateResponse.helpResponse('help'));
+            if(!arguments || arguments === 'help') res.end(updateResponse.helpResponse('help'));
 
             else if(arguments === 'skills'){
                 const output = tools.interactive.interaction(('update'));
@@ -222,6 +222,7 @@ router.post('/update', (req, res) => {
                     userProfile.processUpdate(userName, cohortName, data).then( response => res.end(response));
                 });
             }
+            else res.end(updateResponse.helpResponse(arguments));
         }
     }
 
@@ -249,13 +250,6 @@ router.post('/interactive', (req, res) => {
     else res.end('invalid Slack token');
 
 });
-
-// used to load options for interactive messages
-router.post('/options', (req, res) => {
-    // console.log(req.body);
-    res.json('worked');
-});
-
 
 // ------------ INCOMING API CALLS ---------------- //
 

@@ -10,10 +10,8 @@ const formSchema = new mongoose.Schema({
 
     cohorts : [String],
 
-    languages : [{
-        name: String,
-        frameworks : [String],
-    }],
+    languages : [String],
+    frameworks : [String]
 
 });
 

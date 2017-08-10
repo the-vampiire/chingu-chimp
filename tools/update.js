@@ -76,6 +76,10 @@ argumentParser = arguments => {
 };
 
 argumentSplitter = arguments => {
+    const multipleItems = arguments.slice(0, arguments.indexOf('-')+1);
+
+    if(!/^[A-Za-z]+( )-$/.test(multipleItems))
+        return `*Invalid item [\`${multipleItems.replace(/ -/, '')}\`]. You can only pass one update item at a time*`;
 
     const item = arguments.slice(0, arguments.indexOf(' '));
     const flagsAndData = arguments.slice(arguments.indexOf('-'));

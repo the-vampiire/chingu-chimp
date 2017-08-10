@@ -10,20 +10,21 @@ const userProfile = require('../database/profileModel').userProfile;
 profileHelp = () => {
     return `
     *General form: \`/profile [share] [profile item]\`*
+    all profile requests are returned privately by default (only you can see it, designated by the gray "whisper" text)
     if the \`share\` argument is present *_after the username_* then the profile or profile item will be returned publicly to the current channel\n\n
     *Calling a specific profile item*
     \`/profile @userName story\` will return the the requested user's intro story. this option defaults to private to prevent spamming\n
     \`/profile @userName projects\` will display the requested user's completed projects and associated details\n
     \`/profile @userName certifications\` will display the requested user's Free Code Camp certifications and certificate links\n
     \`/profile @userName skills\` will display the requested user's languages and frameworks and their associated skill levels\n
-    \`/profile @userName [url item]\` where [\`url item\`] includes [\`gitHub, portfolio, or blog\`] will return the respective link for the requested user
+    \`/profile @userName [url item]\` where [\`url item\`] includes [\`gitHub, portfolio, or blog\`] will return the respective link
     \n
     *Examples*
-    \`/profile @vampiire\` will display Vampiire's profile card privately to you\n
-    \`/profile @vampiire share\` will display Vampiire's profile card publicly to the channel\n
-    \`/profile @vampiire projects\` will display Vampiire's projects privately to you\n
-    \`/profile @vampiire share projects\` will display Vampiire's projects publicly to the channel\n
-    *if you need more help, have suggestions for improvement, or want to report a bug contact @vampiire*`
+    \`/profile @vampiire\` will display Vampiire's profile card *privately* to you\n
+    \`/profile @vampiire share\` will display Vampiire's profile card *publicly* to the channel\n
+    \`/profile @vampiire projects\` will display Vampiire's projects *privately* to you\n
+    \`/profile @vampiire share projects\` will display Vampiire's projects *publicly* to the channel\n
+    *if you need more help, have suggestions for improvement, or want to report a bug please add an issue on <https://www.github.com/the-vampiire/Chingu-Chimp/issues|GitHub>*`
 };
 
 profileItem = (userName, item, share) => {
@@ -32,9 +33,8 @@ profileItem = (userName, item, share) => {
         userProfile.getProfileItem(userName, item).then( profileItem => {
 
             if(profileItem){
-                userName = `${userName.slice(0,1).toUpperCase()}${userName.slice(1)}`;
-                // this is a stupid fix. need to strip the mongodb fluff
                 profileItem = profileItem[item];
+                userName = `${userName.slice(0,1).toUpperCase()}${userName.slice(1)}`;
 
                 let response = { attachments: [] };
                 response.response_type = share ? 'in_channel' : 'ephemeral';

@@ -14,7 +14,8 @@ updateSkillsResponse = () => {
 
 skillSelect = valueObject => {
     let response = updateSkillsResponse();
-    response.attachments = [val.menu('Select a skill to add or update', 'skillSelect', 'skill', valueObject, ['languages', 'frameworks'])];
+    response.attachments = [val.menu( null, valueObject, ['languages', 'frameworks'],
+        'Select a skill to add or update', 'skillSelect', 'skill')];
     return response;
 };
 
@@ -26,7 +27,7 @@ languageSelect = valueObject => {
         'Fortran', 'Go', 'MATLAB', 'Objective-C', 'Perl', 'PHP', 'Powershell', 'VBA'];
 
     let response = updateSkillsResponse();
-    response.attachments = [val.menu('Select a language', 'languageSelect', 'name', valueObject, languages)];
+    response.attachments = [val.menu( null, valueObject, languages, 'Select a language', 'languageSelect', 'name')];
     return response;
 };
 
@@ -36,14 +37,14 @@ frameworkSelect = valueObject => {
     const frameworks = ['jQuery', 'Bootstrap', 'Angular2/4', 'AngularJS', 'Electron', 'jQueryUI', 'React', 'React Native', 'Vue'];
 
     let response = updateSkillsResponse();
-    response.attachments = [val.menu('Select a framework', 'frameworkSelect', 'name', valueObject, frameworks)];
+    response.attachments = [val.menu( null, valueObject, frameworks, 'Select a framework', 'frameworkSelect', 'name')];
     return response;
 };
 
 levelSelect = valueObject => {
     const levels = ['novice', 'intermediate', 'expert', 'wizard'];
     let response = updateSkillsResponse();
-    response.attachments = [val.menu('Select your skill level', 'levelSelect', 'level', valueObject, levels)];
+    response.attachments = [val.menu( null, valueObject, levels, 'Select your skill level', 'levelSelect', 'level')];
     return response;
 };
 
@@ -129,7 +130,7 @@ helpResponse = (type) => {
         \t\tNone.
         \tUse the command \`/update picture\` and your current Slack profile picture will be automatically added to your profile card.
         
-        If you need more help, have suggestions for improvement, or would like to report a bug please contact @vampiire`;
+        *if you need more help, have suggestions for improvement, or want to report a bug please add an issue on <https://www.github.com/the-vampiire/Chingu-Chimp/issues|GitHub>*`;
 
     let url = `*General form: \`/update [profile item] [-flag data]\`*\n
         *Updating GitHub, Blog, or Portfolio URLs*
