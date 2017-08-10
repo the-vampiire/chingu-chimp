@@ -1,0 +1,552 @@
+<!--
+
+give more detail on the cohorts section.
+    "Pick your currenty cohort" then
+        "add previous cohorts"
+
+TODO: hook up date validate of some kind
+TODO: refine button colors
+TODO: retrieve ajax data for form
+TODO: verify username is available?
+
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Chingu | Create Profile</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- google font roboto -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  </head>
+  <body>
+    <div id="app">
+      <div class="container">
+        <div class="jumbotron">
+
+        
+        <div class="row">
+          <div class="col-lg-12">
+            <h2>Create Your Chingu Profile</h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <p class="text-danger">Required *</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12">
+            <form @submit="submitForm" action="/form" method="post">
+
+              <!-- username -->
+              <div class="form-group row">
+                  <div class="col-lg-3">
+                    <label for="username">Username <span class="text-danger">*</span></label>
+                    <input 
+                      type="text" 
+                      class="form-control" 
+                      placeholder="the-happy-meerkat"
+                      v-model="userData.username"
+                      autofocus
+                      required
+                    >
+                </div>
+                <div class="col-lg-3">
+                  <label for="joinDate">Join Date<span class="text-danger">*</span></label>
+                  <input 
+                    type="date" 
+                    class="form-control" 
+                    v-model="userData.joinDate"
+                    required
+                  >
+                </div>
+              </div>
+
+              <!-- personnal links -->
+              <div class="form-group row">
+                <div class="col-lg-4">
+                  <label for="portfolioURL">Link to Your Portfolio</label>
+                  <input 
+                    type="url" 
+                    class="form-control" 
+                    placeholder="www.my-portfolio.com"
+                    v-model="userData.portfolioURL"
+                  >
+                </div>
+
+                <!-- github link -->
+                <div class="col-lg-4">
+                  <label for="gitHubURL">Link to Your GitHub <span class="text-danger">*</span></label>
+                  <input 
+                    type="url" 
+                    class="form-control" 
+                    placeholder="www.github.com/example"
+                    v-model="userData.gitHubURL"
+                    required
+                  >
+                </div>
+
+                <!-- blog link -->
+                <div class="col-lg-4">
+                  <label for="blogURL">Link to Your Coding Blog</label>
+                  <input 
+                    type="url" 
+                    class="form-control" 
+                    placeholder="www.example-blog.com"
+                    v-model="userData.blogURL"
+                  >
+                </div>
+              </div>
+
+              <!-- cohort intro -->
+              <div class="form-group">
+                <label for="userStory">Enter Your Chingu Cohort Intro (It's best to copy & past this from Slack edit message) <span class="text-danger">*</span></label>
+                <div class="row">
+                  <div class="col-lg-8">
+                    <textarea 
+                      class="form-control" 
+                      placeholder="My story begins...."
+                      v-model.lazy="userData.story"
+                      rows="3"
+                      required
+                    >
+                    </textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- cohort list -->
+              <div class="form-group" v-for="(userCohort, index) of userData.cohorts" :key="index">
+                <label for="cohorts">Cohorts <span class="text-danger">*</span></label>
+                <div class="row">
+                  <div class="col-lg-3">
+                    <select 
+                      name="cohortList" 
+                      class="form-control"
+                      v-model="userCohort.cohortName"
+                      required
+                    >
+                      <option v-for="cohort of ajaxData.cohorts" :key="cohort.name" :value="cohort.name">
+                        {{cohort.name}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <button 
+                  type="button"
+                  class="btn btn-chingu-green"
+                  @click="addNewCohort"
+                >
+                  Add Another Cohort
+                </button>
+              </div>
+
+              <h3><strong>Optional</strong></h3>
+
+              <!-- populate coding languages -->
+              <div class="form-group row" v-for="(language, index) of userData.skills.languages" :key="index">
+                <div class="col-lg-3">
+                  <label for="language">Language <span class="text-danger">*</span></label>
+                  <select 
+                    name="languageList" 
+                    class="form-control"
+                    v-model="language.name"
+                    required
+                  >
+                    <option v-for="language of ajaxData.languages" :key="language" :value="language">
+                      {{language}}
+                    </option>
+                  </select>
+                </div>
+                
+                <div class="col-lg-3" >
+                  <label for="cohorts">Skill Level <span class="text-danger">*</span></label>
+                  <select 
+                    name="skillSelect"
+                    class="form-control"
+                    v-model="language.level"
+                    required
+                  >
+                    <option v-for="skillLevel of ajaxData.levels" :key="skillLevel" :value="skillLevel">
+                      {{skillLevel}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <button 
+                  type="button"
+                  class="btn btn-chingu-green"
+                  @click="addNewLanguage"
+                >
+                  Add Another Language
+                </button>
+              </div>
+
+              <!-- populate frameworks -->
+              <div class="form-group row" v-for="(framework, index) of userData.skills.frameworks" :key="index">
+                <div class="col-lg-3">
+                  <label for="framework">Framework <span class="text-danger">*</span></label>
+                  <select 
+                    name="frameworkList" 
+                    class="form-control"
+                    v-model="framework.name"
+                    required
+                  >
+                    <option v-for="framework of ajaxData.frameworks" :key="framework" :value="framework">
+                      {{framework}}
+                    </option>
+                  </select>
+                </div>
+                
+                <div class="col-lg-3" >
+                  <label for="cohorts">Skill Level <span class="text-danger">*</span></label>
+                  <select 
+                    name="skillSelect"
+                    class="form-control"
+                    v-model="framework.level"
+                    required
+                  >
+                    <option v-for="skillLevel of ajaxData.levels" :key="skillLevel" :value="skillLevel">
+                      {{skillLevel}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <button 
+                  type="button"
+                  class="btn btn-chingu-green"
+                  @click="addNewFramework"
+                >
+                  Add Another Framework
+                </button>
+              </div>
+
+              <!-- populate projects -->
+              <div class="form-group row" v-for="(project, index) of userData.projects" :key="index">
+                <div class="col-lg-3">
+                  <label for="project">Project <span class="text-danger">*</span></label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    placeholder="the best portfolio"
+                    v-model="project.name"
+                  >
+                </div>
+                
+                 <div class="col-lg-4">
+                  <label for="project">Front End Url</label>
+                  <input 
+                    type="url" 
+                    class="form-control" 
+                    placeholder="http://www.myportfolio.com"
+                    v-model="project.url"
+                  >
+                </div>
+
+                <div class="col-lg-3">
+                  <label for="project">GitHub Link <span class="text-danger">*</span></label>
+                  <input 
+                    type="url" 
+                    class="form-control" 
+                    placeholder="https://github.com/project-link"
+                    v-model="project.gitHubUrl"
+                    required
+                  >
+                </div>
+
+                <div class="col-lg-2">
+                  <label for="project">Completed At <span class="text-danger">*</span></label>
+                  <input 
+                    type="date"
+                    class="form-control" 
+                    v-model="project.completedAt"
+                    required
+                  >
+                </div> 
+              </div>
+              <div class="form-group">
+                <button 
+                  type="button"
+                  class="btn btn-chingu-green"
+                  @click="addNewProject"
+                >
+                  Add Another Project
+                </button>
+              </div>
+
+              <!-- FCC certifications -->
+              <h3><strong>Free Code Camp Certifications</strong></h3>
+              <div class="form-group">
+                <button 
+                  type="button"
+                  class="btn btn-chingu-green"
+                  :disabled="frontEndCertAdded"
+                  @click="addNewCertificate('front end')"
+                >
+                  Front End Certification
+                </button>
+                <button 
+                  type="button"
+                  class="btn btn-chingu-green"
+                  :disabled="dataVisCertAdded"
+                  @click="addNewCertificate('data visualization')"
+                >
+                  Data Visualization Certification
+                </button>
+                <button 
+                  type="button"
+                  class="btn btn-chingu-green"
+                  :disabled="backEndCertAdded"
+                  @click="addNewCertificate('back end')"
+                >
+                  Back End Certification
+                </button>
+              </div>
+
+              <div class="" v-for="(certification, index) of userData.certifications" :key="index">
+                <h4><strong>{{certification.name}}</strong></h4>
+
+                <div class="row">
+                  <div class="form-group">
+                    <div class="col-lg-6">
+                      <label for="certification">Certification Url <span class="text-danger">*</span></label>
+                      <input 
+                        type="url" 
+                        class="form-control" 
+                        placeholder="the best portfolio"
+                        v-model="certification.url"
+                        required
+                      >
+                    </div>
+                    
+                    <div class="col-lg-3">
+                      <label for="project">Date Received <span class="text-danger">*</span></label>
+                      <input 
+                        type="date" 
+                        class="form-control"
+                        v-model="certification.date"
+                        
+                        required
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <button type="submit" class="btn btn-submit">Submit</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- TEMPORARY ROW -->
+        <!-- <div class="row text-center">
+          <div>{{userData}}</div>
+        </div> -->
+      </div>
+    </div>
+    </div>
+  </body>
+  <script src="https://unpkg.com/vue@2.4.2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.js"></script>
+</html>
+
+<script>
+  var app = new Vue({
+    el: '#app',
+    data: {
+      userData: {
+        username: '',
+        joinDate: '',
+        portfolioURL: '',
+        gitHubURL: '',
+        blogURL: '',
+        story: '', // chingu slack intro
+        cohorts: [],
+        skills: {
+          languages: [],
+          frameworks: []
+        },
+        projects: [],
+        certifications: []
+      },
+      // temp fake data
+      ajaxData: {
+        "cohorts": [
+          {
+            "name": "Ewoks",
+          },
+          {
+            "name": "Tapirs",
+          },
+          {
+            "name": "Sloths",
+          },
+          {
+            "name": "Kiwis",
+          },
+          {
+            "name": "Platypus",
+          },
+          {
+            "name": "Bearded-Dragons",
+          },
+          {
+            "name": "Armadillos",
+          },
+          {
+            "name": "Red-Pandas",
+          },
+          {
+            "name": "Honey-Badgers",
+          },
+          {
+            "name": "Elephants",
+          },
+          {
+            "name": "Dolphins",
+          },
+          {
+            "name": "Pumas",
+          },
+          {
+            "name": "Llamas",
+          }
+        ],
+        "languages": [
+          "JavaScript",
+          "Python",
+          "Java",
+          "C++"
+        ],
+        frameworks: [
+          "React",
+          "Angular",
+          "Vue",
+          "Flask"
+        ],
+        levels: [
+          "Beginner",
+          "Intermediate",
+          "Expert",
+          "Wizard"
+        ]
+      },
+    },
+    methods: {
+      addNewCohort() {
+        const defaultCohort = this.ajaxData.cohorts[0].name;
+
+        this.userData.cohorts.push({cohortName: defaultCohort});
+      },
+      addNewLanguage() {
+        const defaultLanguage = this.ajaxData.languages[0]
+        const defaultSkillLevel = 'Intermediate'
+
+        this.userData.skills.languages.push({name: defaultLanguage, level: defaultSkillLevel})
+      },
+      addNewFramework() {
+        const defaultFramework = this.ajaxData.frameworks[0]
+        const defaultSkillLevel = 'Intermediate'
+
+        this.userData.skills.frameworks.push({name: defaultFramework, level: defaultSkillLevel})
+      },
+      addNewProject() {
+        this.userData.projects.push({
+          project: '',
+          url: '',
+          gitHubUrl: '',
+          completedAt: ''
+        })
+      },
+      addNewCertificate(certification) {
+        let certificationName
+        switch(certification) {
+          case 'front end':
+            certificationName = 'Front End Certification'
+            break;
+          case 'data visualization':
+            certificationName = 'Data Visualization Certification'
+            break;
+          case 'back end':
+            certificationName = 'Back End Certification'
+        }
+        
+        this.userData.certifications.push({
+          name: certificationName,
+          url: '',
+          date: ''
+        })
+      },
+      submitForm(event) {
+        event.preventDefault()
+        console.log('I was clicked') //FIXME:
+        axios.post('/form', {userData: this.userData})
+          .then(response => console.log(response))
+      }
+    },
+    computed: {
+      frontEndCertAdded() {
+        return Boolean(~this.userData.certifications.findIndex( certification => certification.name === 'Front End Certification'))
+      },
+      dataVisCertAdded() {
+        return Boolean(~this.userData.certifications.findIndex( certification => certification.name === 'Data Visualization Certification'))
+      },
+      backEndCertAdded() {
+        return Boolean(~this.userData.certifications.findIndex( certification => certification.name === 'Back End Certification'))
+      }
+    },
+    created() {
+      this.addNewCohort()
+    }
+  })
+</script>
+
+<style>
+  body {
+    margin-top: 35px;
+    background-color: #05C35F;
+    color: #363636;
+    font-family: 'Roboto', sans-serif;
+  }
+  .jumbotron {
+    background-color: #fff;
+  }
+  h2 {
+    font-size: 48px;
+  }
+  .btn-chingu-green, 
+  .btn-chingu-green:hover, 
+  .btn-chingu-green:focus {
+    margin-top: 15px;
+    background-color: #28A4E6;
+    color: #fff;
+  }
+
+  .btn-chingu-green:hover {
+    opacity: 0.85;
+  }
+
+  .btn-submit, 
+  .btn-submit:hover, 
+  .btn-submit:focus {
+    margin-top: 15px;
+    background-color: #05C35F;
+    color: #fff;
+  }
+
+  .btn-submit:hover {
+    opacity: 0.85;
+  }
+</style>
