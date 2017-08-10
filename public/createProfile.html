@@ -4,15 +4,10 @@ give more detail on the cohorts section.
     "Pick your currenty cohort" then
         "add previous cohorts"
 
-TODO: hook up date validate of some kind
 TODO: refine button colors
-TODO: retrieve ajax data for form
-TODO: verify username is available?
-TODO: add other ability to appropriate fields
-TODO: move github link to the far left
+TODO: validate username matches slack restrictions
+TODO: validate github url
 -->
-
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -29,334 +24,352 @@ TODO: move github link to the far left
   <body>
     <div id="app">
       <div class="container">
-        <div class="jumbotron">
-
-        
-        <div class="row">
-          <div class="col-lg-12">
-            <h2>Create Your Chingu Profile</h2>
+        <div class="jumbotron" v-if="!userCreated">
+          <div class="row">
+            <div class="col-lg-12">
+              <h2>Create Your Chingu Profile</h2>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-12">
-            <p class="text-danger">Required *</p>
+          <div class="row">
+            <div class="col-lg-12">
+              <p class="text-danger">Required *</p>
+            </div>
           </div>
-        </div>
 
-        <div class="row">
-          <div class="col-lg-12">
-            <form @submit="submitForm" action="/form" method="post">
-
-              <!-- username -->
-              <div class="form-group row">
+          <div class="row">
+            <div class="col-lg-12">
+              <form @submit="submitForm" action="/form" method="post">
+                <!-- userName & join date -->
+                <div class="form-group row" :class="{'has-error': userNameInUse}">
+                    <div class="col-lg-3">
+                      <label for="userName">userName <span class="text-danger">*</span></label>
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        placeholder="the-happy-meerkat"
+                        v-model="userData.userName"
+                        @keyup="checkUserNameAvailability"
+                        autofocus
+                        required
+                      >
+                      <span class="help-block" v-if="userNameInUse">Username is already taken</span>
+                  </div>
                   <div class="col-lg-3">
-                    <label for="username">Username <span class="text-danger">*</span></label>
-                    <input 
-                      type="text" 
-                      class="form-control" 
-                      placeholder="the-happy-meerkat"
-                      v-model="userData.username"
-                      autofocus
-                      required
-                    >
-                </div>
-                <div class="col-lg-3">
-                  <label for="joinDate">Join Date <span class="text-danger">*</span></label>
-                  <input 
-                    type="date" 
-                    class="form-control" 
-                    v-model="userData.joinDate"
-                    required
-                  >
-                </div>
-              </div>
+                    <label for="joinDate">Join Date <span class="text-danger">*</span></label>
+                    <div class="row">
+                      <div class="col-lg-9">
 
-              <!-- personnal links -->
-              <div class="form-group row">
-                <div class="col-lg-4">
-                  <label for="portfolioURL">Link to Your Portfolio</label>
-                  <input 
-                    type="url" 
-                    class="form-control" 
-                    placeholder="www.my-portfolio.com"
-                    v-model="userData.portfolioURL"
-                  >
-                </div>
-
-                <!-- github link -->
-                <div class="col-lg-4">
-                  <label for="gitHubURL">Link to Your GitHub <span class="text-danger">*</span></label>
-                  <input 
-                    type="url" 
-                    class="form-control" 
-                    placeholder="www.github.com/example"
-                    v-model="userData.gitHubURL"
-                    required
-                  >
-                </div>
-
-                <!-- blog link -->
-                <div class="col-lg-4">
-                  <label for="blogURL">Link to Your Coding Blog</label>
-                  <input 
-                    type="url" 
-                    class="form-control" 
-                    placeholder="www.example-blog.com"
-                    v-model="userData.blogURL"
-                  >
-                </div>
-              </div>
-
-              <!-- cohort intro -->
-              <div class="form-group">
-                <label for="userStory">Enter Your Chingu Cohort Intro (It's best to copy & past this from Slack edit message) <span class="text-danger">*</span></label>
-                <div class="row">
-                  <div class="col-lg-8">
-                    <textarea 
-                      class="form-control" 
-                      placeholder="My story begins...."
-                      v-model.lazy="userData.story"
-                      rows="3"
-                      required
-                    >
-                    </textarea>
+                        <input 
+                          type="date" 
+                          class="form-control" 
+                          v-model="userData.joinDate"
+                          min="2016-10-01"
+                          :max="todaysDate"
+                          required
+                        >
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- cohort list -->
-              <div class="form-group" v-for="(userCohort, index) of userData.cohorts" :key="index">
-                <label for="cohorts">Cohort <span class="text-danger">*</span></label>
-                <div class="row">
-                  <div class="col-lg-3">
-                    <select 
-                      name="cohortList" 
-                      class="form-control"
-                      v-model="userCohort.cohortName"
+                <!-- personnal links -->
+                <div class="form-group row">
+                  <!-- github link -->
+                  <div class="col-lg-4">
+                    <label for="gitHub">Link to Your GitHub <span class="text-danger">*</span></label>
+                    <input 
+                      type="url" 
+                      class="form-control" 
+                      placeholder="www.github.com/example"
+                      v-model="userData.gitHub"
                       required
                     >
-                      <option v-for="cohort of ajaxData.cohorts" :key="cohort.name" :value="cohort.name">
-                        {{cohort.name}}
+                  </div>
+
+                  <!-- portfolio link -->
+                  <div class="col-lg-4">
+                    <label for="portfolio">Link to Your Portfolio</label>
+                    <input 
+                      type="url" 
+                      class="form-control" 
+                      placeholder="www.my-portfolio.com"
+                      v-model="userData.portfolio"
+                    >
+                  </div>
+
+                  <!-- blog link -->
+                  <div class="col-lg-4">
+                    <label for="blog">Link to Your Coding Blog</label>
+                    <input 
+                      type="url" 
+                      class="form-control" 
+                      placeholder="www.example-blog.com"
+                      v-model="userData.blog"
+                    >
+                  </div>
+                </div>
+
+                <!-- cohort intro -->
+                <div class="form-group">
+                  <label for="userStory">Enter Your Chingu Cohort Intro (It's best to copy & past this from Slack edit message) <span class="text-danger">*</span></label>
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <textarea 
+                        class="form-control" 
+                        placeholder="My story begins...."
+                        v-model.lazy="userData.story"
+                        rows="3"
+                        required
+                      >
+                      </textarea>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- cohort list -->
+                <div class="form-group" v-for="(userCohort, index) of userData.cohorts" :key="index">
+                  <label for="cohorts">Cohort <span class="text-danger">*</span></label>
+                  <div class="row">
+                    <div class="col-lg-2">
+                      <select 
+                        name="cohortList" 
+                        class="form-control"
+                        v-model="userCohort.cohortName"
+                        required
+                      >
+                        <option v-for="cohort of ajaxData.cohorts" :key="cohort.name" :value="cohort.name">
+                          {{cohort.name}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <button 
+                    type="button"
+                    class="btn btn-chingu-blue"
+                    @click="addNewCohort"
+                  >
+                    Add Another Cohort
+                  </button>
+                </div>
+
+                <h3><strong>Optional</strong></h3>
+
+                <!-- populate coding languages -->
+                <div class="form-group row" v-for="(language, index) of userData.skills.languages" :key="index">
+                  <div class="col-lg-2">
+                    <label for="language">Language <span class="text-danger">*</span></label>
+                    <select 
+                      name="languageList" 
+                      class="form-control"
+                      v-model="language.name"
+                      required
+                    >
+                      <option v-for="language of ajaxData.languages" :key="language" :value="language">
+                        {{language}}
+                      </option>
+                    </select>
+                  </div>
+                  
+                  <div class="col-lg-2" >
+                    <label for="cohorts">Skill Level <span class="text-danger">*</span></label>
+                    <select 
+                      name="skillSelect"
+                      class="form-control"
+                      v-model="language.level"
+                      required
+                    >
+                      <option v-for="skillLevel of ajaxData.levels" :key="skillLevel" :value="skillLevel">
+                        {{skillLevel}}
                       </option>
                     </select>
                   </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <button 
-                  type="button"
-                  class="btn btn-chingu-green"
-                  @click="addNewCohort"
-                >
-                  Add Another Cohort
-                </button>
-              </div>
-
-              <h3><strong>Optional</strong></h3>
-
-              <!-- populate coding languages -->
-              <div class="form-group row" v-for="(language, index) of userData.skills.languages" :key="index">
-                <div class="col-lg-3">
-                  <label for="language">Language <span class="text-danger">*</span></label>
-                  <select 
-                    name="languageList" 
-                    class="form-control"
-                    v-model="language.name"
-                    required
+                <div class="form-group">
+                  <button 
+                    type="button"
+                    class="btn btn-chingu-blue"
+                    @click="addNewLanguage"
                   >
-                    <option v-for="language of ajaxData.languages" :key="language" :value="language">
-                      {{language}}
-                    </option>
-                  </select>
-                </div>
-                
-                <div class="col-lg-3" >
-                  <label for="cohorts">Skill Level <span class="text-danger">*</span></label>
-                  <select 
-                    name="skillSelect"
-                    class="form-control"
-                    v-model="language.level"
-                    required
-                  >
-                    <option v-for="skillLevel of ajaxData.levels" :key="skillLevel" :value="skillLevel">
-                      {{skillLevel}}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <div class="form-group">
-                <button 
-                  type="button"
-                  class="btn btn-chingu-green"
-                  @click="addNewLanguage"
-                >
-                  Add Another Language
-                </button>
-              </div>
-
-              <!-- populate frameworks -->
-              <div class="form-group row" v-for="(framework, index) of userData.skills.frameworks" :key="index">
-                <div class="col-lg-3">
-                  <label for="framework">Framework <span class="text-danger">*</span></label>
-                  <select 
-                    name="frameworkList" 
-                    class="form-control"
-                    v-model="framework.name"
-                    required
-                  >
-                    <option v-for="framework of ajaxData.frameworks" :key="framework" :value="framework">
-                      {{framework}}
-                    </option>
-                  </select>
-                </div>
-                
-                <div class="col-lg-3" >
-                  <label for="cohorts">Skill Level <span class="text-danger">*</span></label>
-                  <select 
-                    name="skillSelect"
-                    class="form-control"
-                    v-model="framework.level"
-                    required
-                  >
-                    <option v-for="skillLevel of ajaxData.levels" :key="skillLevel" :value="skillLevel">
-                      {{skillLevel}}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <div class="form-group">
-                <button 
-                  type="button"
-                  class="btn btn-chingu-green"
-                  @click="addNewFramework"
-                >
-                  Add Another Framework
-                </button>
-              </div>
-
-              <!-- populate projects -->
-              <div class="form-group row" v-for="(project, index) of userData.projects" :key="index">
-                <div class="col-lg-3">
-                  <label for="project">Project <span class="text-danger">*</span></label>
-                  <input 
-                    type="text" 
-                    class="form-control" 
-                    placeholder="the best portfolio"
-                    v-model="project.name"
-                  >
-                </div>
-                
-                 <div class="col-lg-4">
-                  <label for="project">Front End Url</label>
-                  <input 
-                    type="url" 
-                    class="form-control" 
-                    placeholder="http://www.myportfolio.com"
-                    v-model="project.url"
-                  >
+                    Add Another Language
+                  </button>
                 </div>
 
-                <div class="col-lg-3">
-                  <label for="project">GitHub Link <span class="text-danger">*</span></label>
-                  <input 
-                    type="url" 
-                    class="form-control" 
-                    placeholder="https://github.com/project-link"
-                    v-model="project.gitHubUrl"
-                    required
+                <!-- populate frameworks -->
+                <div class="form-group row" v-for="(framework, index) of userData.skills.frameworks" :key="index">
+                  <div class="col-lg-2">
+                    <label for="framework">Framework <span class="text-danger">*</span></label>
+                    <select 
+                      name="frameworkList" 
+                      class="form-control"
+                      v-model="framework.name"
+                      required
+                    >
+                      <option v-for="framework of ajaxData.frameworks" :key="framework" :value="framework">
+                        {{framework}}
+                      </option>
+                    </select>
+                  </div>
+                  
+                  <div class="col-lg-2" >
+                    <label for="cohorts">Skill Level <span class="text-danger">*</span></label>
+                    <select 
+                      name="skillSelect"
+                      class="form-control"
+                      v-model="framework.level"
+                      required
+                    >
+                      <option v-for="skillLevel of ajaxData.levels" :key="skillLevel" :value="skillLevel">
+                        {{skillLevel}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <button 
+                    type="button"
+                    class="btn btn-chingu-blue"
+                    @click="addNewFramework"
                   >
+                    Add Another Framework
+                  </button>
                 </div>
 
-                <div class="col-lg-2">
-                  <label for="project">Completed At <span class="text-danger">*</span></label>
-                  <input 
-                    type="date"
-                    class="form-control" 
-                    v-model="project.completedAt"
-                    required
-                  >
-                </div> 
-              </div>
-              <div class="form-group">
-                <button 
-                  type="button"
-                  class="btn btn-chingu-green"
-                  @click="addNewProject"
-                >
-                  Add Another Project
-                </button>
-              </div>
+                <!-- populate projects -->
+                <div class="form-group row" v-for="(project, index) of userData.projects" :key="index">
+                  <div class="col-lg-2">
+                    <label for="project">Project <span class="text-danger">*</span></label>
+                    <input 
+                      type="text" 
+                      class="form-control" 
+                      placeholder="the best portfolio"
+                      v-model="project.name"
+                    >
+                  </div>
+                  
+                  <div class="col-lg-3">
+                    <label for="project">Front End Url</label>
+                    <input 
+                      type="url" 
+                      class="form-control" 
+                      placeholder="http://www.myportfolio.com"
+                      v-model="project.url"
+                    >
+                  </div>
 
-              <!-- FCC certifications -->
-              <h3><strong>Free Code Camp Certifications</strong></h3>
-              <div class="form-group">
-                <button 
-                  type="button"
-                  class="btn btn-chingu-green"
-                  :disabled="frontEndCertAdded"
-                  @click="addNewCertificate('front end')"
-                >
-                  Front End Certification
-                </button>
-                <button 
-                  type="button"
-                  class="btn btn-chingu-green"
-                  :disabled="dataVisCertAdded"
-                  @click="addNewCertificate('data visualization')"
-                >
-                  Data Visualization Certification
-                </button>
-                <button 
-                  type="button"
-                  class="btn btn-chingu-green"
-                  :disabled="backEndCertAdded"
-                  @click="addNewCertificate('back end')"
-                >
-                  Back End Certification
-                </button>
-              </div>
+                  <div class="col-lg-4">
+                    <label for="project">GitHub Link <span class="text-danger">*</span></label>
+                    <input 
+                      type="url" 
+                      class="form-control" 
+                      placeholder="https://github.com/project-link"
+                      v-model="project.gitHub"
+                      required
+                    >
+                  </div>
 
-              <div class="" v-for="(certification, index) of userData.certifications" :key="index">
-                <h4><strong>{{certification.name}}</strong></h4>
-
-                <div class="row">
-                  <div class="form-group">
-                    <div class="col-lg-6">
-                      <label for="certification">Certification Url <span class="text-danger">*</span></label>
-                      <input 
-                        type="url" 
-                        class="form-control" 
-                        placeholder="the best portfolio"
-                        v-model="certification.url"
-                        required
-                      >
+                  <div class="col-lg-3">
+                    <div class="row">
+                      <div class="col-lg-9">
+                        <label for="project">Completed At <span class="text-danger">*</span></label>
+                        <input 
+                          type="date"
+                          class="form-control" 
+                          v-model="project.completedAt"
+                          :max="todaysDate"
+                          required
+                        >
+                      </div>
                     </div>
-                    
-                    <div class="col-lg-3">
-                      <label for="project">Date Received <span class="text-danger">*</span></label>
-                      <input 
-                        type="date" 
-                        class="form-control"
-                        v-model="certification.date"
-                        
-                        required
-                      >
+                  </div> 
+                </div>
+                <div class="form-group">
+                  <button 
+                    type="button"
+                    class="btn btn-chingu-blue"
+                    @click="addNewProject"
+                  >
+                    Add Another Project
+                  </button>
+                </div>
+
+                <!-- FCC certifications -->
+                <h3><strong>Free Code Camp Certifications</strong></h3>
+                <div class="form-group">
+                  <button 
+                    type="button"
+                    class="btn btn-chingu-blue"
+                    :disabled="frontEndCertAdded"
+                    @click="addNewCertificate('front end')"
+                  >
+                    Front End Certification
+                  </button>
+                  <button 
+                    type="button"
+                    class="btn btn-chingu-blue"
+                    :disabled="dataVisCertAdded"
+                    @click="addNewCertificate('data visualization')"
+                  >
+                    Data Visualization Certification
+                  </button>
+                  <button 
+                    type="button"
+                    class="btn btn-chingu-blue"
+                    :disabled="backEndCertAdded"
+                    @click="addNewCertificate('back end')"
+                  >
+                    Back End Certification
+                  </button>
+                </div>
+
+                <div class="" v-for="(certification, index) of userData.certifications" :key="index">
+                  <h4><strong>{{certification.name}}</strong></h4>
+
+                  <div class="row">
+                    <div class="form-group">
+                      <div class="col-lg-4">
+                        <label for="certification">Certification Url <span class="text-danger">*</span></label>
+                        <input 
+                          type="url" 
+                          class="form-control" 
+                          placeholder="the best portfolio"
+                          v-model="certification.url"
+                          required
+                        >
+                      </div>
+                      
+                      <div class="col-lg-3">
+                        <div class="row">
+                          <div class="col-lg-9">
+                            <label for="project">Date Received <span class="text-danger">*</span></label>
+                            <input 
+                              type="date" 
+                              class="form-control"
+                              v-model="certification.date"
+                              :max="todaysDate"
+                              required
+                            >
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              
-              <button type="submit" class="btn btn-submit">Submit</button>
-            </form>
+                
+                <button type="submit" class="btn btn-submit" :disabled="userNameInUse">Submit</button>
+              </form>
+            </div>
           </div>
         </div>
-
-        <!-- TEMPORARY ROW -->
-        <!-- <div class="row text-center">
-          <div>{{userData}}</div>
-        </div> -->
+        <div class="jumbotron" v-else>
+          <div class="row">
+            <div class="col-lg-12">
+              <h3>Profile Created Successfully! You can now access your profile on Slack!</h3>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
     </div>
   </body>
   <script src="https://unpkg.com/vue@2.4.2"></script>
@@ -367,12 +380,15 @@ TODO: move github link to the far left
   var app = new Vue({
     el: '#app',
     data: {
+      userCreated: false,
+      todaysDate: '',
+      userNameInUse: false,
       userData: {
-        username: '',
+        userName: '',
         joinDate: '',
-        portfolioURL: '',
-        gitHubURL: '',
-        blogURL: '',
+        portfolio: '',
+        gitHub: '',
+        blog: '',
         story: '', // chingu slack intro
         cohorts: [],
         skills: {
@@ -425,18 +441,8 @@ TODO: move github link to the far left
             "name": "Llamas",
           }
         ],
-        "languages": [
-          "JavaScript",
-          "Python",
-          "Java",
-          "C++"
-        ],
-        frameworks: [
-          "React",
-          "Angular",
-          "Vue",
-          "Flask"
-        ],
+        languages: ['JavaScript', 'Java', 'Python', 'Ruby', 'C++', 'C#.Net', 'Assembly', 'Bash', 'Basic', 'C', 'C#', 'Fortran', 'Go', 'MATLAB', 'Objective-C', 'Perl', 'PHP', 'Powershell', 'VBA'],
+        frameworks:  ['jQuery', 'Bootstrap', 'Angular2/4', 'AngularJS', 'Electron', 'jQueryUI', 'React', 'React Native', 'Vue'],
         levels: [
           "Beginner",
           "Intermediate",
@@ -464,14 +470,18 @@ TODO: move github link to the far left
         this.userData.skills.frameworks.push({name: defaultFramework, level: defaultSkillLevel})
       },
       addNewProject() {
+        const completedAtDefault = this.todaysDate
+
         this.userData.projects.push({
           project: '',
           url: '',
-          gitHubUrl: '',
-          completedAt: ''
+          gitHub: '',
+          completedAt: completedAtDefault
         })
       },
       addNewCertificate(certification) {
+        const certCompletionDateDefault = this.todaysDate
+
         let certificationName
         switch(certification) {
           case 'front end':
@@ -487,14 +497,30 @@ TODO: move github link to the far left
         this.userData.certifications.push({
           name: certificationName,
           url: '',
-          date: ''
+          date: certCompletionDateDefault
         })
+      },
+      checkUserNameAvailability() {
+        axios.post('/validate-userName', {userName: this.userData.userName})
+          .then( response => this.userNameInUse = !response.data.userNameAvailable)
+          .catch( err => console.log(err))
       },
       submitForm(event) {
         event.preventDefault()
-        console.log('I was clicked') //FIXME:
-        axios.post('/form', {userData: this.userData})
-          .then(response => console.log(response))
+
+        if(this.userNameInUse) return
+
+        // convert all dates to unix timestamp
+        this.userData.joinDate = new Date(this.userData.joinDate).getTime()
+        for(let project of this.userData.projects) {
+          project.completedAt = new Date(project.completedAt).getTime()
+        }
+        for(let certification of this.userData.certifications) {
+          certification.date = new Date(certification.date).getTime()
+        }
+        
+        axios.post('/create-profile', {userData: this.userData})
+          .then(createdResponse => this.userCreated = createdResponse.data.userCreated)
       }
     },
     computed: {
@@ -509,6 +535,13 @@ TODO: move github link to the far left
       }
     },
     created() {
+      const today = new Date()
+      const year = today.getFullYear()
+      const month = `0${today.getMonth() + 1}`.slice(-2)
+      const day = today.getDate()
+      this.todaysDate = `${year}-${month}-${day}`
+      this.userData.joinDate = this.todaysDate
+
       this.addNewCohort()
     }
   })
@@ -527,15 +560,15 @@ TODO: move github link to the far left
   h2 {
     font-size: 48px;
   }
-  .btn-chingu-green, 
-  .btn-chingu-green:hover, 
-  .btn-chingu-green:focus {
+  .btn-chingu-blue, 
+  .btn-chingu-blue:hover, 
+  .btn-chingu-blue:focus {
     margin-top: 15px;
     background-color: #28A4E6;
     color: #fff;
   }
 
-  .btn-chingu-green:hover {
+  .btn-chingu-blue:hover:enabled {
     opacity: 0.85;
   }
 
@@ -547,7 +580,7 @@ TODO: move github link to the far left
     color: #fff;
   }
 
-  .btn-submit:hover {
+  .btn-submit:hover:enabled {
     opacity: 0.85;
   }
 </style>
