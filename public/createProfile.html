@@ -8,7 +8,8 @@ TODO: hook up date validate of some kind
 TODO: refine button colors
 TODO: retrieve ajax data for form
 TODO: verify username is available?
-
+TODO: add other ability to appropriate fields
+TODO: move github link to the far left
 -->
 
 
@@ -60,7 +61,7 @@ TODO: verify username is available?
                     >
                 </div>
                 <div class="col-lg-3">
-                  <label for="joinDate">Join Date<span class="text-danger">*</span></label>
+                  <label for="joinDate">Join Date <span class="text-danger">*</span></label>
                   <input 
                     type="date" 
                     class="form-control" 
@@ -125,7 +126,7 @@ TODO: verify username is available?
 
               <!-- cohort list -->
               <div class="form-group" v-for="(userCohort, index) of userData.cohorts" :key="index">
-                <label for="cohorts">Cohorts <span class="text-danger">*</span></label>
+                <label for="cohorts">Cohort <span class="text-danger">*</span></label>
                 <div class="row">
                   <div class="col-lg-3">
                     <select 
