@@ -1,12 +1,8 @@
+test = (a = 0, b = 0, c) => {
+    if(a) return `a: ${a}`;
+    if(b) return `b: ${b}`;
+    if(c) return `c: ${c}`;
+};
 
-
-let user = require('./database/profileModel').userProfile;
-
-let a = new Promise( (resolve, reject) => {
-    user.getProfileItem('vampiire', 'story').then( profileItem => {
-        resolve('worked');
-        reject('failed');
-    })
-});
-
-a.then( e => console.log(e)).catch( e => console.log(e));
+console.log(test(c = 5)); // a : 5
+console.log(test(5)); // a : 5

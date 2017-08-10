@@ -25,62 +25,23 @@ router.get('/form', (req, res) => {
 router.get('/', (req, res) => {
 
     let data = {
-        userName : 'jessec',
 
-        portfolio : 'https://www.vampiire.org',
-        gitHub: 'https://www.github.com/the-vampiire',
-        blog: 'https://medium.com/@vampiire',
+        cohorts: [],
 
-        story: `Hello you can call me Vamp. This is my third Chingu cohort (Walrus / Honey-Badger)
+        skills: {
 
-*Background*
-I have a B.S. in Chemical Engineering from USF. During my time there I overloaded on experiences from leadership to research and internships. Despite all my involvement I didn’t have much of a passion for working professionally as a ChE. I took time off after graduation where I worked as a janitor. Not as a career path but because I needed a job that wouldn’t tax my mind while I thought about what I wanted out of my future. which leads to…
+            languages : [],
 
-*Coding History* 
-I started coding at the end of February 2017. Before that I had literally 0 experience with code besides using Excel to solve ChE problems (goalseek / solver). I began with javascript and solving algorithm challenges especially the Project Euler problems. Soon I realized that Python was a much more popular language for solving these problems so I switched over. About a month later I was obsessed and realized being a developer was my calling.  
-
-I was beginning my application to Hack Reactor when I came across a scathing article from a former student of theirs. They suggested Free Code Camp so I committed to working through their curriculum. I worked feverishly on the front end certification and finished it in 58 days without looking up guides or solutions to any project or algorithm challenge (https://www.vampiire.org is the site I built which holds all the projects). I wasn’t rushing I just couldn’t stop coding and learning - I dreamt (and still do!) about coding and worked out problems I couldn’t solve awake. 
-
-After the certification I joined my first Chingu cohort and started learning backend code. Since then I have worked on the FCC backend projects, a slack bot, a small business automation suite for my dad, and building an online multiplayer pong game from scratch…with lasers! Most recently I started learning Angular to round out my skillset. 
-
-*Goals*
-I have started scouting for jobs and seeing how I match up with their expectations. I hope that with enough projects and my passion for coding I will be given a chance to prove myself as a developer. 
-
-I am determined to lead my bot team to a successful completion and launch of our project. 
-
-*Interests* 
-Asking questions. I ask way too many questions. Solving problems no matter the context. Brainstorming and improving on ideas. Teaching or explaining concepts to people. Playing Destiny (pvp!) until my eyes hurt. Hiking with my two boston terriers. Biking. Lifting heavy things and putting them down a bunch of times a week. Heavy synth / electronic music. Oh and uh…CODING!`,
-
-        joinDate: 1495238400,
-
-        cohort: [
-            {
-                cohortName : 'Walruses',
-                startDate : 1495238400
-            },
-            {
-                cohortName : 'HoneyBadgers',
-                startDate : 1497916800
-            }],
-
-        aptitudes: {
-
-            languages : [{
-                name : 'JavaScript',
-                level : 'intermediate'
-            }],
-
-            frameworks: [{
-                name : 'Bootstrap',
-                level : 'intermediate'
-            }]
+            frameworks: []
         },
 
-        projects: [{}],
+        projects: [],
 
-        certifications: [{}]
+        certifications: []
 
     };
+
+    data.userName = 'jessec';
 
 
     const userProfile = require('./database/profileModel').userProfile;

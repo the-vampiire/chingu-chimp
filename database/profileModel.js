@@ -128,8 +128,8 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
                     checkins.push(new checkinModel({channelID : channelID, sessions : [checkinSessionData]}));
 
                 const streakUpdate = streakUpdater(checkins, profileDoc.currentStreak, profileDoc.bestStreak);
-                let currentStreak = streakUpdate.currentStreak;
-                let bestStreak = streakUpdate.bestStreak;
+                profileDoc.currentStreak = streakUpdate.currentStreak;
+                profileDoc.bestStreak = streakUpdate.bestStreak;
 
 
                 profileDoc.lastCheckin = checkinSessionData;
@@ -141,8 +141,8 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
 
                     if(saveError) resolve(saveError);
                     if(success){
-                       if(channel) resolve(`succesfully saved the checkin for ${userName}. you have \`${channel.sessions.length}\` checkins on this channel!\n*current streak:* \`${currentStreak.value}\`\n*best streak:* \`${bestStreak}\`\n`);
-                       else resolve(`succesfully saved the checkin for ${userName}. This is your first checkin on this channel, keep it up!\n*current streak:* \` ${currentStreak.value}\`\n*best streak:* \`${bestStreak}\`\n`);
+                       if(channel) resolve(`succesfully saved the checkin for ${userName}. you have \`${channel.sessions.length}\` checkins on this channel!\n*current streak:* \`${profileDoc.currentStreak.value}\`\n*best streak:* \`${profileDoc.bestStreak}\`\n`);
+                       else resolve(`succesfully saved the checkin for ${userName}. This is your first checkin on this channel, keep it up!\n*current streak:* \` ${profileDoc.currentStreak.value}\`\n*best streak:* \`${profileDoc.bestStreak}\`\n`);
                     }
                 });
             }
@@ -154,9 +154,9 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
 
 streakUpdater = (checkins, currentStreak, bestStreak) => {
 
-    let currentDate = Number(Date.now());
+    if(currentStreak.value === 0 && bestStreak === 0) currentStreak.value++;
 
-    console.log(currentDate - currentStreak.lastUpdate);
+    let currentDate = Number(Date.now());
 
     if(currentDate - currentStreak.lastUpdate >= 86400000){
 
@@ -165,7 +165,6 @@ streakUpdater = (checkins, currentStreak, bestStreak) => {
 
             if (currentDate - lastDate <= 86400000) {
                 currentStreak.value++;
-                if (bestStreak < currentStreak) bestStreak = currentStreak;
                 return true;
             }
         });
@@ -174,6 +173,8 @@ streakUpdater = (checkins, currentStreak, bestStreak) => {
 
         currentStreak.lastUpdate = currentDate;
     }
+
+    if (bestStreak < currentStreak.value) bestStreak = currentStreak.value;
 
     return {currentStreak, bestStreak};
 };
