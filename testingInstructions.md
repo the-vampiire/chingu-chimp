@@ -45,7 +45,7 @@ List of update items: `blog, certifications, gitHub, picture, portfolio, project
     * If you dont receive an error response for your erroneous command send a message with the command you entered and any additional notes.
     * if you forget which flags to use or the correct format you can call the sub-guide for that item at any time.
 
-After reading the help guide copy and paste this message into the channel and enter your responses. Yes / no is fine but feel free to provide detail:
+After using the update command copy and paste this message into the channel and enter your responses. Yes / no is fine but feel free to provide detail:
 ```
 1. Was the git-style interface intuitive / convenient to you or do you have an alternative approach to updating you would like to suggest?
 2. Were the error messages clear and helpful in guiding you towards fixing your error?
@@ -66,7 +66,7 @@ After reading the help guide copy and paste this message into the channel and en
         * select different choices then submit
     * note: a soft reset will keep the original partners but allow you to change your choice of check-in type and activity
 
-After reading the help guide copy and paste this message into the channel and enter your responses. Yes / no is fine but feel free to provide detail:
+After using the check-in command copy and paste this message into the channel and enter your responses. Yes / no is fine but feel free to provide detail:
 ```
 1. Was the check-in process intuitive / convenient for you?
 2. Is there any part of the check-in process that was confusing?
@@ -102,7 +102,7 @@ After reading the help guide copy and paste this message into the channel and en
 * Request a user's projects
     * command: `/profile @userName projects`
 
-After reading the help guide copy and paste this message into the channel and enter your responses. Yes / no is fine but feel free to provide detail:
+After using the profile command copy and paste this message into the channel and enter your responses. Yes / no is fine but feel free to provide detail:
 ```
 1. Was the profile command intuitive / convenient for you?
 2. If there were any error messages were they clear and helpful in guiding you towards fixing your error?
