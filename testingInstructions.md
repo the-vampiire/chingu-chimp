@@ -21,9 +21,9 @@
 ##### Learn how to use the `/update` command
 
 * Call the help guide
-    * command: `/update help 1` for the first version
+    * command: `/update help1` for the first version
         * version 1 is a longer guide that displays all of the sub-guides at once.
-    * command: `/update help 2` for the second version
+    * command: `/update help2` for the second version
         * version 2 contains the general information about the command as well as instructions on how to call the sub-guides
     * note: both versions respond to the sub-guides commands
 
