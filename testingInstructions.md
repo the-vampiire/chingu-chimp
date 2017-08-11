@@ -57,7 +57,7 @@ After using the update command send a separate message into the channel for each
     * command: `/checkin` with or without partners
         * when you get to the confirmation message choose reset
         * select different choices then submit
-    * note: a soft reset will keep the original partner's but allow you to change your choice of check-in type and activity
+    * note: a soft reset will keep the original partners but allow you to change your choice of check-in type and activity
 
 After using the check-in command send a separate message into the channel for each of the following questions. Yes / no is fine but feel free to provide detail:
 1. Was the check-in process intuitive / convenient for you?
@@ -109,6 +109,8 @@ Thank you for your help I really appreciate your time. If you ever need my help 
 
 # Optional - Break the Chimp
 Sign up to break the Chimp so bugs can be found and fixed before launching.
+
+FORM URL
 
 #### I expect a lot of server crashing as a result of this area of testing. Because of this I will need to schedule 15-30 minute (up to you on duration) individual sessions with anyone interested so it doesn't impact the rest of the beta testing.
 
