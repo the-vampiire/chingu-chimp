@@ -2,13 +2,13 @@
 
 ### Why help?
 
-    Early access to learning the ins and outs of the app and its features
+##### Early access to learning the ins and outs of the app and its features
 
-    Contribute to improving a Chingu community tool
+##### Contribute to improving a Chingu community tool
 
-    Get a custom betaTester badge on your profile
+##### Get a unique betaTester badge on your profile
 
-    Get credited as a beta tester in the GitHub readme
+##### Get credited as a beta tester in the GitHub readme
 
 
 ## Steps
