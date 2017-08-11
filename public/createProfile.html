@@ -1,12 +1,5 @@
 <!--
-
-give more detail on the cohorts section.
-    "Pick your currenty cohort" then
-        "add previous cohorts"
-
-TODO: refine button colors
-TODO: validate username matches slack restrictions
-TODO: validate github url
+TODO: refactor fcc & github url validation to be lazy on first input attempt only if possible
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -39,20 +32,24 @@ TODO: validate github url
           <div class="row">
             <div class="col-lg-12">
               <form @submit="submitForm" action="/form" method="post">
+               
                 <!-- userName & join date -->
-                <div class="form-group row" :class="{'has-error': userNameInUse}">
-                    <div class="col-lg-3">
+                <div class="form-group row" >
+                    <div class="col-lg-3" :class="{'has-error': (userNameInUse || invalidUsername)}">
                       <label for="userName">userName <span class="text-danger">*</span></label>
                       <input 
                         type="text" 
                         class="form-control" 
                         placeholder="the-happy-meerkat"
                         v-model="userData.userName"
-                        @keyup="checkUserNameAvailability"
+                        @keyup="usernameCheckHandler"
                         autofocus
                         required
                       >
                       <span class="help-block" v-if="userNameInUse">Username is already taken</span>
+                      <span class="help-block" v-else-if="invalidUsername">
+                        Username can contain lowercase letters, numbers, periods, dashes and up to 21 characters long
+                      </span>
                   </div>
                   <div class="col-lg-3">
                     <label for="joinDate">Join Date <span class="text-danger">*</span></label>
@@ -75,15 +72,16 @@ TODO: validate github url
                 <!-- personnal links -->
                 <div class="form-group row">
                   <!-- github link -->
-                  <div class="col-lg-4">
+                  <div class="col-lg-4" :class="[validateGitHubUrl(userData.gitHub) ? '' : 'has-error']">
                     <label for="gitHub">Link to Your GitHub <span class="text-danger">*</span></label>
                     <input 
                       type="url" 
                       class="form-control" 
-                      placeholder="www.github.com/example"
-                      v-model="userData.gitHub"
+                      placeholder="https://www.github.com/example"
+                      v-model.lazy="userData.gitHub"
                       required
                     >
+                    <span class="help-block" v-if="!validateGitHubUrl(userData.gitHub)">Make sure link starts with https://www.github.com/</span>
                   </div>
 
                   <!-- portfolio link -->
@@ -103,7 +101,7 @@ TODO: validate github url
                     <input 
                       type="url" 
                       class="form-control" 
-                      placeholder="www.example-blog.com"
+                      placeholder="http://www.example-blog.com"
                       v-model="userData.blog"
                     >
                   </div>
@@ -137,7 +135,7 @@ TODO: validate github url
                         v-model="userCohort.cohortName"
                         required
                       >
-                        <option v-for="cohort of ajaxData.cohorts" :key="cohort.name" :value="cohort.name">
+                        <option v-for="cohort of cohorts" :key="cohort.name" :value="cohort.name">
                           {{cohort.name}}
                         </option>
                       </select>
@@ -166,7 +164,7 @@ TODO: validate github url
                       v-model="language.name"
                       required
                     >
-                      <option v-for="language of ajaxData.languages" :key="language" :value="language">
+                      <option v-for="language of languages" :key="language" :value="language">
                         {{language}}
                       </option>
                     </select>
@@ -180,7 +178,7 @@ TODO: validate github url
                       v-model="language.level"
                       required
                     >
-                      <option v-for="skillLevel of ajaxData.levels" :key="skillLevel" :value="skillLevel">
+                      <option v-for="skillLevel of levels" :key="skillLevel" :value="skillLevel">
                         {{skillLevel}}
                       </option>
                     </select>
@@ -206,7 +204,7 @@ TODO: validate github url
                       v-model="framework.name"
                       required
                     >
-                      <option v-for="framework of ajaxData.frameworks" :key="framework" :value="framework">
+                      <option v-for="framework of frameworks" :key="framework" :value="framework">
                         {{framework}}
                       </option>
                     </select>
@@ -220,7 +218,7 @@ TODO: validate github url
                       v-model="framework.level"
                       required
                     >
-                      <option v-for="skillLevel of ajaxData.levels" :key="skillLevel" :value="skillLevel">
+                      <option v-for="skillLevel of levels" :key="skillLevel" :value="skillLevel">
                         {{skillLevel}}
                       </option>
                     </select>
@@ -248,30 +246,23 @@ TODO: validate github url
                     >
                   </div>
                   
-                  <div class="col-lg-3">
-                    <label for="project">Front End Url</label>
-                    <input 
-                      type="url" 
-                      class="form-control" 
-                      placeholder="http://www.myportfolio.com"
-                      v-model="project.url"
-                    >
-                  </div>
+                  
 
-                  <div class="col-lg-4">
+                  <div class="col-lg-4" :class="[validateGitHubUrl(project.gitHub) ? '' : 'has-error']">
                     <label for="project">GitHub Link <span class="text-danger">*</span></label>
                     <input 
                       type="url" 
                       class="form-control" 
-                      placeholder="https://github.com/project-link"
-                      v-model="project.gitHub"
+                      placeholder="https://www.github.com/project-link"
+                      v-model.lazy="project.gitHub"
                       required
                     >
+                    <span class="help-block" v-if="!validateGitHubUrl(project.gitHub)">Make sure link starts with https://www.github.com/</span>
                   </div>
 
                   <div class="col-lg-3">
                     <div class="row">
-                      <div class="col-lg-9">
+                      <div class="col-lg-9 col-lg-offset-1">
                         <label for="project">Completed At <span class="text-danger">*</span></label>
                         <input 
                           type="date"
@@ -282,7 +273,17 @@ TODO: validate github url
                         >
                       </div>
                     </div>
-                  </div> 
+                  </div>
+                  
+                  <div class="col-lg-3">
+                    <label for="project">Front End Url</label>
+                    <input 
+                      type="url" 
+                      class="form-control" 
+                      placeholder="http://www.myportfolio.com"
+                      v-model="project.url"
+                    >
+                  </div>
                 </div>
                 <div class="form-group">
                   <button 
@@ -323,34 +324,33 @@ TODO: validate github url
                   </button>
                 </div>
 
-                <div class="" v-for="(certification, index) of userData.certifications" :key="index">
+                <div v-for="(certification, index) of userData.certifications" :key="index">
                   <h4><strong>{{certification.name}}</strong></h4>
 
-                  <div class="row">
-                    <div class="form-group">
-                      <div class="col-lg-4">
-                        <label for="certification">Certification Url <span class="text-danger">*</span></label>
-                        <input 
-                          type="url" 
-                          class="form-control" 
-                          placeholder="the best portfolio"
-                          v-model="certification.url"
-                          required
-                        >
-                      </div>
-                      
-                      <div class="col-lg-3">
-                        <div class="row">
-                          <div class="col-lg-9">
-                            <label for="project">Date Received <span class="text-danger">*</span></label>
-                            <input 
-                              type="date" 
-                              class="form-control"
-                              v-model="certification.date"
-                              :max="todaysDate"
-                              required
-                            >
-                          </div>
+                  <div class="form-group row">
+                    <div class="col-lg-5" :class="[validateFreeCodeCampUrl(certification.url) ? '' : 'has-error']">
+                      <label for="certification">Certification Url <span class="text-danger">*</span></label>
+                      <input 
+                        type="url" 
+                        class="form-control" 
+                        placeholder="https://www.freecodecamp.com/joe/front-end-certification"
+                        v-model.lazy="certification.url"
+                        required
+                      >
+                      <span class="help-block" v-if="!validateFreeCodeCampUrl(certification.url)">Make sure link starts with https://www.freecodecamp.com/</span>                        
+                    </div>
+                    
+                    <div class="col-lg-3">
+                      <div class="row">
+                        <div class="col-lg-9">
+                          <label for="project">Date Received <span class="text-danger">*</span></label>
+                          <input 
+                            type="date" 
+                            class="form-control"
+                            v-model="certification.date"
+                            :max="todaysDate"
+                            required
+                          >
                         </div>
                       </div>
                     </div>
@@ -380,9 +380,13 @@ TODO: validate github url
   var app = new Vue({
     el: '#app',
     data: {
+      // dom manipulation variables
       userCreated: false,
       todaysDate: '',
       userNameInUse: false,
+      invalidUsername: false,
+      
+      // form input
       userData: {
         userName: '',
         joinDate: '',
@@ -398,9 +402,9 @@ TODO: validate github url
         projects: [],
         certifications: []
       },
-      // temp fake data
-      ajaxData: {
-        "cohorts": [
+
+      // dropdown data
+      cohorts: [
           {
             "name": "Ewoks",
           },
@@ -449,22 +453,22 @@ TODO: validate github url
           "Expert",
           "Wizard"
         ]
-      },
     },
     methods: {
+      // populate new form field methods
       addNewCohort() {
-        const defaultCohort = this.ajaxData.cohorts[0].name;
+        const defaultCohort = this.cohorts[0].name;
 
         this.userData.cohorts.push({cohortName: defaultCohort});
       },
       addNewLanguage() {
-        const defaultLanguage = this.ajaxData.languages[0]
+        const defaultLanguage = this.languages[0]
         const defaultSkillLevel = 'Intermediate'
 
         this.userData.skills.languages.push({name: defaultLanguage, level: defaultSkillLevel})
       },
       addNewFramework() {
-        const defaultFramework = this.ajaxData.frameworks[0]
+        const defaultFramework = this.frameworks[0]
         const defaultSkillLevel = 'Intermediate'
 
         this.userData.skills.frameworks.push({name: defaultFramework, level: defaultSkillLevel})
@@ -500,11 +504,32 @@ TODO: validate github url
           date: certCompletionDateDefault
         })
       },
+
+      // form field validation methods
+      validateGitHubUrl(url) {
+        return url.startsWith('https://www.github.com/') || url.length === 0
+      },
+      validateFreeCodeCampUrl(url) {
+        return url.startsWith('https://www.freecodecamp.com/') || url.length === 0
+      },
+
+      // username validation properties
+      usernameCheckHandler() {
+        this.checkUserNameAvailability()
+        this.followsSlackFormatting()
+      },
       checkUserNameAvailability() {
         axios.post('/validate-userName', {userName: this.userData.userName})
           .then( response => this.userNameInUse = !response.data.userNameAvailable)
           .catch( err => console.log(err))
       },
+      followsSlackFormatting() {
+        const validUsernameChars = /^[a-z0-9.\-_]*$/
+
+        this.invalidUsername = !(this.userData.userName.length <= 21 && validUsernameChars.test(this.userData.userName)) // 21 is slacks max length for a username
+      },
+      
+      // form submission
       submitForm(event) {
         event.preventDefault()
 
@@ -524,6 +549,7 @@ TODO: validate github url
       }
     },
     computed: {
+      // prevet fcc cert duplication
       frontEndCertAdded() {
         return Boolean(~this.userData.certifications.findIndex( certification => certification.name === 'Front End Certification'))
       },

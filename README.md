@@ -44,6 +44,7 @@ TODO: add instructions for installing app for use in development
 ### TODO
 TODO: populate this column with next steps asap
 - create basic form that posts to database
+- move hard coded cohorts, programming languages, and framework values into one file to use throghout the project 
 
 ### Contact
 TODO: add contact information for core contributors
