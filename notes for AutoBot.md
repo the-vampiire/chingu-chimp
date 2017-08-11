@@ -119,6 +119,25 @@ Dashboard [admin]
         view / export[formatted] most reacted message quotes for "heard around chingu"
 
 
+GitHub Tracking
+
+    look into the GitHub API and see what is available to see
+    ideally:
+        every new team repo sets up "milestone" issues
+        whenever a milestone is met have the team send a commit that tags that issue #
+        when that commit is merged then trigger a milestone complete action in the autobot
+    help keep track of teams and their progress via actual code
+
+    Data collection
+        number of commits
+        commits / user
+        issues solved / milestones reached
+
+    https://developer.github.com/v3/issues/milestones/
+        all teams register a repo in the voyage team
+        bot runs through and adds milestones according to tier
+        bot monitors milestones on an interval
+        bot reacts accordingly
 
 
 
