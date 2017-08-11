@@ -43,7 +43,7 @@ router.get('/', (req, res) => {
 
     };
 
-    data.userName = 'vampiire';
+    data.userName = 'jessec';
 
 
     const userProfile = require('./database/profileModel').userProfile;
@@ -147,7 +147,7 @@ router.post('/profile', (req, res) => {
 router.post('/update', (req, res) => {
 
     const updateResponse = require('./responses/updateResponses');
-    const update = require('./tools/update');
+    const argumentParser = require('./tools/argumentParser');
     const userProfile = require('./database/profileModel').userProfile;
 
     const body = req.body;
@@ -157,7 +157,7 @@ router.post('/update', (req, res) => {
 
     if(tools.verify.slash(body.token)){
         if(~arguments.indexOf(' ')){
-            let parserOutput = update.parse(arguments);
+            let parserOutput = argumentParser.parse(arguments);
 
             if(typeof parserOutput === 'string') res.end(parserOutput);
             else userProfile.processUpdate(userName, cohortName, parserOutput).then( response => res.end(response));

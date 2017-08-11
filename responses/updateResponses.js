@@ -248,7 +248,9 @@ helpResponse = (type) => {
             response = certifications;
             break;
         default:
+// CHANGE AFTER BETA TESTING
             response = `invalid item [\`${type}\`]. Try \`/update help1\` or \`/update help2\` for a detailed help guide`
+// CHANGE AFTER BETA TESTING
     }
 
     return response;

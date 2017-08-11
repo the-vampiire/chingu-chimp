@@ -116,11 +116,12 @@ profileCard = (userName, share) => {
             }
 
             if(lastProject) overViewText += `*Last Completed Project:* <${lastProject.gitHub}|${lastProject.name}>\n`;
+    // end overview text buildup
 
             let response = {
 
                 response_type: `${share ? `in_channel` : `ephemeral`}`,
-                text: `*${userName.toUpperCase()}'s PROFILE*`,
+                text: `CHINGU PROFILE CARD:\n*${userName.toUpperCase()}*`,
 
                 attachments: [
 
@@ -150,27 +151,6 @@ profileCard = (userName, share) => {
                     },
                 ]
             };
-            // const badges = [{
-            //     name: 'Beta Tester',
-            //     url: 'https://cdn2.iconfinder.com/data/icons/aspneticons_v1.0_Nov2006/law-add-16x16.gif'
-            // },
-            //     {
-            //         name: 'Beta Tester',
-            //         url: 'https://cdn2.iconfinder.com/data/icons/aspneticons_v1.0_Nov2006/law-add-16x16.gif'
-            //     },
-            //     {
-            //         name: 'Beta Tester',
-            //         url: 'https://cdn2.iconfinder.com/data/icons/aspneticons_v1.0_Nov2006/law-add-16x16.gif'
-            //     },
-            //     {
-            //         name: 'Beta Tester',
-            //         url: 'https://cdn2.iconfinder.com/data/icons/aspneticons_v1.0_Nov2006/law-add-16x16.gif'
-            //     },
-            //     {
-            //         name: 'Beta Tester',
-            //         url: 'https://cdn2.iconfinder.com/data/icons/aspneticons_v1.0_Nov2006/law-add-16x16.gif'
-            //     }
-            //     ];
 
 
         // add gitHub / blog / portfolio links if available
@@ -191,6 +171,8 @@ profileCard = (userName, share) => {
 
             return response;
         }
+
+    // no user found
         else return {
             response_type: 'in_channel',
             text: `User \`@${userName}\` does not have a Chingu profile. Send them <url|this link> to create one!`
@@ -227,7 +209,7 @@ profileCard = (userName, share) => {
         if(length > 3) response.attachments.push({
             color: '#666',
             mrkdwn_in: ['text'],
-            text: `*use \`/profile @${userName} badges\` to view  ${`${userName.slice(0,1).toUpperCase()}${userName.slice(1)}`}'s remaining \`${length-3}\` badges*`
+            text: `*use \`/profile @${userName} badges\` to view  ${`${userName.slice(0,1).toUpperCase()}${userName.slice(1)}`}'s other \`${length-3}\` badges*`
         });
 
         return response;

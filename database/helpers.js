@@ -55,6 +55,9 @@ streakUpdater = (checkins, currentStreak, bestStreak) => {
 
 // returns a badge object to add to the badges array
 newBadge = type => {
+
+// badge types
+    // 'betaTester',
     const newBadge = {};
 
 // allow the community to make badges
@@ -65,11 +68,17 @@ newBadge = type => {
             newBadge.badgeType = 'betaTester';
             newBadge.name = 'Beta Tester: Chingu Chimp';
             // newBadge.url = 'http://chevellestuff.net/styles/images/crown.png';
-            // newBadge.url = 'https://cdn2.iconfinder.com/data/icons/aspneticons_v1.0_Nov2006/law-add-16x16.gif';
-            newBadge.url = 'http://www.monkeymods.com/wp-content/uploads/2015/05/monkey-fav2.png';
+            newBadge.url = 'https://cdn2.iconfinder.com/data/icons/aspneticons_v1.0_Nov2006/law-add-16x16.gif';
+            // newBadge.url = 'http://www.monkeymods.com/wp-content/uploads/2015/05/monkey-fav2.png';
             // newBadge.url = 'https://www.bernewitness.com/favicon-16x16.png';
             break;
-        case '':
+        case 'project1':
+            break;
+        case 'project5':
+            break;
+        case 'help5':
+            break;
+        case 'help10':
             break;
     }
 
