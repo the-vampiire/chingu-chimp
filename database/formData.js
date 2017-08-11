@@ -13,6 +13,8 @@ const formSchema = new mongoose.Schema({
     languages : [String],
     frameworks : [String]
 
+    level : [String]
+
 });
 
 
