@@ -9,6 +9,7 @@
 
 ## Steps
 * Create a profile at FORM URL
+* Follow the instructions below to test out each command
 
 ### The Update Command
 ##### Learn how to use the /update command
@@ -20,25 +21,31 @@
         * version 2 contains the general information about the command as well as instructions on how to call the sub-guides
     * note: both versions respond to the sub-guides commands
 * After reading the help guide send a seperate message into the channel for each of the following questions:
-    * Did you prefer version 1 or version 2?
-    * Was the guide clear or is there anything you are still confused about?
-    * Was the guide structured in an intuitive way or can you suggest moving any items or changing the markdown?
-    * Any other suggestions / alternatives / complaints / bugs?
+    * [1] Did you prefer version 1 or version 2?
+    * [2] Was the guide clear or is there anything you are still confused about?
+    * [3] Was the guide structured in an intuitive way or can you suggest moving any items or changing the markdown?
+    * [4] Any other suggestions / alternatives / complaints / bugs?
 
 ##### Use the /update command
-###### List of update items: `blog, certifications, gitHub, picture, portfolio, projects, skills, story`
-* Update one of each item using the appropriate flags
-    * if you make a mistake you should receive an error warning explaining how to fix it. If you dont receive an error response for your erroneous command make a note of it.
+List of update items: `blog, certifications, gitHub, picture, portfolio, projects, skills, story`
+* Update one of each item using appropriate flags as needed
+    * if you make a mistake you should receive an error message explaining how to fix it.
+    * If you dont receive an error response for your erroneous command send a message with the command you entered and any additional notes.
     * if you forget which flags or the format you can also call the sub-guide for that item at any time.
-* Break the /update command using any of the
-    * please try anything you can to break the /update command
-    * if you do not receive an error message for your attempt make a note of it.
 
-* After reading the help guide send a seperate message into the channel for each of the following questions:
-    * Did you prefer version 1 or version 2?
-    * Was the guide clear or is there anything you are still confused about?
-    * Was the guide structured in an intuitive way or can you suggest moving any items or changing the markdown?
-    * Any other suggestions / alternatives / complaints / bugs?
+* After using the /update command and (hopefully) failing in breaking it send a seperate message into the channel for each of the following questions:
+    * [1] Was the git-style interface intuitive / convenient to you or do you have an alternative approach to updating you would like to suggest?
+    * [2] Were the error messages clear and heplful in fixing your error?
+    * [3] Any other suggestions / alternatives / complaints / bugs?
+
+##### Break the /update command
+* please try _anything_ you can to break the /update command
+* if you do not receive an error message for your attempt send a message with the command you entered and any additional notes.
+* If the command returns something unexepcted send a message with the command you entered and any additional notes.
+
+
+
+
 
 
 

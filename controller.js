@@ -37,11 +37,13 @@ router.get('/', (req, res) => {
 
         projects: [],
 
-        certifications: []
+        certifications: [],
+
+        badges: []
 
     };
 
-    data.userName = 'jessec';
+    data.userName = 'vampiire';
 
 
     const userProfile = require('./database/profileModel').userProfile;

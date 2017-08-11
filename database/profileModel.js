@@ -6,6 +6,7 @@
 
 const mongoose = require('mongoose');
 const requests = require('../tools/requests');
+const helper = require('./helpers');
 
     const sessionSchema = new mongoose.Schema({
         kind: String,
@@ -66,8 +67,6 @@ const requests = require('../tools/requests');
         },
 
         checkins: [checkinSchema],
-        lastCheckin: sessionSchema,
-        totalCheckins: {type: Number, default: 0},
 
         projects: [{
             name: String,
@@ -82,14 +81,20 @@ const requests = require('../tools/requests');
             date: {type: Number, default: Date.now()}
         }],
 
+    // profile card data
         points: {type: Number, default: 1},
         bestStreak: {type: Number, default: 0},
         currentStreak: {
             value: {type: Number, default: 0},
             lastUpdate: {type: Number, default: Date.now()}
         },
-
-
+        lastCheckin: sessionSchema,
+        totalCheckins: {type: Number, default: 0},
+        badges : [{
+            badgeType : String,
+            name : String,
+            url : String
+        }],
 
     }, { runSettersOnQuery : true });
 
@@ -108,6 +113,7 @@ const requests = require('../tools/requests');
         return this.findOne({userName : userName}, item);
     };
 
+
 // ----------------- CUSTOM METHODS ----------------- //
 
 // ------- CHECKIN PROCESSING ------- //
@@ -117,8 +123,14 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
         this.findOne({userName: userName}).then( profileDoc => {
             if(profileDoc){
 
-                let cohorts = profileDoc.cohorts;
-                profileDoc.cohorts = checkAndAddCohort(cohorts, cohortName);
+
+// REMOVE AFTER TESING ------ remove this line after beta testing
+//                 if(!profileDoc.badges.some( e => e.name === 'Beta Tester: Chingu Chimp'))
+                profileDoc.badges.push(helper.newBadge('Chingu Chimp Beta Tester'));
+
+// REMOVE AFTER TESING
+
+                profileDoc.cohorts = helper.checkAndAddCohort(profileDoc.cohorts, cohortName);
 
                 const checkins = profileDoc.checkins;
                 let channel = checkins.find( e => e.channelID === channelID);
@@ -127,7 +139,7 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
                     channel.sessions.push(checkinSessionData) :
                     checkins.push(new checkinModel({channelID : channelID, sessions : [checkinSessionData]}));
 
-                const streakUpdate = streakUpdater(checkins, profileDoc.currentStreak, profileDoc.bestStreak);
+                const streakUpdate = helper.streakUpdater(checkins, profileDoc.currentStreak, profileDoc.bestStreak);
                 profileDoc.currentStreak = streakUpdate.currentStreak;
                 profileDoc.bestStreak = streakUpdate.bestStreak;
 
@@ -141,8 +153,8 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
 
                     if(saveError) resolve(saveError);
                     if(success){
-                       if(channel) resolve(`succesfully saved the checkin for ${userName}. you have \`${channel.sessions.length}\` checkins on this channel!\n*current streak:* \`${profileDoc.currentStreak.value}\`\n*best streak:* \`${profileDoc.bestStreak}\`\n`);
-                       else resolve(`succesfully saved the checkin for ${userName}. This is your first checkin on this channel, keep it up!\n*current streak:* \` ${profileDoc.currentStreak.value}\`\n*best streak:* \`${profileDoc.bestStreak}\`\n`);
+                        if(channel) resolve(`succesfully saved the checkin for ${userName}. you have \`${channel.sessions.length}\` checkins on this channel!\n*current streak:* \`${profileDoc.currentStreak.value}\`\n*best streak:* \`${profileDoc.bestStreak}\`\n`);
+                        else resolve(`succesfully saved the checkin for ${userName}. This is your first checkin on this channel, keep it up!\n*current streak:* \` ${profileDoc.currentStreak.value}\`\n*best streak:* \`${profileDoc.bestStreak}\`\n`);
                     }
                 });
             }
@@ -152,133 +164,94 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
     });
 };
 
-streakUpdater = (checkins, currentStreak, bestStreak) => {
-
-    if(currentStreak.value === 0 && bestStreak === 0) currentStreak.value++;
-
-    let currentDate = Number(Date.now());
-
-    if(currentDate - currentStreak.lastUpdate >= 86400000){
-
-        let resetStreak = !checkins.some( checkin => {
-            let sessionsArray = checkin.sessions, lastDate = sessionsArray[sessionsArray.length - 1].date;
-
-            if (currentDate - lastDate <= 86400000) {
-                currentStreak.value++;
-                return true;
-            }
-        });
-
-        if(resetStreak) currentStreak = 0;
-
-        currentStreak.lastUpdate = currentDate;
-    }
-
-    if (bestStreak < currentStreak.value) bestStreak = currentStreak.value;
-
-    return {currentStreak, bestStreak};
-};
-
-
 // ------- UPDATE PROCESSING ------- //
-    userSchema.statics.processUpdate = function(userName, cohortName, data){
+userSchema.statics.processUpdate = function(userName, cohortName, data){
 
-        return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
 
-            this.findOne({userName: userName}).then( profileDoc => {
+        this.findOne({userName: userName}).then( profileDoc => {
 
-                if(profileDoc){
+            if(profileDoc){
 
-                    // if the cohort the user is updating from is not in their profile then it is added in this step
-                    let cohorts = profileDoc.cohorts;
-                    profileDoc.cohorts = checkAndAddCohort(cohorts, cohortName);
+                // if the cohort the user is updating from is not in their profile then it is added in this step
+                let cohorts = profileDoc.cohorts;
+                profileDoc.cohorts = checkAndAddCohort(cohorts, cohortName);
 
-                    let updateItem = data.item;
-                    let updateData = data.updateData;
+                let updateItem = data.item;
+                let updateData = data.updateData;
 
-                    switch(updateItem){
+                switch(updateItem){
+                // pushing updateData into a profile item array
+                    case 'certifications':
+                    case 'projects':
+                        // add a badge after 5 - 10 etc completed projects
+                        // move higher badge to front of badges array
+                        profileDoc[updateItem].push(updateData);
+                        break;
 
-                        // pushing updateData into a profile item array
-                        case 'certifications':
-                        case 'projects':
-                            profileDoc[updateItem].push(updateData);
-                            break;
+                // pushing updateData into a nested profile item array
+                    case 'skills':
+                        // add a badge after 2+ languages
+                        // add a badge after 2+ frameworks
+                        const subUpdateItem = data.subItem;
+                        const skillsItem = profileDoc[updateItem][subUpdateItem];
 
-                        // pushing updateData into a nested profile item array
-                        case 'skills':
-                            const subUpdateItem = data.subItem;
-                            const skillsItem = profileDoc[updateItem][subUpdateItem];
+                        // handles updating an existing skill
+                        let skillsItemIndex;
+                        if(skillsItem.some( (skill, index) => {
+                                if(skill.name === updateData.name){
+                                    skillsItemIndex = index;
+                                    return true
+                                }
+                            })) skillsItem[skillsItemIndex].level = updateData.level;
 
-                            // handles updating an existing skill
-                            let skillsItemIndex;
-                            if(skillsItem.some( (skill, index) => {
-                                    if(skill.name === updateData.name){
-                                        skillsItemIndex = index;
-                                        return true
-                                    }
-                                })) skillsItem[skillsItemIndex].level = updateData.level;
+                        // no existing skill, add a new one
+                        else skillsItem.push(updateData);
+                        break;
 
-                            // no existing skill, add a new one
-                            else skillsItem.push(updateData);
-                            break;
+                // setting the url field
+                    case 'blog':
+                    case 'gitHub':
+                    case 'portfolio':
+                        profileDoc[updateItem] = updateData.url;
+                        break;
 
-                        // setting the url field
-                        case 'blog':
-                        case 'gitHub':
-                        case 'portfolio':
-                            profileDoc[updateItem] = updateData.url;
-                            break;
-
-                        // simple string/number/object
-                        case 'profilePic':
-                        case 'story':
-                            profileDoc[updateItem] = updateData;
-                            break;
-                    }
-
-                    return profileDoc.save( (saveError, doc) => {
-                        if(saveError) resolve(`error updating ${updateItem} for ${userName}`);
-                        else if(updateItem === 'skills')
-                            resolve(`*Successfully updated your ${data.subItem}: ${updateData.name} at the ${updateData.level} skill level*`);
-                        else resolve(`*Successfully updated your ${updateItem}*`);
-
-                    });
+                // simple string/number/object
+                    case 'profilePic':
+                    case 'story':
+                        profileDoc[updateItem] = updateData;
+                        break;
                 }
 
-                else{
-                    // alert the AutoBot to message the user who does not have an account. pass on the link to set up their profile
-                    resolve (`*Update for \`@${userName}\` failed:*\n*profile \`@${userName}\` not found.*\ncreate a profile <url|here>*\n`);
-                }
+                return profileDoc.save( (saveError, doc) => {
+                    if(saveError) resolve(`error updating ${updateItem} for ${userName}`);
+                    else if(updateItem === 'skills')
+                        resolve(`*Successfully updated your ${data.subItem}: ${updateData.name} at the ${updateData.level} skill level*`);
+                    else resolve(`*Successfully updated your ${updateItem}*`);
 
-            })
+                });
+            }
+
+            else{
+                // alert the AutoBot to message the user who does not have an account. pass on the link to set up their profile
+                resolve (`*Update for \`@${userName}\` failed:*\n*profile \`@${userName}\` not found.*\ncreate a profile <url|here>*\n`);
+            }
 
         })
-    };
 
-
-// --------------- HELPERS ----------------- //
-
-checkAndAddCohort = (cohorts, cohortName) => {
-
-// cohortName comes in in the form [cohort-name-style] and must be processed to [Cohort Name Style] for comparison
-    cohortName = cohortName.slice(cohortName.lastIndexOf('/')+1)
-        .split('-')
-        .map(word => word = `${word.slice(0,1).toUpperCase()}${word.slice(1)}`)
-        .join(' ');
-
-// if the passed match is not found in the array of then add it
-    if(!cohorts.some( e => e.cohortName === cohortName)){
-       cohorts.push({cohortName: cohortName});
-    }
-
-   return cohorts;
+    })
 };
 
-    const userProfile = mongoose.model('userProfile', userSchema);
+
+const userProfile = mongoose.model('userProfile', userSchema);
 
 module.exports = {
-    userSchema : userSchema,
-    userProfile : userProfile,
-    checkinSchema : checkinSchema,
-    checkinModel : checkinModel
+    userSchema,
+    userProfile,
+    checkinSchema,
+    checkinModel
 };
+
+
+
+

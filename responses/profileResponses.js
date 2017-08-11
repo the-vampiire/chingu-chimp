@@ -75,6 +75,7 @@ profileCard = (userName, share) => {
 
         if(user){
             const profilePic = user.profilePic.size_192;
+            const badges = user.badges;
             const points = user.points;
             const currentStreak = user.currentStreak.value;
             const bestStreak = user.bestStreak;
@@ -116,7 +117,7 @@ profileCard = (userName, share) => {
 
             if(lastProject) overViewText += `*Last Completed Project:* <${lastProject.gitHub}|${lastProject.name}>\n`;
 
-            const response = {
+            let response = {
 
                 response_type: `${share ? `in_channel` : `ephemeral`}`,
                 text: `*${userName.toUpperCase()}'s PROFILE*`,
@@ -146,32 +147,92 @@ profileCard = (userName, share) => {
                             { title: 'Current Streak', value: `${currentStreak}`, short: true },
                             { title: 'Best Streak', value: `${bestStreak}`, short: true }
                         ]
-                    }
+                    },
                 ]
             };
+            // const badges = [{
+            //     name: 'Beta Tester',
+            //     url: 'https://cdn2.iconfinder.com/data/icons/aspneticons_v1.0_Nov2006/law-add-16x16.gif'
+            // },
+            //     {
+            //         name: 'Beta Tester',
+            //         url: 'https://cdn2.iconfinder.com/data/icons/aspneticons_v1.0_Nov2006/law-add-16x16.gif'
+            //     },
+            //     {
+            //         name: 'Beta Tester',
+            //         url: 'https://cdn2.iconfinder.com/data/icons/aspneticons_v1.0_Nov2006/law-add-16x16.gif'
+            //     },
+            //     {
+            //         name: 'Beta Tester',
+            //         url: 'https://cdn2.iconfinder.com/data/icons/aspneticons_v1.0_Nov2006/law-add-16x16.gif'
+            //     },
+            //     {
+            //         name: 'Beta Tester',
+            //         url: 'https://cdn2.iconfinder.com/data/icons/aspneticons_v1.0_Nov2006/law-add-16x16.gif'
+            //     }
+            //     ];
 
+
+        // add gitHub / blog / portfolio links if available
             if(gitHub || blog || portfolio) response.attachments.push({
                 fallback: `${userName} social media links`,
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Social Media*',
-                color: '#666666',
+                color: '#666',
                 text: `*GitHub:* ${gitHub ? `${gitHub}\n`: `No GitHub profile available\n`}*Portfolio:* ${portfolio ? `${portfolio}\n` : `No portfolio link available\n`}*Blog:* ${blog ? `${blog}` : `No blog link available\n`}`
             });
 
+
+        // add certifications if available
             if(certifications.length) certificationsItemResponse(certifications, response);
+
+        // add badges if available
+            if(badges) response = attachBadges(badges, response, userName);
 
             return response;
         }
         else return {
             response_type: 'in_channel',
-            text: `User ${userName} does not have a Chingu profile. Message them and suggest they add one! RETURN FORM URL LINK HERE`
+            text: `User \`@${userName}\` does not have a Chingu profile. Send them <url|this link> to create one!`
         }
+
+
 
 
     });
 };
 
 // ------------------ CUSTOM ATTACHMENTS ------------------ //
+
+    attachBadges = (badges, response, userName) => {
+        const length = badges.length;
+
+        if(length )
+
+        badges.some( (badge, index) => {
+            if(index > 2) return true;
+
+            const attachment = {
+                color: '#15df89',
+                mrkdwn_in: ['text', 'pretext'],
+                footer: badge.name,
+                footer_icon: badge.url,
+            };
+
+            if(index === 0 ) attachment.pretext = '*Badges*';
+
+            response.attachments.push(attachment);
+        });
+
+        if(length > 3) response.attachments.push({
+            color: '#666',
+            mrkdwn_in: ['text'],
+            text: `*use \`/profile @${userName} badges\` to view  ${`${userName.slice(0,1).toUpperCase()}${userName.slice(1)}`}'s remaining \`${length-3}\` badges*`
+        });
+
+        return response;
+
+    };
 
     simpleItemResponse = (profileItemString, share) => {
         return {
