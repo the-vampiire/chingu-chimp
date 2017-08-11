@@ -27,10 +27,10 @@
         * version 2 contains the general information about the command as well as instructions on how to call the sub-guides
     * note: both versions respond to the sub-guides commands
 * After reading the help guide send a separate message into the channel for each of the following questions. Yes / no is fine but feel free to provide detail:
-    * [1] Did you prefer version 1 or version 2?
-    * [2] Was the guide clear or is there anything you are still confused about?
-    * [3] Was the guide structured in an intuitive way or can you suggest moving any items or changing the markdown?
-    * [4] Any other suggestions / alternatives / complaints / bugs?
+1. Did you prefer version 1 or version 2?
+2. Was the guide clear or is there anything you are still confused about?
+3. Was the guide structured in an intuitive way or can you suggest moving any items or changing the markdown?
+4. Any other suggestions / alternatives / complaints / bugs?
 
 ##### Use the /update command
 List of update items: `blog, certifications, gitHub, picture, portfolio, projects, skills, story`
@@ -71,9 +71,9 @@ After using the check-in command send a separate message into the channel for ea
 * Call the help guide
     * command: `/profile help`
 * After reading the help guide send a separate message into the channel for each of the following questions. Yes / no is fine but feel free to provide detail:
-    * [1] Was the guide clear or is there anything you are still confused about?
-    * [2] Was the guide structured in an intuitive way or can you suggest moving any items or changing the markdown?
-    * [3] Any other suggestions / alternatives / complaints / bugs?
+1. Was the guide clear or is there anything you are still confused about?
+2. Was the guide structured in an intuitive way or can you suggest moving any items or changing the markdown?
+3. Any other suggestions / alternatives / complaints / bugs?
 
 ##### Use the /profile command
 * Request a user's profile card privately - without using the `share` argument
