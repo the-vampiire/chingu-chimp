@@ -55,84 +55,84 @@ submitSkill = valueObject => {
 
 helpResponse = (type) => {
 
-    const help1 =
-        `*How to use the \`/update\` command:* \n\nUpdating functions similarly to git in stringing together mandatory and/or optional \`[-flag data]\` pairs to build the update command\n
-        *General form: \`/update [profile item] [-flag data]\`*\n
-        *List of update items: \`blog\`, \`certifications\`, \`gitHub\`, \`picture\`, \`portfolio\`, \`projects\`, \`skills\`, \`story\`*\n
-        *List of update flags: \`-date\` or \`-d\`, \`-git\` or \`-g\`, \`-name\` or \`-d\`, \`-url\` or \`-u\`*\n
-        
-        *Updating GitHub, Blog, or Portfolio URLs*
-        \t*Item(s)*
-        \t\t[\`gitHub\`]: your gitHub profile url
-        \t\t[\`blog\`]: your blog url
-        \t\t[\`portfolio\`]: your portfolio url
-        \t*Flag(s)*
-        \t\t[\`-url\`\`full url\`] _example:_ \`-url https://www.github.com/yourUserName\`
-        
-        \t_example update of blog url:_ \`/update blog -url https://medium.com/@yourUserName\`
-        \t_example *shorthand* update of blog url:_ \`/update blog -u https://medium.com/@yourUserName\`
-        \n
-        *Updating User Story*
-        \t*Item(s)*
-        \t\t[\`story\`]: your user story (that you entered in the Intro channel)
-        \t*Flag(s)*
-        \t\tNone. 
-        \t\t*Note:* You can preserve the formatting [markdown] by copying directly from the edit message window in your intro post
-        
-        \t_example update of user story:_ \`/update story Hello you can call me Vamp I am a...\`
-        \n
-        *Adding Projects*
-        \t*Item(s)*
-        \t\t[\`projects\`]
-        \t*Flag(s)*
-        \t\t[\`-name\`\`project name\`] _example:_ \`-name Project Name\`
-        \t\t[\`-url\`\`project homepage\`] _example:_ \`-url https://www.domain.com/projectName\`
-        \t\t\t *Optional*: including a project url is recommended but not required
-        \t\t[\`-git\`\`project GitHub repo\`] _example:_ \`-git https://www.github.com/yourUserName/projectName\`
-        \t\t\t*Note*: a gitHub repo link is required for every project
-        \t\t[\`-date\`\`date of completion\`] _example:_ \`-date 01/01/17\`
-        \t\t\t *Optional*: If no date is passed - today's date is inserted. 
-        \t\t\t *Note:* Date must be mm/dd/yy format.
-        
-        \t_example adding a project:_
-        \t\t\`/update projects -name New Project -url https://www.domain.com/newProject\` 
-        \t\t\`-git https://www.github.com/yourUserName/newProject -date 08/08/17\`
-        \t_example *shorthand* adding a project:_
-        \t\t\`/update projects -n New Project -u https://www.domain.com/newProject\` 
-        \t\t\`-g https://www.github.com/yourUserName/newProject -d 08/08/17\`
-        \n
-        *Adding or Updating Skills*
-        \t*Item(s)*
-        \t\t[\`skills\`]: your languages and frameworks and their associated skill levels
-        \t*Flag(s)*
-        \t\tNone. 
-        \tAn interactive form will be sent back to you to add or update a language or framework skill.
-        \t\t*Note*: to update an existing skill level select the language or framework then select the new skill level.
-        \n
-        *Adding Free Code Camp Certifications*
-        \t*Item(s)*
-        \t\t[\`certifications\`]: your Free Code Camp certifications
-        \t*Flag(s)*
-        \t\t[\`-url\`\`certificate url\`] _example:_ \`-url https://www.freecodecamp.org/fccUserName/front-end-certification\`
-        \t\t[\`-date\`\`date of completion\`] _example:_ \`-date 01/01/17\`
-        \t\t\t *Optional*: If no date is passed - today's date is inserted.
-        \t\t\t *Note:* Date must be mm/dd/yy format.
-        
-        \t_example adding a new certificate:_
-        \t\t\`/update certifications -url https://www.freecodecamp.org/fccUserName/front-end-certification -date 08/08/17\`
-        \t_example *shorthand* adding a new certificate:_
-        \t\t\`/update certifications -u https://www.freecodecamp.org/fccUserName/front-end-certification -d 08/08/17\`
-        
-        *Updating Your Profile Picture*
-        \t*Item(s)*
-        \t\t[\`picture\`]: the profile picture that is displayed on your profile card
-        \t*Flag(s)*
-        \t\tNone.
-        \tUse the command \`/update picture\` and your current Slack profile picture will be added to your profile card.
-        
-        *if you need more help, have suggestions for improvement, or want to report a bug please add an issue on <https://www.github.com/the-vampiire/Chingu-Chimp/issues|GitHub>*`;
+    // const help1 =
+    //     `*How to use the \`/update\` command:* \n\nUpdating functions similarly to git in stringing together mandatory and/or optional \`[-flag data]\` pairs to build the update command\n
+    //     *General form: \`/update [profile item] [-flag data]\`*\n
+    //     *List of update items: \`blog\`, \`certifications\`, \`gitHub\`, \`picture\`, \`portfolio\`, \`projects\`, \`skills\`, \`story\`*\n
+    //     *List of update flags: \`-date\` or \`-d\`, \`-git\` or \`-g\`, \`-name\` or \`-d\`, \`-url\` or \`-u\`*\n
+    //
+    //     *Updating GitHub, Blog, or Portfolio URLs*
+    //     \t*Item(s)*
+    //     \t\t[\`gitHub\`]: your gitHub profile url
+    //     \t\t[\`blog\`]: your blog url
+    //     \t\t[\`portfolio\`]: your portfolio url
+    //     \t*Flag(s)*
+    //     \t\t[\`-url\`\`full url\`] _example:_ \`-url https://www.github.com/yourUserName\`
+    //
+    //     \t_example update of blog url:_ \`/update blog -url https://medium.com/@yourUserName\`
+    //     \t_example *shorthand* update of blog url:_ \`/update blog -u https://medium.com/@yourUserName\`
+    //     \n
+    //     *Updating User Story*
+    //     \t*Item(s)*
+    //     \t\t[\`story\`]: your user story (that you entered in the Intro channel)
+    //     \t*Flag(s)*
+    //     \t\tNone.
+    //     \t\t*Note:* You can preserve the formatting [markdown] by copying directly from the edit message window in your intro post
+    //
+    //     \t_example update of user story:_ \`/update story Hello you can call me Vamp I am a...\`
+    //     \n
+    //     *Adding Projects*
+    //     \t*Item(s)*
+    //     \t\t[\`projects\`]
+    //     \t*Flag(s)*
+    //     \t\t[\`-name\`\`project name\`] _example:_ \`-name Project Name\`
+    //     \t\t[\`-url\`\`project homepage\`] _example:_ \`-url https://www.domain.com/projectName\`
+    //     \t\t\t *Optional*: including a project url is recommended but not required
+    //     \t\t[\`-git\`\`project GitHub repo\`] _example:_ \`-git https://www.github.com/yourUserName/projectName\`
+    //     \t\t\t*Note*: a gitHub repo link is required for every project
+    //     \t\t[\`-date\`\`date of completion\`] _example:_ \`-date 01/01/17\`
+    //     \t\t\t *Optional*: If no date is passed - today's date is inserted.
+    //     \t\t\t *Note:* Date must be mm/dd/yy format.
+    //
+    //     \t_example adding a project:_
+    //     \t\t\`/update projects -name New Project -url https://www.domain.com/newProject\`
+    //     \t\t\`-git https://www.github.com/yourUserName/newProject -date 08/08/17\`
+    //     \t_example *shorthand* adding a project:_
+    //     \t\t\`/update projects -n New Project -u https://www.domain.com/newProject\`
+    //     \t\t\`-g https://www.github.com/yourUserName/newProject -d 08/08/17\`
+    //     \n
+    //     *Adding or Updating Skills*
+    //     \t*Item(s)*
+    //     \t\t[\`skills\`]: your languages and frameworks and their associated skill levels
+    //     \t*Flag(s)*
+    //     \t\tNone.
+    //     \tAn interactive form will be sent back to you to add or update a language or framework skill.
+    //     \t\t*Note*: to update an existing skill level select the language or framework then select the new skill level.
+    //     \n
+    //     *Adding Free Code Camp Certifications*
+    //     \t*Item(s)*
+    //     \t\t[\`certifications\`]: your Free Code Camp certifications
+    //     \t*Flag(s)*
+    //     \t\t[\`-url\`\`certificate url\`] _example:_ \`-url https://www.freecodecamp.org/fccUserName/front-end-certification\`
+    //     \t\t[\`-date\`\`date of completion\`] _example:_ \`-date 01/01/17\`
+    //     \t\t\t *Optional*: If no date is passed - today's date is inserted.
+    //     \t\t\t *Note:* Date must be mm/dd/yy format.
+    //
+    //     \t_example adding a new certificate:_
+    //     \t\t\`/update certifications -url https://www.freecodecamp.org/fccUserName/front-end-certification -date 08/08/17\`
+    //     \t_example *shorthand* adding a new certificate:_
+    //     \t\t\`/update certifications -u https://www.freecodecamp.org/fccUserName/front-end-certification -d 08/08/17\`
+    //
+    //     *Updating Your Profile Picture*
+    //     \t*Item(s)*
+    //     \t\t[\`picture\`]: the profile picture that is displayed on your profile card
+    //     \t*Flag(s)*
+    //     \t\tNone.
+    //     \tUse the command \`/update picture\` and your current Slack profile picture will be added to your profile card.
+    //
+    //     *if you need more help, have suggestions for improvement, or want to report a bug please add an issue on <https://www.github.com/the-vampiire/Chingu-Chimp/issues|GitHub>*`;
 
-    const help2 = `*How to use the \`/update\` command:* \n\nUpdating functions similarly to git in stringing together mandatory and/or optional \`[-flag data]\` pairs to build the update command\n
+    const help1 = `*How to use the \`/update\` command:* \n\nUpdating functions similarly to git in stringing together mandatory and/or optional \`[-flag data]\` pairs to build the update command\n
         *General form: \`/update [profile item] [-flag data]\`*\n
         *List of update items: \`blog\`, \`certifications\`, \`gitHub\`, \`picture\`, \`portfolio\`, \`projects\`, \`skills\`, \`story\`*\n
         *List of update flags: \`-date\` or \`-d\`, \`-git\` or \`-g\`, \`-name\` or \`-d\`, \`-url\` or \`-u\`*\n\n
@@ -161,6 +161,97 @@ helpResponse = (type) => {
         
         *if you need more help, have suggestions for improvement, or want to report a bug please add an issue on <https://www.github.com/the-vampiire/Chingu-Chimp/issues|GitHub>*`;
 
+    const help2 = {
+        text: `*How to use the \`/update\` command:* \n\nUpdating functions similarly to git in stringing together mandatory and/or optional \`[-flag data]\` pairs to build the update command`,
+        response_type: 'ephemeral',
+
+        attachments: [
+
+            {
+                color: '#666',
+                mrkdwn_in: ['text', 'pretext'],
+                text: `*\`blog\`, \`certifications\`, \`gitHub\`, \`picture\`, \`portfolio\`, \`projects\`, \`skills\`, \`story\`*`,
+                pretext: '*List of update items*',
+            },
+            {
+                color: '#666',
+                mrkdwn_in: ['text', 'pretext'],
+                // text: `*\`-date\` / \`-d\`, \`-git\` / \`-g\`, \`-name\` / \`-d\`, \`-url\` / \`-u\`*`,
+                text: `*\`-date\`, \`-git\`, \`-name\`, \`-url\`*\n*All of the flags can also be written shorthand: \`-d\`, \`-g\`, \`-n\`, \`-u\`*`,
+                pretext: '*List of update flags*',
+            },
+            {
+                color: '#15df89',
+                mrkdwn_in: ['text', 'pretext'],
+                pretext: '*Updating User Story*',
+                fields: [
+                    {
+                        title: 'Item',
+                        value: `[story]: your user story (that you entered in the Intro channel)`
+                    },
+                    {
+                        title: 'Flag(s)',
+                        value: `None.\nNote: You can preserve the formatting [markdown] by copying directly from the edit message window in your intro post`,
+                    },
+                    {
+                        title: 'Example - updating your user story',
+                        value: `/update story Hello you can call me Vamp I am a...`
+                    }
+                ]
+            },
+            {
+                color: '#15df89',
+                mrkdwn_in: ['text', 'pretext'],
+                pretext: '*Updating Profile Picture*',
+                fields: [
+                    {
+                        title: 'Item',
+                        value: `[picture]: the profile picture that is displayed on your profile card`
+                    },
+                    {
+                        title: 'Flag(s)',
+                        value: `None.\nNote: You can preserve the formatting [markdown] by copying directly from the edit message window in your intro post`,
+                    },
+                    {
+                        title: 'Example - updating your profile card picture',
+                        value: `Use the command /update picture and your current Slack profile picture will be added to your profile card`
+                    }
+                ]
+            },
+            {
+                color: '#15df89',
+                mrkdwn_in: ['text', 'pretext'],
+                pretext: '*Help guides for other profile items*',
+                text: 'Each of the commands below will call a help guide for the respective item',
+                fields: [
+                    {
+                        title: `Updating Blog, Portfolio, or GitHub Profile Links`,
+                        value: `/update blog or /update portfolio or /update gitHub`,
+                    },
+                    {
+                        title: `Updating Certifications`,
+                        value: `/update certifications`,
+                    },
+                    {
+                        title: `Updating Projects`,
+                        value: `/update projects`,
+                    },
+                    {
+                        title: `Updating Skills`,
+                        value: `/update skills`,
+                    }
+                ]
+            },
+            {
+                color: '#15df89',
+                mrkdwn_in: ['text', 'pretext'],
+                pretext: '*Support*',
+                text: `*if you need more help, have suggestions for improvement, or want to report a bug please add an issue on <https://www.github.com/the-vampiire/Chingu-Chimp/issues|GitHub>*`
+            }
+
+        ]
+    };
+
     const url = `*General form: \`/update [profile item] [-flag data]\`*\n
         *Updating GitHub, Blog, or Portfolio URLs*
         \t*Item(s)*
@@ -179,12 +270,12 @@ helpResponse = (type) => {
         \t*Item(s)*
         \t\t[\`projects\`]
         \t*Flag(s)*
-        \t\t[\`-name\`\`project name\`] _example:_ \`-name Project Name\`
-        \t\t[\`-url\`\`project homepage\`] _example:_ \`-url https://www.domain.com/projectName\`
+        \t\t[\`-name project name\`] _example:_ \`-name Project Name\`
+        \t\t[\`-url project homepage\`] _example:_ \`-url https://www.domain.com/projectName\`
         \t\t\t *Optional*: including a project url is recommended but not required
-        \t\t[\`-git\`\`project GitHub repo\`] _example:_ \`-git https://www.github.com/yourUserName/projectName\`
+        \t\t[\`-git project GitHub repo\`] _example:_ \`-git https://www.github.com/yourUserName/projectName\`
         \t\t\t*Note*: a gitHub repo link is required for every project
-        \t\t[\`-date\`\`date of completion\`] _example:_ \`-date 01/01/17\`
+        \t\t[\`-date date of completion\`] _example:_ \`-date 01/01/17\`
         \t\t\t *Optional*: If no date is passed - today's date is inserted. 
         \t\t\t *Note:* Date must be mm/dd/yy format.
         
@@ -232,6 +323,9 @@ helpResponse = (type) => {
             break;
         case 'help2':
             response = help2;
+            break;
+        case 'help3':
+            response = help3;
             break;
         case 'gitHub':
         case 'blog':

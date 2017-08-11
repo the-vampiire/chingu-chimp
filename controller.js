@@ -165,7 +165,11 @@ router.post('/update', (req, res) => {
         }
 
         else{
-            if(!arguments || arguments === 'help') res.end(updateResponse.helpResponse('help'));
+            if(!arguments || arguments === 'help') {
+                const helpResponse = updateResponse.helpResponse('help');
+                if(typeof helpResponse === 'string') res.end(helpResponse);
+                else res.json(helpResponse);
+            }
 
             else if(arguments === 'skills'){
                 const output = tools.interactive.interaction(('update'));
@@ -185,7 +189,11 @@ router.post('/update', (req, res) => {
                     userProfile.processUpdate(userName, cohortName, data).then( response => res.end(response));
                 });
             }
-            else res.end(updateResponse.helpResponse(arguments));
+            else {
+                const helpResponse = updateResponse.helpResponse(arguments);
+                if(typeof helpResponse === 'string') res.end(helpResponse);
+                else res.json(helpResponse);
+            }
         }
     }
 

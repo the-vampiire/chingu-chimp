@@ -125,9 +125,10 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
 
 
 // REMOVE AFTER TESING ------ remove this line after beta testing
-//                 if(!profileDoc.badges.some( e => e.name === 'Beta Tester: Chingu Chimp'))
+                if(!profileDoc.badges.some( e => e.name === 'Beta Tester: Chingu Chimp'))
                 profileDoc.badges.push(helper.newBadge('Chingu Chimp Beta Tester'));
 
+                if(userName === 'chance') profileDoc.badges.push(helper.newBadge('founder'));
 // REMOVE AFTER TESING
 
                 profileDoc.cohorts = helper.checkAndAddCohort(profileDoc.cohorts, cohortName);

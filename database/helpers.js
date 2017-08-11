@@ -72,6 +72,11 @@ newBadge = type => {
             // newBadge.url = 'http://www.monkeymods.com/wp-content/uploads/2015/05/monkey-fav2.png';
             // newBadge.url = 'https://www.bernewitness.com/favicon-16x16.png';
             break;
+        case 'founder':
+            newBadge.badgeType = 'custom';
+            newBadge.name = 'Chingu Founder';
+            newBadge.url = 'http://chevellestuff.net/styles/images/crown.png';
+            break;
         case 'project1':
             break;
         case 'project5':
