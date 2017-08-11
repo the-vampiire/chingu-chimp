@@ -1,3 +1,20 @@
+/*
+*
+* notes from the original valueStringer function
+* this function allows the value of each interactive message menu item to hold an object storing current and previous values
+* obtained via user interaction
+ the function accepts the value object, a key parameter [the item the user sees], and a value associated with that key
+ when the final value is received you can process the value object and store all of its data in the database in bulk rather
+ than doing it piecewise as each value is received at your interactive message request route
+
+ this removes n-1 database queries per user interaction
+ if you design the value object's key/value pairs to align with your database schema it greatly simplifies the process
+ of gathering and storing data from slack
+*
+*
+* */
+
+
 // ---------------------------- CORE EXPORTS --------------------------------- //
 
 // builds and returns the valueObject

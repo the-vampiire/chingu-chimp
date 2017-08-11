@@ -105,11 +105,11 @@ router.post('/profile', (req, res) => {
 
         const profileResponse = require('./responses/profileResponses');
 
-        if(!text || text === 'help'){
+        if(text === 'help' || !text){
             res.end(profileResponse.profileHelp());
         }
 
-        if(text && text !== 'help') {
+        if(text) {
             if (/^\@[0-9A-Za-z-_.]+( share)?( (story|projects|skills|certifications|gitHub|blog|portfolio|))?$/.test(text)) {
 
                 let share = false;
@@ -134,7 +134,7 @@ router.post('/profile', (req, res) => {
 
             }
 
-            else res.send(`[\`${text}\`] is not a valid username.
+            else res.end(`[\`${text}\`] is not a valid username.
             try again with the format \`/profile <@userName> [share] [profile item]\`
             you may only call one profile look-up at a time`);
         }
@@ -165,7 +165,7 @@ router.post('/update', (req, res) => {
         }
 
         else{
-            if(!arguments || arguments === 'help') {
+            if(arguments === 'help' || !arguments) {
                 const helpResponse = updateResponse.helpResponse('help');
                 if(typeof helpResponse === 'string') res.end(helpResponse);
                 else res.json(helpResponse);

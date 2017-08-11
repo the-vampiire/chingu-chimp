@@ -139,7 +139,13 @@ GitHub Tracking
         bot monitors milestones on an interval
         bot reacts accordingly
 
+Chingu Points
 
+    check-ins
+    github commits (scaled based on size of commit)
+    projects completed
+    giving help in the help channel
+    giving help on the forum
 
 
 
