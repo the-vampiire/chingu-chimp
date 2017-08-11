@@ -1,6 +1,6 @@
 // ---------------------------- CORE EXPORTS --------------------------------- //
 
-// builds or extends and returns the value object
+// builds and returns the valueObject
 valStringer = (valueObject, key, value) => {
 
     if(typeof valueObject === 'string') valueObject = JSON.parse(valueObject);
@@ -9,7 +9,7 @@ valStringer = (valueObject, key, value) => {
     return JSON.stringify(valueObject);
 };
 
-// builds and returns the options array for message menus
+// integrates valStringer and returns the options array for message menus
 valOptions = (dataArray, key, valueObject) => {
     let options = [];
 
@@ -24,10 +24,22 @@ valOptions = (dataArray, key, valueObject) => {
     return options;
 };
 
+// modifies and returns a /custom attachment/ to include valStringer support
+valCustom = (type, customAttachment, valueObject, menuItemsArray) => {
 
-// builds and returns an attachment object
+    const errorScan = errorScan(type, customAttachment);
+    if(errorScan) return errorScan;
 
-valMenu = (headerText, callbackID, menuName, valueObject, menuItemsArray, customAttachment) => {
+    switch(type){
+        case 'menu':
+            return valMenu(customAttachment, valueObject, menuItemsArray);
+        case 'button':
+            return valButton(customAttachment, valueObject);
+    }
+};
+
+// builds and returns a menu /attachment/ with integrated valStringer support
+valMenu = (customAttachment, valueObject, menuItemsArray, headerText, callbackID, menuName) => {
 
     let attachment = customAttachment ? errorScan('menu', customAttachment) ? errorScan('menu', customAttachment) :
         customAttachment :
@@ -41,7 +53,8 @@ valMenu = (headerText, callbackID, menuName, valueObject, menuItemsArray, custom
     return attachment;
 };
 
-valButton = (headerText, callbackID, buttonText, buttonName, buttonValue, valueObject, customAttachment) => {
+// builds and returns a button /attachment/ with integrated valStringer support
+valButton = (customAttachment, valueObject, headerText, callbackID, buttonText, buttonName, buttonValue) => {
 
     let attachment = customAttachment ? errorScan('button', customAttachment) ? errorScan('button', customAttachment) :
         customAttachment :
@@ -53,8 +66,37 @@ valButton = (headerText, callbackID, buttonText, buttonName, buttonValue, valueO
     return attachment;
 };
 
-valMessage = valObject => {
+// builds and returns a submit / reset button /response/ with integrated valStringer support
+valSubmit = (valueObject, type, reset = false, customText) => {
 
+    let response = {
+        text: `${customText ? customText : 'Submit or Reset'}`,
+
+        attachments: [
+            {
+                text: '',
+                callback_id: `${type}Submit`,
+                actions: [{
+                    text: 'Submit',
+                    name: 'submit',
+                    type: 'button',
+                    style: 'primary',
+                    value: valStringer(valueObject, 'submit', true)
+                }]
+            }
+        ]
+    };
+
+    if(reset) response.attachments[0].actions.push({
+            text: 'Reset',
+            name: 'submit',
+            type: 'button',
+            style: 'danger',
+            value: valStringer(valueObject, 'submit', false)
+        }
+    );
+
+    return response;
 };
 
 // ---------------------------- TOOLS --------------------------------- //
@@ -87,6 +129,7 @@ buttonAttachment = (headerText, callbackID, buttonText, buttonName, buttonValue,
         }]
     }
 };
+
 
 // scans a custom attachment object for errors
 errorScan = (type, customAttachment) => {
@@ -144,6 +187,8 @@ verifyKeys = (object, expectedKeys, location) => {
 module.exports = {
     stringer : valStringer,
     options : valOptions,
+    button : valButton,
+    custom : valCustom,
     menu : valMenu,
-    button : valButton
+    submit : valSubmit,
 };
