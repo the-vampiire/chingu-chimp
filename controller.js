@@ -14,13 +14,32 @@ const router = module.exports = express.Router();
 const tools = require('./tools/exporter');
 
 
-// ------------------- SPLASH PAGE ------------------- //
+// ------------------- FRONT END ------------------- //
 
 router.get('/form', (req, res) => {
 
     res.render('form');
 
 });
+
+router.post ('/create-profile', (req, res) => {
+    const userProfile = require('./database/profileModel').userProfile;
+    userProfile.addProfile(req.body.userData);
+
+    res.json({userCreated: true})
+});
+
+router.post('/validate-username', (req, res) => {
+    const userProfile = require('./database/profileModel').userProfile
+    
+    let userNameAvailable;
+    userProfile.find({userName: req.body.userName})
+        .then( user => {
+            userNameAvailable = user.length > 0 ? false : true;
+            res.json({userNameAvailable});
+        })
+        .catch( err => console.log(err));
+})
 
 router.get('/', (req, res) => {
 
@@ -94,7 +113,9 @@ Asking questions. I ask way too many questions. Solving problems no matter the c
 
 });
 
-// -------------------------------------------------- //
+
+
+// ------------------- BACK END -------------------- //
 
 
 // ------------ INCOMING SLASH COMMANDS ------------- //
