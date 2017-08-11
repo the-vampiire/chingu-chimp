@@ -3,8 +3,8 @@
  *
  */
 
-const respond = require('./respond');
-const requests = require('./requests');
+const checkinResponse = require('../responses/checkinResponses');
+const updateResponse = require('../responses/updateResponses');
 const userProfile = require('../database/profileModel').userProfile;
 
 interaction = (type, valueObject) => {
@@ -12,10 +12,10 @@ interaction = (type, valueObject) => {
 
     switch(type){
         case 'checkin':
-            response = respond.activitySelect(valueObject);
+            response = checkinResponse.activitySelect(valueObject);
             break;
         case 'update':
-            response = respond.aptitudeSelect();
+            response = updateResponse.skillSelect({});
             break;
     }
 
@@ -35,14 +35,15 @@ processInteraction = payload => {
     switch(type){
 
     // -------------- CHECKIN -------------- //
+
         case 'activitySelect':
-            response = respond.taskSelect(value);
+            response = checkinResponse.taskSelect(value);
             break;
         case 'taskSelect':
-            response = respond.submitCheckin(value);
+            response = checkinResponse.submitCheckin(value);
             break;
-    // submit
-        case 'checkInSubmit':
+    // SUBMIT
+        case 'checkinSubmit':
             value = JSON.parse(value);
 
             if(value.submit){
@@ -57,45 +58,51 @@ processInteraction = payload => {
                 return Promise.all(promises).then( responses => {
                     let saveResponse = ``;
                     responses.forEach( response => {
-                        saveResponse += `${response}\n`
+                        saveResponse += `\n${response}`
                     });
 
                     return saveResponse;
-                });
+                })
             }
 
-            else response = respond.activitySelect(value);
+            else response = checkinResponse.activitySelect(value);
 
             break;
 
-    // -------------- UPDATE APTITUDE -------------- //
-        case 'aptitudeSelect':
-            response = JSON.parse(value).aptitude === 'languages' ? respond.languageSelect(value) : respond.frameworkSelect(value);
+    // -------------- UPDATE SKILLS -------------- //
+
+        case 'skillSelect':
+            response = JSON.parse(value).skill === 'languages' ?
+                updateResponse.languageSelect(value) :
+                updateResponse.frameworkSelect(value);
             break;
         case 'languageSelect':
         case 'frameworkSelect':
-            response = respond.levelSelect(value);
+            response = updateResponse.levelSelect(value);
             break;
         case 'levelSelect':
-            response = respond.submitAptitude(value);
+            response = updateResponse.submitSkill(value);
             break;
-        case 'aptitudeSubmit':
+        case 'skillSubmit':
             value = JSON.parse(value);
-        // form the item and updateData pair expected by the userProfile processUpdate() method
-            let processUpdateData = {};
-            processUpdateData.item = `aptitudes`;
-            processUpdateData.subItem = value.aptitude;
-            processUpdateData.updateData = {
-                name : value.name,
-                level : value.level
-            };
 
-            userProfile.processUpdate(userName, cohortName, processUpdateData);
+            if(value.submit){
+                delete value.submit;
 
-            response = `Stored ${value.aptitude}: ${processUpdateData.updateData.name} at skill level: ${processUpdateData.updateData.level}`;
+                const processUpdateData = {};
+                processUpdateData.item = `skills`;
+                processUpdateData.subItem = value.skill;
+                processUpdateData.updateData = {
+                    name : value.name,
+                    level : value.level
+                };
+
+                response = userProfile.processUpdate(userName, cohortName, processUpdateData);
+            }
+
+            else response = updateResponse.skillSelect(JSON.stringify(value));
+
             break;
-
-    // -------------- UPDATE X -------------- //
 
     }
 

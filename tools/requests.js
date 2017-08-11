@@ -7,22 +7,8 @@ const request = require('request');
 // OAuth Token from Slack stored in the .env file
 const oAuthToken = process.env.oAuthToken;
 
-convertID = (userID) => {
-    return new Promise((resolve, reject) => {
-        request.post({
-            url: `https://slack.com/api/users.info?token=${oAuthToken}&user=${userID}`,
-        }, (error, response, body) => {
 
-            if(error) reject(error);
-
-            let data = JSON.parse(body).user.name;
-            resolve(data);
-        });
-
-    });
-};
-
-channelRequest = (channelID) => {
+channelMembers = (channelID) => {
     return new Promise((resolve, reject) => {
         request.post({
             url: `https://slack.com/api/channels.info?token=${oAuthToken}&channel=${channelID}`,
@@ -33,25 +19,37 @@ channelRequest = (channelID) => {
     });
 };
 
-injectPartners = (payload, valueObject) => {
+userData = (type, userID) => {
+    return new Promise((resolve, reject) => {
 
-    return requests.channel(payload.channel.id).then( IDs => {
-        let promises = [];
-        IDs.forEach( ID => promises.push(requests.convertID(ID)));
-        return Promise.all(promises);
-    }).then( partners => {
-        valueObject.partners = partners.filter( partner => partner !== 'chance');
-        valueObject.partners.forEach( partner => {
+        request.post({url: `https://slack.com/api/users.info?token=${oAuthToken}&user=${userID}`},
+            (error, response, body) => {
 
+            let ok = JSON.parse(body).ok;
+
+            if(!ok) reject(ok);
+
+            let user = JSON.parse(body).user;
+            let data;
+
+            switch(type){
+                case 'pic':
+                    data = {
+                        size_72 : user.profile.image_72,
+                        size_192: user.profile.image_192
+                    };
+                    break;
+                case 'name':
+                    data = user.name;
+                    break;
+            }
+
+            resolve(data);
         });
-        // database update function
-        // search for user
-        // pass value object
-        return valueObject;
     });
 };
 
 module.exports = {
-    channel : channelRequest,
-    convertID : convertID,
+    channelMembers,
+    userData
 };

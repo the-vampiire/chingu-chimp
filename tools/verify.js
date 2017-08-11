@@ -16,7 +16,9 @@ slash = (tokenID, team = null) => {
     // expand to include all the available Chingu team ID's in an array
     // to check alongside the tokenID
 
-    const teams = [];
+    // const authorizedTeamIDs = [];
+        // have this stored in a database that AutoBot can update
+        // call it in here to always have the most up to date list
     const token = process.env.slack_verification;
 
     return tokenID === token;
