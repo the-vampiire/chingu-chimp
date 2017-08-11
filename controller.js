@@ -30,12 +30,13 @@ router.post ('/create-profile', (req, res) => {
 });
 
 router.post('/validate-username', (req, res) => {
-    const userProfile = require('./database/profileModel').userProfile
+    const userProfile = require('./database/profileModel').userProfile;
     
     let userNameAvailable;
-    userProfile.find({userName: req.body.userName})
+    userProfile.getProfile(req.body.userName)
         .then( user => {
-            userNameAvailable = user.length > 0 ? false : true;
+            // userNameAvailable = user.length <= 0;
+            userNameAvailable = !user;
             res.json({userNameAvailable});
         })
         .catch( err => console.log(err));
