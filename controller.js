@@ -34,7 +34,7 @@ router.post('/validate-username', (req, res) => {
         })
         .catch( err => console.log(err));
 });
-he
+
 
 // -------------------------------------- BACK END --------------------------------------- //
 
