@@ -66,7 +66,7 @@ newBadge = type => {
     switch(type){
         case 'Chingu Chimp Beta Tester':
             newBadge.badgeType = 'betaTester';
-            newBadge.name = 'Beta Tester: Chingu Chimp';
+            newBadge.name = 'I broke the Chimp and all I got was a 16px badge';
             // newBadge.url = 'http://chevellestuff.net/styles/images/crown.png';
             newBadge.url = 'https://cdn2.iconfinder.com/data/icons/aspneticons_v1.0_Nov2006/law-add-16x16.gif';
             // newBadge.url = 'http://www.monkeymods.com/wp-content/uploads/2015/05/monkey-fav2.png';
