@@ -74,7 +74,7 @@ List of update items: `blog, certifications, gitHub, picture, portfolio, project
 * Request a user's projects
     * command: `/profile @userName projects`
 
-##### When you are done type `/done update command`
+##### When you are done type `/done profile command`
 
 ## Review
 If you have any other questions / suggestions / comments / complaints send a message to @vampiire in the Slack testing team.
