@@ -34,7 +34,7 @@ router.post('/validate-username', (req, res) => {
         })
         .catch( err => console.log(err));
 });
-
+he
 
 // -------------------------------------- BACK END --------------------------------------- //
 
@@ -77,7 +77,7 @@ router.post('/beta', (req, res) => {
                         mrkdwn_in: ['text', 'pretext'],
                         color: '#15df89',
                         pretext: '*Steps to Begin*',
-                        text: `Create a profile <FORM URL HERE|here>. *The username you use for your Chingu profile must match your username on Slack*\n\nCall your profile using \`/profile @yourUserName\` to confirm its creation\n\nIf you receive an error - message <@${req.body.user_id}|vampiire>`,
+                        text: `Create a profile <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>. *The username you use for your Chingu profile must match your username on Slack*\n\nCall your profile using \`/profile @yourUserName\` to confirm its creation\n\nIf you receive an error - message <@${req.body.user_id}|vampiire>`,
                     },
                     {
                         mrkdwn_in: ['text', 'pretext'],
@@ -520,7 +520,7 @@ Thank you for your help I really appreciate your time. If you ever need my help 
         case 'chimp':
             res.json({
                 response_type: 'in_channel',
-                text: 'Break The Chimp',
+                text: '*Break The Chimp*',
                 attachments: [
                     {
                         color: '#666',
@@ -543,7 +543,9 @@ If you break the command send a message in this channel with the command you ent
                         text: `If you manage to break the Chimp you will be credited in the Chimp Breaker section of the readme.\n\nIf, in addition, you would like to work on a fix for the issue with me you will also receive a custom badge titled "I broke the Chimp and all I got was a 16px badge"`
                     },
                     {
-                        color: '#15df89',
+                        mrkdwn_in: ['pretext', 'text'],
+                        color: '#666',
+                        pretext: '*Sign Up*',
                         text: `If you are interested message <@${req.body.user_id}|vampiire> to sign up`
                     }
                 ]
@@ -600,7 +602,7 @@ router.post('/profile', (req, res) => {
         const profileResponse = require('./responses/profileResponses');
 
         if(text === 'help' || !text){
-            res.end(profileResponse.profileHelp());
+            res.json(profileResponse.profileHelp());
         }
 
         if(text) {
