@@ -214,10 +214,36 @@ router.post('/done', (req, res) => {
                     {
                         pretext: '*Help*',
                         mrkdwn_in: ['text', 'pretext'],
-                        text: `If you need help or clarification at any time message <@${req.body.user_id}|vampiire>`
+                        text: `If you need help or clarification at any time message <@${req.body.user_id}|vampiire>\nWhen you have finished answering the questions type \`/done\` with no parameters to complete the beta test`
                     }
                 ]
             });
+            break;
+        case '':
+            res.json({
+
+                response_type: 'in_channel',
+                attachments : [
+                    {
+                        color: '#15df89',
+                        mrkdwn_in: ['text', 'pretext'],
+                        pretext: '*Review*',
+                        text: `If you have any other questions / suggestions / comments / complaints send a message to <@${req.body.user_id}|vampiire> in the Slack testing team.
+
+Thank you for your help I really appreciate your time. If you ever need my help feel free to message me. I am up and coding most of the day and especially through the night.
+
+\- Vamp`
+                    },
+                    {
+                        mrkdwn_in: ['text', 'pretext'],
+                        pretext: '*Optional - Break the Chimp*',
+                        text: `Sign up to break the Chimp so bugs can be found and fixed before launching.\nMessage <@${req.body.user_id}|vampiire> saying you would like to break the Chimp.\nThis will take 15-30 minutes. For more details type \`/done chimp\``
+                    }
+                ]
+
+            });
+            break;
+        case 'chimp':
             break;
     }
 
