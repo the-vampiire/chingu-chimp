@@ -20,7 +20,7 @@ mongoose.connect(dbURL, {useMongoClient : true}, e => e ? console.log(`error: ${
 // Middleware
 const BP = require('body-parser');
 const logger = require('morgan');
-const faviocon = require('serve-favicon');
+const favicon = require('serve-favicon');
 
 app.use('/public', express.static('public'));
 app.use(BP.urlencoded({extended:false}));

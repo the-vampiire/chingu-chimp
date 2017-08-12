@@ -14,13 +14,7 @@ const router = module.exports = express.Router();
 const tools = require('./tools/exporter');
 
 
-// ------------------- FRONT END ------------------- //
-
-router.get('/form', (req, res) => {
-
-    res.render('form');
-
-});
+// -------------------------------------- FRONT END -------------------------------------- //
 
 router.post ('/create-profile', (req, res) => {
     const userProfile = require('./database/profileModel').userProfile;
@@ -31,58 +25,205 @@ router.post ('/create-profile', (req, res) => {
 
 router.post('/validate-username', (req, res) => {
     const userProfile = require('./database/profileModel').userProfile;
-    
+
     let userNameAvailable;
-    userProfile.getProfile(req.body.userName)
+    userProfile.find({userName : req.body.userName})
         .then( user => {
-            // userNameAvailable = user.length <= 0;
-            userNameAvailable = !user;
+            userNameAvailable = user.length > 0 ? false : true;
             res.json({userNameAvailable});
         })
         .catch( err => console.log(err));
 });
 
-router.get('/', (req, res) => {
 
-    let data = {
-
-        cohorts: [],
-
-        skills: {
-
-            languages : [],
-
-            frameworks: []
-        },
-
-        projects: [],
-
-        certifications: [],
-
-        badges: []
-
-    };
-
-    data.userName = 'jessec';
-
-
-    const userProfile = require('./database/profileModel').userProfile;
-
-    userProfile.addProfile(data);
-
-    res.end('made a new profile');
-
-    // userProfile.getProfile('vampiire').then( doc => console.log(doc.checkins[0].sessions));
-
-
-});
-
-
-
-// ------------------- BACK END -------------------- //
+// -------------------------------------- BACK END --------------------------------------- //
 
 
 // ------------ INCOMING SLASH COMMANDS ------------- //
+
+
+// ----------- REMOVE AFTER BETA TESTING ------------------------------//
+
+router.post('/done', (req, res) => {
+
+    console.log(req.body);
+
+    const text = req.body.text;
+
+    switch(text){
+        case 'update help':
+            res.json({
+                response_type: 'in_channel',
+                attachments: [
+                    {
+                        text: 'Respond to the following questions by pressing the "start a thread" button on the top-right corner of this message. Yes / no answers are fine but I would appreciate as much detail as you\'re willing to give',
+                        thumb_url: 'http://i.imgur.com/ob9DN1P.png'
+                    },
+                    {
+                        color: `#15df89`,
+                        text: 'Did you prefer version 1 or version 2?'
+                    },
+                    {
+                        color: `#15df89`,
+                        text: 'Was the guide clear or is there anything you are still confused about?'
+                    },
+                    {
+                        color: `#15df89`,
+                        text: 'Was the guide structured in an easily digestible way or can you suggest moving any items or changing the markdown?'
+                    },
+                    {
+                        color: `#15df89`,
+                        text: 'Any other suggestions / alternatives / complaints / bugs?'
+                    },
+                    {
+                        pretext: '*Help*',
+                        mrkdwn_in: ['text', 'pretext'],
+                        text: `If you need help or clarification at any time message <@${req.body.user_id}|vampiire>`
+                    }
+                ]
+            });
+            break;
+        case 'update command':
+            res.json({
+                response_type: 'in_channel',
+                attachments: [
+                    {
+                        text: 'Respond to the following questions by pressing the "start a thread" button on the top-right corner of this message. Yes / no answers are fine but I would appreciate as much detail as you\'re willing to give',
+                        thumb_url: 'http://i.imgur.com/ob9DN1P.png'
+                    },
+                    {
+                        color: `#15df89`,
+                        text: 'Was the git-style interface intuitive / convenient to you or do you have an alternative approach to updating you would like to suggest?'
+                    },
+                    {
+                        color: `#15df89`,
+                        text: 'Were the error messages clear and helpful in guiding you towards fixing your error?'
+                    },
+                    {
+                        color: `#15df89`,
+                        text: 'Would you use the update command in the future? If not, why? (you can be honest)'
+                    },
+                    {
+                        color: `#15df89`,
+                        text: 'Any other suggestions / alternatives / complaints / bugs?'
+                    },
+                    {
+                        pretext: '*Help*',
+                        mrkdwn_in: ['text', 'pretext'],
+                        text: `If you need help or clarification at any time message <@${req.body.user_id}|vampiire>`
+                    }
+                ]
+            });
+            break;
+        case 'checkin command':
+            res.json({
+                response_type: 'in_channel',
+                attachments: [
+                    {
+                        text: 'Respond to the following questions by pressing the "start a thread" button on the top-right corner of this message. Yes / no answers are fine but I would appreciate as much detail as you\'re willing to give',
+                        thumb_url: 'http://i.imgur.com/ob9DN1P.png'
+                    },
+                    {
+                        color: `#15df89`,
+                        text: 'Was the check-in process intuitive / convenient for you?'
+                    },
+                    {
+                        color: `#15df89`,
+                        text: 'Is there any part of the check-in process that was confusing?'
+                    },
+                    {
+                        color: `#15df89`,
+                        text: 'Is there any part of the check-in process that should be added / removed / changed?'
+                    },
+                    {
+                        color: `#15df89`,
+                        text: 'Can you think of any other check-in types or activities to add to the lists? They should be (relatively) common and recurring activities'
+                    },
+                    {
+                        color: `#15df89`,
+                        text: 'Would you use the check-in command in the future? If not, why? (you can be honest)'
+                    },
+                    {
+                        color: `#15df89`,
+                        text: 'Any other suggestions / alternatives / complaints / bugs?'
+                    },
+                    {
+                        pretext: '*Help*',
+                        mrkdwn_in: ['text', 'pretext'],
+                        text: `If you need help or clarification at any time message <@${req.body.user_id}|vampiire>`
+                    }
+                ]
+            });
+            break;
+        case 'profile help':
+            res.json({
+                response_type: 'in_channel',
+                attachments: [
+                    {
+                        text: 'Respond to the following questions by pressing the "start a thread" button on the top-right corner of this message. Yes / no answers are fine but I would appreciate as much detail as you\'re willing to give',
+                        thumb_url: 'http://i.imgur.com/ob9DN1P.png'
+                    },
+                    {
+                        color: `#15df89`,
+                        text: 'Was the guide clear or is there anything you are still confused about?'
+                    },
+                    {
+                        color: `#15df89`,
+                        text: 'Was the guide structured in an easily digestible way or can you suggest moving any items or changing the markdown?'
+                    },
+                    {
+                        color: `#15df89`,
+                        text: 'Any other suggestions / alternatives / complaints / bugs?'
+                    },
+                    {
+                        pretext: '*Help*',
+                        mrkdwn_in: ['text', 'pretext'],
+                        text: `If you need help or clarification at any time message <@${req.body.user_id}|vampiire>`
+                    }
+                ]
+            });
+            break;
+        case 'profile command':
+            res.json({
+                response_type: 'in_channel',
+                attachments: [
+                    {
+                        text: 'Respond to the following questions by pressing the "start a thread" button on the top-right corner of this message. Yes / no answers are fine but I would appreciate as much detail as you\'re willing to give',
+                        thumb_url: 'http://i.imgur.com/ob9DN1P.png'
+                    },
+                    {
+                        color: `#15df89`,
+                        text: 'Was the profile command intuitive / convenient for you?'
+                    },
+                    {
+                        color: `#15df89`,
+                        text: 'If there were any error messages were they clear and helpful in guiding you towards fixing your error?'
+                    },
+                    {
+                        color: `#15df89`,
+                        text: 'Is there anything missing from the profile command that you would like to see added?'
+                    },
+                    {
+                        color: `#15df89`,
+                        text: 'Would you use the profile command in the future? If not, why? (you can be honest)'
+                    },
+                    {
+                        color: `#666`,
+                        text: 'Any other suggestions / alternatives / complaints / bugs?'
+                    },
+                    {
+                        pretext: '*Help*',
+                        mrkdwn_in: ['text', 'pretext'],
+                        text: `If you need help or clarification at any time message <@${req.body.user_id}|vampiire>`
+                    }
+                ]
+            });
+            break;
+    }
+
+});
+
+// ----------- REMOVE AFTER BETA TESTING ------------------------------//
 
 // ----- CHECK-IN ----- //
 router.post('/checkin', (req, res) => {
