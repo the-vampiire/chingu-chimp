@@ -52,7 +52,7 @@ router.post('/beta', (req, res) => {
         case 'start':
             res.json({
                 response_type: 'in_channel',
-                text: 'Closed Beta Test: Chingu Chimp',
+                text: '*Closed Beta Test: Chingu Chimp*',
                 attachments: [
                     {
                         mrkdwn_in: ['text', 'pretext'],
@@ -77,7 +77,7 @@ router.post('/beta', (req, res) => {
                         mrkdwn_in: ['text', 'pretext'],
                         color: '#15df89',
                         pretext: '*Steps to Begin*',
-                        text: `Create a profile <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>. *The username you use for your Chingu profile must match your username on Slack*\n\nCall your profile using \`/profile @yourUserName\` to confirm its creation\n\nIf you receive an error - message <@${req.body.user_id}|vampiire>`,
+                        text: `Create a profile <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>.\n\n*The username you use for your Chingu profile must match your username on Slack*\n\nCall your profile using \`/profile @yourUserName\` to confirm its creation\n\nIf you receive an error - message <@${req.body.user_id}|vampiire>`,
                     },
                     {
                         mrkdwn_in: ['text', 'pretext'],
