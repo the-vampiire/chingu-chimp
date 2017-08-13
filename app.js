@@ -18,27 +18,27 @@ const dbURL = process.env.dbURL;
 mongoose.connect(dbURL, {useMongoClient : true}, e => e ? console.log(`error: ${e}`) : console.log('connected to database'));
 
 // Middleware
-const BP = require('body-parser');
-const logger = require('morgan');
-const favicon = require('serve-favicon');
+    const BP = require('body-parser');
+    const logger = require('morgan');
+    const favicon = require('serve-favicon');
 
-app.use('/public', express.static('public'));
-app.use(BP.urlencoded({extended:false}));
-app.use(BP.json());
-app.use(logger('dev'));
-// TODO: uncomment after adding favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+    app.use('/public', express.static('public'));
+    app.use(BP.urlencoded({extended:false}));
+    app.use(BP.json());
+    app.use(logger('dev'));
+    // TODO: uncomment after adding favicon in /public
+    //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
-// ---------- REMOVE AFTER BETA TESTING
-const beta = require('./BETA_betaSlash');
-const done = require('./BETA_doneSlash');
-app.use('/beta', beta);
-app.use('/done', done);
-// ---------- REMOVE AFTER BETA TESTING
+    // ---------- REMOVE AFTER BETA TESTING ----------------
+    const beta = require('./BETA_betaSlash');
+    const done = require('./BETA_doneSlash');
+    app.use('/beta', beta);
+    app.use('/done', done);
+    // ---------- REMOVE AFTER BETA TESTING ----------------
 
-// Pass all routing to the controller
-const controller = require('./controller');
-app.use('/', controller);
+    // Pass all routing to the controller
+    const controller = require('./controller');
+    app.use('/', controller);
 
 
 

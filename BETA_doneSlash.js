@@ -39,7 +39,7 @@ router.post('/', (req, res) => {
                     {
                         pretext: '*Help*',
                         mrkdwn_in: ['text', 'pretext'],
-                        text: `If you need help or clarification at any time message <@${req.body.user_id}|vampiire>`
+                        text: `If you need help or clarification at any time message <@${U5XJSS683}|vampiire>`
                     },
                     {
                         mrkdwn_in: ['text', 'pretext'],
@@ -76,7 +76,7 @@ router.post('/', (req, res) => {
                     {
                         pretext: '*Help*',
                         mrkdwn_in: ['text', 'pretext'],
-                        text: `If you need help or clarification at any time message <@${req.body.user_id}|vampiire>`
+                        text: `If you need help or clarification at any time message <@${U5XJSS683}|vampiire>`
                     },
                     {
                         color: '#666',
@@ -122,7 +122,7 @@ router.post('/', (req, res) => {
                     {
                         pretext: '*Help*',
                         mrkdwn_in: ['text', 'pretext'],
-                        text: `If you need help or clarification at any time message <@${req.body.user_id}|vampiire>`
+                        text: `If you need help or clarification at any time message <@${U5XJSS683}|vampiire>`
                     },
                     {
                         color: '#666',
@@ -156,7 +156,7 @@ router.post('/', (req, res) => {
                     {
                         pretext: '*Help*',
                         mrkdwn_in: ['text', 'pretext'],
-                        text: `If you need help or clarification at any time message <@${req.body.user_id}|vampiire>`
+                        text: `If you need help or clarification at any time message <@${U5XJSS683}|vampiire>`
                     },
                     {
                         color: '#666',
@@ -198,7 +198,7 @@ router.post('/', (req, res) => {
                     {
                         pretext: '*Help*',
                         mrkdwn_in: ['text', 'pretext'],
-                        text: `If you need help or clarification at any time message <@${req.body.user_id}|vampiire>`
+                        text: `If you need help or clarification at any time message <@${U5XJSS683}|vampiire>`
                     },
                     {
                         color: '#666',
@@ -218,7 +218,7 @@ router.post('/', (req, res) => {
                         color: '#15df89',
                         mrkdwn_in: ['text', 'pretext'],
                         pretext: '*Review*',
-                        text: `If you have any other questions / suggestions / comments / complaints send a message to <@${req.body.user_id}|vampiire> in the Slack testing team.
+                        text: `If you have any other questions / suggestions / comments / complaints send a message to <@${U5XJSS683}|vampiire> in the Slack testing team.
 
 Thank you for your help I really appreciate your time. If you ever need my help feel free to message me. I am up and coding most of the day and especially through the night.
 
@@ -262,7 +262,7 @@ If you break the command send a message in this channel with the command you ent
                         mrkdwn_in: ['pretext', 'text'],
                         color: '#666',
                         pretext: '*Sign Up*',
-                        text: `If you are interested message <@${req.body.user_id}|vampiire> to sign up`
+                        text: `If you are interested message <@${U5XJSS683}|vampiire> to sign up`
                     }
                 ]
 
