@@ -245,8 +245,6 @@
                     >
                   </div>
                   
-                  
-
                   <div class="col-lg-4" :class="[validateGitHubUrl(project.gitHub) ? '' : 'has-error']">
                     <label for="project">GitHub Link <span class="text-danger">*</span></label>
                     <input 
@@ -356,7 +354,7 @@
                   </div>
                 </div>
                 
-                <button type="submit" class="btn btn-submit" :disabled="userNameInUse">Submit</button>
+                <button type="submit" class="btn btn-submit" :disabled="!inputIsValid">Submit</button>
               </form>
             </div>
           </div>

@@ -128,7 +128,7 @@ var app = new Vue({
 
     // form field validation methods
     validateGitHubUrl(url) {
-      return /^https:\/\/github\.com\//.test(url) || url.length === 0
+      return /^https:\/\/github\.com\//.test(url) || url.length === 0 // last check prevents error being displayed on page load
     },
     validateFreeCodeCampUrl(url) {
       return /^https:\/\/www\.freecodecamp\.com\/[A-Za-z-]+\/[a-z]+\-[a-z]+\-(certification)/.test(url) || url.length === 0
@@ -149,12 +149,11 @@ var app = new Vue({
 
       this.invalidUsername = !(this.userData.userName.length <= 21 && validUsernameChars.test(this.userData.userName)) // 21 is slacks max length for a username
     },
-    
-    // form submission
+
     submitForm(event) {
       event.preventDefault()
 
-      if(this.userNameInUse) return
+      if(!this.inputIsValid()) return
 
       // convert all dates to unix timestamp
       this.userData.joinDate = new Date(this.userData.joinDate).getTime()
@@ -179,7 +178,29 @@ var app = new Vue({
     },
     backEndCertAdded() {
       return Boolean(~this.userData.certifications.findIndex( certification => certification.name === 'Back End Certification'))
-    }
+    },
+
+    inputIsValid() {
+      // username check
+      if(this.userNameInUse || this.invalidUsername) return false
+
+      // story check
+        if(this.userData.story.length === 0) return false
+      
+      // github url checks
+      if(!this.validateGitHubUrl(this.userData.gitHub) || this.userData.gitHub.length === 0) return false
+      
+      for(const project of this.userData.projects) {
+        if(!this.validateGitHubUrl(project.gitHub) || project.gitHub.length === 0) return false
+      }
+
+      // fcc url checks
+      for(const certification of this.userData.certifications) {
+        if(!this.validateFreeCodeCampUrl(certification.url) || certification.url.length === 0) return false
+      }
+
+      return true
+    },
   },
   created() {
     const today = new Date()
