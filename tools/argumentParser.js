@@ -63,7 +63,7 @@ argumentParser = arguments => {
         });
 
     // rule for extracting certification name from the FCC certificate url
-        if(item === 'certifications'){
+        if(item === 'certifications' && !error){
             flagDataPairs.name = flagDataPairs.url.slice(flagDataPairs.url.lastIndexOf('/')+1)
                 .split('-')
                 .map(e => e = `${e.slice(0,1).toUpperCase()}${e.slice(1)}`)
@@ -131,32 +131,40 @@ argumentSplitter = arguments => {
         return `*invalid update flag [\`-${flag}\`] for update item [\`${item}\`].*\n *Try \`/update ${item}\` for a list of required and optional flags*`
     }
 
-    // modification step (as needed)
+// modification step (as needed)
     switch(true){
+
         case flag === 'git' || flag === 'g':
             if(!data.includes('https://www.github.com/'))
                 return `*invalid data: \`${data}\` associated with flag [\`-${flag}\`] does not begin with \`https://www.github.com/\`*`;
             flag = 'gitHub';
             break;
+
         case flag === 'url' || flag === 'u':
         // check if the gitHub url is valid
             if(item === 'gitHub'){
                 if(!data.includes('https://www.github.com/'))
                     return `invalid gitHub profile url, ensure the url entered is of the form [\`https://www.github.com/yourUserName\`]`
             }
+
+        // check if certificate link is valid
             if(item === 'certifications')
-                if(!/(https:\/\/www\.freecodecamp\.com\/[A-Za-z\-]+\/[a-z]+\-[a-z]+\-(certification))/.test(data))
-                    return `invalid certificate url, must begin with \`https://www.freecodecamp.com/\``;
-            if(!/(http:\/\/|https:\/\/)(www\.)?/.test(data))
-                return `*invalid data: \`${data}\` associated with flag [\`-${flag}\`]. ensure the full [\`http://www.\`] or [\`http\`url is being passed*`;
+                if(!/(https:\/\/www\.freecodecamp\.com\/[A-Za-z-]+\/[a-z]+\-[a-z]+\-(certification))/.test(data))
+                    return `invalid certificate url, must be of the form \`https://www.freecodecamp.com/userName/x-x-certification\``;
+
+        // check if general url is valid
+            if(!/(http:\/\/|https:\/\/)(www\.)?/.test(data)) return `*invalid data: \`${data}\` associated with flag [\`-${flag}\`]. ensure the full [\`http://www.\`] or [\`http\`url is being passed*`;
+
             flag = 'url';
             break;
+
         case flag === 'date' || flag === 'd':
             if(!/[0-9]{2}\/[0-9]{2}\/[0-9]{2}/.test(data))
                 return `*invalid date [\`${data}\`]. must be in \`mm/dd/yy\` format*`;
-            data = Date.parse(new Date(data));
-            if(item === 'projects')flag = 'completedDate';
 
+            data = Date.parse(new Date(data));
+
+            if(item === 'projects')flag = 'completedDate';
             break;
         case flag === 'n':
             flag = 'name';
