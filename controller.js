@@ -18,9 +18,6 @@ const router = module.exports = express.Router();
 const tools = require('./tools/exporter');
 
 
-router.post('/test', (req, res) => console.log(req.body.team_id));
-
-
 // -------------------------------------- FRONT END -------------------------------------- //
 
 router.post ('/create-profile', (req, res) => {
@@ -93,7 +90,7 @@ router.post('/profile', (req, res) => {
         }
 
         if(text) {
-            if (/^\@[0-9A-Za-z-_.]+( share)?( (story|projects|skills|certifications|gitHub|blog|portfolio|))?$/.test(text)) {
+            if (/^\@[0-9A-Za-z-_.]+( share)?( (story|projects|skills|certifications|gitHub|blog|portfolio|badges))?$/.test(text)) {
 
                 let share = false;
                 let item;
