@@ -100,7 +100,6 @@ helpResponse = (type) => {
             {
                 color: '#666',
                 mrkdwn_in: ['text', 'pretext'],
-                // text: `*\`-date\` / \`-d\`, \`-git\` / \`-g\`, \`-name\` / \`-d\`, \`-url\` / \`-u\`*`,
                 text: `*\`-date\`, \`-git\`, \`-name\`, \`-url\`*\n*All of the flags can also be written shorthand: \`-d\`, \`-g\`, \`-n\`, \`-u\`*`,
                 pretext: '*List of update flags*',
             },
@@ -142,29 +141,36 @@ helpResponse = (type) => {
                     }
                 ]
             },
+            // {
+            //     color: '#15df89',
+            //     mrkdwn_in: ['text', 'pretext'],
+            //     pretext: '*Help guides for other profile items*',
+            //     text: 'Each of the commands below will call a help guide for the respective item',
+            //     fields: [
+            //         {
+            //             title: `Updating Blog, Portfolio, or GitHub Profile Links`,
+            //             value: `/update blog or /update portfolio or /update gitHub`,
+            //         },
+            //         {
+            //             title: `Updating Certifications`,
+            //             value: `/update certifications`,
+            //         },
+            //         {
+            //             title: `Updating Projects`,
+            //             value: `/update projects`,
+            //         },
+            //         {
+            //             title: `Updating Skills`,
+            //             value: `/update skills`,
+            //         }
+            //     ]
+            // },
             {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Help guides for other profile items*',
-                text: 'Each of the commands below will call a help guide for the respective item',
-                fields: [
-                    {
-                        title: `Updating Blog, Portfolio, or GitHub Profile Links`,
-                        value: `/update blog or /update portfolio or /update gitHub`,
-                    },
-                    {
-                        title: `Updating Certifications`,
-                        value: `/update certifications`,
-                    },
-                    {
-                        title: `Updating Projects`,
-                        value: `/update projects`,
-                    },
-                    {
-                        title: `Updating Skills`,
-                        value: `/update skills`,
-                    }
-                ]
+                text: `*Updating Blog, GitHub Profile, or Portfolio Links*\n\t\`/update blog\` or \`/update gitHub\` or \`/update portfolio\`\n\n*Updating Certifications*\n\t\`/update certifications\`\n\n*Updating Projects*\n\t\`/update projects\`\n\n*Updating Skills*\n\t\`/update skills\``,
+
             },
             {
                 color: '#15df89',
