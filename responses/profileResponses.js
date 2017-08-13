@@ -65,6 +65,10 @@ profileItem = (userName, item, share) => {
                 let response = { attachments: [] };
                 response.response_type = share ? 'in_channel' : 'ephemeral';
                 switch(item){
+                    case 'badges':
+                        response = attachBadges(badges, response, userName);
+                        response.text = `*${userName}'s Badges*`;
+                        break;
                     case 'projects':
                         if(profileItem) response = projectsItemResponse(profileItem, response, userName);
                         else response.text = `${userName} does not currently have any projects`;
@@ -147,7 +151,7 @@ profileCard = (userName, share) => {
             let response = {
 
                 response_type: `${share ? `in_channel` : `ephemeral`}`,
-                text: `CHINGU PROFILE CARD:\n*${userName.toUpperCase()}*`,
+                text: `*CHINGU PROFILE CARD*\n*${userName.toUpperCase()}*`,
 
                 attachments: [
 
@@ -203,10 +207,6 @@ profileCard = (userName, share) => {
             response_type: 'in_channel',
             text: `User \`@${userName}\` does not have a Chingu profile. Send them <url|this link> to create one!`
         }
-
-
-
-
     });
 };
 
