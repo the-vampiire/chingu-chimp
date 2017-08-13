@@ -219,7 +219,7 @@ helpResponse = (type) => {
                     },
                     {
                         title: 'Note',
-                        value: 'must begin with "https://www.github.com/"',
+                        value: 'must begin with "https://github.com/"',
                         short: true
                     },
                     {
@@ -249,7 +249,7 @@ helpResponse = (type) => {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#666',
                 pretext: 'Example update of blog url:',
-                text: `\`/update blog -url https://medium.com/@yourUserName\`\n \`/update gitHub -u https://github.com/yourUserName\``
+                text: `\`/update blog -url https://medium.com/@yourUserName\``
             },
             {
                 mrkdwn_in: ['text', 'pretext'],
