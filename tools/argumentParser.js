@@ -135,16 +135,16 @@ argumentSplitter = arguments => {
     switch(true){
 
         case flag === 'git' || flag === 'g':
-            if(!/((https:\/\/www\.github\.com\/)|(https:\/\/github\.com\/))/.test(data))
-                return `*invalid data: \`${data}\` associated with flag [\`-${flag}\`] does not begin with \`https://www.github.com/\` or \`https://github.com/\`*`;
+            if(!/(https:\/\/github\.com\/)/.test(data))
+                return `*invalid data: \`${data}\` associated with flag [\`-${flag}\`] does not begin with \`https://github.com/\`*`;
             flag = 'gitHub';
             break;
 
         case flag === 'url' || flag === 'u':
         // check if the gitHub url is valid
             if(item === 'gitHub'){
-                if(!/((https:\/\/www\.github\.com\/)|(https:\/\/github\.com\/))/.test(data))
-                    return `invalid gitHub profile url, ensure the url entered is of the form \`https://www.github.com/yourUserName\` or \`https://github.com/yourUserName\``
+                if(!/^(https:\/\/github\.com\/)/.test(data))
+                    return `invalid gitHub profile url, ensure the url entered is of the form \`https://github.com/yourUserName\``
             }
 
         // check if certificate link is valid
