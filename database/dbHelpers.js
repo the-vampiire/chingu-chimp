@@ -68,11 +68,10 @@ newBadge = type => {
 
     switch(type){
         case 'Chingu Chimp Beta Tester':
-            newBadge.badgeType = 'betaTester';
-            newBadge.name = 'I broke the Chimp and all I got was a 16px badge';
+            newBadge.badgeType = 'beta';
+            newBadge.name = 'Beta Tester: Chingu Chimp';
             // newBadge.url = 'http://chevellestuff.net/styles/images/crown.png';
-            newBadge.url = 'https://cdn2.iconfinder.com/data/icons/aspneticons_v1.0_Nov2006/law-add-16x16.gif';
-            // newBadge.url = 'http://www.monkeymods.com/wp-content/uploads/2015/05/monkey-fav2.png';
+            newBadge.url = 'http://www.monkeymods.com/wp-content/uploads/2015/05/monkey-fav2.png';
             // newBadge.url = 'https://www.bernewitness.com/favicon-16x16.png';
             break;
         case 'founder':
@@ -80,7 +79,10 @@ newBadge = type => {
             newBadge.name = 'Chingu Founder';
             newBadge.url = 'http://chevellestuff.net/styles/images/crown.png';
             break;
-        case 'project1':
+        case 'Chimp Breaker':
+            newBadge.badgeType = 'beta';
+            newBadge.name = 'I broke the Chimp and all I got was a 16px badge';
+            newBadge.url = 'https://cdn2.iconfinder.com/data/icons/aspneticons_v1.0_Nov2006/law-add-16x16.gif';
             break;
         case 'project5':
             break;

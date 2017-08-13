@@ -22,7 +22,7 @@ profileHelp = () => {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
                 pretext: '*Calling a specific profile item*',
-                text: `\`/profile @userName story\` *will return the the requested user's intro story. this option defaults to private to prevent spamming*\n\n\`/profile @userName projects\` *will display the requested user's completed projects and associated details*\n\n\`/profile @userName certifications\` *will display the requested user's Free Code Camp certifications and certificate links*\n\n\`/profile @userName skills\` *will display the requested user's languages and frameworks and their associated skill levels*\n\n\`/profile @userName [url item]\` *where* [\`url item\`] *can be any of the following:* [\`gitHub, portfolio, or blog\`] *will return the respective link item*`
+                text: `\`/profile @userName story\` *will return the the requested user's intro story. this option defaults to private to prevent spamming*\n\n\`/profile @userName projects\` *will display the requested user's completed projects and associated details*\n\n\`/profile @userName certifications\` *will display the requested user's Free Code Camp certifications and certificate links*\n\n\`/profile @userName skills\` *will display the requested user's languages and frameworks and their associated skill levels*\n\n\`/profile @userName [url item]\` *will return the respective link item where* [\`url item\`] *can be any of the following:* [\`gitHub, portfolio, or blog\`]`
             },
             {
                 mrkdwn_in: ['text', 'pretext'],
