@@ -151,13 +151,13 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
 
                     if(saveError) resolve(saveError);
                     if(success){
-                        if(channel) resolve(`succesfully saved the check-in for ${userName}. you have \`${channel.sessions.length}\` checkins on this channel!\n*Total check-ins:* \`${profileDoc.totalCheckins}\`\n*current streak:* \`${profileDoc.currentStreak.value}\`\n*best streak:* \`${profileDoc.bestStreak}\`\n`);
-                        else resolve(`succesfully saved the check-in for ${userName}. This is your first check-in on this channel, keep it up!\n*Total check-ins:* \`${profileDoc.totalCheckins}\`\n*current streak:* \` ${profileDoc.currentStreak.value}\`\n*best streak:* \`${profileDoc.bestStreak}\`\n`);
+                        if(channel) resolve(`Succesfully saved the check-in for ${userName}. you have \`${channel.sessions.length}\` checkins on this channel!\n*Total check-ins:* \`${profileDoc.totalCheckins}\`\n*Current streak:* \`${profileDoc.currentStreak.value}\`\n*Best streak:* \`${profileDoc.bestStreak}\`\n`);
+                        else resolve(`Succesfully saved the check-in for ${userName}. This is your first check-in on this channel, keep it up!\n*Total check-ins:* \`${profileDoc.totalCheckins}\`\n*Current streak:* \` ${profileDoc.currentStreak.value}\`\n*Best streak:* \`${profileDoc.bestStreak}\`\n`);
                     }
                 });
             }
-
-            else resolve(`*Check-in for \`@${userName}\` failed:*\n*profile \`@${userName}\` not found*\n*create a profile <url|here>*\n`);
+// ADD FINAL URL AT END OF NEXT LINE
+            else resolve(`*Check-in for \`@${userName}\` failed:*\n*Profile \`@${userName}\` not found*\n*Create a profile <url|here>*\n`);
         });
     });
 };
@@ -232,7 +232,8 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
 
             else{
                 // alert the AutoBot to message the user who does not have an account. pass on the link to set up their profile
-                resolve (`*Update for \`@${userName}\` failed:*\n*profile \`@${userName}\` not found.*\ncreate a profile <url|here>*\n`);
+// ADD FINAL URL AT THE END OF THE NEXT LINE
+                resolve (`*Update for \`@${userName}\` failed:*\n*Profile \`@${userName}\` not found.*\nCreate a profile <url|here>*\n`);
             }
 
         })
