@@ -5,10 +5,7 @@
 const express = require('express');
 const router = module.exports = express.Router();
 
-
-// ----------- REMOVE AFTER BETA TESTING ------------------------------//
-
-router.post('/beta', (req, res) => {
+router.post('/', (req, res) => {
 
     const text = req.body.text;
 
@@ -255,5 +252,3 @@ router.post('/beta', (req, res) => {
 
 });
 
-
-// ----------- REMOVE AFTER BETA TESTING ------------------------------//

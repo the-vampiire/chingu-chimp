@@ -29,14 +29,18 @@ app.use(logger('dev'));
 // TODO: uncomment after adding favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
+// ---------- REMOVE AFTER BETA TESTING
+const beta = require('./BETA_betaSlash');
+const done = require('./BETA_doneSlash');
+app.use('/beta', beta);
+app.use('/done', done);
+// ---------- REMOVE AFTER BETA TESTING
+
 // Pass all routing to the controller
 const controller = require('./controller');
 app.use('/', controller);
 
-const beta = require('./betaSlash');
-const done = require('./doneSlash');
-app.use('/beta', beta);
-app.use('/done', done);
+
 
 
 

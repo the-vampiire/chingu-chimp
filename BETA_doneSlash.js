@@ -7,7 +7,7 @@ const express = require('express');
 const router = module.exports = express.Router();
 
 
-router.post('/done', (req, res) => {
+router.post('/', (req, res) => {
 
     const text = req.body.text;
 
