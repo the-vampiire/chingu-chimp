@@ -183,13 +183,13 @@ helpResponse = (type) => {
             {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
-                pretext: '*General form: \`/update [profile item] [-flag data]\`*'
+                pretext: '*General form: \`/update <[blog] [gitHub] [portfolio]> -url yourURLhere\`*'
 
             },
             {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
-                pretext: '*Item(s)*',
+                pretext: '*Profile Item(s)*',
                 fields: [
                     {
                         title: 'blog',
@@ -220,34 +220,134 @@ helpResponse = (type) => {
             {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
-                pretext: '*Examples*',
-                text: `*_example update of blog url:_* \`/update blog -url https://medium.com/@yourUserName\`\n*_example *shorthand* update of blog url:_* \`/update gitHub -u https://github.com/yourUserName\``
+                pretext: '_Example update of blog url:_',
+                text: `\`/update blog -url https://medium.com/@yourUserName\`\n \`/update gitHub -u https://github.com/yourUserName\``
+            },
+            {
+                mrkdwn_in: ['text', 'pretext'],
+                color: '#15df89',
+                pretext: '_Example *shorthand* update of blog url:_',
+                text: `\`/update blog -u https://medium.com/@yourUserName\``
             }
         ]
 
     };
 
-    const projects = `*General form: \`/update [profile item] [-flag data]\`*\n
-        *Adding Projects*
-        \t*Item(s)*
-        \t\t[\`projects\`]
-        \t*Flag(s)*
-        \t\t[\`-name project name\`] _example:_ \`-name Project Name\`
-        \t\t[\`-url project homepage\`] _example:_ \`-url https://www.domain.com/projectName\`
-        \t\t\t *Optional*: including a project url is recommended but not required
-        \t\t[\`-git project GitHub repo\`] _example:_ \`-git https://www.github.com/yourUserName/projectName\`
-        \t\t\t*Note*: a gitHub repo link is required for every project
-        \t\t[\`-date date of completion\`] _example:_ \`-date 01/01/17\`
-        \t\t\t *Optional*: If no date is passed - today's date is inserted. 
-        \t\t\t *Note:* Date must be mm/dd/yy format.
-        
-        \t_example adding a project:_
-        \t\t\`/update projects -name New Project -url https://www.domain.com/newProject\` 
-        \t\t\`-git https://www.github.com/yourUserName/newProject -date 08/08/17\`
-        \t_example *shorthand* adding a project:_
-        \t\t\`/update projects -n New Project -u https://www.domain.com/newProject\` 
-        \t\t\`-g https://www.github.com/yourUserName/newProject -d 08/08/17\`
-        \n`;
+    const projects = {
+
+        response_type: 'ephemeral',
+        text: '*Updating Projects*',
+        attachments: [
+            {
+                mrkdwn_in: ['text', 'pretext'],
+                color: '#15df89',
+                pretext: '*General form: \`/update projects -name Project Name -git gitHubRepoLink [-url projectURL] [-date mm/dd/yy]\`*'
+
+            },
+            {
+                mrkdwn_in: ['text', 'pretext'],
+                color: '#15df89',
+                pretext: '*Profile Item(s)*',
+                fields: [
+                    {
+                        title: 'projects',
+                        value: 'a collection of your completed projects and their associated details'
+                    }
+                ]
+            },
+            {
+                mrkdwn_in: ['text', 'pretext'],
+                color: '#15df89',
+                pretext: '*Flag(s)*',
+                fields: [
+                    {
+                        title: 'Flag',
+                        value: '-name or -n',
+                        short: true,
+                    },
+                    {
+                        title: 'Data',
+                        value: 'the project name',
+                        short: true
+                    },
+                    {
+                        title: 'Flag',
+                        value: '-git or -g',
+                        short: true,
+                    },
+                    {
+                        title: 'Data',
+                        value: 'the GitHub repo link',
+                        short: true
+                    },
+                    {
+                        title: 'Flag [optional]',
+                        value: '-url or -u',
+                        short: true,
+                    },
+                    {
+                        title: 'Data',
+                        value: 'the project url link',
+                        short: true
+                    },
+                    {
+                        title: 'Flag [optional]',
+                        value: '-date or -d',
+                        short: true,
+                    },
+                    {
+                        title: 'Data',
+                        value: 'mm/dd/yy format',
+                        short: true
+                    },
+                    {
+                        value: 'if no date is passed today\'s is inserted automatically',
+                    }
+                ]
+            },
+            {
+                mrkdwn_in: ['text', 'pretext'],
+                color: '#15df89',
+                pretext: '_Example adding a project:_',
+                text: `\`/update projects -name New Project -git https://www.github.com/userName/newproject -url https://www.domain.com/newProject -d 08/08/17\``
+            },
+            {
+                mrkdwn_in: ['text', 'pretext'],
+                color: '#15df89',
+                pretext: '_Example *shorthand* adding a project [optional terms removed]:_',
+                text: `\`/update projects -n New Project -g https://www.github.com/userName/newproject\``
+            },
+            {
+                mrkdwn_in: ['text', 'pretext'],
+                color: '#15df89',
+                pretext: '*Examples*',
+                text: `\`/update projects -name New Project -url https://www.domain.com/newProject\``
+            }
+        ]
+
+    };
+
+
+
+
+
+
+        // `*General form: \`/update [profile item] [-flag data]\`*\n
+        // *Adding Projects*
+        // \t*Item(s)*
+        // \t\t[\`projects\`]
+        // \t*Flag(s)*
+        // \t\t[\`-name project name\`] _example:_ \`-name Project Name\`
+        // \t\t[\`-url project homepage\`] _example:_ \`-url https://www.domain.com/projectName\`
+        // \t\t\t *Optional*: including a project url is recommended but not required
+        // \t\t[\`-git project GitHub repo\`] _example:_ \`-git https://www.github.com/yourUserName/projectName\`
+        // \t\t\t*Note*: a gitHub repo link is required for every project
+        // \t\t[\`-date date of completion\`] _example:_ \`-date 01/01/17\`
+        // \t\t\t *Optional*: If no date is passed - today's date is inserted.
+        // \t\t\t *Note:* Date must be mm/dd/yy format.
+        //
+        //
+        // \n`;
 
     const skills = `*General form: \`/update [profile item] [-flag data]\`*\n
         *Adding or Updating Skills*

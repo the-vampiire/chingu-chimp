@@ -11,7 +11,7 @@ const formSchema = new mongoose.Schema({
     cohorts : [String],
 
     languages : [String],
-    frameworks : [String]
+    frameworks : [String],
 
     level : [String]
 
