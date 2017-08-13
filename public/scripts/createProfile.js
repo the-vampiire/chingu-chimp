@@ -128,12 +128,12 @@ var app = new Vue({
 
     // form field validation methods
     validateGitHubUrl(url) {
-      return url.startsWith('https://www.github.com/') || url.length === 0
+      return /^https:\/\/github\.com\//.test(url) || url.length === 0
     },
     validateFreeCodeCampUrl(url) {
-      return url.startsWith('https://www.freecodecamp.com/') || url.length === 0
+      return /^https:\/\/www\.freecodecamp\.com\/[A-Za-z-]+\/[a-z]+\-[a-z]+\-(certification)/.test(url) || url.length === 0
     },
-
+    
     // username validation properties
     usernameCheckHandler() {
       this.checkUserNameAvailability()
