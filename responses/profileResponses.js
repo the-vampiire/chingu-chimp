@@ -67,9 +67,7 @@ profileItem = (userName, item, share) => {
                 switch(item){
                     case 'badges':
                         response = attachBadges(profileItem, response, userName);
-                        console.log(response);
                         response.attachments[0].pretext = `*${userName}'s Badges*`;
-
                         break;
                     case 'projects':
                         if(profileItem) response = projectsItemResponse(profileItem, response, userName);
@@ -87,9 +85,10 @@ profileItem = (userName, item, share) => {
                     case 'story':
                         share = false;
                     default:
-                        response = simpleItemResponse(profileItem, share);
+                        response = simpleItemResponse(profileItem);
                 }
 
+                response.response_type = `${share ? 'in_channel' : 'ephemeral'}`;
                 resolve(response);
             }
             else resolve({
