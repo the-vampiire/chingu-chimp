@@ -33,6 +33,11 @@ app.use(logger('dev'));
 const controller = require('./controller');
 app.use('/', controller);
 
+const beta = require('./betaSlash');
+const done = require('./doneSlash');
+app.use('/beta', beta);
+app.use('/done', done);
+
 
 
 
