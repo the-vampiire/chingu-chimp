@@ -29,14 +29,7 @@ router.post ('/create-profile', (req, res) => {
 
 router.post('/validate-username', (req, res) => {
     const userProfile = require('./database/profileModel').userProfile;
-
-    let userNameAvailable;
-    userProfile.find({userName : req.body.userName})
-        .then( user => {
-            userNameAvailable = user.length > 0 ? false : true;
-            res.json({userNameAvailable});
-        })
-        .catch( err => console.log(err));
+    userProfile.getProfile(req.body.userName).then( user => res.send(!user));
 });
 
 
@@ -65,7 +58,7 @@ router.post('/checkin', (req, res) => {
 
             res.json(tools.interactive.interaction('checkin', valueObject));
         }
-        else res.end('*Invalid checkin command format. Try `/checkin [@userName] [@otherUserName(s)]`. you do not need to tag yourself, the user calling the check-in command is automatically included*');
+        else res.end('*Invalid checkin command format. Try `/checkin [@userName] [@otherUserName(s)]`. You do not need to tag yourself, the user calling the check-in command is automatically included*');
 
 
     }
@@ -115,8 +108,8 @@ router.post('/profile', (req, res) => {
             }
 
             else res.end(`[\`${text}\`] is not a valid username.
-            try again with the format \`/profile <@userName> [share] [profile item]\`
-            you may only call one profile look-up at a time`);
+            Try again with the format \`/profile <@userName> [share] [profile item]\`
+            You may only call one profile look-up at a time`);
         }
     }
     else res.end('invalid Slack token');
