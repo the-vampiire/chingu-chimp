@@ -1,0 +1,35 @@
+body {
+    margin-top: 35px;
+    background-color: #05C35F;
+    color: #363636;
+    font-family: 'Roboto', sans-serif;
+  }
+  .jumbotron {
+    background-color: #fff;
+  }
+  h2 {
+    font-size: 48px;
+  }
+  .btn-chingu-blue, 
+  .btn-chingu-blue:hover, 
+  .btn-chingu-blue:focus {
+    margin-top: 15px;
+    background-color: #28A4E6;
+    color: #fff;
+  }
+
+  .btn-chingu-blue:hover:enabled {
+    opacity: 0.85;
+  }
+
+  .btn-submit, 
+  .btn-submit:hover, 
+  .btn-submit:focus {
+    margin-top: 15px;
+    background-color: #05C35F;
+    color: #fff;
+  }
+
+  .btn-submit:hover:enabled {
+    opacity: 0.85;
+  }
