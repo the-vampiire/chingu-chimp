@@ -65,7 +65,7 @@ startResponse = () => {
             },
             {
                 mrkdwn_in: ['text', 'pretext'],
-                color: '#666',
+                color: '#FF0000',
                 pretext: '*Next Step*',
                 text: `When you have created and confirmed your profile type \`/beta update help\``
             }
@@ -85,7 +85,7 @@ updateHelpResponse = () => {
                 text: `Call each of the help guides:\n\n*command:* \`/update help1\` for the first version\n\n*command:* \`/update help2\` for the second version`
             },
             {
-                color: '#666',
+                color: '#FF0000',
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Next Step*',
                 text: `type \`/done update help\``
@@ -126,7 +126,7 @@ updateCommandResponse = () => {
                 text: `if you make a mistake you should receive an error message explaining how to fix it.\n\nIf you don't receive an error response for your erroneous command send a message in this channel with the command you entered and any additional notes.\n\nif you forget which flags to use or the correct format you can call the sub-guide for that item at any time using \`/update [item]\``
             },
             {
-                color: '#666',
+                color: '#FF0000',
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Next Step*',
                 text: `type \`/done update command\``
@@ -155,19 +155,19 @@ checkinCommandResponse = () => {
             {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
-                pretext: '*Call the check-in command for yourself*',
+                pretext: '*1) Call the check-in command for yourself*',
                 text: '*command:* `/checkin` with no parameters'
             },
             {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
-                pretext: '*Call the check-in command with some partner(s)*',
+                pretext: '*2) Call the check-in command with some partner(s)*',
                 text: 'You can tag anyone else from the channel to test this feature.\n\n*command:* `/checkin [@partner1] [@partnerN]`'
             },
             {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
-                pretext: '*Soft Reset the Check-in Command*',
+                pretext: '*3) Soft Reset the Check-in Command*',
                 text: '*command:* `/checkin` with or without partners',
                 fields: [
                     {
@@ -184,7 +184,7 @@ checkinCommandResponse = () => {
                 ]
             },
             {
-                color: '#666',
+                color: '#FF0000',
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Next Step*',
                 text: `type \`/done checkin command\``
@@ -206,7 +206,7 @@ profileHelpResponse = () => {
                 text: `Call the help guide\n\n*command:* \`/profile help\``
             },
             {
-                color: '#666',
+                color: '#FF0000',
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Next Step*',
                 text: `type \`/done profile help\``
@@ -235,41 +235,41 @@ profileCommandResponse = () => {
             {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
-                pretext: `*Request a user's profile card privately - _without using_ the \`share\` argument*`,
+                pretext: `*1) Request a user's profile card privately - _without using_ the \`share\` argument*`,
                 text: '*command:* `/profile @userName`'
             },
             {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
-                pretext: `*Request a user's profile card publicly - _using_ the \`share\` argument*`,
+                pretext: `*2) Request a user's profile card publicly - _using_ the \`share\` argument*`,
                 text: '*command:* `/profile @userName share`'
             },
             {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
-                pretext: `*Request a user's gitHub, portfolio or blog link publicly - _using_ the \`share\` argument*`,
+                pretext: `*3) Request a user's gitHub, portfolio or blog link publicly - _using_ the \`share\` argument*`,
                 text: '*command:* `/profile @userName share [gitHub, portfolio, blog]`'
             },
             {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
-                pretext: `*Request a user's certifications - publicly or privately*`,
+                pretext: `*4) Request a user's certifications - publicly or privately*`,
                 text: '*command:* `/profile @userName certifications`'
             },
             {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
-                pretext: `*Request a user's skills - publicly or privately*`,
+                pretext: `*5) Request a user's skills - publicly or privately*`,
                 text: '*command:* `/profile @userName skills`'
             },
             {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
-                pretext: `*Request a user's completed projects - publicly or privately*`,
+                pretext: `*6) Request a user's completed projects - publicly or privately*`,
                 text: '*command:* `/profile @userName projects`'
             },
             {
-                color: '#666',
+                color: '#FF0000',
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Next Step*',
                 text: `type \`/done profile command\``

@@ -22,19 +22,19 @@ router.post('/', (req, res) => {
                     },
                     {
                         color: `#15df89`,
-                        text: 'Did you prefer version 1 or version 2?'
+                        text: '1) Did you prefer version 1 or version 2?'
                     },
                     {
                         color: `#15df89`,
-                        text: 'Was the guide clear or is there anything you are still confused about?'
+                        text: '2) Was the guide clear or is there anything you are still confused about?'
                     },
                     {
                         color: `#15df89`,
-                        text: 'Was the guide structured in an easily digestible way or can you suggest moving any items or changing the markdown?'
+                        text: '3) Was the guide structured in an easily digestible way or can you suggest moving any items or changing the markdown?'
                     },
                     {
                         color: `#15df89`,
-                        text: 'Any other suggestions / alternatives / complaints / bugs?'
+                        text: '4) Any other suggestions / alternatives / complaints / bugs?'
                     },
                     {
                         pretext: '*Help*',
@@ -43,6 +43,7 @@ router.post('/', (req, res) => {
                     },
                     {
                         mrkdwn_in: ['text', 'pretext'],
+                        color: '#FF0000',
                         pretext: '*Next Step*',
                         text: `type \`/beta update command\``
                     }
@@ -59,19 +60,19 @@ router.post('/', (req, res) => {
                     },
                     {
                         color: `#15df89`,
-                        text: 'Was the git-style interface intuitive / convenient to you or do you have an alternative approach to updating you would like to suggest?'
+                        text: '1) Was the git-style interface intuitive / convenient to you or do you have an alternative approach to updating you would like to suggest?'
                     },
                     {
                         color: `#15df89`,
-                        text: 'Were the error messages clear and helpful in guiding you towards fixing your error?'
+                        text: '2) Were the error messages clear and helpful in guiding you towards fixing your error?'
                     },
                     {
                         color: `#15df89`,
-                        text: 'Would you use the update command in the future? If not, why? (you can be honest)'
+                        text: '3) Would you use the update command in the future? If not, why? (you can be honest)'
                     },
                     {
                         color: `#15df89`,
-                        text: 'Any other suggestions / alternatives / complaints / bugs?'
+                        text: '4) Any other suggestions / alternatives / complaints / bugs?'
                     },
                     {
                         pretext: '*Help*',
@@ -79,7 +80,7 @@ router.post('/', (req, res) => {
                         text: `If you need help or clarification at any time message <@U5XJSS683|vampiire>`
                     },
                     {
-                        color: '#666',
+                        color: '#FF0000',
                         mrkdwn_in: ['text', 'pretext'],
                         pretext: '*Next Step*',
                         text: `type \`/beta checkin command\``
@@ -97,27 +98,27 @@ router.post('/', (req, res) => {
                     },
                     {
                         color: `#15df89`,
-                        text: 'Was the check-in process intuitive / convenient for you?'
+                        text: '1) Was the check-in process intuitive / convenient for you?'
                     },
                     {
                         color: `#15df89`,
-                        text: 'Is there any part of the check-in process that was confusing?'
+                        text: '2) Is there any part of the check-in process that was confusing?'
                     },
                     {
                         color: `#15df89`,
-                        text: 'Is there any part of the check-in process that should be added / removed / changed?'
+                        text: '3) Is there any part of the check-in process that should be added / removed / changed?'
                     },
                     {
                         color: `#15df89`,
-                        text: 'Can you think of any other check-in types or activities to add to the lists? They should be (relatively) common and recurring activities'
+                        text: '4) Can you think of any other check-in types or activities to add to the lists? They should be (relatively) common and recurring activities'
                     },
                     {
                         color: `#15df89`,
-                        text: 'Would you use the check-in command in the future? If not, why? (you can be honest)'
+                        text: '5) Would you use the check-in command in the future? If not, why? (you can be honest)'
                     },
                     {
                         color: `#15df89`,
-                        text: 'Any other suggestions / alternatives / complaints / bugs?'
+                        text: '6) Any other suggestions / alternatives / complaints / bugs?'
                     },
                     {
                         pretext: '*Help*',
@@ -125,7 +126,7 @@ router.post('/', (req, res) => {
                         text: `If you need help or clarification at any time message <@U5XJSS683|vampiire>`
                     },
                     {
-                        color: '#666',
+                        color: '#FF0000',
                         mrkdwn_in: ['text', 'pretext'],
                         pretext: '*Next Step*',
                         text: `type \`/beta profile help\``
@@ -143,15 +144,15 @@ router.post('/', (req, res) => {
                     },
                     {
                         color: `#15df89`,
-                        text: 'Was the guide clear or is there anything you are still confused about?'
+                        text: '1) Was the guide clear or is there anything you are still confused about?'
                     },
                     {
                         color: `#15df89`,
-                        text: 'Was the guide structured in an easily digestible way or can you suggest moving any items or changing the markdown?'
+                        text: '2) Was the guide structured in an easily digestible way or can you suggest moving any items or changing the markdown?'
                     },
                     {
                         color: `#15df89`,
-                        text: 'Any other suggestions / alternatives / complaints / bugs?'
+                        text: '3) Any other suggestions / alternatives / complaints / bugs?'
                     },
                     {
                         pretext: '*Help*',
@@ -159,7 +160,7 @@ router.post('/', (req, res) => {
                         text: `If you need help or clarification at any time message <@U5XJSS683|vampiire>`
                     },
                     {
-                        color: '#666',
+                        color: '#FF0000',
                         mrkdwn_in: ['text', 'pretext'],
                         pretext: '*Next Step*',
                         text: `type \`/beta profile command\``
@@ -177,23 +178,23 @@ router.post('/', (req, res) => {
                     },
                     {
                         color: `#15df89`,
-                        text: 'Was the profile command intuitive / convenient for you?'
+                        text: '1) Was the profile command intuitive / convenient for you?'
                     },
                     {
                         color: `#15df89`,
-                        text: 'If there were any error messages were they clear and helpful in guiding you towards fixing your error?'
+                        text: '2) If there were any error messages were they clear and helpful in guiding you towards fixing your error?'
                     },
                     {
                         color: `#15df89`,
-                        text: 'Is there anything missing from the profile command that you would like to see added?'
+                        text: '3) Is there anything missing from the profile command that you would like to see added?'
                     },
                     {
                         color: `#15df89`,
-                        text: 'Would you use the profile command in the future? If not, why? (you can be honest)'
+                        text: '4) Would you use the profile command in the future? If not, why? (you can be honest)'
                     },
                     {
                         color: `#666`,
-                        text: 'Any other suggestions / alternatives / complaints / bugs?'
+                        text: '5) Any other suggestions / alternatives / complaints / bugs?'
                     },
                     {
                         pretext: '*Help*',
@@ -201,7 +202,7 @@ router.post('/', (req, res) => {
                         text: `If you need help or clarification at any time message <@U5XJSS683|vampiire>`
                     },
                     {
-                        color: '#666',
+                        color: '#FF0000',
                         mrkdwn_in: ['text', 'pretext'],
                         pretext: '*Next Step*',
                         text: `type \`/done\` with no parameters`
