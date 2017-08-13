@@ -1,5 +1,8 @@
 /**
  * Created by Vampiire on 8/10/17.
+ *
+ * supplemental functions used for database data manipulation
+ *
  */
 
 // checks for an existing /  adds a new cohort

@@ -6,7 +6,7 @@
 
 const mongoose = require('mongoose');
 const requests = require('../tools/requests');
-const helper = require('./helpers');
+const dbHelper = require('./dbHelpers');
 
 // sub-schemas
     const sessionSchema = new mongoose.Schema({
@@ -123,12 +123,12 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
 
 // REMOVE AFTER TESING ------ remove this line after beta testing
 //                 if(!profileDoc.badges.some( e => e.name === 'Beta Tester: Chingu Chimp'))
-                profileDoc.badges.push(helper.newBadge('Chingu Chimp Beta Tester'));
+                profileDoc.badges.push(dbHelper.newBadge('Chingu Chimp Beta Tester'));
 
-                if(userName === 'chance') profileDoc.badges.push(helper.newBadge('founder'));
+                if(userName === 'chance') profileDoc.badges.push(dbHelper.newBadge('founder'));
 // REMOVE AFTER TESING
 
-                profileDoc.cohorts = helper.checkAndAddCohort(profileDoc.cohorts, cohortName);
+                profileDoc.cohorts = dbHelper.checkAndAddCohort(profileDoc.cohorts, cohortName);
 
                 const checkins = profileDoc.checkins;
                 let channel = checkins.find( e => e.channelID === channelID);
@@ -137,7 +137,7 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
                     channel.sessions.push(checkinSessionData) :
                     checkins.push(new checkinModel({channelID : channelID, sessions : [checkinSessionData]}));
 
-                const streakUpdate = helper.streakUpdater(checkins, profileDoc.currentStreak, profileDoc.bestStreak);
+                const streakUpdate = dbHelper.streakUpdater(checkins, profileDoc.currentStreak, profileDoc.bestStreak);
                 profileDoc.currentStreak = streakUpdate.currentStreak;
                 profileDoc.bestStreak = streakUpdate.bestStreak;
 
