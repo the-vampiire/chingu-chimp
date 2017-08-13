@@ -141,6 +141,7 @@ helpResponse = (type) => {
                     {
                         title: 'Flag(s)',
                         value: `None.\nNote: Your current Slack profile picture will be attached to your Chingu Profile Card`,
+                    }
                     // },
                     // {
                     //     title: 'Example - updating your profile card picture',
