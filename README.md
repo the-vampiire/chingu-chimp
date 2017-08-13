@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# chingu-profile-bot
-Chingu Profile Bot
-=======
 ## Chingu Profile Bot
 
 ### Project Name/Intro
@@ -52,4 +48,3 @@ TODO: populate this column with next steps asap
 
 ### Contact
 TODO: add contact information for core contributors
->>>>>>> d4e56fe4c437bab01eeffe49799c82add95c2736
