@@ -136,7 +136,7 @@ router.post('/', (req, res) => {
                         color: '#15df89',
                         mrkdwn_in: ['text', 'pretext'],
                         pretext: '*Call the check-in command with some partner(s)*',
-                        text: '*command:* `/checkin [@partner1] [@partnerN]`'
+                        text: 'You can tag anyone else from the channel to test this feature.\n\n*command:* `/checkin [@partner1] [@partnerN]`'
                     },
                     {
                         color: '#15df89',
