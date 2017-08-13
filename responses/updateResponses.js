@@ -114,13 +114,20 @@ helpResponse = (type) => {
                     },
                     {
                         title: 'Flag(s)',
-                        value: `None.\nNote: You can preserve the formatting [markdown] by copying directly from the edit message window in your intro post`,
+                        value: `None.\nNote: You can preserve the Slack markdown formatting by copying directly from the edit message window in your intro post`,
                     },
-                    {
-                        title: 'Example - updating your user story',
-                        value: `/update story Hello you can call me Vamp I am a...`
-                    }
+                    // {
+                    //     title: 'Example - updating your user story',
+                    //     value: `/update story Hello you can call me Vamp I am a...`
+                    // }
                 ]
+            },
+            {
+
+                mrkdwn_in: ['text', 'pretext'],
+                color: '#666',
+                text: `*Example - updating your user story*\nUse the command \`/update story *Hello* you can call me _Vamp_ I am a...\``
+
             },
             {
                 color: '#15df89',
@@ -134,12 +141,19 @@ helpResponse = (type) => {
                     {
                         title: 'Flag(s)',
                         value: `None.\nNote: Your current Slack profile picture will be attached to your Chingu Profile Card`,
-                    },
-                    {
-                        title: 'Example - updating your profile card picture',
-                        value: `Use the command /update picture and your current Slack profile picture will be added to your profile card`
-                    }
+                    // },
+                    // {
+                    //     title: 'Example - updating your profile card picture',
+                    //     value: `Use the command /update picture and your current Slack profile picture will be added to your profile card`
+                    // }
                 ]
+            },
+            {
+
+                mrkdwn_in: ['text', 'pretext'],
+                color: '#666',
+                text: `*Example - updating your profile card picture*\nUse the command \`/update picture\` and your current Slack profile picture will be added to your profile card`
+
             },
             // {
             //     color: '#15df89',
