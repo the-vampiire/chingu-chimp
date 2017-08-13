@@ -140,10 +140,6 @@ helpResponse = (type) => {
                     {
                         title: 'Item',
                         value: `[picture]: the profile picture that is displayed on your profile card`
-                    },
-                    {
-                        title: 'Note',
-                        value: `Your current Slack profile picture will be attached to your Chingu Profile Card`,
                     }
                 ]
             },
@@ -161,10 +157,6 @@ helpResponse = (type) => {
                     {
                         title: 'Item',
                         value: `[skills]: the skills section of your profile which includes languages and frameworks`
-                    },
-                    {
-                        title: 'Note',
-                        value: ` `,
                     }
                 ]
             },
