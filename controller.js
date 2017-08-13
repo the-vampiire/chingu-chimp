@@ -36,7 +36,7 @@ router.post('/validate-username', (req, res) => {
 });
 
 
-// // -------------------------------------- BACK END --------------------------------------- //
+//
 //
 //
 // // ------------ INCOMING SLASH COMMANDS ------------- //
@@ -557,6 +557,9 @@ router.post('/validate-username', (req, res) => {
 // });
 //
 // // ----------- REMOVE AFTER BETA TESTING ------------------------------//
+
+
+// -------------------------------------- BACK END --------------------------------------- //
 
 // ----- CHECK-IN ----- //
 router.post('/checkin', (req, res) => {
