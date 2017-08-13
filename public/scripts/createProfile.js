@@ -27,6 +27,9 @@ var app = new Vue({
     // dropdown data
     cohorts: [
         {
+          "name": "Voyage",
+        },
+        {
           "name": "Ewoks",
         },
         {
