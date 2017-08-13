@@ -156,7 +156,7 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
                 });
             }
 // ADD FINAL URL AT END OF NEXT LINE
-            else resolve(`*Check-in for \`@${userName}\` failed:*\n*Profile \`@${userName}\` not found*\n*Create a profile <url|here>*\n`);
+            else resolve(`*Check-in for \`@${userName}\` failed:*\n*Profile \`@${userName}\` not found*\nCreate a profile <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>*\n`);
         });
     });
 };
@@ -232,7 +232,7 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
             else{
                 // alert the AutoBot to message the user who does not have an account. pass on the link to set up their profile
 // ADD FINAL URL AT THE END OF THE NEXT LINE
-                resolve (`*Update for \`@${userName}\` failed:*\n*Profile \`@${userName}\` not found.*\nCreate a profile <url|here>*\n`);
+                resolve (`*Update for \`@${userName}\` failed:*\n*Profile \`@${userName}\` not found.*\nCreate a profile <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>*\n`);
             }
 
         })

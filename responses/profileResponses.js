@@ -77,7 +77,7 @@ profileItem = (userName, item, share) => {
             }
             else resolve({
                 response_type: 'in_channel',
-                text: `User ${userName} does not have a Chingu profile. Message them and suggest they add one! RETURN FORM URL LINK HERE`
+                text: `User ${userName} does not have a Chingu profile. They can sign up <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>`
         });
 
         });
@@ -190,7 +190,7 @@ profileCard = (userName, share) => {
     // no user found
         else return {
             response_type: 'in_channel',
-            text: `User \`@${userName}\` does not have a Chingu profile. Send them <url|this link> to create one!`
+            text: `User ${userName} does not have a Chingu profile. They can sign up <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>`
         }
     });
 };
