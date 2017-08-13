@@ -58,7 +58,7 @@ helpResponse = (type) => {
     const help1 = `*How to use the \`/update\` command:* \n\nUpdating functions similarly to git in stringing together mandatory and/or optional \`[-flag data]\` pairs to build the update command\n
         *General form: \`/update [profile item] [-flag data]\`*\n
         *List of update items: \`blog\`, \`certifications\`, \`gitHub\`, \`picture\`, \`portfolio\`, \`projects\`, \`skills\`, \`story\`*\n
-        *List of update flags: \`-date\` or \`-d\`, \`-git\` or \`-g\`, \`-name\` or \`-d\`, \`-url\` or \`-u\`*\n\n
+        *List of update flags: \`-date\` or \`-d\`, \`-git\` or \`-g\`, \`-name\` or \`-n\`, \`-url\` or \`-u\`*\n\n
         *Updating Blog, Portfolio, or GitHub Profile Links*\n
         \t\`/update blog\` or \`/update portfolio\` or \`/update gitHub\`\n
         *Updating Certifications*\n
