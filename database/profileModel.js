@@ -41,12 +41,11 @@ const checkinModel = mongoose.model('checkinModel', checkinSchema);
 
         joinDate: {type: Number, default: Date.now()},
 
-    // automatically add new cohorts to returning users' profiles
         cohorts: [{
             cohortName: String,
             // cohortID: String,
             // considering capturing this for added security / cross-checking
-                // could require a password when a non-recognized cohort is detected
+                // could require a password before a non-recognized cohort is added to the cohorts array
             startDate: {type: Number, default: Date.now()},
         }],
 

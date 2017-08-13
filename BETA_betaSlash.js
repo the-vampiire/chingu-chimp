@@ -167,6 +167,7 @@ router.post('/', (req, res) => {
             });
             break;
         case 'profile help':
+            console.log('called');
             res.json({
                 response_type: 'in_channel',
                 text: 'The Profile Command',

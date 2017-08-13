@@ -15,7 +15,7 @@ profileHelp = () => {
             {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
-                pretext: '*General form: \`/profile [share] [profile item]\`*',
+                pretext: '*General form: \`/profile <@userName> [share] [profile item]\`*',
                 text: `All profile requests are returned privately by default (only you can see it, designated by the gray "whisper" text)\n\nIf the \`share\` argument is present *_after the username_* then the profile or profile item will be returned publicly to the current channel`
             },
             {
