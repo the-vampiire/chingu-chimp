@@ -183,10 +183,7 @@ helpResponse = (type) => {
             {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
-                pretext: '*General form: \`/update [profile item] [-flag data]\`',
-                text: `*Item(s)*\n\t
-        \t*Flag(s)*
-        \t\t`
+                pretext: '*General form: \`/update [profile item] [-flag data]\`*'
 
             },
             {

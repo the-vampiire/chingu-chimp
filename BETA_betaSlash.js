@@ -38,7 +38,7 @@ router.post('/', (req, res) => {
                         mrkdwn_in: ['text', 'pretext'],
                         color: '#15df89',
                         pretext: '*Steps to Begin*',
-                        text: `Create a profile <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>.\n*The username you use for your Chingu profile must match your username on Slack*\n\nCall your profile using \`/profile @yourUserName\` to confirm its creation\nIf you receive an error - message <@${U5XJSS683}|vampiire>`,
+                        text: `Create a profile <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>.\n*The username you use for your Chingu profile must match your username on Slack*\n\nCall your profile using \`/profile @yourUserName\` to confirm its creation\nIf you receive an error - message <@U5XJSS683|vampiire>`,
                     },
                     {
                         mrkdwn_in: ['text', 'pretext'],

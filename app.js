@@ -31,8 +31,9 @@ mongoose.connect(dbURL, {useMongoClient : true}, e => e ? console.log(`error: ${
 
     // ---------- REMOVE AFTER BETA TESTING ----------------
     const beta = require('./BETA_betaSlash');
-    const done = require('./BETA_doneSlash');
     app.use('/beta', beta);
+
+    const done = require('./BETA_doneSlash');
     app.use('/done', done);
     // ---------- REMOVE AFTER BETA TESTING ----------------
 
