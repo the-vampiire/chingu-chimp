@@ -130,7 +130,7 @@ router.post('/update', (req, res) => {
 
     if(tools.verify.slash(body.token)){
         if(~arguments.indexOf(' ')){
-        // skills and picture update items do not take additional parameters
+
             if(/skills/.test(arguments)) res.end('*\`/update skills\` does not take any additional parameters*');
             else if(/picture/.test(arguments)) res.end('*\`/update picture\` does not take any additional parameters*');
 

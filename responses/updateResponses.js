@@ -86,7 +86,7 @@ helpResponse = (type) => {
     // ----------- REMOVE LAST "NEXT" LINE AFTER BETA -----------------
 
     const help2 = {
-        text: `*How to use the \`/update\` command:* \n\nUpdating functions similarly to git in stringing together mandatory and/or optional \`[-flag data]\` pairs to build the update command`,
+        text: `*How to use the \`/update\` command:* \n\nUpdating behaves similarly to git. \nYou string together mandatory and/or optional \`[-flag data]\` pairs to build the update command`,
         response_type: 'ephemeral',
 
         attachments: [
@@ -106,15 +106,22 @@ helpResponse = (type) => {
             {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
-                pretext: '*Updating User Story*',
+                pretext: '*Help Sub-Guides*',
+                text: `*Enter any of the following commands to be returned a detailed help guide specific to that item*\n\n*Updating Blog, GitHub Profile, or Portfolio Links*\n\t\`/update blog\` or \`/update gitHub\` or \`/update portfolio\`\n\n*Updating Certifications*\n\t\`/update certifications\`\n\n*Updating Projects*\n\t\`/update projects\`\n\n*Updating Skills*\n\t\`/update skills\``,
+
+            },
+            {
+                color: '#15df89',
+                mrkdwn_in: ['text', 'pretext'],
+                pretext: '*Updating User Story [no flags]*',
                 fields: [
                     {
                         title: 'Item',
                         value: `[story]: your user story (that you entered in the Intro channel)`
                     },
                     {
-                        title: 'Flag(s)',
-                        value: `None.\nNote: You can preserve the Slack markdown formatting by copying directly from the edit message window in your intro post`,
+                        title: 'Note',
+                        value: `You can preserve the Slack markdown formatting by copying directly from the edit message window in your intro post`,
                     }
                 ]
             },
@@ -128,20 +135,19 @@ helpResponse = (type) => {
             {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
-                pretext: '*Updating Profile Picture*',
+                pretext: '*Updating Profile Picture [no arguments]*',
                 fields: [
                     {
                         title: 'Item',
                         value: `[picture]: the profile picture that is displayed on your profile card`
                     },
                     {
-                        title: 'Flag(s)',
-                        value: `None.\nNote: Your current Slack profile picture will be attached to your Chingu Profile Card`,
+                        title: 'Note',
+                        value: `Your current Slack profile picture will be attached to your Chingu Profile Card`,
                     }
                 ]
             },
             {
-
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#666',
                 text: `*Example - updating your profile card picture*\nUse the command \`/update picture\` and your current Slack profile picture will be added to your profile card`
@@ -150,8 +156,22 @@ helpResponse = (type) => {
             {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
-                pretext: '*Help guides for other profile items*',
-                text: `*Updating Blog, GitHub Profile, or Portfolio Links*\n\t\`/update blog\` or \`/update gitHub\` or \`/update portfolio\`\n\n*Updating Certifications*\n\t\`/update certifications\`\n\n*Updating Projects*\n\t\`/update projects\`\n\n*Updating Skills*\n\t\`/update skills\``,
+                pretext: '*Updating Skills - Languages and Frameworks [no arguments]*',
+                fields: [
+                    {
+                        title: 'Item',
+                        value: `[skills]: the skills section of your profile which includes languages and frameworks`
+                    },
+                    {
+                        title: 'Note',
+                        value: ` `,
+                    }
+                ]
+            },
+            {
+                mrkdwn_in: ['text', 'pretext'],
+                color: '#666',
+                text: `*Example - updating your skills*\nUse the command \`/update skills\` an interactive message will be returned to select your skill and skill-level`
 
             },
             {
