@@ -40,17 +40,3 @@ mongoose.connect(dbURL, {useMongoClient : true}, e => e ? console.log(`error: ${
     // Pass all routing to the controller
     const controller = require('./controller');
     app.use('/', controller);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
