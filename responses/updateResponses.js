@@ -215,18 +215,29 @@ helpResponse = (type) => {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
                 pretext: '*Flag(s)*',
-                text: `[\`-url\`\`full url\`] _example:_ \`-url https://www.github.com/yourUserName\``
+                fields: [
+                    {
+                        title: 'Flag',
+                        value: '-url or -u',
+                        short: true
+                    },
+                    {
+                        title: 'Data',
+                        value: 'full url beginning with http(s)://',
+                        short: true
+                    }
+                ]
             },
             {
                 mrkdwn_in: ['text', 'pretext'],
-                color: '#15df89',
-                pretext: '_Example update of blog url:_',
+                color: '#666',
+                pretext: 'Example update of blog url:',
                 text: `\`/update blog -url https://medium.com/@yourUserName\`\n \`/update gitHub -u https://github.com/yourUserName\``
             },
             {
                 mrkdwn_in: ['text', 'pretext'],
-                color: '#15df89',
-                pretext: '_Example *shorthand* update of blog url:_',
+                color: '#666',
+                pretext: 'Example *shorthand* update of blog url:',
                 text: `\`/update blog -u https://medium.com/@yourUserName\``
             }
         ]
@@ -307,21 +318,73 @@ helpResponse = (type) => {
             },
             {
                 mrkdwn_in: ['text', 'pretext'],
-                color: '#15df89',
-                pretext: '_Example adding a project:_',
-                text: `\`/update projects -name New Project -git https://www.github.com/userName/newproject -url https://www.domain.com/newProject -d 08/08/17\``
+                color: '#666',
+                pretext: 'Example adding a project:',
+                text: `\`/update projects -name New Project Name -git https://www.github.com/userName/newproject -url https://www.domain.com/newProject -d 08/08/17\``
             },
             {
                 mrkdwn_in: ['text', 'pretext'],
-                color: '#15df89',
-                pretext: '_Example *shorthand* adding a project [optional terms removed]:_',
+                color: '#666',
+                pretext: 'Example *shorthand* adding a project [optional terms neglected]:',
                 text: `\`/update projects -n New Project -g https://www.github.com/userName/newproject\``
             },
+        ]
+
+    };
+
+    const certifications = {
+
+        response_type: 'ephemeral',
+        text: '*Updating Free Code Camp Certifications*',
+        attachments: [
             {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
-                pretext: '*Examples*',
-                text: `\`/update projects -name New Project -url https://www.domain.com/newProject\``
+                pretext: '*General form: \`/update certifications -url certificateURL [-date mm/dd/yy ]\`*'
+
+            },
+            {
+                mrkdwn_in: ['text', 'pretext'],
+                color: '#15df89',
+                pretext: '*Profile Item(s)*',
+                fields: [
+                    {
+                        title: 'certifications',
+                        value: 'the'
+                    },
+                    {
+                        title: 'gitHub',
+                        value: 'your gitHub profile url',
+                        short: true
+                    },
+                    {
+                        title: 'Note',
+                        value: 'must begin with "https://www.github.com/"',
+                        short: true
+                    },
+                    {
+                        title: 'portfolio',
+                        value: 'your portfolio page url'
+                    }
+                ]
+            },
+            {
+                mrkdwn_in: ['text', 'pretext'],
+                color: '#15df89',
+                pretext: '*Flag(s)*',
+                text: `[\`-url\`\`full url\`] _example:_ \`-url https://www.github.com/yourUserName\``
+            },
+            {
+                mrkdwn_in: ['text', 'pretext'],
+                color: '#15df89',
+                pretext: '_Example update of blog url:_',
+                text: `\`/update blog -url https://medium.com/@yourUserName\`\n \`/update gitHub -u https://github.com/yourUserName\``
+            },
+            {
+                mrkdwn_in: ['text', 'pretext'],
+                color: '#15df89',
+                pretext: '_Example *shorthand* update of blog url:_',
+                text: `\`/update blog -u https://medium.com/@yourUserName\``
             }
         ]
 
@@ -331,39 +394,7 @@ helpResponse = (type) => {
 
 
 
-
-        // `*General form: \`/update [profile item] [-flag data]\`*\n
-        // *Adding Projects*
-        // \t*Item(s)*
-        // \t\t[\`projects\`]
-        // \t*Flag(s)*
-        // \t\t[\`-name project name\`] _example:_ \`-name Project Name\`
-        // \t\t[\`-url project homepage\`] _example:_ \`-url https://www.domain.com/projectName\`
-        // \t\t\t *Optional*: including a project url is recommended but not required
-        // \t\t[\`-git project GitHub repo\`] _example:_ \`-git https://www.github.com/yourUserName/projectName\`
-        // \t\t\t*Note*: a gitHub repo link is required for every project
-        // \t\t[\`-date date of completion\`] _example:_ \`-date 01/01/17\`
-        // \t\t\t *Optional*: If no date is passed - today's date is inserted.
-        // \t\t\t *Note:* Date must be mm/dd/yy format.
-        //
-        //
-        // \n`;
-
-    const skills = `*General form: \`/update [profile item] [-flag data]\`*\n
-        *Adding or Updating Skills*
-        \t*Item(s)*
-        \t\t[\`skills\`]: your languages and frameworks and their associated skill levels
-        \t*Flag(s)*
-        \t\tNone. 
-        
-        \tAn interactive message will be sent back where you can choose to update a language or framework. 
-        \tAfter making your choice a dropdown menu of the languages or frameworks will be supplied. 
-        \tAfter one is chosen from the list a skill level dropdown will be provided for selection.
-        \tOn submit the new language or framework and its skill level will be added to the skills section of your profile
-        \t\t*Note*: to update an existing skill level select the language or framework then select the new skill level.
-        \n`;
-
-    const certifications = `*General form: \`/update [profile item] [-flag data]\`*\n
+        `*General form: \`/update [profile item] [-flag data]\`*\n
         *Adding Free Code Camp Certifications*
         \t*Item(s)*
         \t\t[\`certifications\`]: your Free Code Camp certifications

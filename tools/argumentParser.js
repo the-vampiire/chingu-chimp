@@ -143,6 +143,8 @@ argumentSplitter = arguments => {
             if(item === 'gitHub'){
                 if(!data.includes('https://www.github.com/')) return `invalid gitHub profile url, ensure the url entered is of the form [\`https://www.github.com/yourUserName\`]`
             }
+            if(item === 'certifications')
+                if(!/https:\/\/www.freecodecamp.com\//.test(data)) return `invalid certificate url, must begin with \`https://www.freecodecamp.com/\``;
             if(!/(http:\/\/|https:\/\/)(www\.)?/.test(data))
                 return `*invalid data: \`${data}\` associated with flag [\`-${flag}\`]. ensure the full [\`http://www.\`] or [\`http\`url is being passed*`;
             flag = 'url';
