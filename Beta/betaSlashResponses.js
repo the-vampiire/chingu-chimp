@@ -1,37 +1,6 @@
 /**
- * Created by Vampiire on 8/12/17.
+ * Created by Vampiire on 8/13/17.
  */
-
-const express = require('express');
-const router = module.exports = express.Router();
-
-router.post('/', (req, res) => {
-
-    const text = req.body.text;
-
-    switch(text){
-        case 'start':
-            res.json(startResponse());
-            break;
-        case 'update help':
-            res.json(updateHelpResponse());
-            break;
-        case 'update command':
-            res.json(updateCommandResponse());
-            break;
-        case 'checkin command':
-            res.json(checkinCommandResponse());
-            break;
-        case 'profile help':
-            res.json(profileHelpResponse());
-            break;
-        case 'profile command':
-            res.json(profileCommandResponse());
-            break;
-    }
-
-});
-
 
 startResponse = () => {
     return {
@@ -279,7 +248,11 @@ profileCommandResponse = () => {
 };
 
 
-
-
-
-
+module.exports = {
+    startResponse,
+    updateHelpResponse,
+    updateCommandResponse,
+    checkinCommandResponse,
+    profileHelpResponse,
+    profileCommandResponse
+};

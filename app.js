@@ -30,10 +30,10 @@ mongoose.connect(dbURL, {useMongoClient : true}, e => e ? console.log(`error: ${
     //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
     // ---------- REMOVE AFTER BETA TESTING ----------------
-    const beta = require('./BETA_betaSlash');
+    const beta = require('./Beta/BETA_betaSlash');
     app.use('/beta', beta);
 
-    const done = require('./BETA_doneSlash');
+    const done = require('./Beta/BETA_doneSlash');
     app.use('/done', done);
     // ---------- REMOVE AFTER BETA TESTING ----------------
 

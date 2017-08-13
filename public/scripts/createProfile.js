@@ -30,6 +30,9 @@ var app = new Vue({
           "name": "Voyage",
         },
         {
+          "name": "Owls",
+        },
+        {
           "name": "Ewoks",
         },
         {
