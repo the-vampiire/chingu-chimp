@@ -66,8 +66,10 @@ profileItem = (userName, item, share) => {
                 response.response_type = share ? 'in_channel' : 'ephemeral';
                 switch(item){
                     case 'badges':
-                        response = attachBadges(badges, response, userName);
-                        response.text = `*${userName}'s Badges*`;
+                        response = attachBadges(profileItem, response, userName);
+                        console.log(response);
+                        response.attachments[0].pretext = `*${userName}'s Badges*`;
+
                         break;
                     case 'projects':
                         if(profileItem) response = projectsItemResponse(profileItem, response, userName);
@@ -215,7 +217,7 @@ profileCard = (userName, share) => {
     attachBadges = (badges, response, userName) => {
         const length = badges.length;
 
-        if(length )
+        if(length)
 
         badges.some( (badge, index) => {
             if(index > 2) return true;
