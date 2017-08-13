@@ -82,7 +82,8 @@ helpResponse = (type) => {
         \t\tNone.
         \tUse the command \`/update picture\` and your current Slack profile picture will be added to your profile card.
         
-        *if you need more help, have suggestions for improvement, or want to report a bug please add an issue on <https://www.github.com/the-vampiire/Chingu-Chimp/issues|GitHub>*\n*Next:* call the second help version using \`/update help2\``;
+        *if you need more help, have suggestions for improvement, or want to report a bug please add an issue on <https://www.github.com/the-vampiire/Chingu-Chimp/issues|GitHub>*\n\n*Next:* call the second help version using \`/update help2\``;
+    // ----------- REMOVE LAST "NEXT" LINE AFTER BETA -----------------
 
     const help2 = {
         text: `*How to use the \`/update\` command:* \n\nUpdating functions similarly to git in stringing together mandatory and/or optional \`[-flag data]\` pairs to build the update command`,
@@ -171,12 +172,14 @@ helpResponse = (type) => {
                 pretext: '*Support*',
                 text: `*if you need more help, have suggestions for improvement, or want to report a bug please add an issue on <https://www.github.com/the-vampiire/Chingu-Chimp/issues|GitHub>*`
             },
+// ----------- REMOVE AFTER BETA -----------------
             {
                 color: '#FF0000',
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Next Step*',
                 text: `type \`/done update help\``
             }
+// ----------- REMOVE AFTER BETA -----------------
 
         ]
     };

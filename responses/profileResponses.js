@@ -29,7 +29,15 @@ profileHelp = () => {
                 color: '#15df89',
                 pretext: '*Examples*',
                 text: `\`/profile @vampiire\` *will display Vampiire's profile card _privately_ to you*\n\n\`/profile @vampiire share\` *will display Vampiire's profile card _publicly_ to the channel*\n\n\`/profile @vampiire projects\` *will display Vampiire's projects _privately_ to you*\n\n\`/profile @vampiire share projects\` *will display Vampiire's projects _publicly_ to the channel*`
+            },
+// ----------- REMOVE AFTER BETA -----------------
+            {
+                color: '#FF0000',
+                mrkdwn_in: ['text', 'pretext'],
+                pretext: '*Next Step*',
+                text: `type \`/done profile help\``
             }
+// ----------- REMOVE AFTER BETA -----------------
         ]
     }
 };
