@@ -2,8 +2,6 @@ node_modules
 .env
 package-lock.json
 .vscode
-scratch.js
 .idea
-looseNotes.txt
-notes\ for\ Autobot.md
-testinginstructions.md
+Notes
+

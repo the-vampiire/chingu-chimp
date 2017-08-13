@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const requests = require('../tools/requests');
 const helper = require('./helpers');
 
+// sub-schemas
     const sessionSchema = new mongoose.Schema({
         kind: String,
         task: String,
@@ -16,20 +17,13 @@ const helper = require('./helpers');
     });
 
     const checkinSchema = new mongoose.Schema({
-
-    // uncomment to separate session streaks by channel
-        // currentStreak: {type: Number, default: 0},
-        // bestStreak: {type: Number, default: 0}
-            // dont forget to update the global profile streaks or comment them out
-
         channelID : String,
-
         sessions: [sessionSchema]
-
     });
 
-    const checkinModel = mongoose.model('checkinModel', checkinSchema);
+const checkinModel = mongoose.model('checkinModel', checkinSchema);
 
+// main user profile schema
     const userSchema = new mongoose.Schema({
 
         userName: {type: String, lowercase: true},
@@ -50,6 +44,9 @@ const helper = require('./helpers');
     // automatically add new cohorts to returning users' profiles
         cohorts: [{
             cohortName: String,
+            // cohortID: String,
+            // considering capturing this for added security / cross-checking
+                // could require a password when a non-recognized cohort is detected
             startDate: {type: Number, default: Date.now()},
         }],
 

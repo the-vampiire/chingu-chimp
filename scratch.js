@@ -1,1 +1,0 @@
-/(https:\/\/www\.freecodecamp\.com\/[A-Za-z\-]+\/[a-z]+\-[a-z]+\-(certification))/.test('https://www.freecodecamp.com/the-vampiire/front-end-certification'));
