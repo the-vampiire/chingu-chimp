@@ -115,11 +115,7 @@ helpResponse = (type) => {
                     {
                         title: 'Flag(s)',
                         value: `None.\nNote: You can preserve the Slack markdown formatting by copying directly from the edit message window in your intro post`,
-                    },
-                    // {
-                    //     title: 'Example - updating your user story',
-                    //     value: `/update story Hello you can call me Vamp I am a...`
-                    // }
+                    }
                 ]
             },
             {
@@ -142,11 +138,6 @@ helpResponse = (type) => {
                         title: 'Flag(s)',
                         value: `None.\nNote: Your current Slack profile picture will be attached to your Chingu Profile Card`,
                     }
-                    // },
-                    // {
-                    //     title: 'Example - updating your profile card picture',
-                    //     value: `Use the command /update picture and your current Slack profile picture will be added to your profile card`
-                    // }
                 ]
             },
             {
@@ -156,30 +147,6 @@ helpResponse = (type) => {
                 text: `*Example - updating your profile card picture*\nUse the command \`/update picture\` and your current Slack profile picture will be added to your profile card`
 
             },
-            // {
-            //     color: '#15df89',
-            //     mrkdwn_in: ['text', 'pretext'],
-            //     pretext: '*Help guides for other profile items*',
-            //     text: 'Each of the commands below will call a help guide for the respective item',
-            //     fields: [
-            //         {
-            //             title: `Updating Blog, Portfolio, or GitHub Profile Links`,
-            //             value: `/update blog or /update portfolio or /update gitHub`,
-            //         },
-            //         {
-            //             title: `Updating Certifications`,
-            //             value: `/update certifications`,
-            //         },
-            //         {
-            //             title: `Updating Projects`,
-            //             value: `/update projects`,
-            //         },
-            //         {
-            //             title: `Updating Skills`,
-            //             value: `/update skills`,
-            //         }
-            //     ]
-            // },
             {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
