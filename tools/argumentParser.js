@@ -144,7 +144,7 @@ argumentSplitter = arguments => {
 
         case flag === 'git' || flag === 'g':
             if(!/(https:\/\/github\.com\/)/.test(data) || ~data.indexOf(' '))
-                return `Invalid data: \`${data}\` associated with flag [\`-${flag}\`] does not begin with \`https://github.com/\``;
+                return `Invalid data: \`${data}\` associated with flag [\`-${flag}\`]. Make sure a valid GitHub repo link has been added of the form  \`https://github.com/\``;
             flag = 'gitHub';
             break;
 
