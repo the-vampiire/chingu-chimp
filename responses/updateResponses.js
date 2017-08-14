@@ -107,29 +107,7 @@ helpResponse = (type) => {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Help Sub-Guides*',
-                text: `*Enter any of the following commands to be returned a detailed help guide specific to that item*\n\n*Updating Blog, GitHub Profile, or Portfolio Links*\n\t\`/update blog\` or \`/update gitHub\` or \`/update portfolio\`\n\n*Updating Certifications*\n\t\`/update certifications\`\n\n*Updating Projects*\n\t\`/update projects\``,
-
-            },
-            {
-                color: '#15df89',
-                mrkdwn_in: ['text', 'pretext'],
-                pretext: '*Updating your User Story*',
-                fields: [
-                    {
-                        title: 'Item',
-                        value: `[story]: your user story (that you entered in the Intro channel)`
-                    },
-                    {
-                        title: 'Note',
-                        value: `You can preserve the Slack markdown formatting by copying directly from the edit message window in your intro post`,
-                    }
-                ]
-            },
-            {
-
-                mrkdwn_in: ['text', 'pretext'],
-                color: '#666',
-                text: `*Example - updating your user story*\nUse the command \`/update story *Hello* you can call me _Vamp_ I am a...\``
+                text: `*Enter any of the following commands to be returned a detailed help guide specific to that item*\n\n*Updating Blog, GitHub Profile, or Portfolio Links*\n\t\`/update blog\` or \`/update gitHub\` or \`/update portfolio\`\n\n*Updating Certifications*\n\t\`/update certifications\`\n\n*Updating Projects*\n\t\`/update projects\`\n\n*Updating your User Story*\n\t\`/update story\``,
 
             },
             {
@@ -181,6 +159,42 @@ helpResponse = (type) => {
             }
 // ----------- REMOVE AFTER BETA -----------------
 
+        ]
+    };
+
+    const story = {
+        response_type: 'ephemeral',
+        text: '*Updating your User Story*',
+        attachments: [
+
+            {
+                mrkdwn_in: ['text', 'pretext'],
+                color: '#15df89',
+                pretext: '*General form: \`/update story paste your user story here\`*'
+
+            },
+            {
+                color: '#15df89',
+                mrkdwn_in: ['text', 'pretext'],
+                pretext: '*Profile Item*',
+                fields: [
+                    {
+                        title: 'Item',
+                        value: `[story]: your user story - that you entered in the Intro channel`
+                    },
+                    {
+                        title: 'Note',
+                        value: `You can preserve the Slack markdown formatting by copying directly from the edit message window in your intro post`,
+                    }
+                ]
+            },
+            {
+
+                mrkdwn_in: ['text', 'pretext'],
+                color: '#666',
+                text: `*Example - updating your user story*\nUse the command \`/update story *Hello* you can call me _Vamp_ I am a...\``
+
+            },
         ]
     };
 
@@ -414,8 +428,8 @@ helpResponse = (type) => {
         case 'help2':
             response = help2;
             break;
-        case 'help3':
-            response = help3;
+        case 'story':
+            response = story;
             break;
         case 'gitHub':
         case 'blog':
