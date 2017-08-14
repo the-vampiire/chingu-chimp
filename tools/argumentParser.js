@@ -143,7 +143,7 @@ argumentSplitter = arguments => {
     switch(true){
 
         case flag === 'git' || flag === 'g':
-            if(!/(https:\/\/github\.com\/)/.test(data))
+            if(!/(https:\/\/github\.com\/)/.test(data) || ~data.indexOf(' '))
                 return `Invalid data: \`${data}\` associated with flag [\`-${flag}\`] does not begin with \`https://github.com/\``;
             flag = 'gitHub';
             break;
