@@ -113,7 +113,7 @@ helpResponse = (type) => {
             {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
-                pretext: '*Updating User Story [no flags]*',
+                pretext: '*Updating your User Story*',
                 fields: [
                     {
                         title: 'Item',
@@ -135,7 +135,7 @@ helpResponse = (type) => {
             {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
-                pretext: '*Updating Profile Picture [no flags or data]*',
+                pretext: '*Updating your Profile Picture*',
                 fields: [
                     {
                         title: 'Item',
@@ -152,7 +152,7 @@ helpResponse = (type) => {
             {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
-                pretext: '*Updating Skills [no flags or data]*',
+                pretext: '*Updating Skills*',
                 fields: [
                     {
                         title: 'Item',
@@ -349,7 +349,7 @@ helpResponse = (type) => {
             {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
-                pretext: '*General form: \`/update certifications -url certificateURL [-date mm/dd/yy ]\`*'
+                pretext: '*General form: \`/update certifications -url certificateURL [ -date mm/dd/yy ]\`*'
 
             },
             {
@@ -359,21 +359,7 @@ helpResponse = (type) => {
                 fields: [
                     {
                         title: 'certifications',
-                        value: 'the'
-                    },
-                    {
-                        title: 'gitHub',
-                        value: 'your gitHub profile url',
-                        short: true
-                    },
-                    {
-                        title: 'Note',
-                        value: 'must begin with "https://www.github.com/"',
-                        short: true
-                    },
-                    {
-                        title: 'portfolio',
-                        value: 'your portfolio page url'
+                        value: 'A collection of your Free Code Camp certifications'
                     }
                 ]
             },
@@ -381,42 +367,44 @@ helpResponse = (type) => {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
                 pretext: '*Flag(s)*',
-                text: `[\`-url\`\`full url\`] _example:_ \`-url https://www.github.com/yourUserName\``
+                fields: [
+                    {
+                        title: 'Flag',
+                        value: '-url or -u',
+                        short: true
+                    },
+                    {
+                        title: 'Data',
+                        value: 'the full url of your certificate',
+                        short: true
+                    },
+                    {
+                        title: 'Flag [optional]',
+                        value: '-date or -d',
+                        short: true
+                    },
+                    {
+                        title: 'Data',
+                        value: 'date of certification. if no date is passed - today\'s date is inserted',
+                        short: true
+                    }
+                ]
             },
             {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
-                pretext: '_Example update of blog url:_',
-                text: `\`/update blog -url https://medium.com/@yourUserName\`\n \`/update gitHub -u https://github.com/yourUserName\``
+                pretext: '_Example adding a new certificate:_',
+                text: `\`/update certifications -url https://www.freecodecamp.org/fccUserName/front-end-certification -date 08/08/17\``
             },
             {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
-                pretext: '_Example *shorthand* update of blog url:_',
-                text: `\`/update blog -u https://medium.com/@yourUserName\``
+                pretext: '_Example *shorthand* adding a new certificate:_',
+                text: `\`/update certifications -u https://www.freecodecamp.org/fccUserName/front-end-certification -d 08/08/17\``
             }
         ]
 
     };
-
-
-
-
-
-        `*General form: \`/update [profile item] [-flag data]\`*\n
-        *Adding Free Code Camp Certifications*
-        \t*Item(s)*
-        \t\t[\`certifications\`]: your Free Code Camp certifications
-        \t*Flag(s)*
-        \t\t[\`-url\`\`certificate url\`] _example:_ \`-url https://www.freecodecamp.org/fccUserName/front-end-certification\`
-        \t\t[\`-date\`\`date of completion\`] _example:_ \`-date 01/01/17\`
-        \t\t\t *Optional*: If no date is passed - today's date is inserted.
-        \t\t\t *Note:* Date must be mm/dd/yy format.
-        
-        \t_example adding a new certificate:_
-        \t\t\`/update certifications -url https://www.freecodecamp.org/fccUserName/front-end-certification -date 08/08/17\`
-        \t_example *shorthand* adding a new certificate:_
-        \t\t\`/update certifications -u https://www.freecodecamp.org/fccUserName/front-end-certification -d 08/08/17\``;
 
     let response;
     switch(type){
