@@ -134,8 +134,13 @@
                         v-model="userCohort.cohortName"
                         required
                       >
-                        <option v-for="cohort of cohorts" :key="cohort.name" :value="cohort.name">
-                          {{cohort.name}}
+                        <option 
+                          v-for="cohort of cohorts" 
+                          :key="cohort"
+                          :value="cohort"
+                          :disabled="disableEntry(cohort, filteredCohorts)"
+                        >
+                          {{cohort}}
                         </option>
                       </select>
                     </div>
@@ -163,7 +168,12 @@
                       v-model="language.name"
                       required
                     >
-                      <option v-for="language of languages" :key="language" :value="language">
+                      <option 
+                        v-for="language of languages" 
+                        :key="language" 
+                        :value="language" 
+                        :disabled="disableEntry(language, filteredLanguages)"
+                      >
                         {{language}}
                       </option>
                     </select>
@@ -203,7 +213,12 @@
                       v-model="framework.name"
                       required
                     >
-                      <option v-for="framework of frameworks" :key="framework" :value="framework">
+                      <option 
+                        v-for="framework of frameworks" 
+                        :key="framework" 
+                        :value="framework"
+                        :disabled="disableEntry(framework, filteredFrameworks)"
+                      >
                         {{framework}}
                       </option>
                     </select>

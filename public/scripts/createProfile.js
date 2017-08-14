@@ -25,71 +25,26 @@ var app = new Vue({
     },
 
     // dropdown data
-    cohorts: [
-        {
-          "name": "Ewoks",
-        },
-        {
-          "name": "Tapirs",
-        },
-        {
-          "name": "Sloths",
-        },
-        {
-          "name": "Kiwis",
-        },
-        {
-          "name": "Platypus",
-        },
-        {
-          "name": "Bearded-Dragons",
-        },
-        {
-          "name": "Armadillos",
-        },
-        {
-          "name": "Red-Pandas",
-        },
-        {
-          "name": "Honey-Badgers",
-        },
-        {
-          "name": "Elephants",
-        },
-        {
-          "name": "Dolphins",
-        },
-        {
-          "name": "Pumas",
-        },
-        {
-          "name": "Llamas",
-        }
-      ],
-      languages: ['JavaScript', 'Java', 'Python', 'Ruby', 'C++', 'C#.Net', 'Assembly', 'Bash', 'Basic', 'C', 'C#', 'Fortran', 'Go', 'MATLAB', 'Objective-C', 'Perl', 'PHP', 'Powershell', 'VBA'],
-      frameworks:  ['jQuery', 'Bootstrap', 'Angular2/4', 'AngularJS', 'Electron', 'jQueryUI', 'React', 'React Native', 'Vue'],
-      levels: [
-        "Beginner",
-        "Intermediate",
-        "Expert",
-        "Wizard"
-      ]
+    cohorts: ["Ewoks", "Tapirs","Sloths", "Kiwis", "Platypus", "Bearded-Dragons", "Armadillos", "Red-Pandas", "Honey-Badgers", "Elephants", "Dolphins", "Pumas", "Llamas"],
+    languages: ['JavaScript', 'Java', 'Python', 'Ruby', 'C++', 'C#.Net', 'Assembly', 'Bash', 'Basic', 'C', 'C#', 'Fortran', 'Go', 'MATLAB', 'Objective-C', 'Perl', 'PHP', 'Powershell', 'VBA'],
+    frameworks:  ['jQuery', 'Bootstrap', 'Angular2/4', 'AngularJS', 'Electron', 'jQueryUI', 'React', 'React Native', 'Vue'],
+    levels: ["Beginner", "Intermediate", "Expert", "Wizard"]
   },
   methods: {
     // populate new form field methods
     addNewCohort() {
-      const defaultCohort = this.cohorts[0].name;
+      const defaultCohort = this.filteredCohorts[0]
 
-      this.userData.cohorts.push({cohortName: defaultCohort});
+      this.userData.cohorts.push({cohortName: defaultCohort})
     },
     addNewLanguage() {
-      const defaultLanguage = this.languages[0]
+      const defaultLanguage = this.filteredLanguages[0]
       const defaultSkillLevel = 'Intermediate'
 
       this.userData.skills.languages.push({name: defaultLanguage, level: defaultSkillLevel})
     },
     addNewFramework() {
-      const defaultFramework = this.frameworks[0]
+      const defaultFramework = this.filteredFrameworks[0]
       const defaultSkillLevel = 'Intermediate'
 
       this.userData.skills.frameworks.push({name: defaultFramework, level: defaultSkillLevel})
@@ -111,10 +66,10 @@ var app = new Vue({
       switch(certification) {
         case 'front end':
           certificationName = 'Front End Certification'
-          break;
+          break
         case 'data visualization':
           certificationName = 'Data Visualization Certification'
-          break;
+          break
         case 'back end':
           certificationName = 'Back End Certification'
       }
@@ -124,6 +79,11 @@ var app = new Vue({
         url: '',
         date: certCompletionDateDefault
       })
+    },
+
+    // prevents duplicate entries for language/cohort/framework
+    disableEntry(item, itemArray) {
+      return Boolean(!~itemArray.indexOf(item))
     },
 
     // form field validation methods
@@ -178,6 +138,38 @@ var app = new Vue({
     },
     backEndCertAdded() {
       return Boolean(~this.userData.certifications.findIndex( certification => certification.name === 'Back End Certification'))
+    },
+
+    // generates arrays that contain values that the user has not already chosen as a value in their data
+    filteredCohorts() {
+      let self = this
+console.log(this.cohorts);
+      return this.cohorts.filter(cohort => {
+        for(const userCohortObj of self.userData.cohorts) {
+          if(cohort === userCohortObj.cohortName) return false
+        }
+        return true
+      })
+    },
+    filteredLanguages() {
+      let self = this
+
+      return this.languages.filter(language => {
+        for(const userLanguageObj of self.userData.skills.languages) {
+          if(language === userLanguageObj.name) return false
+        }
+        return true
+      })
+    },
+    filteredFrameworks() {
+      let self = this
+
+      return this.frameworks.filter(framework => {
+        for(const userFrameworkObj of self.userData.skills.frameworks) {
+          if(framework === userFrameworkObj.name) return false
+        }
+        return true
+      })
     },
 
     inputIsValid() {
