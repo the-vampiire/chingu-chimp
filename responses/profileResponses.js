@@ -59,15 +59,15 @@ profileItem = (userName, item, share) => {
                             response = attachBadges(profileItem, response, userName);
                             response.attachments[0].pretext = `*${userName}'s Badges*`;
                         }
-                        else response.text = `${userName} does not currently have any badges :cry:`;
+                        else response.text = `${userName} has not earned any badges yet :cry:`;
                         break;
                     case 'projects':
                         if(profileItem.length) response = projectsItemResponse(profileItem, response, userName);
-                        else response.text = `${userName} does not currently have any projects :cry:`;
+                        else response.text = `${userName} has not added any completed projects :cry:`;
                         break;
                     case 'certifications':
                         if(profileItem.length) response = certificationsItemResponse(profileItem, response, userName);
-                        else response.text = `${userName} does not currently have any Free Code Camp certifications :cry:`;
+                        else response.text = `${userName} has not added any Free Code Camp certifications :cry:`;
                         break;
                     case 'skills':
                         if(profileItem.languages.length || profileItem.frameworks.length)
