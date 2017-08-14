@@ -335,7 +335,7 @@ helpResponse = (type) => {
                         short: true
                     },
                     {
-                        value: 'if no date is passed today\'s is inserted automatically',
+                        value: 'if no date is passed today\'s date is inserted',
                     }
                 ]
             },
@@ -343,13 +343,13 @@ helpResponse = (type) => {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#666',
                 pretext: 'Example adding a project:',
-                text: `\`/update projects -name New Project Name -git https://www.github.com/userName/newproject -url https://www.domain.com/newProject -d 08/08/17\``
+                text: `\`/update projects -name New Project Name -git https://github.com/userName/newproject -url https://www.domain.com/newProject -d 08/08/17\``
             },
             {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#666',
                 pretext: 'Example *shorthand* adding a project [optional terms neglected]:',
-                text: `\`/update projects -n New Project -g https://www.github.com/userName/newproject\``
+                text: `\`/update projects -n New Project -g https://github.com/userName/newproject\``
             },
         ]
 
