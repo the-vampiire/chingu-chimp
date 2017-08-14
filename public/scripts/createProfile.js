@@ -25,71 +25,26 @@ var app = new Vue({
     },
 
     // dropdown data
-    cohorts: [
-        {
-          "name": "Ewoks",
-        },
-        {
-          "name": "Tapirs",
-        },
-        {
-          "name": "Sloths",
-        },
-        {
-          "name": "Kiwis",
-        },
-        {
-          "name": "Platypus",
-        },
-        {
-          "name": "Bearded-Dragons",
-        },
-        {
-          "name": "Armadillos",
-        },
-        {
-          "name": "Red-Pandas",
-        },
-        {
-          "name": "Honey-Badgers",
-        },
-        {
-          "name": "Elephants",
-        },
-        {
-          "name": "Dolphins",
-        },
-        {
-          "name": "Pumas",
-        },
-        {
-          "name": "Llamas",
-        }
-      ],
-      languages: ['JavaScript', 'Java', 'Python', 'Ruby', 'C++', 'C#.Net', 'Assembly', 'Bash', 'Basic', 'C', 'C#', 'Fortran', 'Go', 'MATLAB', 'Objective-C', 'Perl', 'PHP', 'Powershell', 'VBA'],
-      frameworks:  ['jQuery', 'Bootstrap', 'Angular2/4', 'AngularJS', 'Electron', 'jQueryUI', 'React', 'React Native', 'Vue'],
-      levels: [
-        "Beginner",
-        "Intermediate",
-        "Expert",
-        "Wizard"
-      ]
+    cohorts: ["Voyage", "Owls", "Ewoks", "Walruses", "Tapirs","Sloths", "Kiwis", "Platypus", "Bearded-Dragons", "Armadillos", "Red-Pandas", "Honey-Badgers", "Elephants", "Dolphins", "Pumas", "Llamas"],
+    languages: ['JavaScript', 'Java', 'Python', 'Ruby', 'C++', 'C#.Net', 'Assembly', 'Bash', 'Basic', 'C', 'C#', 'Fortran', 'Go', 'MATLAB', 'Objective-C', 'Perl', 'PHP', 'Powershell', 'VBA'],
+    frameworks:  ['jQuery', 'Bootstrap', 'Angular2/4', 'AngularJS', 'Electron', 'jQueryUI', 'React', 'React Native', 'Vue'],
+    levels: ["Beginner", "Intermediate", "Expert", "Wizard"]
   },
   methods: {
     // populate new form field methods
     addNewCohort() {
-      const defaultCohort = this.cohorts[0].name;
+      const defaultCohort = this.filteredCohorts[0]
 
-      this.userData.cohorts.push({cohortName: defaultCohort});
+      this.userData.cohorts.push({cohortName: defaultCohort})
     },
     addNewLanguage() {
-      const defaultLanguage = this.languages[0]
+      const defaultLanguage = this.filteredLanguages[0]
       const defaultSkillLevel = 'Intermediate'
 
       this.userData.skills.languages.push({name: defaultLanguage, level: defaultSkillLevel})
     },
     addNewFramework() {
-      const defaultFramework = this.frameworks[0]
+      const defaultFramework = this.filteredFrameworks[0]
       const defaultSkillLevel = 'Intermediate'
 
       this.userData.skills.frameworks.push({name: defaultFramework, level: defaultSkillLevel})
@@ -111,10 +66,10 @@ var app = new Vue({
       switch(certification) {
         case 'front end':
           certificationName = 'Front End Certification'
-          break;
+          break
         case 'data visualization':
           certificationName = 'Data Visualization Certification'
-          break;
+          break
         case 'back end':
           certificationName = 'Back End Certification'
       }
@@ -126,35 +81,57 @@ var app = new Vue({
       })
     },
 
-    // form field validation methods
-    validateGitHubUrl(url) {
-      return url.startsWith('https://www.github.com/') || url.length === 0
-    },
-    validateFreeCodeCampUrl(url) {
-      return url.startsWith('https://www.freecodecamp.com/') || url.length === 0
+    // prevents duplicate entries for language/cohort/framework
+    disableEntry(item, itemArray) {
+      return Boolean(!~itemArray.indexOf(item))
     },
 
+    // remove unneeded form fields
+    removeCohort(index) {
+      this.userData.cohorts.splice(index, 1)
+    },
+    removeLanguage(index) {
+      this.userData.skills.languages.splice(index, 1)
+    },
+    removeFramework(index) {
+      this.userData.skills.frameworks.splice(index, 1)
+    }, 
+    removeProject(index) {
+      this.userData.projects.splice(index, 1)
+    },
+    removeCertification(index) {
+      this.userData.certifications.splice(index, 1)
+    },
+
+
+    // form field validation methods
+    validateGitHubUrl(url) {
+      return /^https:\/\/github\.com\//.test(url) || url.length === 0 // last check prevents error being displayed on page load
+    },
+    validateFreeCodeCampUrl(url) {
+      return /^https:\/\/www\.freecodecamp\.com\/[A-Za-z-]+\/[a-z]+\-[a-z]+\-(certification)/.test(url) || url.length === 0
+    },
+    
     // username validation properties
     usernameCheckHandler() {
       this.checkUserNameAvailability()
       this.followsSlackFormatting()
     },
     checkUserNameAvailability() {
-      axios.post('/validate-userName', {userName: this.userData.userName})
-        .then( response => this.userNameInUse = !response.data.userNameAvailable)
-        .catch( err => console.log(err))
+          axios.post('/validate-userName', {userName: this.userData.userName})
+              .then( response => this.userNameInUse = !response.data)
+              .catch( err => console.log(err))
     },
     followsSlackFormatting() {
       const validUsernameChars = /^[a-z0-9.\-_]*$/
 
       this.invalidUsername = !(this.userData.userName.length <= 21 && validUsernameChars.test(this.userData.userName)) // 21 is slacks max length for a username
     },
-    
-    // form submission
+
     submitForm(event) {
       event.preventDefault()
 
-      if(this.userNameInUse) return
+      if(!this.inputIsValid) return
 
       // convert all dates to unix timestamp
       this.userData.joinDate = new Date(this.userData.joinDate).getTime()
@@ -170,7 +147,7 @@ var app = new Vue({
     }
   },
   computed: {
-    // prevet fcc cert duplication
+    // prevent fcc cert duplication
     frontEndCertAdded() {
       return Boolean(~this.userData.certifications.findIndex( certification => certification.name === 'Front End Certification'))
     },
@@ -179,7 +156,61 @@ var app = new Vue({
     },
     backEndCertAdded() {
       return Boolean(~this.userData.certifications.findIndex( certification => certification.name === 'Back End Certification'))
-    }
+    },
+
+    // generates arrays that contain values that the user has not already chosen as a value in their data
+    filteredCohorts() {
+      let self = this
+
+      return this.cohorts.filter(cohort => {
+        for(const userCohortObj of self.userData.cohorts) {
+          if(cohort === userCohortObj.cohortName) return false
+        }
+        return true
+      })
+    },
+    filteredLanguages() {
+      let self = this
+
+      return this.languages.filter(language => {
+        for(const userLanguageObj of self.userData.skills.languages) {
+          if(language === userLanguageObj.name) return false
+        }
+        return true
+      })
+    },
+    filteredFrameworks() {
+      let self = this
+
+      return this.frameworks.filter(framework => {
+        for(const userFrameworkObj of self.userData.skills.frameworks) {
+          if(framework === userFrameworkObj.name) return false
+        }
+        return true
+      })
+    },
+
+    inputIsValid() {
+      // username check
+      if(this.userNameInUse || this.invalidUsername) return false
+
+      // story check
+        if(this.userData.story.length === 0) return false
+      
+      // github url checks
+      if(!this.validateGitHubUrl(this.userData.gitHub) || this.userData.gitHub.length === 0) return false
+      
+      for(const project of this.userData.projects) {
+        if(!this.validateGitHubUrl(project.gitHub) || project.gitHub.length === 0) return false
+      }
+
+      // fcc url checks
+      for(const certification of this.userData.certifications) {
+        if(!this.validateFreeCodeCampUrl(certification.url) || certification.url.length === 0) return false
+      }
+
+      return true
+    },
   },
   created() {
     const today = new Date()

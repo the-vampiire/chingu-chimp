@@ -19,7 +19,7 @@
 
 argumentParser = arguments => {
 
-    const acceptedUpdateItems = ['gitHub', 'blog', 'portfolio', 'story', 'projects', 'certifications'];
+    const acceptedUpdateItems = ['gitHub', 'blog', 'picture', 'portfolio', 'story', 'projects', 'certifications'];
     let error;
 
     let output = argumentSplitter(arguments);
@@ -29,7 +29,13 @@ argumentParser = arguments => {
     let item = output.item;
 
 // initial check to ensure the update item is valid
-    if(!~acceptedUpdateItems.indexOf(item)) return `invalid update item [\`${item}\`]\n Use \`/update help\` for a list of available update items.`;
+    if(!~acceptedUpdateItems.indexOf(item)) {
+
+// -------------- CHANGE AFTER BETA
+        return `Invalid update item [\`${item}\`]\n Use \`/update help1\` or \`/update help2\` for a list of available update items.`;
+// -------------- CHANGE AFTER BETA
+
+    }
 
 // handle the special case of the story item which only has the storyString as its data
     let storyString = output.storyString ? output.storyString : null;
@@ -61,7 +67,7 @@ argumentParser = arguments => {
         });
 
     // rule for extracting certification name from the FCC certificate url
-        if(item === 'certifications'){
+        if(item === 'certifications' && !error){
             flagDataPairs.name = flagDataPairs.url.slice(flagDataPairs.url.lastIndexOf('/')+1)
                 .split('-')
                 .map(e => e = `${e.slice(0,1).toUpperCase()}${e.slice(1)}`)
@@ -76,10 +82,17 @@ argumentParser = arguments => {
 };
 
 argumentSplitter = arguments => {
-    const multipleItems = arguments.slice(0, arguments.indexOf('-')+1);
 
-    if(!/^[A-Za-z]+( )-$/.test(multipleItems))
-        return `*Invalid item [\`${multipleItems.replace(/ -/, '')}\`]. You can only pass one update item at a time*`;
+    if(!/^(story .+)/.test(arguments)){
+
+// CHANGE AFTER BETA TESTING
+        if(!~arguments.indexOf('-')) return 'No flags detected. Try `/update help1` or `/update help2` for help using the /update command';
+// CHANGE AFTER BETA TESTING
+
+        const multipleItems = arguments.slice(0, arguments.indexOf('-')+1);
+        if(!/^[A-Za-z]+( )-$/.test(multipleItems))
+            return `Invalid item [\`${multipleItems.replace(/ -/, '')}\`]. You can only pass one update item at a time`;
+    }
 
     const item = arguments.slice(0, arguments.indexOf(' '));
     const flagsAndData = arguments.slice(arguments.indexOf('-'));
@@ -91,15 +104,13 @@ argumentSplitter = arguments => {
     }
 
     if(item === 'projects' && !(flagsAndData.includes('-g') || flagsAndData.includes('-git')))
-        return `*No GitHub repo link detected for this project. All projects require at minimum a name and GitHub repo link.*\n*Try again or type \`/update projects\` for help*`;
+        return `No GitHub repo link detected for this project. All projects require at minimum a name and GitHub repo link.\nTry again or type \`/update projects\` for help`;
 
     const pairsArray = flagsAndData.split(/ (?=-)/).map( e => e.replace(/-/, ''));
 
     return {item: item, pairsArray: pairsArray};
 };
 
-// * only one of each flag
-// * gitHub URL is required for projects
 
  errorScanAndModify = (item, flag, data) => {
 
@@ -119,31 +130,43 @@ argumentSplitter = arguments => {
     }
 
     if(!~expectedFlags.indexOf(flag)){
-        return `invalid update flag [\`-${flag}\`] for update item [\`${item}\`].\n Try \`/update ${item}\` for a list of required and optional flags`
+        return `Invalid update flag [\`-${flag}\`] for update item [\`${item}\`].\n Try \`/update ${item}\` for a list of required and optional flags`
     }
 
-    // modification step (as needed)
+// modification step (as needed)
     switch(true){
+
         case flag === 'git' || flag === 'g':
-            if(!data.includes('https://www.github.com/'))
-                return `invalid data: \`${data}\` associated with flag [\`-${flag}\`] does not begin with \`https://www.github.com/\``;
+            if(!/(https:\/\/github\.com\/)/.test(data))
+                return `Invalid data: \`${data}\` associated with flag [\`-${flag}\`] does not begin with \`https://github.com/\``;
             flag = 'gitHub';
             break;
+
         case flag === 'url' || flag === 'u':
         // check if the gitHub url is valid
             if(item === 'gitHub'){
-                if(!data.includes('https://www.github.com/')) return `invalid gitHub profile url, ensure the url entered is of the form [\`https://www.github.com/yourUserName\`]`
+                if(!/^(https:\/\/github\.com\/)/.test(data))
+                    return `Invalid gitHub profile url, ensure the url entered is of the form \`https://github.com/yourUserName\``
             }
-            if(!/(http:\/\/|https:\/\/)(www\.)?/.test(data))
-                return `invalid data: \`${data}\` associated with flag [\`-${flag}\`]. ensure the full [\`http://www.\`] or [\`https://www.\`] url is being passed`;
+
+        // check if certificate link is valid
+            if(item === 'certifications')
+                if(!/(https:\/\/www\.freecodecamp\.com\/[A-Za-z-]+\/((front)|(back)|(data))\-((end)|(visualization))\-(certification))/.test(data))
+                    return `Invalid certificate url, must be of the form \`https://www.freecodecamp.com/userName/x-x-certification\``;
+
+        // check if general url is valid
+            if(!/(http:\/\/|https:\/\/)(www\.)?/.test(data)) return `Invalid data: \`${data}\` associated with flag [\`-${flag}\`]. ensure the full [\`http://www.\`] or [\`http\`url is being passed`;
+
             flag = 'url';
             break;
+
         case flag === 'date' || flag === 'd':
             if(!/[0-9]{2}\/[0-9]{2}\/[0-9]{2}/.test(data))
-                return `*invalid date format [${data}]. must be in \`mm/dd/yy\` format*`;
-            data = Date.parse(new Date(data));
-            if(item === 'projects')flag = 'completedDate';
+                return `Invalid date [\`${data}\`]. must be in \`mm/dd/yy\` format`;
 
+            data = Date.parse(new Date(data));
+
+            if(item === 'projects')flag = 'completedDate';
             break;
         case flag === 'n':
             flag = 'name';

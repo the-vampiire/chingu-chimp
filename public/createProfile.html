@@ -34,12 +34,12 @@
                
                 <!-- userName & join date -->
                 <div class="form-group row" >
-                    <div class="col-lg-3" :class="{'has-error': (userNameInUse || invalidUsername)}">
+                    <div class="col-lg-4" :class="{'has-error': (userNameInUse || invalidUsername)}">
                       <label for="userName">userName <span class="text-danger">*</span></label>
                       <input 
                         type="text" 
                         class="form-control" 
-                        placeholder="the-happy-meerkat"
+                        placeholder="This name MUST match your Slack username"
                         v-model="userData.userName"
                         @keyup="usernameCheckHandler"
                         autofocus
@@ -47,7 +47,7 @@
                       >
                       <span class="help-block" v-if="userNameInUse">Username is already taken</span>
                       <span class="help-block" v-else-if="invalidUsername">
-                        Username can contain lowercase letters, numbers, periods, dashes and up to 21 characters long
+                        Username can contain lowercase letters, numbers, periods, dashes and can be up to 21 characters long
                       </span>
                   </div>
                   <div class="col-lg-3">
@@ -74,20 +74,20 @@
                   <div class="col-lg-4" :class="[validateGitHubUrl(userData.gitHub) ? '' : 'has-error']">
                     <label for="gitHub">Link to Your GitHub <span class="text-danger">*</span></label>
                     <input 
-                      type="url" 
+                      type="text" 
                       class="form-control" 
-                      placeholder="https://www.github.com/example"
+                      placeholder="https://github.com/example"
                       v-model.lazy="userData.gitHub"
                       required
                     >
-                    <span class="help-block" v-if="!validateGitHubUrl(userData.gitHub)">Make sure link starts with https://www.github.com/</span>
+                    <span class="help-block" v-if="!validateGitHubUrl(userData.gitHub)">Make sure link starts with https://github.com/</span>
                   </div>
 
                   <!-- portfolio link -->
                   <div class="col-lg-4">
                     <label for="portfolio">Link to Your Portfolio</label>
                     <input 
-                      type="url" 
+                      type="text" 
                       class="form-control" 
                       placeholder="www.my-portfolio.com"
                       v-model="userData.portfolio"
@@ -98,7 +98,7 @@
                   <div class="col-lg-4">
                     <label for="blog">Link to Your Coding Blog</label>
                     <input 
-                      type="url" 
+                      type="text" 
                       class="form-control" 
                       placeholder="http://www.example-blog.com"
                       v-model="userData.blog"
@@ -108,7 +108,7 @@
 
                 <!-- cohort intro -->
                 <div class="form-group">
-                  <label for="userStory">Enter Your Chingu Cohort Intro (It's best to copy & past this from Slack edit message) <span class="text-danger">*</span></label>
+                  <label for="userStory">Enter Your Chingu Cohort Intro (It's best to copy & past this from Slack by selecting edit message) <span class="text-danger">*</span></label>
                   <div class="row">
                     <div class="col-lg-6">
                       <textarea 
@@ -127,17 +127,29 @@
                 <div class="form-group" v-for="(userCohort, index) of userData.cohorts" :key="index">
                   <label for="cohorts">Cohort <span class="text-danger">*</span></label>
                   <div class="row">
-                    <div class="col-lg-2">
-                      <select 
-                        name="cohortList" 
-                        class="form-control"
-                        v-model="userCohort.cohortName"
-                        required
-                      >
-                        <option v-for="cohort of cohorts" :key="cohort.name" :value="cohort.name">
-                          {{cohort.name}}
-                        </option>
-                      </select>
+                    <div class="col-lg-3">
+                      <div class="input-group">
+                        <div class="input-group-btn">
+                          <button type="button" class="btn btn-default" @click=removeCohort(index) title="remove row">
+                            <span class="glyphicon glyphicon-remove text-danger"></span>
+                          </button>
+                        </div>
+                        <select 
+                          name="cohortList" 
+                          class="form-control"
+                          v-model="userCohort.cohortName"
+                          required
+                        >
+                          <option 
+                            v-for="cohort of cohorts" 
+                            :key="cohort"
+                            :value="cohort"
+                            :disabled="disableEntry(cohort, filteredCohorts)"
+                          >
+                            {{cohort}}
+                          </option>
+                        </select>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -147,7 +159,7 @@
                     class="btn btn-chingu-blue"
                     @click="addNewCohort"
                   >
-                    Add Another Cohort
+                    Add a Cohort
                   </button>
                 </div>
 
@@ -155,18 +167,30 @@
 
                 <!-- populate coding languages -->
                 <div class="form-group row" v-for="(language, index) of userData.skills.languages" :key="index">
-                  <div class="col-lg-2">
+                  <div class="col-lg-3">
                     <label for="language">Language <span class="text-danger">*</span></label>
-                    <select 
-                      name="languageList" 
-                      class="form-control"
-                      v-model="language.name"
-                      required
-                    >
-                      <option v-for="language of languages" :key="language" :value="language">
-                        {{language}}
-                      </option>
-                    </select>
+                    <div class="input-group">
+                      <div class="input-group-btn">
+                        <button type="button" class="btn btn-default" @click=removeLanguage(index) title="remove row">
+                          <span class="glyphicon glyphicon-remove text-danger"></span>
+                        </button>
+                      </div>
+                      <select 
+                        name="languageList" 
+                        class="form-control"
+                        v-model="language.name"
+                        required
+                      >
+                        <option 
+                          v-for="language of languages" 
+                          :key="language" 
+                          :value="language" 
+                          :disabled="disableEntry(language, filteredLanguages)"
+                        >
+                          {{language}}
+                        </option>
+                      </select>
+                    </div>
                   </div>
                   
                   <div class="col-lg-2" >
@@ -182,6 +206,7 @@
                       </option>
                     </select>
                   </div>
+
                 </div>
                 <div class="form-group">
                   <button 
@@ -189,27 +214,39 @@
                     class="btn btn-chingu-blue"
                     @click="addNewLanguage"
                   >
-                    Add Another Language
+                    Add a Language
                   </button>
                 </div>
 
                 <!-- populate frameworks -->
                 <div class="form-group row" v-for="(framework, index) of userData.skills.frameworks" :key="index">
-                  <div class="col-lg-2">
+                  <div class="col-lg-3">
                     <label for="framework">Framework <span class="text-danger">*</span></label>
-                    <select 
-                      name="frameworkList" 
-                      class="form-control"
-                      v-model="framework.name"
-                      required
-                    >
-                      <option v-for="framework of frameworks" :key="framework" :value="framework">
-                        {{framework}}
-                      </option>
-                    </select>
+                    <div class="input-group">
+                      <div class="input-group-btn">
+                        <button type="button" class="btn btn-default" @click=removeFramework(index) title="remove row">
+                          <span class="glyphicon glyphicon-remove text-danger"></span>
+                        </button>
+                      </div>
+                      <select 
+                        name="frameworkList" 
+                        class="form-control"
+                        v-model="framework.name"
+                        required
+                      >
+                        <option 
+                          v-for="framework of frameworks" 
+                          :key="framework" 
+                          :value="framework"
+                          :disabled="disableEntry(framework, filteredFrameworks)"
+                        >
+                          {{framework}}
+                        </option>
+                      </select>
+                    </div>
                   </div>
                   
-                  <div class="col-lg-2" >
+                  <div class="col-lg-3" >
                     <label for="cohorts">Skill Level <span class="text-danger">*</span></label>
                     <select 
                       name="skillSelect"
@@ -229,34 +266,39 @@
                     class="btn btn-chingu-blue"
                     @click="addNewFramework"
                   >
-                    Add Another Framework
+                    Add a Framework
                   </button>
                 </div>
 
                 <!-- populate projects -->
                 <div class="form-group row" v-for="(project, index) of userData.projects" :key="index">
-                  <div class="col-lg-2">
+                  <div class="col-lg-3">
                     <label for="project">Project <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                      <div class="input-group-btn">
+                        <button type="button" class="btn btn-default" @click=removeProject(index) title="remove row">
+                          <span class="glyphicon glyphicon-remove text-danger"></span>
+                        </button>
+                      </div>
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        placeholder="the best portfolio"
+                        v-model="project.name"
+                      >
+                    </div>
+                  </div>
+                  
+                  <div class="col-lg-3" :class="[validateGitHubUrl(project.gitHub) ? '' : 'has-error']">
+                    <label for="project">GitHub Link <span class="text-danger">*</span></label>
                     <input 
                       type="text" 
                       class="form-control" 
-                      placeholder="the best portfolio"
-                      v-model="project.name"
-                    >
-                  </div>
-                  
-                  
-
-                  <div class="col-lg-4" :class="[validateGitHubUrl(project.gitHub) ? '' : 'has-error']">
-                    <label for="project">GitHub Link <span class="text-danger">*</span></label>
-                    <input 
-                      type="url" 
-                      class="form-control" 
-                      placeholder="https://www.github.com/project-link"
+                      placeholder="https://github.com/project-link"
                       v-model.lazy="project.gitHub"
                       required
                     >
-                    <span class="help-block" v-if="!validateGitHubUrl(project.gitHub)">Make sure link starts with https://www.github.com/</span>
+                    <span class="help-block" v-if="!validateGitHubUrl(project.gitHub)">Make sure link starts with https://github.com/</span>
                   </div>
 
                   <div class="col-lg-3">
@@ -277,7 +319,7 @@
                   <div class="col-lg-3">
                     <label for="project">Front End Url</label>
                     <input 
-                      type="url" 
+                      type="text" 
                       class="form-control" 
                       placeholder="http://www.myportfolio.com"
                       v-model="project.url"
@@ -290,7 +332,7 @@
                     class="btn btn-chingu-blue"
                     @click="addNewProject"
                   >
-                    Add Another Project
+                    Add a Project
                   </button>
                 </div>
 
@@ -327,36 +369,43 @@
                   <h4><strong>{{certification.name}}</strong></h4>
 
                   <div class="form-group row">
-                    <div class="col-lg-5" :class="[validateFreeCodeCampUrl(certification.url) ? '' : 'has-error']">
+                    <div class="col-lg-6" :class="[validateFreeCodeCampUrl(certification.url) ? '' : 'has-error']">
                       <label for="certification">Certification Url <span class="text-danger">*</span></label>
-                      <input 
-                        type="url" 
-                        class="form-control" 
-                        placeholder="https://www.freecodecamp.com/joe/front-end-certification"
-                        v-model.lazy="certification.url"
-                        required
-                      >
-                      <span class="help-block" v-if="!validateFreeCodeCampUrl(certification.url)">Make sure link starts with https://www.freecodecamp.com/</span>                        
+                      <div class="input-group">
+                        <div class="input-group-btn">
+                          <button type="button" class="btn btn-default" @click=removeCertification(index) title="remove row">
+                            <span class="glyphicon glyphicon-remove text-danger"></span>
+                          </button>
+                        </div>
+                        <input 
+                          type="text" 
+                          class="form-control" 
+                          placeholder="https://www.freecodecamp.com/username/x-x-certification"
+                          v-model.lazy="certification.url"
+                          required
+                        >
+                        <span class="help-block" v-if="!validateFreeCodeCampUrl(certification.url)">
+                          Correct link format: https://www.freecodecamp.com/username/x-x-certification
+                        </span>
+                      </div>
                     </div>
                     
                     <div class="col-lg-3">
                       <div class="row">
-                        <div class="col-lg-9">
-                          <label for="project">Date Received <span class="text-danger">*</span></label>
-                          <input 
-                            type="date" 
-                            class="form-control"
-                            v-model="certification.date"
-                            :max="todaysDate"
-                            required
-                          >
-                        </div>
+                        <label for="project">Date Received <span class="text-danger">*</span></label>
+                        <input 
+                          type="date" 
+                          class="form-control"
+                          v-model="certification.date"
+                          :max="todaysDate"
+                          required
+                        >
                       </div>
                     </div>
                   </div>
                 </div>
                 
-                <button type="submit" class="btn btn-submit" :disabled="userNameInUse">Submit</button>
+                <button type="submit" class="btn btn-submit" :disabled="!inputIsValid">Submit</button>
               </form>
             </div>
           </div>
@@ -371,7 +420,7 @@
       </div>
     </div>
   </body>
-   <script src="https://unpkg.com/vue@2.4.2"></script>
+  <script src="https://unpkg.com/vue@2.4.2"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.js"></script>
   <script src="scripts/createProfile.js"></script>
 </html>

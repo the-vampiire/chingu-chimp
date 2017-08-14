@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+</head>
+<body>
+<div id="topBanner" style="width: 400vw; height: 25vh; background-color: #15df89; position: fixed; top: 0"></div>
+<div id="contentBanner" style="width: 100vw; height: 50vh; background-color: rgba(0,0,0, 0.8); position: absolute; margin-top: 25vh;"></div>
+<div id="contentBanner" style="width: 100vw; height: 50vh; background-color: #FFF; position: absolute; margin-top: 75vh;"></div>
+<div id="contentBanner" style="width: 100vw; height: 150vh; background-color: #FFF; position: absolute; margin-top: 25vh;  left: 100vw"></div>
+<div id="contentBanner" style="width: 100vw; height: 150vh; background-color: #000; margin-top: 25vh; position: absolute; left: 200vw;"></div>
+<div id="contentBanner" id='tits' style="width: 100vw; height: 50vh; background-color: #FFF; margin-top: 25vh; position: absolute; left: 300vw;"></div>
+<div id="bottomBanner" style="width: 400vw; height: 25vh; background-color: #15df89; bottom : 0; position:fixed"></div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+<script>
+
+    $(() => {
+
+        $([window, document]).keydown( data => {
+
+            console.log(data.keyCode === '37');
+            const keyCode = data.keyCode;
+
+            switch(keyCode){
+                case 39:
+                    // move right
+                    break;
+                case 37:
+                    moveLeft();
+                    break;
+            }
+        });
+
+
+        moveLeft = () => {
+            $('html, body').animate({
+                scrollLeft: $("#tits").offset({
+                    left: '100vh'
+                })
+            }, 10000);
+        };
+
+        moveRight = () => {
+
+        };
+
+        moveUp = () => {
+
+        };
+
+        moveDown = () => {
+
+        };
+
+        animateUp = position => {
+
+        }
+
+    })
+
+</script>
+</body>
+</html>
