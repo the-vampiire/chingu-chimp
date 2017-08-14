@@ -79,12 +79,12 @@ argumentParser = arguments => {
 
 argumentSplitter = arguments => {
 
-    if(/^picture .+$/.test(arguments)) return '*`/update picture` does not take any additional parameters*';
-
     if(!/^(story .+)/.test(arguments)){
+
 // CHANGE AFTER BETA TESTING
         if(!~arguments.indexOf('-')) return '*No flags detected. Try `/update help1` or `/update help2` for help using the /update command*';
 // CHANGE AFTER BETA TESTING
+
         const multipleItems = arguments.slice(0, arguments.indexOf('-')+1);
         if(!/^[A-Za-z]+( )-$/.test(multipleItems))
             return `*Invalid item [\`${multipleItems.replace(/ -/, '')}\`]. You can only pass one update item at a time*`;
