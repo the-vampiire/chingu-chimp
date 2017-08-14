@@ -25,7 +25,7 @@
 
 argumentParser = arguments => {
 
-    const acceptedUpdateItems = ['gitHub', 'github', 'blog', 'picture', 'portfolio', 'story', 'projects', 'certifications'];
+    const acceptedUpdateItems = ['gitHub', 'blog', 'picture', 'portfolio', 'story', 'projects', 'certifications'];
     let error;
 
     let output = argumentSplitter(arguments);
@@ -125,9 +125,6 @@ argumentSplitter = arguments => {
         case 'projects':
             expectedFlags = ['name', 'n', 'url', 'u', 'git', 'g', 'date', 'd'];
             break;
-    // accept gitHub or github
-        case 'github':
-            item = 'gitHub';
         case 'gitHub':
         case 'blog':
         case 'portfolio':

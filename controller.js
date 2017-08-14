@@ -98,6 +98,8 @@ router.post('/profile', (req, res) => {
                     }
                     else item = arguments[1];
                 }
+            // accept lowercase but process downstream in camelcase
+                if(item === 'github') item = 'gitHub';
 
                 if(item) profileResponse.profileItem(userName, item, share).then( response => typeof response === 'string' ?
                     res.end(response) : res.json(response));
