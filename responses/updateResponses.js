@@ -363,7 +363,7 @@ helpResponse = (type) => {
             {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
-                pretext: '*General form: \`/update certifications -url certificateURL [ -date mm/dd/yy ]\`*'
+                pretext: '*General form: \`/update certifications -url certificateURL [-date mm/dd/yy]\`*'
 
             },
             {
