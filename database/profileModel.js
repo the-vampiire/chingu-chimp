@@ -67,13 +67,13 @@ const userSchema = new mongoose.Schema({
     projects: [{
         name: String,
         url: {type: String, default: null},
-        gitHub: {type: String, default: null},
+        gitHub: String,
         completedDate: {type: Number, default: Date.now()}
     }],
 
     certifications: [{
         name: String,
-        url: {type: String, default: null},
+        url: String,
         date: {type: Number, default: Date.now()}
     }],
 
@@ -178,11 +178,19 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
                 let updateData = data.updateData;
 
                 switch(updateItem){
+
                 // pushing updateData into a profile item array
                     case 'certifications':
+                        // add a badge for each certification
+                        const certifications = profileDoc[updateItem];
+                    // checks if the passed certificate already exists
+                        const addNewCertificate = !certifications.some( certificate => certificate.name === updateData.name );
+                        if(addNewCertificate) profileDoc[updateItem].push(updateData);
+                        break;
                     case 'projects':
                         // add a badge after 5 - 10 etc completed projects
                         // move higher badge to front of badges array
+                // consider the ability of updating projects. similar to the way skills is handled
                         profileDoc[updateItem].push(updateData);
                         break;
 
