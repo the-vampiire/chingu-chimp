@@ -62,7 +62,7 @@ profileItem = (userName, item, share) => {
                         else response.text = `${userName} does not currently have any badges :cry:`;
                         break;
                     case 'projects':
-                        if(profileItem) response = projectsItemResponse(profileItem, response, userName);
+                        if(profileItem.length) response = projectsItemResponse(profileItem, response, userName);
                         else response.text = `${userName} does not currently have any projects :cry:`;
                         break;
                     case 'certifications':

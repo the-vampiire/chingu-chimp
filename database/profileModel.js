@@ -9,90 +9,90 @@ const requests = require('../tools/requests');
 const dbHelper = require('./dbHelpers');
 
 // sub-schemas
-    const sessionSchema = new mongoose.Schema({
-        kind: String,
-        task: String,
-        partners: [String],
-        date: {type: Number, default: Date.now()}
-    });
+const sessionSchema = new mongoose.Schema({
+    kind: String,
+    task: String,
+    partners: [String],
+    date: {type: Number, default: Date.now()}
+});
 
-    const checkinSchema = new mongoose.Schema({
-        channelID : String,
-        sessions: [sessionSchema]
-    });
+const checkinSchema = new mongoose.Schema({
+    channelID : String,
+    sessions: [sessionSchema]
+});
 
 const checkinModel = mongoose.model('checkinModel', checkinSchema);
 
 // main user profile schema
-    const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
 
-        userName: {type: String, lowercase: true},
+    userName: {type: String, lowercase: true},
 
-        profilePic : {
-            size_72 : {type: String, default: null},
-            size_192 : {type: String, default: null}
-        },
+    profilePic : {
+        size_72 : {type: String, default: null},
+        size_192 : {type: String, default: null}
+    },
 
-        portfolio: {type: String, default: null},
+    portfolio: {type: String, default: null},
+    gitHub: {type: String, default: null},
+    blog: {type: String, default: null},
+
+    story: String,
+
+    joinDate: {type: Number, default: Date.now()},
+
+    cohorts: [{
+        cohortName: String,
+        // cohortID: String,
+        // considering capturing this for added security / cross-checking
+            // could require a password before a non-recognized cohort is added to the cohorts array
+        startDate: {type: Number, default: Date.now()},
+    }],
+
+    skills: {
+
+        languages: [{
+            name: String,
+            level: String
+        }],
+
+        frameworks: [{
+            name: String,
+            level: String
+        }]
+    },
+
+    checkins: [checkinSchema],
+
+    projects: [{
+        name: String,
+        url: {type: String, default: null},
         gitHub: {type: String, default: null},
-        blog: {type: String, default: null},
+        completedDate: {type: Number, default: Date.now()}
+    }],
 
-        story: String,
+    certifications: [{
+        name: String,
+        url: {type: String, default: null},
+        date: {type: Number, default: Date.now()}
+    }],
 
-        joinDate: {type: Number, default: Date.now()},
+// profile card data
+    points: {type: Number, default: 1},
+    bestStreak: {type: Number, default: 0},
+    currentStreak: {
+        value: {type: Number, default: 0},
+        lastUpdate: {type: Number, default: Date.now()}
+    },
+    lastCheckin: sessionSchema,
+    totalCheckins: {type: Number, default: 0},
+    badges : [{
+        badgeType : String,
+        name : String,
+        url : String
+    }],
 
-        cohorts: [{
-            cohortName: String,
-            // cohortID: String,
-            // considering capturing this for added security / cross-checking
-                // could require a password before a non-recognized cohort is added to the cohorts array
-            startDate: {type: Number, default: Date.now()},
-        }],
-
-        skills: {
-
-            languages: [{
-                name: String,
-                level: String
-            }],
-
-            frameworks: [{
-                name: String,
-                level: String
-            }]
-        },
-
-        checkins: [checkinSchema],
-
-        projects: [{
-            name: String,
-            url: {type: String, default: null},
-            gitHub: {type: String, default: null},
-            completedDate: {type: Number, default: Date.now()}
-        }],
-
-        certifications: [{
-            name: String,
-            url: {type: String, default: null},
-            date: {type: Number, default: Date.now()}
-        }],
-
-    // profile card data
-        points: {type: Number, default: 1},
-        bestStreak: {type: Number, default: 0},
-        currentStreak: {
-            value: {type: Number, default: 0},
-            lastUpdate: {type: Number, default: Date.now()}
-        },
-        lastCheckin: sessionSchema,
-        totalCheckins: {type: Number, default: 0},
-        badges : [{
-            badgeType : String,
-            name : String,
-            url : String
-        }],
-
-    }, { runSettersOnQuery : true });
+}, { runSettersOnQuery : true });
 
 // ----------------- PROFILE MODEL METHODS ---------------- //
         // ----- embedded database methods ----- //
