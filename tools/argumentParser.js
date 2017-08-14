@@ -126,7 +126,7 @@ argumentSplitter = arguments => {
     }
 
     if(!~expectedFlags.indexOf(flag)){
-        return `*invalid update flag [\`-${flag}\`] for update item [\`${item}\`].*\n *Try \`/update ${item}\` for a list of required and optional flags*`
+        return `*Invalid update flag [\`-${flag}\`] for update item [\`${item}\`].*\n *Try \`/update ${item}\` for a list of required and optional flags*`
     }
 
 // modification step (as needed)
@@ -134,7 +134,7 @@ argumentSplitter = arguments => {
 
         case flag === 'git' || flag === 'g':
             if(!/(https:\/\/github\.com\/)/.test(data))
-                return `*invalid data: \`${data}\` associated with flag [\`-${flag}\`] does not begin with \`https://github.com/\`*`;
+                return `*Invalid data: \`${data}\` associated with flag [\`-${flag}\`] does not begin with \`https://github.com/\`*`;
             flag = 'gitHub';
             break;
 
@@ -142,23 +142,23 @@ argumentSplitter = arguments => {
         // check if the gitHub url is valid
             if(item === 'gitHub'){
                 if(!/^(https:\/\/github\.com\/)/.test(data))
-                    return `invalid gitHub profile url, ensure the url entered is of the form \`https://github.com/yourUserName\``
+                    return `*Invalid gitHub profile url, ensure the url entered is of the form \`https://github.com/yourUserName\`*`
             }
 
         // check if certificate link is valid
             if(item === 'certifications')
-                if(!/(https:\/\/www\.freecodecamp\.com\/[A-Za-z-]+\/[a-z]+\-[a-z]+\-(certification))/.test(data))
-                    return `invalid certificate url, must be of the form \`https://www.freecodecamp.com/userName/x-x-certification\``;
+                if(!/(https:\/\/www\.freecodecamp\.com\/[A-Za-z-]+\/((front)|(back)|(data))\-((end)|(visualization))\-(certification))/.test(data))
+                    return `*Invalid certificate url, must be of the form \`https://www.freecodecamp.com/userName/x-x-certification\`*`;
 
         // check if general url is valid
-            if(!/(http:\/\/|https:\/\/)(www\.)?/.test(data)) return `*invalid data: \`${data}\` associated with flag [\`-${flag}\`]. ensure the full [\`http://www.\`] or [\`http\`url is being passed*`;
+            if(!/(http:\/\/|https:\/\/)(www\.)?/.test(data)) return `*Invalid data: \`${data}\` associated with flag [\`-${flag}\`]. ensure the full [\`http://www.\`] or [\`http\`url is being passed*`;
 
             flag = 'url';
             break;
 
         case flag === 'date' || flag === 'd':
             if(!/[0-9]{2}\/[0-9]{2}\/[0-9]{2}/.test(data))
-                return `*invalid date [\`${data}\`]. must be in \`mm/dd/yy\` format*`;
+                return `*Invalid date [\`${data}\`]. must be in \`mm/dd/yy\` format*`;
 
             data = Date.parse(new Date(data));
 
