@@ -37,9 +37,6 @@ const done = require('./Beta/BETA_doneSlash');
 app.use('/done', done);
 // ---------- REMOVE AFTER BETA TESTING ----------------
 
-
-const
-
 // Pass all routing to the controller
 const controller = require('./controller');
 app.use('/', controller);
