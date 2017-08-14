@@ -141,8 +141,8 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
 
                     if(saveError) resolve(saveError);
                     if(success){
-                       if(channel) resolve(`succesfully saved the checkin for ${userName}. you have \`${channel.sessions.length}\` checkins on this channel!\n*current streak:* \`${currentStreak.value}\`\n*best streak:* \`${bestStreak}\`\n`);
-                       else resolve(`succesfully saved the checkin for ${userName}. This is your first checkin on this channel, keep it up!\n*current streak:* \` ${currentStreak.value}\`\n*best streak:* \`${bestStreak}\`\n`);
+                        if(channel) resolve(`Succesfully saved the check-in for ${userName}. you have \`${channel.sessions.length}\` check-ins on this channel!\n*Total check-ins:* \`${profileDoc.totalCheckins}\`\n*Current streak:* \`${profileDoc.currentStreak.value}\` days\n*Best streak:* \`${profileDoc.bestStreak}\` days\n`);
+                        else resolve(`Succesfully saved the check-in for ${userName}. This is your first check-in on this channel, keep it up!\n*Total check-ins:* \`${profileDoc.totalCheckins}\`\n*Current streak:* \`${profileDoc.currentStreak.value}\` days\n*Best streak:* \`${profileDoc.bestStreak}\` days\n`);
                     }
                 });
             }
