@@ -101,10 +101,12 @@ argumentSplitter = arguments => {
             return `Invalid item [\`${multipleItems.replace(/ -/, '')}\`]. You can only pass one update item at a time`;
     }
 
-    const item = arguments.slice(0, arguments.indexOf(' '));
+    let item = arguments.slice(0, arguments.indexOf(' '));
     const flagsAndData = arguments.slice(arguments.indexOf('-'));
 
-// story is a simple string with no flags
+// accept lowercase or camelcase item
+    if(item === 'github') item = 'gitHub';
+
     if(item === 'story'){
         const storyString = arguments.slice(arguments.indexOf(' ')+1);
         return { item : item, storyString: storyString }
@@ -112,6 +114,8 @@ argumentSplitter = arguments => {
 
     if(item === 'projects' && !(flagsAndData.includes('-g') || flagsAndData.includes('-git')))
         return `No GitHub repo link detected for this project. All projects require at minimum a name and GitHub repo link.\nTry again or type \`/update projects\` for help`;
+
+
 
     const pairsArray = flagsAndData.split(/ (?=-)/).map( e => e.replace(/-/, ''));
 
@@ -126,8 +130,6 @@ argumentSplitter = arguments => {
         case 'projects':
             expectedFlags = ['name', 'n', 'url', 'u', 'git', 'g', 'date', 'd'];
             break;
-        case 'github':
-            item = 'gitHub';
         case 'gitHub':
         case 'blog':
         case 'portfolio':
