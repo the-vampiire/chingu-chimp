@@ -15,6 +15,12 @@
 * will need to change the argumentSplitter to handle this
 *
 *
+*
+* // BETA SUGGESTIONS //
+*
+* work on replacing -g / -git with -r / -repo for clarity
+*
+*
 * */
 
 argumentParser = arguments => {
@@ -145,17 +151,17 @@ argumentSplitter = arguments => {
         case flag === 'url' || flag === 'u':
         // check if the gitHub url is valid
             if(item === 'gitHub'){
-                if(!/^(https:\/\/github\.com\/)/.test(data))
+                if(!/(https:\/\/github\.com\/)[^\. ]+/.test(data) || ~data.indexOf(' '))
                     return `Invalid gitHub profile url, ensure the url entered is of the form \`https://github.com/yourUserName\``
             }
 
         // check if certificate link is valid
             if(item === 'certifications')
                 if(!/(https:\/\/www\.freecodecamp\.com\/[A-Za-z-]+\/((front)|(back)|(data))\-((end)|(visualization))\-(certification))/.test(data))
-                    return `Invalid certificate url, must be of the form \`https://www.freecodecamp.com/userName/x-x-certification\``;
+                    return `Invalid certificate url, must be a direct certificate link of the form \`https://www.freecodecamp.com/userName/x-x-certification\``;
 
         // check if general url is valid
-            if(!/(http:\/\/|https:\/\/)(www\.)?/.test(data)) return `Invalid data: \`${data}\` associated with flag [\`-${flag}\`]. ensure the full [\`http://www.\`] or [\`http\`url is being passed`;
+            if(!/(http:\/\/|https:\/\/)(www\.)?/.test(data) || ~data.indexOf(' ')) return `Invalid data: \`${data}\` associated with flag [\`-${flag}\`]. Check that a valid and complete [\`http://www.\`] or [\`http\`] url is being passed`;
 
             flag = 'url';
             break;
