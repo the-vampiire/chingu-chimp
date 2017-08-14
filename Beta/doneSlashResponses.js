@@ -102,7 +102,8 @@ checkinCommandResponse = () => {
             },
             {
                 color: `#15df89`,
-                text: '4) Can you think of any other check-in types or activities to add to the lists? They should be (relatively) common and recurring activities'
+                mrkdwn_in: ['text'],
+                text: '*4) Can you think of any other check-in types or activities to add to the dropdown lists? They should be (relatively) common and recurring activities*'
             },
             {
                 color: `#15df89`,
