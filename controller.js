@@ -83,7 +83,7 @@ router.post('/profile', (req, res) => {
         }
 
         if(text) {
-            if (/^\@[0-9A-Za-z-_.]+( share)?( (story|projects|skills|certifications|gitHub|blog|portfolio|badges))?$/.test(text)) {
+            if (/^\@[0-9A-Za-z-_.]+( share)?( (story|projects|skills|certifications|(gitHub|github)|blog|portfolio|badges))?$/.test(text)) {
 
                 let share = false;
                 let item;
