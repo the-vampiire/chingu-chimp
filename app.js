@@ -32,15 +32,3 @@ app.use(logger('dev'));
 // Pass all routing to the controller
 const controller = require('./controller');
 app.use('/', controller);
-
-
-
-
-
-
-
-
-
-
-
-
