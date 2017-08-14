@@ -107,7 +107,7 @@ helpResponse = (type) => {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Help Sub-Guides*',
-                text: `*Enter any of the following commands to be returned a detailed help guide specific to that item*\n\n*Updating Blog, GitHub Profile, or Portfolio Links*\n\t\`/update blog\` or \`/update gitHub\` or \`/update portfolio\`\n\n*Updating Certifications*\n\t\`/update certifications\`\n\n*Updating Projects*\n\t\`/update projects\`\n\n*Updating Skills*\n\t\`/update skills\``,
+                text: `*Enter any of the following commands to be returned a detailed help guide specific to that item*\n\n*Updating Blog, GitHub Profile, or Portfolio Links*\n\t\`/update blog\` or \`/update gitHub\` or \`/update portfolio\`\n\n*Updating Certifications*\n\t\`/update certifications\`\n\n*Updating Projects*\n\t\`/update projects\``,
 
             },
             {
@@ -135,7 +135,7 @@ helpResponse = (type) => {
             {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
-                pretext: '*Updating Profile Picture [no arguments]*',
+                pretext: '*Updating Profile Picture [no flags or data]*',
                 fields: [
                     {
                         title: 'Item',
@@ -152,11 +152,11 @@ helpResponse = (type) => {
             {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
-                pretext: '*Updating Skills - Languages and Frameworks [no arguments]*',
+                pretext: '*Updating Skills [no flags or data]*',
                 fields: [
                     {
                         title: 'Item',
-                        value: `[skills]: the skills section of your profile which includes languages and frameworks`
+                        value: `[skills]: the skills section of your profile which includes languages, frameworks, and their associated skill-levels`
                     }
                 ]
             },
