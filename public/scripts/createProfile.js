@@ -27,6 +27,12 @@ var app = new Vue({
     // dropdown data
     cohorts: [
         {
+          "name": "Voyage",
+        },
+        {
+          "name": "Owls",
+        },
+        {
           "name": "Ewoks",
         },
         {
@@ -140,9 +146,9 @@ var app = new Vue({
       this.followsSlackFormatting()
     },
     checkUserNameAvailability() {
-      axios.post('/validate-userName', {userName: this.userData.userName})
-        .then( response => this.userNameInUse = !response.data.userNameAvailable)
-        .catch( err => console.log(err))
+          axios.post('/validate-userName', {userName: this.userData.userName})
+              .then( response => this.userNameInUse = !response.data)
+              .catch( err => console.log(err))
     },
     followsSlackFormatting() {
       const validUsernameChars = /^[a-z0-9.\-_]*$/

@@ -6,7 +6,11 @@
  *      get list of all chingu team names (team ID's) and add them to the slash verify function
  *      to check alongside the slack token. ensures all requests only occur between chingu teams and bot
  *
+ *      // userid: U5XJSS683, username: vampiire
+ *      // teamid: T5YFJ3Y7Q, team name: test team
+ *
  */
+
 
 const express = require('express');
 const router = module.exports = express.Router();
@@ -14,13 +18,7 @@ const router = module.exports = express.Router();
 const tools = require('./tools/exporter');
 
 
-// ------------------- FRONT END ------------------- //
-
-router.get('/form', (req, res) => {
-
-    res.render('form');
-
-});
+// -------------------------------------- FRONT END -------------------------------------- //
 
 router.post ('/create-profile', (req, res) => {
     const userProfile = require('./database/profileModel').userProfile;
@@ -30,95 +28,12 @@ router.post ('/create-profile', (req, res) => {
 });
 
 router.post('/validate-username', (req, res) => {
-    const userProfile = require('./database/profileModel').userProfile
-    
-    let userNameAvailable;
-    userProfile.find({userName: req.body.userName})
-        .then( user => {
-            userNameAvailable = user.length > 0 ? false : true;
-            res.json({userNameAvailable});
-        })
-        .catch( err => console.log(err));
-})
-
-router.get('/', (req, res) => {
-
-    let data = {
-        userName : 'jessec',
-
-        portfolio : 'https://www.vampiire.org',
-        gitHub: 'https://www.github.com/the-vampiire',
-        blog: 'https://medium.com/@vampiire',
-
-        story: `Hello you can call me Vamp. This is my third Chingu cohort (Walrus / Honey-Badger)
-
-*Background*
-I have a B.S. in Chemical Engineering from USF. During my time there I overloaded on experiences from leadership to research and internships. Despite all my involvement I didn’t have much of a passion for working professionally as a ChE. I took time off after graduation where I worked as a janitor. Not as a career path but because I needed a job that wouldn’t tax my mind while I thought about what I wanted out of my future. which leads to…
-
-*Coding History* 
-I started coding at the end of February 2017. Before that I had literally 0 experience with code besides using Excel to solve ChE problems (goalseek / solver). I began with javascript and solving algorithm challenges especially the Project Euler problems. Soon I realized that Python was a much more popular language for solving these problems so I switched over. About a month later I was obsessed and realized being a developer was my calling.  
-
-I was beginning my application to Hack Reactor when I came across a scathing article from a former student of theirs. They suggested Free Code Camp so I committed to working through their curriculum. I worked feverishly on the front end certification and finished it in 58 days without looking up guides or solutions to any project or algorithm challenge (https://www.vampiire.org is the site I built which holds all the projects). I wasn’t rushing I just couldn’t stop coding and learning - I dreamt (and still do!) about coding and worked out problems I couldn’t solve awake. 
-
-After the certification I joined my first Chingu cohort and started learning backend code. Since then I have worked on the FCC backend projects, a slack bot, a small business automation suite for my dad, and building an online multiplayer pong game from scratch…with lasers! Most recently I started learning Angular to round out my skillset. 
-
-*Goals*
-I have started scouting for jobs and seeing how I match up with their expectations. I hope that with enough projects and my passion for coding I will be given a chance to prove myself as a developer. 
-
-I am determined to lead my bot team to a successful completion and launch of our project. 
-
-*Interests* 
-Asking questions. I ask way too many questions. Solving problems no matter the context. Brainstorming and improving on ideas. Teaching or explaining concepts to people. Playing Destiny (pvp!) until my eyes hurt. Hiking with my two boston terriers. Biking. Lifting heavy things and putting them down a bunch of times a week. Heavy synth / electronic music. Oh and uh…CODING!`,
-
-        joinDate: 1495238400,
-
-        cohort: [
-            {
-                cohortName : 'Walruses',
-                startDate : 1495238400
-            },
-            {
-                cohortName : 'HoneyBadgers',
-                startDate : 1497916800
-            }],
-
-        aptitudes: {
-
-            languages : [{
-                name : 'JavaScript',
-                level : 'intermediate'
-            }],
-
-            frameworks: [{
-                name : 'Bootstrap',
-                level : 'intermediate'
-            }]
-        },
-
-        projects: [{}],
-
-        certifications: [{}]
-
-    };
-
-
     const userProfile = require('./database/profileModel').userProfile;
-
-    userProfile.addProfile(data);
-
-    res.end('made a new profile');
-
-    // userProfile.getProfile('vampiire').then( doc => console.log(doc.checkins[0].sessions));
-
-
+    userProfile.getProfile(req.body.userName).then( user => res.send(!user));
 });
 
 
-
-// ------------------- BACK END -------------------- //
-
-
-// ------------ INCOMING SLASH COMMANDS ------------- //
+// -------------------------------------- BACK END --------------------------------------- //
 
 // ----- CHECK-IN ----- //
 router.post('/checkin', (req, res) => {
@@ -138,12 +53,12 @@ router.post('/checkin', (req, res) => {
 
         // inject the filtered and stripped partners array into the valueObject
             valueObject.partners = filtered;
-        // inject the user calling the checkin so they dont have to tag themselves
+        // inject the user calling the checkin so they don't have to tag themselves
             valueObject.partners.push(user);
 
             res.json(tools.interactive.interaction('checkin', valueObject));
         }
-        else res.end('*Invalid checkin command format. Try `/checkin [@userName] [@otherUserName(s)]`. you do not need to tag yourself, the user calling the check-in command is automatically included*');
+        else res.end('*Invalid checkin command format. Try `/checkin [@userName] [@otherUserName(s)]`. You do not need to tag yourself, the user calling the check-in command is automatically included*');
 
 
     }
@@ -163,12 +78,12 @@ router.post('/profile', (req, res) => {
 
         const profileResponse = require('./responses/profileResponses');
 
-        if(!text || text === 'help'){
-            res.end(profileResponse.profileHelp());
+        if(text === 'help' || !text){
+            res.json(profileResponse.profileHelp());
         }
 
-        if(text && text !== 'help') {
-            if (/^\@[0-9A-Za-z-_.]+( share)?( (story|projects|skills|certifications|gitHub|blog|portfolio|))?$/.test(text)) {
+        if(text) {
+            if (/^\@[0-9A-Za-z-_.]+( share)?( (story|projects|skills|certifications|gitHub|blog|portfolio|badges))?$/.test(text)) {
 
                 let share = false;
                 let item;
@@ -192,9 +107,9 @@ router.post('/profile', (req, res) => {
 
             }
 
-            else res.send(`[\`${text}\`] is not a valid username.
-            try again with the format \`/profile <@userName> [share] [profile item]\`
-            you may only call one profile look-up at a time`);
+            else res.end(`[\`${text}\`] is not a valid username.
+            Try again with the format \`/profile <@userName> [share] [profile item]\`
+            You may only call one profile look-up at a time`);
         }
     }
     else res.end('invalid Slack token');
@@ -205,7 +120,7 @@ router.post('/profile', (req, res) => {
 router.post('/update', (req, res) => {
 
     const updateResponse = require('./responses/updateResponses');
-    const update = require('./tools/update');
+    const argumentParser = require('./tools/argumentParser');
     const userProfile = require('./database/profileModel').userProfile;
 
     const body = req.body;
@@ -215,15 +130,24 @@ router.post('/update', (req, res) => {
 
     if(tools.verify.slash(body.token)){
         if(~arguments.indexOf(' ')){
-            let parserOutput = update.parse(arguments);
 
-            if(typeof parserOutput === 'string') res.end(parserOutput);
-            else userProfile.processUpdate(userName, cohortName, parserOutput).then( response => res.end(response));
+            if(/^(skills .+)/.test(arguments)) res.end('*\`/update skills\` does not take any additional parameters*');
+            else if(/^(picture .+)/.test(arguments)) res.end('*\`/update picture\` does not take any additional parameters*');
 
+            else{
+                let parserOutput = argumentParser.parse(arguments);
+
+                if(typeof parserOutput === 'string') res.end(parserOutput);
+                else userProfile.processUpdate(userName, cohortName, parserOutput).then( response => res.end(response));
+            }
         }
 
         else{
-            if(!arguments || arguments === 'help') res.end(updateResponse.helpResponse('help'));
+            if(arguments === 'help' || !arguments) {
+                const helpResponse = updateResponse.helpResponse('help');
+                if(typeof helpResponse === 'string') res.end(helpResponse);
+                else res.json(helpResponse);
+            }
 
             else if(arguments === 'skills'){
                 const output = tools.interactive.interaction(('update'));
@@ -243,7 +167,11 @@ router.post('/update', (req, res) => {
                     userProfile.processUpdate(userName, cohortName, data).then( response => res.end(response));
                 });
             }
-            else res.end(updateResponse.helpResponse(arguments));
+            else {
+                const helpResponse = updateResponse.helpResponse(arguments);
+                if(typeof helpResponse === 'string') res.end(helpResponse);
+                else res.json(helpResponse);
+            }
         }
     }
 

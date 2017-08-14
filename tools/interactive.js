@@ -7,6 +7,14 @@ const checkinResponse = require('../responses/checkinResponses');
 const updateResponse = require('../responses/updateResponses');
 const userProfile = require('../database/profileModel').userProfile;
 
+// ------------ REMOVE AFTER BETA TESTING -----------------------
+
+const betaResponse = require('../Beta/betaSlashResponses');
+const doneResponse = require('../Beta/doneSlashResponses');
+
+// ------------ REMOVE AFTER BETA TESTING -----------------------
+
+
 interaction = (type, valueObject) => {
     let response;
 
@@ -17,6 +25,12 @@ interaction = (type, valueObject) => {
         case 'update':
             response = updateResponse.skillSelect({});
             break;
+// ------------ REMOVE AFTER BETA TESTING -----------------------
+
+        // case 'start':
+
+
+// ------------ REMOVE AFTER BETA TESTING -----------------------
     }
 
     return response;
@@ -103,6 +117,12 @@ processInteraction = payload => {
             else response = updateResponse.skillSelect(JSON.stringify(value));
 
             break;
+
+// ------------ REMOVE AFTER BETA TESTING -----------------------
+
+        // case '':
+
+// ------------ REMOVE AFTER BETA TESTING -----------------------
 
     }
 
