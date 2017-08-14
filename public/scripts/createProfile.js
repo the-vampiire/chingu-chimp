@@ -131,7 +131,7 @@ var app = new Vue({
     submitForm(event) {
       event.preventDefault()
 
-      if(!this.inputIsValid()) return
+      if(!this.inputIsValid) return
 
       // convert all dates to unix timestamp
       this.userData.joinDate = new Date(this.userData.joinDate).getTime()
