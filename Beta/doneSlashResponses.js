@@ -214,7 +214,7 @@ doneResponse = () => {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Review*',
-                text: `If you have any other questions / suggestions / comments / complaints send a message to <@U5XJSS683|vampiire> in the Slack testing team.\nIf you would like to review the code here is the <https://github.com/the-vampiire/chingu-chimp|GitHub Repo>.\n\nThank you for your help I really appreciate your time. If you ever need my help feel free to message me. I am up and coding most of the day and especially through the night.\n\n\- Vamp`
+                text: `If you have any other questions / suggestions / comments / complaints send a message to <@U5XJSS683|vampiire>. If you would like to review the code here is the <https://github.com/the-vampiire/chingu-chimp|GitHub Repo>.\n\nThank you for your help I really appreciate your time. If you ever need my help feel free to message me. I am up and coding most of the day and especially through the night.\n\n\- Vamp`
             },
             {
                 mrkdwn_in: ['text', 'pretext'],
