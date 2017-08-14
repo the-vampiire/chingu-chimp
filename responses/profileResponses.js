@@ -168,8 +168,8 @@ profileCard = (userName, share) => {
                                 value: `${totalCheckins > 0 ? totalCheckins : "No check-in data available"}`,
                                 short: true
                             },
-                            { title: 'Current Streak', value: `${currentStreak}`, short: true },
-                            { title: 'Best Streak', value: `${bestStreak}`, short: true }
+                            { title: 'Current Streak', value: `${currentStreak} days`, short: true },
+                            { title: 'Best Streak', value: `${bestStreak} days`, short: true }
                         ]
                     },
                 ]
