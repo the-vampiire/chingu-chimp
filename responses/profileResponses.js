@@ -146,7 +146,7 @@ profileCard = (userName, share) => {
             if(certifications.length) certificationsItemResponse(certifications, response);
 
         // add skills if available
-            if(skills.length) skillsItemResponse(skills, response, userName);
+        //     if(skills.length) skillsItemResponse(skills, response, userName);
 
         // add badges if available
             if(badges) response = attachBadges(badges, response, userName);
