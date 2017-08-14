@@ -86,6 +86,24 @@ var app = new Vue({
       return Boolean(!~itemArray.indexOf(item))
     },
 
+    // remove unneeded form fields
+    removeCohort(index) {
+      this.userData.cohorts.splice(index, 1)
+    },
+    removeLanguage(index) {
+      this.userData.skills.languages.splice(index, 1)
+    },
+    removeFramework(index) {
+      this.userData.skills.frameworks.splice(index, 1)
+    }, 
+    removeProject(index) {
+      this.userData.projects.splice(index, 1)
+    },
+    removeCertification(index) {
+      this.userData.certifications.splice(index, 1)
+    },
+
+
     // form field validation methods
     validateGitHubUrl(url) {
       return /^https:\/\/github\.com\//.test(url) || url.length === 0 // last check prevents error being displayed on page load
@@ -129,7 +147,7 @@ var app = new Vue({
     }
   },
   computed: {
-    // prevet fcc cert duplication
+    // prevent fcc cert duplication
     frontEndCertAdded() {
       return Boolean(~this.userData.certifications.findIndex( certification => certification.name === 'Front End Certification'))
     },
@@ -143,7 +161,7 @@ var app = new Vue({
     // generates arrays that contain values that the user has not already chosen as a value in their data
     filteredCohorts() {
       let self = this
-console.log(this.cohorts);
+
       return this.cohorts.filter(cohort => {
         for(const userCohortObj of self.userData.cohorts) {
           if(cohort === userCohortObj.cohortName) return false
