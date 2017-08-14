@@ -127,17 +127,26 @@ profileCard = (userName, share) => {
 
 
         // add gitHub / blog / portfolio links if available
-            if(gitHub || blog || portfolio) response.attachments.push({
-                fallback: `${userName} social media links`,
-                mrkdwn_in: ['text', 'pretext'],
-                pretext: '*Social Media*',
-                color: '#666',
-                text: `*GitHub:* ${gitHub ? `${gitHub}\n`: `No GitHub profile available\n`}*Portfolio:* ${portfolio ? `${portfolio}\n` : `No portfolio link available\n`}*Blog:* ${blog ? `${blog}` : `No blog link available\n`}`
-            });
+            if(gitHub || blog || portfolio) {
+                let socialMediaString = ``;
+                if(blog) socialMediaString += `*Blog:* ${blog}\n`;
+                if(gitHub) socialMediaString += `*GitHub* ${gitHub}\n`;
+                if(portfolio) socialMediaString += `*Portfolio*: ${portfolio}\n`;
 
+                response.attachments.push({
+                    fallback: `${userName} social media links`,
+                    mrkdwn_in: ['text', 'pretext'],
+                    pretext: '*Social Media*',
+                    color: '#666',
+                    text: `${socialMediaString}`
+                });
+            }
 
         // add certifications if available
             if(certifications.length) certificationsItemResponse(certifications, response);
+
+        // add skills if available
+            if(skills.length) skillsItemResponse(skills, response, userName);
 
         // add badges if available
             if(badges) response = attachBadges(badges, response, userName);

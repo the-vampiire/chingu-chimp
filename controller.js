@@ -94,12 +94,10 @@ router.post('/profile', (req, res) => {
                 if(arguments[1]){
                     if(~arguments[1].indexOf('share')){
                         share = true;
-
                         if(arguments[2]) item = arguments[2];
                     }
                     else item = arguments[1];
                 }
-
 
                 if(item) profileResponse.profileItem(userName, item, share).then( response => typeof response === 'string' ?
                     res.end(response) : res.json(response));
@@ -107,9 +105,8 @@ router.post('/profile', (req, res) => {
 
             }
 
-            else res.end(`[\`${text}\`] is not a valid username.
-            Try again with the format \`/profile <@userName> [share] [profile item]\`
-            You may only call one profile look-up at a time`);
+            else res.end(`[\`${text}\`] is not a valid profile request.
+            Try again with the format \`/profile <@userName> [share] [profile item]\` or try \`/profile help\``);
         }
     }
     else res.end('invalid Slack token');
