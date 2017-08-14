@@ -25,7 +25,7 @@ var app = new Vue({
     },
 
     // dropdown data
-    cohorts: ["Ewoks", "Tapirs","Sloths", "Kiwis", "Platypus", "Bearded-Dragons", "Armadillos", "Red-Pandas", "Honey-Badgers", "Elephants", "Dolphins", "Pumas", "Llamas"],
+    cohorts: ["Voyage", "Owls", "Ewoks", "Walruses", "Tapirs","Sloths", "Kiwis", "Platypus", "Bearded-Dragons", "Armadillos", "Red-Pandas", "Honey-Badgers", "Elephants", "Dolphins", "Pumas", "Llamas"],
     languages: ['JavaScript', 'Java', 'Python', 'Ruby', 'C++', 'C#.Net', 'Assembly', 'Bash', 'Basic', 'C', 'C#', 'Fortran', 'Go', 'MATLAB', 'Objective-C', 'Perl', 'PHP', 'Powershell', 'VBA'],
     frameworks:  ['jQuery', 'Bootstrap', 'Angular2/4', 'AngularJS', 'Electron', 'jQueryUI', 'React', 'React Native', 'Vue'],
     levels: ["Beginner", "Intermediate", "Expert", "Wizard"]
@@ -118,9 +118,9 @@ var app = new Vue({
       this.followsSlackFormatting()
     },
     checkUserNameAvailability() {
-      axios.post('/validate-userName', {userName: this.userData.userName})
-        .then( response => this.userNameInUse = !response.data.userNameAvailable)
-        .catch( err => console.log(err))
+          axios.post('/validate-userName', {userName: this.userData.userName})
+              .then( response => this.userNameInUse = !response.data)
+              .catch( err => console.log(err))
     },
     followsSlackFormatting() {
       const validUsernameChars = /^[a-z0-9.\-_]*$/

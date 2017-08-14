@@ -7,7 +7,7 @@ const val = require('../tools/valStringer');
 checkinResponse = () => {
     return {
         response_type: 'in_channel',
-        text: "Check In \nUse the following interactive message sequence to define and check into your activity."
+        text: "Check In \nUse the following interactive message sequence to define and check-in to your activity."
     };
 };
 
