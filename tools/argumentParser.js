@@ -60,9 +60,10 @@ argumentParser = arguments => {
 
             // if there is an error it is returned from errorScan as a string
             let errorScanOutput = errorScanAndModify(item, flag, data);
-            if(typeof errorScanOutput === 'string'){
-                error = errorScanOutput;
-            }else{
+
+            if(typeof errorScanOutput === 'string') error = errorScanOutput;
+
+            else{
                 // if there is no error errorScan returns an object containing the flag and data (in case they were modified)
                 let output = errorScanOutput;
                 flag = output.flag;
@@ -125,6 +126,8 @@ argumentSplitter = arguments => {
         case 'projects':
             expectedFlags = ['name', 'n', 'url', 'u', 'git', 'g', 'date', 'd'];
             break;
+        case 'github':
+            item = 'gitHub';
         case 'gitHub':
         case 'blog':
         case 'portfolio':
