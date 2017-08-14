@@ -42,56 +42,6 @@ profileHelp = () => {
     }
 };
 
-profileItem = (userName, item, share) => {
-
-    return new Promise((resolve, reject) => {
-        userProfile.getProfileItem(userName, item).then( profileItem => {
-
-            if(profileItem){
-                profileItem = profileItem[item];
-                userName = `${userName.slice(0,1).toUpperCase()}${userName.slice(1)}`;
-
-                let response = { attachments: [] };
-                response.response_type = share ? 'in_channel' : 'ephemeral';
-                switch(item){
-                    case 'badges':
-                        if(profileItem){
-                            response = attachBadges(profileItem, response, userName);
-                            response.attachments[0].pretext = `*${userName}'s Badges*`;
-                        }
-                        else response.text = `${userName} has not earned any badges yet :cry:`;
-                        break;
-                    case 'projects':
-                        if(profileItem.length) response = projectsItemResponse(profileItem, response, userName);
-                        else response.text = `${userName} has not added any completed projects :cry:`;
-                        break;
-                    case 'certifications':
-                        if(profileItem.length) response = certificationsItemResponse(profileItem, response, userName);
-                        else response.text = `${userName} has not added any Free Code Camp certifications :cry:`;
-                        break;
-                    case 'skills':
-                        if(profileItem.languages.length || profileItem.frameworks.length)
-                            response = skillsItemResponse(profileItem, response, userName);
-                        else response = `${userName} has not added any skills :cry:`;
-                        break;
-                    case 'story':
-                        share = false;
-                    default:
-                        response = simpleItemResponse(profileItem);
-                }
-
-                response.response_type = `${share ? 'in_channel' : 'ephemeral'}`;
-                resolve(response);
-            }
-            else resolve({
-                response_type: 'in_channel',
-                text: `User ${userName} does not have a Chingu profile. They can sign up <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>`
-        });
-
-        });
-    });
-};
-
 profileCard = (userName, share) => {
 
     return userProfile.getProfile(userName).then( user => {
@@ -203,37 +153,63 @@ profileCard = (userName, share) => {
     });
 };
 
+
+profileItem = (userName, item, share) => {
+
+    return new Promise((resolve, reject) => {
+        userProfile.getProfileItem(userName, item).then( profileItem => {
+
+            if(profileItem){
+                profileItem = profileItem[item];
+                userName = `${userName.slice(0,1).toUpperCase()}${userName.slice(1)}`;
+
+                let response = { attachments: [] };
+                response.response_type = share ? 'in_channel' : 'ephemeral';
+                switch(item){
+                    case 'badges':
+                        if(profileItem){
+                            response = attachBadges(profileItem, response, userName);
+                            response.attachments[0].pretext = `*${userName}'s Badges*`;
+                        }
+                        else response.text = `${userName} has not earned any badges yet :cry:`;
+                        break;
+                    case 'projects':
+                        if(profileItem.length) response = projectsItemResponse(profileItem, response, userName);
+                        else response.text = `${userName} has not added any completed projects :cry:`;
+                        break;
+                    case 'certifications':
+                        if(profileItem.length) response = certificationsItemResponse(profileItem, response, userName);
+                        else response.text = `${userName} has not added any Free Code Camp certifications :cry:`;
+                        break;
+                    case 'skills':
+                        if(profileItem.languages.length || profileItem.frameworks.length)
+                            response = skillsItemResponse(profileItem, response, userName);
+                        else response = `${userName} has not added any skills :cry:`;
+                        break;
+                    case 'story':
+                        share = false;
+                    default:
+                        response.attachments.push({
+                            color: '#15df89',
+                            mrkdwn_in: ['text', 'pretext'],
+                            pretext: `*${userName}'s ${item}*`,
+                            text: profileItem
+                        });
+                }
+
+                response.response_type = `${share ? 'in_channel' : 'ephemeral'}`;
+                resolve(response);
+            }
+            else resolve({
+                response_type: 'in_channel',
+                text: `User ${userName} does not have a Chingu profile. They can sign up <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>`
+            });
+
+        });
+    });
+};
+
 // ------------------ CUSTOM ATTACHMENTS ------------------ //
-
-    attachBadges = (badges, response, userName) => {
-        const length = badges.length;
-
-        if(length)
-
-        badges.some( (badge, index) => {
-            if(index > 2) return true;
-
-            const attachment = {
-                color: '#15df89',
-                mrkdwn_in: ['text', 'pretext'],
-                footer: badge.name,
-                footer_icon: badge.url,
-            };
-
-            if(index === 0 ) attachment.pretext = '*Badges*';
-
-            response.attachments.push(attachment);
-        });
-
-        if(length > 3) response.attachments.push({
-            color: '#666',
-            mrkdwn_in: ['text'],
-            text: `*use \`/profile @${userName} badges\` to view  ${`${userName.slice(0,1).toUpperCase()}${userName.slice(1)}`}'s other \`${length-3}\` badges*`
-        });
-
-        return response;
-
-    };
 
     simpleItemResponse = (profileItemString, share) => {
         return {
@@ -333,6 +309,37 @@ profileCard = (userName, share) => {
         });
 
         return attachment;
+    };
+
+
+    attachBadges = (badges, response, userName) => {
+        const length = badges.length;
+
+        if(length)
+
+            badges.some( (badge, index) => {
+                if(index > 2) return true;
+
+                const attachment = {
+                    color: '#15df89',
+                    mrkdwn_in: ['text', 'pretext'],
+                    footer: badge.name,
+                    footer_icon: badge.url,
+                };
+
+                if(index === 0 ) attachment.pretext = '*Badges*';
+
+                response.attachments.push(attachment);
+            });
+
+        if(length > 3) response.attachments.push({
+            color: '#666',
+            mrkdwn_in: ['text'],
+            text: `*use \`/profile @${userName} badges\` to view  ${`${userName.slice(0,1).toUpperCase()}${userName.slice(1)}`}'s other \`${length-3}\` badges*`
+        });
+
+        return response;
+
     };
 
 module.exports = {
