@@ -382,7 +382,6 @@ profileItem = (userName, item, share) => {
         const length = badges.length;
 
         if(length)
-
             badges.some( (badge, index) => {
                 if(index > 2) return true;
 
@@ -395,15 +394,14 @@ profileItem = (userName, item, share) => {
                 };
 
                 if(index === 0 ) {
-                    attachment.pretext = length > 3 ? `*Badges - press the button to view the remaining \`${length -3}\` badges*` : '*Badges*';
+                    attachment.pretext = length > 3 ?
+                        `*Badges - press the button to view the remaining \`${length -3}\` badges*` :
+                        '*Badges*';
                 }
 
                 response.attachments.push(attachment);
             });
-    // if the user has more than 3 badges - truncate the attachment
-        // here is a button to add
-
-        if(length > 2) response.attachments.push({
+        if(length > 3) response.attachments.push({
             color: '#666',
             mrkdwn_in: ['text'],
             text: '',
