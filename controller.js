@@ -18,8 +18,6 @@ const router = module.exports = express.Router();
 const tools = require('./tools/exporter');
 
 
-
-
 // -------------------------------------- FRONT END -------------------------------------- //
 
 router.post ('/create-profile', (req, res) => {
@@ -50,13 +48,16 @@ router.post('/checkin', (req, res) => {
             let valueObject = {};
 
         // split the arguments and inject the user name of the user calling the check-in
-            // filter results to only pass @userName tags
             // filter duplicates
             // strip the '@' symbol
-            let filtered = arguments.split(' ');
+            let filtered = body.text.split(' ');
             filtered.push('@vampiire');
             filtered = filtered.filter( (e, i, a) => /@[0-9A-Za-z-_.]+/g.test(e) && a.indexOf(e) === i);
             filtered.forEach( (e, i, a) => a[i] = e.replace(/\@/g, ''));
+
+            // /@[0-9A-Za-z-_.]+/g.test(e) &&
+
+            console.log(filtered);
 
         // set the partners property of the valueObject to the now filtered array of partner(s)
             valueObject.partners = filtered;
@@ -68,8 +69,6 @@ router.post('/checkin', (req, res) => {
 
     }
     else res.end('invalid Slack token');
-
-
 
 });
 

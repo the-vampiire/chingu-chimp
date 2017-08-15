@@ -67,12 +67,13 @@ profileCard = (userName, share) => {
                 const lastCheckin = user.lastCheckin;
                 const totalCheckins = user.totalCheckins;
 
-                // build up overview text based on available data
+            // build up overview text based on available data
                 let overViewText = `*Member Since:* ${joinDate}\n`;
 
                 // format the check-in partners and check-in kind strings
                 let lastCheckinPartners = ``;
                 if(lastCheckin){
+                    console.log(lastCheckin.partners);
                     lastCheckin.partners.forEach( (partner, index) => {
                         partner = `${partner.slice(0, 1).toUpperCase()}${partner.slice(1)}`;
 
@@ -86,16 +87,24 @@ profileCard = (userName, share) => {
 
                     switch(lastCheckin.kind){
                         case 'Accountability':
-                        case 'Pair programming':
+                        case 'Pair Programming':
                             lastCheckin.kind = `${lastCheckin.kind} session`;
+                            overViewText += `*Last Check-in:* ${lastCheckin.task} ${lastCheckin.kind} with ${lastCheckinPartners}\n`;
                             break;
+                        case 'Team Meeting':
+                            overViewText += `*Last Check-in:* ${lastCheckin.task} in a team meeting with ${lastCheckinPartners}\n`;
+                            break;
+                        case 'Self Check-in':
+                            overViewText += `*Last Check-in:* ${lastCheckin.kind} working on ${lastCheckin.task.toLowerCase()}\n`;
+                            break;
+
                     }
 
-                    overViewText += `*Last Check-in:* ${lastCheckin.kind} with ${lastCheckinPartners}\n`
+
                 }
 
                 if(lastProject) overViewText += `*Last Completed Project:* <${lastProject.gitHub}|${lastProject.name}>\n`;
-                // end overview text buildup
+            // end overview text buildup
 
                 let response = {
 
