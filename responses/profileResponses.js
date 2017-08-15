@@ -394,14 +394,14 @@ profileItem = (userName, item, share) => {
                 };
 
                 if(index === 0 ) {
-                    attachment.pretext = length > 3 ?
+                    attachment.pretext = length > 3 && userName?
                         `*Badges - press the button to view the remaining \`${length -3}\` badges*` :
                         '*Badges*';
                 }
 
                 response.attachments.push(attachment);
             });
-        if(length > 3) response.attachments.push({
+        if(userName && length > 3) response.attachments.push({
             color: '#666',
             mrkdwn_in: ['text'],
             text: '',
