@@ -122,9 +122,7 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
 
 // REMOVE AFTER TESING ------ remove this line after beta testing
                 if(!profileDoc.badges.some( e => e.name === 'Beta Tester: Chingu Chimp'))
-                profileDoc.badges.push(dbHelper.newBadge('Chingu Chimp Beta Tester'));
-
-                if(userName === 'chance') profileDoc.badges.push(dbHelper.newBadge('founder'));
+                profileDoc.badges.unshift(dbHelper.newBadge('Chingu Chimp Beta Tester'));
 // REMOVE AFTER TESING
 
                 profileDoc.cohorts = dbHelper.checkAndAddCohort(profileDoc.cohorts, cohortName);
@@ -185,13 +183,13 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
                         const certifications = profileDoc[updateItem];
                     // checks if the passed certificate already exists
                         const addNewCertificate = !certifications.some( certificate => certificate.name === updateData.name );
-                        if(addNewCertificate) profileDoc[updateItem].push(updateData);
+                        if(addNewCertificate) profileDoc[updateItem].unshift(updateData);
                         break;
                     case 'projects':
                         // add a badge after 5 - 10 etc completed projects
                         // move higher badge to front of badges array
                 // consider the ability of updating projects. similar to the way skills is handled
-                        profileDoc[updateItem].push(updateData);
+                        profileDoc[updateItem].unshift(updateData);
                         break;
 
                 // pushing updateData into a nested profile item array
