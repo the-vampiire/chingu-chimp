@@ -49,8 +49,9 @@ router.post('/checkin', (req, res) => {
 
             let valueObject = {};
 
-        // filter results to remove any potential duplicates -> then strip the '@' symbol
-            let filtered = body.text.split(' ').filter( (e, i, a) => a.indexOf(e) === a.lastIndexOf(e));
+        // filter results to only pass @userName tags then strip the '@' symbol
+            let filtered = body.text.split(' ').filter( e => /@[0-9A-Za-z-_.]+/g.test(e));
+            filtered = filtered.filter( (e, i, a) => a.indexOf(e) === a.lastIndexOf(e));
             filtered.forEach( (e, i, a) => a[i] = e.replace(/\@/g, ''));
 
         // inject the filtered and stripped partners array into the valueObject
