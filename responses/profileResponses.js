@@ -158,7 +158,7 @@ profileCard = (userName, share) => {
                 }
 
             // add badges if available
-                if(badges) response = attachBadges(badges, response, userName);
+                if(badges) response = attachBadges(badges, response);
 
             // adds profile item buttons to the end of the profile card
             // buttons are colored based on the availability of the data - green for available / grey for missing
@@ -394,14 +394,14 @@ profileItem = (userName, item, share) => {
                 };
 
                 if(index === 0 ) {
-                    attachment.pretext = length > 3 && userName?
+                    attachment.pretext = length > 3 && !userName?
                         `*Badges - press the button to view the remaining \`${length -3}\` badges*` :
                         '*Badges*';
                 }
 
                 response.attachments.push(attachment);
             });
-        if(userName && length > 3) response.attachments.push({
+        if(!userName && length > 3) response.attachments.push({
             color: '#666',
             mrkdwn_in: ['text'],
             text: '',
