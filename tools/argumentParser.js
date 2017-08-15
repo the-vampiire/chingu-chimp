@@ -112,10 +112,12 @@ argumentSplitter = arguments => {
         return { item : item, storyString: storyString }
     }
 
-    if(item === 'projects' && !(flagsAndData.includes('-g') || flagsAndData.includes('-git')))
-        return `No GitHub repo link detected for this project. All projects require at minimum a name and GitHub repo link.\nTry again or type \`/update projects\` for help`;
-
-
+    if(item === 'projects'){
+        if(!(flagsAndData.includes('-n') || flagsAndData.includes('-name')))
+            return `Missing a project name. All projects require at minimum a project name and GitHub repo link.\nTry again or type \`/update projects\` for more detailed help`;
+        if(!(flagsAndData.includes('-g') || flagsAndData.includes('-git')))
+            return `Missing a GitHub repo. All projects require at minimum a project name and GitHub repo link.\nTry again or type \`/update projects\` for more detailed help`;
+    }
 
     const pairsArray = flagsAndData.split(/ (?=-)/).map( e => e.replace(/-/, ''));
 
