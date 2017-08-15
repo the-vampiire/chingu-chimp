@@ -183,7 +183,10 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
                         const certifications = profileDoc[updateItem];
                     // checks if the passed certificate already exists
                         const addNewCertificate = !certifications.some( certificate => certificate.name === updateData.name );
-                        if(addNewCertificate) profileDoc[updateItem].unshift(updateData);
+                        if(addNewCertificate) {
+                            profileDoc.badges.unshift(dbHelper.newBadge(updateData.name));
+                            profileDoc[updateItem].unshift(updateData);
+                        }
                         break;
                     case 'projects':
                         // add a badge after 5 - 10 etc completed projects

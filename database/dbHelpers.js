@@ -62,36 +62,48 @@ newBadge = (type, color) => {
 
     // let badges have specific colors as well
 
-// badge types
-    // 'betaTester',
     const newBadge = {};
-
-// allow the community to make badges
-    // have each beta testing team provide a badge that can be added here
-
     switch(type){
+
+    // BETA TESTING: CHINGU CHIMP
         case 'Chingu Chimp Beta Tester':
             newBadge.badgeType = 'beta';
             newBadge.name = 'Beta Tester: Chingu Chimp';
-            // newBadge.url = 'http://chevellestuff.net/styles/images/crown.png';
             newBadge.url = 'http://www.monkeymods.com/wp-content/uploads/2015/05/monkey-fav2.png';
-            // newBadge.url = 'https://www.bernewitness.com/favicon-16x16.png';
-            break;
-        case 'founder':
-            newBadge.badgeType = 'custom';
-            newBadge.name = 'Chingu Founder';
-            newBadge.url = 'http://chevellestuff.net/styles/images/crown.png';
             break;
         case 'Chimp Breaker':
             newBadge.badgeType = 'beta';
             newBadge.name = 'I broke the Chimp and all I got was a 16px badge';
             newBadge.url = 'https://cdn2.iconfinder.com/data/icons/aspneticons_v1.0_Nov2006/law-add-16x16.gif';
             break;
-        case 'project5':
+
+    // CERTIFICATIONS
+        case 'Front End Certification':
+            newBadge.badgeType = 'certification';
+            newBadge.name = 'FCC Front End Certified';
+            newBadge.url = 'http://i.imgur.com/gXpgAdi.png';
             break;
-        case 'help5':
+        case 'Back End Certification':
+            newBadge.badgeType = 'certification';
+            newBadge.name = 'FCC Back End Certified';
+            newBadge.url = 'http://i.imgur.com/mY5qQew.png';
             break;
-        case 'help10':
+        case 'Data Visualization Certification':
+            newBadge.badgeType = 'certification';
+            newBadge.name = 'FCC Data Visualization Certified';
+            newBadge.url = 'http://i.imgur.com/IoTeInz.png';
+            break;
+
+    // CUSTOM
+        case 'founder':
+            newBadge.badgeType = 'custom';
+            newBadge.name = 'Chingu Founder';
+            newBadge.url = 'http://chevellestuff.net/styles/images/crown.png';
+            break;
+        case 'father':
+            newBadge.badgeType = 'custom';
+            newBadge.name = 'Father of the Chimp';
+            newBadge.url = 'http://icons.iconarchive.com/icons/icons8/windows-8/16/Astrology-Year-Of-Monkey-icon.png';
             break;
     }
 
