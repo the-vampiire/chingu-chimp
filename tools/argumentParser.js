@@ -166,6 +166,7 @@ argumentSplitter = arguments => {
                     return `Invalid certificate url, must be a direct certificate link of the form \`https://www.freecodecamp.com/userName/x-x-certification\``;
 
         // check if general url is valid
+            if(data.length > 75) return `*Invalid url. Must be below 75 characters*`;
             if(!/(http:\/\/|https:\/\/)(www\.)?/.test(data) || ~data.indexOf(' ')) return `Invalid data: \`${data}\` associated with flag [\`-${flag}\`]. Check that a valid and complete [\`http://www.\`] or [\`http\`] url is being passed`;
 
             flag = 'url';

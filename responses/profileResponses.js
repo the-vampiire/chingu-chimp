@@ -148,21 +148,14 @@ profileCard = (userName, share) => {
                     });
                 }
 
-                // add certifications if available
-                //     if(certifications.length) certificationsItemResponse(certifications, response);
-
-                // add skills if available
-                //     if(skills.languages.length || skills.frameworks.length) skillsItemResponse(skills, response);
-
-
-                // add badges if available
+            // add badges if available
                 if(badges) response = attachBadges(badges, response, userName);
 
                 response.attachments.push({
                     mrkdwn_in: ['pretext', 'text'],
                     pretext: '*Additional Profile Items*',
                     color: '#15df89',
-                    text: '*Warning:* Pressing a button will replace this message with the selected profile item.',
+                    text: '*Note:* Do not fight over the buttons!',
                     callback_id: 'profileItem',
                     actions: [
                         {
@@ -191,6 +184,8 @@ profileCard = (userName, share) => {
                     ]
                 });
 
+                console.log(response);
+
                 resolve(response);
             }
 
@@ -214,7 +209,6 @@ profileItem = (userName, item, share) => {
                 userName = `${userName.slice(0,1).toUpperCase()}${userName.slice(1)}`;
 
                 let response = { attachments: [] };
-                response.response_type = share ? 'in_channel' : 'ephemeral';
                 switch(item){
                     case 'badges':
                         if(profileItem){
@@ -250,8 +244,6 @@ profileItem = (userName, item, share) => {
 
             // settle the response type based on the share parameter boolean
                 response.response_type = `${share ? 'in_channel' : 'ephemeral'}`;
-
-                console.log(response);
 
                 resolve(response);
             }
@@ -386,6 +378,7 @@ profileItem = (userName, item, share) => {
 
                 const attachment = {
                     color: '#15df89',
+                    text: '',
                     mrkdwn_in: ['text', 'pretext'],
                     footer: badge.name,
                     footer_icon: badge.url,
@@ -413,6 +406,7 @@ profileItem = (userName, item, share) => {
     profileCardButtonAttachment = userName => {
         return {
             color: '#15df89',
+            text: '',
             callback_id: 'profileCard',
             actions: [
                 {
