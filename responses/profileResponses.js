@@ -395,7 +395,7 @@ profileItem = (userName, item, share) => {
                 };
 
                 if(index === 0 ) {
-                    attachment.pretext = length > 2 ? `*Badges - press the button to view the remaining \`${length -2}\` badges*` : '*Badges*';
+                    attachment.pretext = length > 3 ? `*Badges - press the button to view the remaining \`${length -3}\` badges*` : '*Badges*';
                 }
 
                 response.attachments.push(attachment);
@@ -407,7 +407,6 @@ profileItem = (userName, item, share) => {
             color: '#666',
             mrkdwn_in: ['text'],
             text: '',
-            // text: `*View  ${`${userName.slice(0,1).toUpperCase()}${userName.slice(1)}`}'s other \`${length-3}\` badges*`,
             callback_id: 'profileItem',
             actions: [{ text: 'Badges', name: 'badges', type: 'button',
                 style: 'primary', value: JSON.stringify({ userName, item: 'badges' }) }]
