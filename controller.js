@@ -53,10 +53,12 @@ router.post('/checkin', (req, res) => {
             // filter results to only pass @userName tags
             // filter duplicates
             // strip the '@' symbol
-            let filtered = body.text.split(' ')
-                .filter( arguments => /@[0-9A-Za-z-_.]+/g.test(arguments))
-                .filter( (e, i, a) => a.indexOf(e) === a.lastIndexOf(e));
+            let filtered = body.text.split(' ');
+            filtered.push(`@${user}`);
 
+            filtered.filter( arguments => /@[0-9A-Za-z-_.]+/g.test(arguments) && a.indexOf(e) === a.lastIndexOf(e));
+
+            // filtered.filter( (e, i, a) => a.indexOf(e) === a.lastIndexOf(e));
             filtered.forEach( (e, i, a) => a[i] = e.replace(/\@/g, ''));
 
         // inject the user calling the checkin so they don't have to tag themselves
