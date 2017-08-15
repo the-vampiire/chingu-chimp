@@ -151,6 +151,9 @@ profileCard = (userName, share) => {
             // add badges if available
                 if(badges) response = attachBadges(badges, response, userName);
 
+            // adds profile item buttons to the end of the profile card
+            // buttons are colored based on the availability of the data - green for available / grey for missing
+                // does not stop users from clicking but gives a visual indicator
                 response.attachments.push({
                     mrkdwn_in: ['pretext', 'text'],
                     pretext: '*Additional Profile Items*',
