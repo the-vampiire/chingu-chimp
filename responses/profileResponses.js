@@ -155,7 +155,7 @@ profileCard = (userName, share) => {
                     mrkdwn_in: ['pretext', 'text'],
                     pretext: '*Additional Profile Items*',
                     color: '#15df89',
-                    text: '*Note:* Do not fight over the buttons!',
+                    text: '*Play Nice:* No monkeying :monkey_face: around over the buttons!',
                     callback_id: 'profileItem',
                     actions: [
                         {
@@ -183,8 +183,6 @@ profileCard = (userName, share) => {
                         }
                     ]
                 });
-
-                console.log(response);
 
                 resolve(response);
             }
