@@ -395,7 +395,7 @@ profileItem = (userName, item, share) => {
                 };
 
                 if(index === 0 ) {
-                    attachment.pretext = length > 2 ? `*Badges - press the button to view the remaining ${length -2}*` : '*Badges*';
+                    attachment.pretext = length > 2 ? `*Badges - press the button to view the remaining \`${length -2}\` badges*` : '*Badges*';
                 }
 
                 response.attachments.push(attachment);
@@ -403,7 +403,7 @@ profileItem = (userName, item, share) => {
     // if the user has more than 3 badges - truncate the attachment
         // here is a button to add
 
-        if(length > 3) response.attachments.push({
+        if(length > 2) response.attachments.push({
             color: '#666',
             mrkdwn_in: ['text'],
             text: '',
