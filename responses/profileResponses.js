@@ -60,7 +60,7 @@ profileCard = (userName, share) => {
                 const portfolio = user.portfolio;
                 const projects = user.projects;
                 const projectsLength = projects.length;
-                const lastProject = user.projects[projectsLength-1];
+                const lastProject = user.projects[0];
                 const skills = user.skills;
                 const story = user.story;
                 const certifications = user.certifications;
