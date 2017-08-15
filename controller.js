@@ -48,10 +48,18 @@ router.post('/checkin', (req, res) => {
             let valueObject = {};
 
         // split the arguments and inject the user name of the user calling the check-in
-            // filter duplicates
-            // strip the '@' symbol
-            let filtered = body.text.split(' ');
-            filtered.push(user);
+        // filter duplicates
+        // strip the '@' symbol
+
+            let filtered;
+        // if user(s) are passed
+            if(body.text){
+                filtered = body.text.split(' ');
+                filtered.push(`@${user}`);
+            }
+        // if no user is passed (self check-in)
+            else filtered = [`@${user}`];
+
             filtered = filtered.filter( (e, i, a) => /@[0-9A-Za-z-_.]+/g.test(e) && a.indexOf(e) === i);
             filtered.forEach( (e, i, a) => a[i] = e.replace(/\@/g, ''));
 

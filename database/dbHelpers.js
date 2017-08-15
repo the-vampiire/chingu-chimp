@@ -7,21 +7,25 @@
 
 
 // checks for existing / adds missing badges
-checkAndAddBadges = profileDoc => {
-    const badges = profileDoc.badges;
-    const certifications = profileDoc.certifications;
-    const skills = profileDoc.skills;
-        const languages = skills.languages;
-        const frameworks = skills.frameworks;
-    const projects = profileDoc.projects;
-    const totalCheckins = profileDoc.totalCheckins;
-    // const bestS
-
-// if the user has certifications - check if they have associated badges
-    if(certifications.length){
-
-    }
-};
+// checkAndAddBadges = profileDoc => {
+//     const badges = profileDoc.badges;
+//     const certifications = profileDoc.certifications;
+//     const skills = profileDoc.skills;
+//         const languages = skills.languages;
+//         const frameworks = skills.frameworks;
+//     const projects = profileDoc.projects;
+//     const totalCheckins = profileDoc.totalCheckins;
+//     // const bestS
+//
+// // if the user has certifications - check if they have associated badges
+//     if(certifications.length){
+//         certifications.forEach( certification => {
+//             badges.forEach( badge => {
+//                 if(badge)
+//             });
+//         });
+//     }
+// };
 
 // checks for an existing /  adds a new cohort
 checkAndAddCohort = (cohorts, cohortName) => {
@@ -129,7 +133,7 @@ newBadge = (type, color) => {
 };
 
 module.exports = {
-    checkAndAddBadges,
+    // checkAndAddBadges,
     checkAndAddCohort,
     streakUpdater,
     newBadge
