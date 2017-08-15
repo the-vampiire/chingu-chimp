@@ -51,13 +51,9 @@ router.post('/checkin', (req, res) => {
             // filter duplicates
             // strip the '@' symbol
             let filtered = body.text.split(' ');
-            filtered.push('@vampiire');
+            filtered.push(user);
             filtered = filtered.filter( (e, i, a) => /@[0-9A-Za-z-_.]+/g.test(e) && a.indexOf(e) === i);
             filtered.forEach( (e, i, a) => a[i] = e.replace(/\@/g, ''));
-
-            // /@[0-9A-Za-z-_.]+/g.test(e) &&
-
-            console.log(filtered);
 
         // set the partners property of the valueObject to the now filtered array of partner(s)
             valueObject.partners = filtered;

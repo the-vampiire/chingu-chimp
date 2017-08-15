@@ -73,7 +73,6 @@ profileCard = (userName, share) => {
                 // format the check-in partners and check-in kind strings
                 let lastCheckinPartners = ``;
                 if(lastCheckin){
-                    console.log(lastCheckin.partners);
                     lastCheckin.partners.forEach( (partner, index) => {
                         partner = `${partner.slice(0, 1).toUpperCase()}${partner.slice(1)}`;
 
@@ -158,7 +157,7 @@ profileCard = (userName, share) => {
                 }
 
             // add badges if available
-                if(badges) response = attachBadges(badges, response);
+                if(badges) response = attachBadges(badges, response, userName);
 
             // adds profile item buttons to the end of the profile card
             // buttons are colored based on the availability of the data - green for available / grey for missing
@@ -222,7 +221,7 @@ profileItem = (userName, item, share) => {
                 switch(item){
                     case 'badges':
                         if(profileItem){
-                            response = attachBadges(profileItem, response, userName);
+                            response = attachBadges(profileItem, response);
                             response.attachments[0].pretext = `*${userName}'s Badges*`;
                         }
                         else response.text = `${userName} has not earned any badges yet :cry:`;
@@ -381,9 +380,13 @@ profileItem = (userName, item, share) => {
     attachBadges = (badges, response, userName) => {
         const length = badges.length;
 
+        console.log(userName);
+
         if(length)
             badges.some( (badge, index) => {
-                if(index > 2) return true;
+
+            // truncate remaining badges after the third for the profile card (indicated by userName being passed)
+                if(index > 2 && userName) return true;
 
                 const attachment = {
                     color: '#15df89',
@@ -393,15 +396,15 @@ profileItem = (userName, item, share) => {
                     footer_icon: badge.url
                 };
 
-                if(index === 0 ) {
-                    attachment.pretext = length > 3 && !userName?
-                        `*Badges - press the button to view the remaining \`${length -3}\` badges*` :
-                        '*Badges*';
-                }
+            // add a pretext signifying remaining badges (if truncated)
+                if(index === 0 && length > 3)
+                    attachment.pretext = `*Badges - press the button to view the remaining \`${length -3}\` badges*`
 
                 response.attachments.push(attachment);
             });
-        if(!userName && length > 3) response.attachments.push({
+
+    // add a badge button if the user has more than 3 badges
+        if(length > 3 && userName) response.attachments.push({
             color: '#666',
             mrkdwn_in: ['text'],
             text: '',

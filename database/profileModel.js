@@ -116,6 +116,7 @@ const userSchema = new mongoose.Schema({
 userSchema.statics.processCheckin = function(userName, cohortName, channelID, checkinSessionData){
 
     return new Promise( (resolve, reject) => {
+
         this.findOne({userName: userName}).then( profileDoc => {
             if(profileDoc){
 
@@ -147,13 +148,17 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
                     userName = `${userName.slice(0,1).toUpperCase()}${userName.slice(1)}`;
 
                     if(saveError) resolve(saveError);
+
                     if(success){
+
                         if(channel) resolve(`Succesfully saved the check-in for ${userName}. you have \`${channel.sessions.length}\` check-ins on this channel!\n*Total check-ins:* \`${profileDoc.totalCheckins}\`\n*Current streak:* \`${profileDoc.currentStreak.value}\` days\n*Best streak:* \`${profileDoc.bestStreak}\` days\n`);
+
                         else resolve(`Succesfully saved the check-in for ${userName}. This is your first check-in on this channel, keep it up!\n*Total check-ins:* \`${profileDoc.totalCheckins}\`\n*Current streak:* \`${profileDoc.currentStreak.value}\` days\n*Best streak:* \`${profileDoc.bestStreak}\` days\n`);
                     }
                 });
             }
-// ADD FINAL URL AT END OF NEXT LINE
+
+        // user not found
             else resolve(`*Check-in for \`@${userName}\` failed:*\n*Profile \`@${userName}\` not found*\n*Create a profile <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>*\n`);
         });
     });
@@ -168,9 +173,11 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
 
             if(profileDoc){
 
-                // if the cohort the user is updating from is not in their profile then it is added in this step
-                let cohorts = profileDoc.cohorts;
-                profileDoc.cohorts = checkAndAddCohort(cohorts, cohortName);
+            // check if the cohort the user is updating from is in the user's cohorts array. if not - add it
+                profileDoc.cohorts = checkAndAddCohort(profileDoc.cohorts, cohortName);
+
+            // check if the user has all appropriate badges. if not - add them
+            //     profileDoc.badges = checkAndAddBadges(profileDoc);
 
                 let updateItem = data.item;
                 let updateData = data.updateData;
@@ -231,18 +238,17 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
 
                 return profileDoc.save( (saveError, doc) => {
                     if(saveError) resolve(`error updating ${updateItem} for ${userName}`);
+
                     else if(updateItem === 'skills')
                         resolve(`*Successfully updated your ${data.subItem}: ${updateData.name} at the ${updateData.level} skill level*`);
+
                     else resolve(`*Successfully updated your ${updateItem}*`);
 
                 });
             }
 
-            else{
-                // alert the AutoBot to message the user who does not have an account. pass on the link to set up their profile
-// ADD FINAL URL AT THE END OF THE NEXT LINE
-                resolve (`*Update for \`@${userName}\` failed:*\n*Profile \`@${userName}\` not found.*\nCreate a profile <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>*\n`);
-            }
+        // user not found
+            else resolve (`*Update for \`@${userName}\` failed:*\n*Profile \`@${userName}\` not found.*\nCreate a profile <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>*\n`);
 
         })
 
