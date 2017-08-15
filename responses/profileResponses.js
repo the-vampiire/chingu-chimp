@@ -406,7 +406,7 @@ profileItem = (userName, item, share) => {
 
     profileCardButtonAttachment = userName => {
         return {
-            color: '#15df89',
+            color: '#666',
             text: '',
             callback_id: 'profileCard',
             actions: [
