@@ -63,7 +63,7 @@ router.post('/checkin', (req, res) => {
 
         // inject the user calling the checkin so they don't have to tag themselves
             valueObject.partners = filtered;
-            valueObject.partners.push(user);
+            // valueObject.partners.push(user);
 
             res.json(tools.interactive.interaction('checkin', valueObject));
         }
