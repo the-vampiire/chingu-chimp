@@ -4,6 +4,7 @@
  */
 
 const checkinResponse = require('../responses/checkinResponses');
+const profileResponse = require('../responses/profileResponses');
 const updateResponse = require('../responses/updateResponses');
 const userProfile = require('../database/profileModel').userProfile;
 
@@ -115,7 +116,11 @@ processInteraction = payload => {
             }
 
             else response = updateResponse.skillSelect(JSON.stringify(value));
-
+            break;
+    // -------------- PROFILE ITEMS -------------- //
+        case 'profileItem':
+            value = JSON.parse(value);
+            response = profileResponse.profileItem(value.userName, value.item);
             break;
 
 // ------------ REMOVE AFTER BETA TESTING -----------------------

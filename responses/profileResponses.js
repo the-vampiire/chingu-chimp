@@ -47,6 +47,7 @@ profileCard = (userName, share) => {
     return userProfile.getProfile(userName).then( user => {
 
         if(user){
+
             const profilePic = user.profilePic.size_192;
             const badges = user.badges;
             const points = user.points;
@@ -56,10 +57,11 @@ profileCard = (userName, share) => {
             const blog = user.blog;
             const gitHub = user.gitHub;
             const portfolio = user.portfolio;
-            const lastProject = user.projects.pop();
+            const projects = user.projects;
+            const projectsLength = projects.length;
+            const lastProject = user.projects[projectsLength-1];
             const skills = user.skills;
             const story = user.story;
-            const projects = user.projects;
             const certifications = user.certifications;
             const lastCheckin = user.lastCheckin;
             const totalCheckins = user.totalCheckins;
@@ -140,13 +142,13 @@ profileCard = (userName, share) => {
                     fallback: `${userName} social media links`,
                     mrkdwn_in: ['text', 'pretext'],
                     pretext: '*Social Media*',
-                    color: '#666',
+                    color: '#15df89',
                     text: `${socialMediaString}`
                 });
             }
 
         // add certifications if available
-            if(certifications.length) certificationsItemResponse(certifications, response);
+        //     if(certifications.length) certificationsItemResponse(certifications, response);
 
         // add skills if available
         //     if(skills.languages.length || skills.frameworks.length) skillsItemResponse(skills, response);
@@ -156,15 +158,35 @@ profileCard = (userName, share) => {
             if(badges) response = attachBadges(badges, response, userName);
 
             response.attachments.push({
-                mrkdwn_in: ['pretext'],
+                mrkdwn_in: ['pretext', 'text'],
                 pretext: '*Additional Profile Items*',
+                color: '#15df89',
+                text: '*Warning:* Pressing a button will replace this message with the selected profile item.',
                 callback_id: 'profileItem',
                 actions: [
-                    { text: 'Story', name: 'story', type: 'button', style: `${ story ? 'primary' : 'default'}` },
-                    { text: 'Skills', name: 'skills', type: 'button', style: `${ skills ? 'primary' : 'default'}` },
-                    { text: 'Projects', name: 'projects', type: 'button', style: `${ projects.length ? 'primary' : 'default'}` },
-                    { text: 'Certifications', name: 'certifications', type: 'button',
-                        style: `${ certifications ? 'primary' : 'default'}` },
+                    {
+                        text: 'Story', name: 'story', type: 'button',
+                        style: `${ story ? 'primary' : 'default'}`,
+                        value: JSON.stringify({ item: 'story', userName: `${userName}` })
+                    },
+
+                    {
+                        text: 'Skills', name: 'skills', type: 'button',
+                        style: `${ (skills.languages.length || skills.frameworks.length) ? 'primary' : 'default'}`,
+                        value: JSON.stringify({ item: 'skills', userName: `${userName}` })
+                    },
+
+                    {
+                        text: 'Projects', name: 'projects', type: 'button',
+                        style: `${ projectsLength ? 'primary' : 'default' }`,
+                        value: JSON.stringify({ item: 'projects', userName: `${userName}` })
+                    },
+
+                    {
+                        text: 'Certifications', name: 'certifications', type: 'button',
+                        style: `${ certifications.length ? 'primary' : 'default'}`,
+                        value: JSON.stringify({ item: 'certifications', userName: `${userName}` })
+                    }
                 ]
             });
 
@@ -215,12 +237,15 @@ profileItem = (userName, item, share) => {
                     case 'story':
                         share = false;
                     default:
-                        response.attachments.push({
-                            color: '#15df89',
-                            mrkdwn_in: ['text', 'pretext'],
-                            pretext: `*${userName}'s ${item}*`,
-                            text: profileItem
-                        });
+                        if(profileItem){
+                            response.attachments.push({
+                                color: '#15df89',
+                                mrkdwn_in: ['text', 'pretext'],
+                                pretext: `*${userName}'s ${item}*`,
+                                text: profileItem
+                            });
+                        }
+                        else response = `${userName} has not added this information yet :cry:`
                 }
 
                 response.response_type = `${share ? 'in_channel' : 'ephemeral'}`;
@@ -337,6 +362,8 @@ profileItem = (userName, item, share) => {
         return attachment;
     };
 
+
+    // pass a new parameter that sets the badge color
 
     attachBadges = (badges, response, userName) => {
         const length = badges.length;

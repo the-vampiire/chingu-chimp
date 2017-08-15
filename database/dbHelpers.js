@@ -57,7 +57,10 @@ streakUpdater = (checkins, currentStreak, bestStreak) => {
 
 
 // returns a badge object to add to the badges array
-newBadge = type => {
+
+newBadge = (type, color) => {
+
+    // let badges have specific colors as well
 
 // badge types
     // 'betaTester',
