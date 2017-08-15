@@ -156,7 +156,7 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
                 });
             }
 // ADD FINAL URL AT END OF NEXT LINE
-            else resolve(`*Check-in for \`@${userName}\` failed:*\n*Profile \`@${userName}\` not found*\nCreate a profile <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>*\n`);
+            else resolve(`*Check-in for \`@${userName}\` failed:*\n*Profile \`@${userName}\` not found*\n*Create a profile <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>*\n`);
         });
     });
 };
