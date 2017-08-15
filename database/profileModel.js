@@ -123,10 +123,15 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
 
 // REMOVE AFTER TESING ------ remove this line after beta testing
                 if(!profileDoc.badges.some( e => e.name === 'Beta Tester: Chingu Chimp'))
-                profileDoc.badges.unshift(dbHelper.newBadge('Chingu Chimp Beta Tester'));
+                    profileDoc.badges.unshift(dbHelper.newBadge('Chingu Chimp Beta Tester'));
+                // profileDoc.badges.unshift(dbHelper.newBadge('father'));
 // REMOVE AFTER TESING
 
+                // check if the cohort the user is updating from is in the user's cohorts array. if not - add it
                 profileDoc.cohorts = dbHelper.checkAndAddCohort(profileDoc.cohorts, cohortName);
+
+                // check if the user has all appropriate badges. if not - add them
+                profileDoc.badges = dbHelper.checkAndAddBadges(profileDoc);
 
                 const checkins = profileDoc.checkins;
                 let channel = checkins.find( e => e.channelID === channelID);
@@ -173,11 +178,12 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
 
             if(profileDoc){
 
-            // check if the cohort the user is updating from is in the user's cohorts array. if not - add it
-                profileDoc.cohorts = checkAndAddCohort(profileDoc.cohorts, cohortName);
+                // check if the cohort the user is updating from is in the user's cohorts array. if not - add it
+                profileDoc.cohorts = dbHelper.checkAndAddCohort(profileDoc.cohorts, cohortName);
 
-            // check if the user has all appropriate badges. if not - add them
-            //     profileDoc.badges = checkAndAddBadges(profileDoc);
+                // check if the user has all appropriate badges. if not - add them
+                profileDoc.badges = dbHelper.checkAndAddBadges(profileDoc);
+                console.log(profileDoc.badges);
 
                 let updateItem = data.item;
                 let updateData = data.updateData;

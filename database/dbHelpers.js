@@ -7,25 +7,33 @@
 
 
 // checks for existing / adds missing badges
-// checkAndAddBadges = profileDoc => {
-//     const badges = profileDoc.badges;
-//     const certifications = profileDoc.certifications;
-//     const skills = profileDoc.skills;
-//         const languages = skills.languages;
-//         const frameworks = skills.frameworks;
-//     const projects = profileDoc.projects;
-//     const totalCheckins = profileDoc.totalCheckins;
-//     // const bestS
-//
-// // if the user has certifications - check if they have associated badges
-//     if(certifications.length){
-//         certifications.forEach( certification => {
-//             badges.forEach( badge => {
-//                 if(badge)
-//             });
-//         });
-//     }
-// };
+checkAndAddBadges = profileDoc => {
+
+    let badges = profileDoc.badges;
+    const certifications = profileDoc.certifications;
+    const skills = profileDoc.skills;
+        const languages = skills.languages;
+        const frameworks = skills.frameworks;
+    const projects = profileDoc.projects;
+    const totalCheckins = profileDoc.totalCheckins;
+
+    if(certifications.length) badges = updateBadges(certifications, badges, 'name');
+
+    return badges;
+};
+
+// checks an array against the user's badges. adds any missing badges the user has earned
+updateBadges = (eachArray, badges, matchProperty) => {
+    console.log(eachArray);
+
+    eachArray.forEach( eachE => {
+        if(!badges.some( badge => badge[matchProperty] === eachE[matchProperty]))
+            badges.unshift(newBadge(eachE[matchProperty]))
+    });
+
+    return badges;
+
+};
 
 // checks for an existing /  adds a new cohort
 checkAndAddCohort = (cohorts, cohortName) => {
@@ -43,8 +51,6 @@ checkAndAddCohort = (cohorts, cohortName) => {
         // 3+?
         cohorts.push({cohortName: cohortName});
     }
-
-
 
     return cohorts;
 };
@@ -102,17 +108,17 @@ newBadge = (type, color) => {
     // CERTIFICATIONS
         case 'Front End Certification':
             newBadge.badgeType = 'certification';
-            newBadge.name = 'FCC Front End Certified';
+            newBadge.name = 'Front End Certification';
             newBadge.url = 'http://i.imgur.com/gXpgAdi.png';
             break;
         case 'Back End Certification':
             newBadge.badgeType = 'certification';
-            newBadge.name = 'FCC Back End Certified';
+            newBadge.name = 'Back End Certification';
             newBadge.url = 'http://i.imgur.com/mY5qQew.png';
             break;
         case 'Data Visualization Certification':
             newBadge.badgeType = 'certification';
-            newBadge.name = 'FCC Data Visualization Certified';
+            newBadge.name = 'Data Visualization Certification';
             newBadge.url = 'http://i.imgur.com/IoTeInz.png';
             break;
 
@@ -133,7 +139,7 @@ newBadge = (type, color) => {
 };
 
 module.exports = {
-    // checkAndAddBadges,
+    checkAndAddBadges,
     checkAndAddCohort,
     streakUpdater,
     newBadge
