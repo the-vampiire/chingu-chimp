@@ -292,7 +292,7 @@ profileItem = (userName, item, share) => {
 
         projects.forEach( (project, index) => {
             let attachment = {
-                color: index % 2 ? '#666666' : '#15df89',
+                color: index % 2 ? '#666' : '#15df89',
                 mrkdwn_in: ['pretext', 'text'],
                 text: `*Project Name:* ${project.name}\n*GitHub Repo:* <${project.gitHub}|${project.gitHub.slice(project.gitHub.indexOf('.com/')+5)}>\n*Project Link:* ${ project.url ?  `<${project.url}|${project.name}>` : `No Link Available`}\n*Completed Date:* <!date^${Math.round((project.completedDate/1000))}^{date_pretty}|Failed to load date>`
             };
@@ -325,7 +325,7 @@ profileItem = (userName, item, share) => {
         if(frameworks.length){
             const frameworkAttachment = {
                 mrkdwn_in: ['text', 'pretext'],
-                color: '#666666',
+                color: '#15df89',
                 pretext: '*Frameworks*',
                 fields: []
             };
