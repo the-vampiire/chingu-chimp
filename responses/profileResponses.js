@@ -391,7 +391,7 @@ profileItem = (userName, item, share) => {
                     text: '',
                     mrkdwn_in: ['text', 'pretext'],
                     footer: badge.name,
-                    footer_icon: badge.url,
+                    footer_icon: badge.url
                 };
 
                 if(index === 0 ) attachment.pretext = '*Badges*';
@@ -400,12 +400,14 @@ profileItem = (userName, item, share) => {
             });
     // if the user has more than 3 badges - truncate the attachment
         // here is a button to add
-            //     { text: 'Certifications', name: 'certifications', type: 'button',
-            //         style: `${ certifications ? 'primary' : 'default'}` },
+
         if(length > 3) response.attachments.push({
             color: '#666',
             mrkdwn_in: ['text'],
-            text: `*use \`/profile @${userName} badges\` to view  ${`${userName.slice(0,1).toUpperCase()}${userName.slice(1)}`}'s other \`${length-3}\` badges*`
+            text: `*View  ${`${userName.slice(0,1).toUpperCase()}${userName.slice(1)}`}'s other \`${length-3}\` badges*`,
+            callback_id: 'profileItem',
+            actions: [{ text: 'Badges', name: 'badges', type: 'button',
+                style: 'primary', value: JSON.stringify({ userName, item: 'badges' }) }]
         });
 
         return response;
@@ -422,7 +424,7 @@ profileItem = (userName, item, share) => {
                 {
                     text: `${userName}'s Profile`, name: 'profileCard', type: 'button',
                     style: 'primary',
-                    value: JSON.stringify({ userName: `${userName}` })
+                    value: JSON.stringify({ userName })
                 }
             ]
         }
