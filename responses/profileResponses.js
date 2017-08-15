@@ -44,161 +44,163 @@ profileHelp = () => {
 
 profileCard = (userName, share) => {
 
-    return userProfile.getProfile(userName).then( user => {
+    return new Promise((resolve, reject) => {
+        userProfile.getProfile(userName).then( user => {
 
-        if(user){
+            if(user){
 
-            const profilePic = user.profilePic.size_192;
-            const badges = user.badges;
-            const points = user.points;
-            const currentStreak = user.currentStreak.value;
-            const bestStreak = user.bestStreak;
-            const joinDate = `<!date^${Math.round((user.joinDate/1000))}^{date_pretty}|Failed to load date>`;
-            const blog = user.blog;
-            const gitHub = user.gitHub;
-            const portfolio = user.portfolio;
-            const projects = user.projects;
-            const projectsLength = projects.length;
-            const lastProject = user.projects[projectsLength-1];
-            const skills = user.skills;
-            const story = user.story;
-            const certifications = user.certifications;
-            const lastCheckin = user.lastCheckin;
-            const totalCheckins = user.totalCheckins;
+                const profilePic = user.profilePic.size_192;
+                const badges = user.badges;
+                const points = user.points;
+                const currentStreak = user.currentStreak.value;
+                const bestStreak = user.bestStreak;
+                const joinDate = `<!date^${Math.round((user.joinDate/1000))}^{date_pretty}|Failed to load date>`;
+                const blog = user.blog;
+                const gitHub = user.gitHub;
+                const portfolio = user.portfolio;
+                const projects = user.projects;
+                const projectsLength = projects.length;
+                const lastProject = user.projects[projectsLength-1];
+                const skills = user.skills;
+                const story = user.story;
+                const certifications = user.certifications;
+                const lastCheckin = user.lastCheckin;
+                const totalCheckins = user.totalCheckins;
 
-    // build up overview text based on available data
-            let overViewText = `*Member Since:* ${joinDate}\n`;
+                // build up overview text based on available data
+                let overViewText = `*Member Since:* ${joinDate}\n`;
 
-        // format the check-in partners and check-in kind strings
-            let lastCheckinPartners = ``;
-            if(lastCheckin){
-                lastCheckin.partners.forEach( (partner, index) => {
-                    partner = `${partner.slice(0, 1).toUpperCase()}${partner.slice(1)}`;
+                // format the check-in partners and check-in kind strings
+                let lastCheckinPartners = ``;
+                if(lastCheckin){
+                    lastCheckin.partners.forEach( (partner, index) => {
+                        partner = `${partner.slice(0, 1).toUpperCase()}${partner.slice(1)}`;
 
-                    if(lastCheckin.partners.length === 1) lastCheckinPartners += `${partner}`;
-                    else if(index === lastCheckin.partners.length-1 && lastCheckinPartners){
-                        if(lastCheckin.partners.length === 2) lastCheckinPartners = lastCheckinPartners.replace(/,/, '');
-                        lastCheckinPartners += `and ${partner}`;
+                        if(lastCheckin.partners.length === 1) lastCheckinPartners += `${partner}`;
+                        else if(index === lastCheckin.partners.length-1 && lastCheckinPartners){
+                            if(lastCheckin.partners.length === 2) lastCheckinPartners = lastCheckinPartners.replace(/,/, '');
+                            lastCheckinPartners += `and ${partner}`;
+                        }
+                        else lastCheckinPartners += `${partner}, `;
+                    });
+
+                    switch(lastCheckin.kind){
+                        case 'Accountability':
+                        case 'Pair programming':
+                            lastCheckin.kind = `${lastCheckin.kind} session`;
+                            break;
                     }
-                    else lastCheckinPartners += `${partner}, `;
-                });
 
-                switch(lastCheckin.kind){
-                    case 'Accountability':
-                    case 'Pair programming':
-                        lastCheckin.kind = `${lastCheckin.kind} session`;
-                        break;
+                    overViewText += `*Last Check-in:* ${lastCheckin.kind} with ${lastCheckinPartners}\n`
                 }
 
-                overViewText += `*Last Check-in:* ${lastCheckin.kind} with ${lastCheckinPartners}\n`
-            }
+                if(lastProject) overViewText += `*Last Completed Project:* <${lastProject.gitHub}|${lastProject.name}>\n`;
+                // end overview text buildup
 
-            if(lastProject) overViewText += `*Last Completed Project:* <${lastProject.gitHub}|${lastProject.name}>\n`;
-    // end overview text buildup
+                let response = {
 
-            let response = {
+                    response_type: `${share ? `in_channel` : `ephemeral`}`,
+                    text: `*CHINGU PROFILE CARD*\n*${userName.toUpperCase()}*`,
 
-                response_type: `${share ? `in_channel` : `ephemeral`}`,
-                text: `*CHINGU PROFILE CARD*\n*${userName.toUpperCase()}*`,
+                    attachments: [
 
-                attachments: [
+                        {
+                            fallback: `${userName} join date, previous project, and last check-in`,
+                            mrkdwn_in: ["text", "pretext"],
+                            color: '#15df89',
+                            text: overViewText,
+                            thumb_url: profilePic,
 
-                    {
-                        fallback: `${userName} join date, previous project, and last check-in`,
-                        mrkdwn_in: ["text", "pretext"],
-                        color: '#15df89',
-                        text: overViewText,
-                        thumb_url: profilePic,
+                        },
 
-                    },
+                        {
+                            fallback: `${userName} points, completed projects, best streak, current streak`,
+                            mrkdwn_in: ['text', 'pretext'],
+                            pretext: "*Dashboard*",
+                            color: '#15df89',
+                            fields: [
+                                { title: 'Chingu Points', value: `${points}`, short: true },
+                                { title: 'Total Check-ins',
+                                    value: `${totalCheckins > 0 ? totalCheckins : "No check-in data available"}`,
+                                    short: true
+                                },
+                                { title: 'Current Streak', value: `${currentStreak} days`, short: true },
+                                { title: 'Best Streak', value: `${bestStreak} days`, short: true }
+                            ]
+                        },
+                    ]
+                };
 
-                    {
-                        fallback: `${userName} points, completed projects, best streak, current streak`,
+
+                // add gitHub / blog / portfolio links if available
+                if(gitHub || blog || portfolio) {
+                    let socialMediaString = ``;
+                    if(blog) socialMediaString += `*Blog:* ${blog}\n`;
+                    if(gitHub) socialMediaString += `*GitHub* ${gitHub}\n`;
+                    if(portfolio) socialMediaString += `*Portfolio*: ${portfolio}\n`;
+
+                    response.attachments.push({
+                        fallback: `${userName} social media links`,
                         mrkdwn_in: ['text', 'pretext'],
-                        pretext: "*Dashboard*",
+                        pretext: '*Social Media*',
                         color: '#15df89',
-                        fields: [
-                            { title: 'Chingu Points', value: `${points}`, short: true },
-                            { title: 'Total Check-ins',
-                                value: `${totalCheckins > 0 ? totalCheckins : "No check-in data available"}`,
-                                short: true
-                            },
-                            { title: 'Current Streak', value: `${currentStreak} days`, short: true },
-                            { title: 'Best Streak', value: `${bestStreak} days`, short: true }
-                        ]
-                    },
-                ]
-            };
+                        text: `${socialMediaString}`
+                    });
+                }
+
+                // add certifications if available
+                //     if(certifications.length) certificationsItemResponse(certifications, response);
+
+                // add skills if available
+                //     if(skills.languages.length || skills.frameworks.length) skillsItemResponse(skills, response);
 
 
-        // add gitHub / blog / portfolio links if available
-            if(gitHub || blog || portfolio) {
-                let socialMediaString = ``;
-                if(blog) socialMediaString += `*Blog:* ${blog}\n`;
-                if(gitHub) socialMediaString += `*GitHub* ${gitHub}\n`;
-                if(portfolio) socialMediaString += `*Portfolio*: ${portfolio}\n`;
+                // add badges if available
+                if(badges) response = attachBadges(badges, response, userName);
 
                 response.attachments.push({
-                    fallback: `${userName} social media links`,
-                    mrkdwn_in: ['text', 'pretext'],
-                    pretext: '*Social Media*',
+                    mrkdwn_in: ['pretext', 'text'],
+                    pretext: '*Additional Profile Items*',
                     color: '#15df89',
-                    text: `${socialMediaString}`
+                    text: '*Warning:* Pressing a button will replace this message with the selected profile item.',
+                    callback_id: 'profileItem',
+                    actions: [
+                        {
+                            text: 'Story', name: 'story', type: 'button',
+                            style: `${ story ? 'primary' : 'default'}`,
+                            value: JSON.stringify({ item: 'story', userName: `${userName}` })
+                        },
+
+                        {
+                            text: 'Skills', name: 'skills', type: 'button',
+                            style: `${ (skills.languages.length || skills.frameworks.length) ? 'primary' : 'default'}`,
+                            value: JSON.stringify({ item: 'skills', userName: `${userName}` })
+                        },
+
+                        {
+                            text: 'Projects', name: 'projects', type: 'button',
+                            style: `${ projectsLength ? 'primary' : 'default' }`,
+                            value: JSON.stringify({ item: 'projects', userName: `${userName}` })
+                        },
+
+                        {
+                            text: 'Certifications', name: 'certifications', type: 'button',
+                            style: `${ certifications.length ? 'primary' : 'default'}`,
+                            value: JSON.stringify({ item: 'certifications', userName: `${userName}` })
+                        }
+                    ]
                 });
+
+                resolve(response);
             }
 
-        // add certifications if available
-        //     if(certifications.length) certificationsItemResponse(certifications, response);
-
-        // add skills if available
-        //     if(skills.languages.length || skills.frameworks.length) skillsItemResponse(skills, response);
-
-
-        // add badges if available
-            if(badges) response = attachBadges(badges, response, userName);
-
-            response.attachments.push({
-                mrkdwn_in: ['pretext', 'text'],
-                pretext: '*Additional Profile Items*',
-                color: '#15df89',
-                text: '*Warning:* Pressing a button will replace this message with the selected profile item.',
-                callback_id: 'profileItem',
-                actions: [
-                    {
-                        text: 'Story', name: 'story', type: 'button',
-                        style: `${ story ? 'primary' : 'default'}`,
-                        value: JSON.stringify({ item: 'story', userName: `${userName}` })
-                    },
-
-                    {
-                        text: 'Skills', name: 'skills', type: 'button',
-                        style: `${ (skills.languages.length || skills.frameworks.length) ? 'primary' : 'default'}`,
-                        value: JSON.stringify({ item: 'skills', userName: `${userName}` })
-                    },
-
-                    {
-                        text: 'Projects', name: 'projects', type: 'button',
-                        style: `${ projectsLength ? 'primary' : 'default' }`,
-                        value: JSON.stringify({ item: 'projects', userName: `${userName}` })
-                    },
-
-                    {
-                        text: 'Certifications', name: 'certifications', type: 'button',
-                        style: `${ certifications.length ? 'primary' : 'default'}`,
-                        value: JSON.stringify({ item: 'certifications', userName: `${userName}` })
-                    }
-                ]
+            // no user found
+            else resolve({
+                response_type: 'in_channel',
+                text: `User ${userName} does not have a Chingu profile. They can sign up <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>`
             });
-
-            return response;
-        }
-
-    // no user found
-        else return {
-            response_type: 'in_channel',
-            text: `User ${userName} does not have a Chingu profile. They can sign up <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>`
-        }
-    });
+        });
+    })
 };
 
 
@@ -238,17 +240,19 @@ profileItem = (userName, item, share) => {
                         share = false;
                     default:
                         if(profileItem){
-                            response.attachments.push({
-                                color: '#15df89',
-                                mrkdwn_in: ['text', 'pretext'],
-                                pretext: `*${userName}'s ${item}*`,
-                                text: profileItem
-                            });
+                            response.attachments.push(simpleItemResponse(profileItem, item, userName));
                         }
                         else response = `${userName} has not added this information yet :cry:`
                 }
 
+            // attach a "return to profile" button to the bottom of individual responses
+                response.attachments.push(profileCardButtonAttachment(userName));
+
+            // settle the response type based on the share parameter boolean
                 response.response_type = `${share ? 'in_channel' : 'ephemeral'}`;
+
+                console.log(response);
+
                 resolve(response);
             }
             else resolve({
@@ -262,11 +266,14 @@ profileItem = (userName, item, share) => {
 
 // ------------------ CUSTOM ATTACHMENTS ------------------ //
 
-    simpleItemResponse = (profileItemString, share) => {
+    simpleItemResponse = (profileItemString, item, userName) => {
+
         return {
-            response_type: `${share ? 'in_channel' : 'ephemeral'}`,
-            text: profileItemString
-        }
+            color: '#15df89',
+            mrkdwn_in: ['text', 'pretext'],
+            pretext: `*${userName}'s ${item}*`,
+            text: profileItemString,
+        };
     };
 
     certificationsItemResponse = (certifications, response, userName) => {
@@ -284,6 +291,7 @@ profileItem = (userName, item, share) => {
 
             response.attachments.push(attachment);
         });
+
         return response;
     };
 
@@ -343,19 +351,22 @@ profileItem = (userName, item, share) => {
     insertFields = (attachment, fieldsArray, title1, title2) => {
         fieldsArray.forEach( (field, index) => {
 
-            attachment.fields.push({
-                value: field.name,
-                short: true
-            });
+        // to not display "removed" skills
+            if(field.level !== 'remove'){
+                attachment.fields.push({
+                    value: field.name,
+                    short: true
+                });
 
-            attachment.fields.push({
-                value: field.level,
-                short: true
-            });
+                attachment.fields.push({
+                    value: field.level,
+                    short: true
+                });
 
-            if(index === 0) {
-                attachment.fields[0].title = title1;
-                attachment.fields[1].title = title2;
+                if(index === 0) {
+                    attachment.fields[0].title = title1;
+                    attachment.fields[1].title = title2;
+                }
             }
         });
 
@@ -396,6 +407,21 @@ profileItem = (userName, item, share) => {
 
         return response;
 
+    };
+
+
+    profileCardButtonAttachment = userName => {
+        return {
+            color: '#15df89',
+            callback_id: 'profileCard',
+            actions: [
+                {
+                    text: `${userName}'s Profile`, name: 'profileCard', type: 'button',
+                    style: 'primary',
+                    value: JSON.stringify({ userName: `${userName}` })
+                }
+            ]
+        }
     };
 
 module.exports = {

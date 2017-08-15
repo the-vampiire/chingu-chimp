@@ -117,17 +117,19 @@ processInteraction = payload => {
 
             else response = updateResponse.skillSelect(JSON.stringify(value));
             break;
-    // -------------- PROFILE ITEMS -------------- //
+
+    // -------------- PROFILE CARD -------------- //
+        case 'profileCard':
+            value = JSON.parse(value);
+            response = profileResponse.profileCard(value.userName);
+            console.log(response);
+            break;
+
+    // -------------- PROFILE ITEM -------------- //
         case 'profileItem':
             value = JSON.parse(value);
             response = profileResponse.profileItem(value.userName, value.item);
             break;
-
-// ------------ REMOVE AFTER BETA TESTING -----------------------
-
-        // case '':
-
-// ------------ REMOVE AFTER BETA TESTING -----------------------
 
     }
 

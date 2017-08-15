@@ -34,7 +34,7 @@ languageSelect = valueObject => {
 frameworkSelect = valueObject => {
     // set the frameworks array to the database array of frameworks used in the dropdown menus of the profile form
 
-    const frameworks = ['jQuery', 'Bootstrap', 'Angular2/4', 'AngularJS', 'Electron', 'jQueryUI', 'React', 'React Native', 'Vue'];
+    const frameworks = ['jQuery', 'Bootstrap', 'Angular2/4', 'AngularJS', 'Backbone', 'Electron', 'Ember', 'jQueryUI', 'React', 'React Native', 'Vue'];
 
     let response = updateSkillsResponse();
     response.attachments = [val.menu( null, valueObject, frameworks, 'Select a framework', 'frameworkSelect', 'name')];
@@ -42,7 +42,8 @@ frameworkSelect = valueObject => {
 };
 
 levelSelect = valueObject => {
-    const levels = ['novice', 'intermediate', 'expert', 'wizard'];
+    console.log(valueObject);
+    const levels = ['remove', 'just started', 'several projects', 'flowing code', `${JSON.parse(valueObject).name} Wizard`];
     let response = updateSkillsResponse();
     response.attachments = [val.menu( null, valueObject, levels, 'Select your skill level', 'levelSelect', 'level')];
     return response;
