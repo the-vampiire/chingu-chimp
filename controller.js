@@ -49,21 +49,17 @@ router.post('/checkin', (req, res) => {
 
             let valueObject = {};
 
-        // inject the filtered and stripped partners array into the valueObject
+        // split the arguments and inject the user name of the user calling the check-in
             // filter results to only pass @userName tags
             // filter duplicates
             // strip the '@' symbol
-            let filtered = body.text.split(' ');
-            filtered.push(`@${user}`);
-
-            filtered = filtered.filter( arguments => /@[0-9A-Za-z-_.]+/g.test(arguments))
-                .filter( (e, i, a) => a.indexOf(e) === a.lastIndexOf(e));
-
+            let filtered = arguments.split(' ');
+            filtered.push('@vampiire');
+            filtered = filtered.filter( (e, i, a) => /@[0-9A-Za-z-_.]+/g.test(e) && a.indexOf(e) === i);
             filtered.forEach( (e, i, a) => a[i] = e.replace(/\@/g, ''));
 
-        // inject the user calling the checkin so they don't have to tag themselves
+        // set the partners property of the valueObject to the now filtered array of partner(s)
             valueObject.partners = filtered;
-            // valueObject.partners.push(user);
 
             res.json(tools.interactive.interaction('checkin', valueObject));
         }
