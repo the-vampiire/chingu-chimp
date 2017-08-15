@@ -15,7 +15,7 @@ app.listen(port, e => e ? console.log(e) : console.log(`Server listening on port
 // Mongo Database
 const mongoose = require('mongoose');
 const dbURL = process.env.dbURL;
-mongoose.connect(dbURL, {useMongoClient : true}, e => e ? console.log(`error: ${e}`) : console.log('connected to database'));
+mongoose.connect(dbURL, {useMongoClient : true}, e => e ? console.log(`database connection error:\n${e}`) : console.log('connected to database'));
 
 // Middleware
 const BP = require('body-parser');

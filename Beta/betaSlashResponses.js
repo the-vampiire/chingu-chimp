@@ -2,6 +2,15 @@
  * Created by Vampiire on 8/13/17.
  */
 
+
+
+/*
+*
+*
+* ADD SOME INFORMATION ABOUT CHECK-INS AND WHAT THEY WILL BE USED FOR
+*
+* */
+
 startResponse = () => {
     return {
         response_type: 'in_channel',

@@ -107,8 +107,7 @@ router.post('/profile', (req, res) => {
 
             }
 
-            else res.end(`[\`${text}\`] is not a valid profile request.
-            Try again with the format \`/profile <@userName> [share] [profile item]\` or try \`/profile help\``);
+            else res.end(`[\`${text}\`] is not a valid profile request.\nTry again with the format \`/profile <@userName> [share] [profile item]\` or try \`/profile help\``);
         }
     }
     else res.end('invalid Slack token');

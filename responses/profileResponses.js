@@ -57,6 +57,9 @@ profileCard = (userName, share) => {
             const gitHub = user.gitHub;
             const portfolio = user.portfolio;
             const lastProject = user.projects.pop();
+            const skills = user.skills;
+            const story = user.story;
+            const projects = user.projects;
             const certifications = user.certifications;
             const lastCheckin = user.lastCheckin;
             const totalCheckins = user.totalCheckins;
@@ -146,10 +149,24 @@ profileCard = (userName, share) => {
             if(certifications.length) certificationsItemResponse(certifications, response);
 
         // add skills if available
-        //     if(skills.length) skillsItemResponse(skills, response, userName);
+        //     if(skills.languages.length || skills.frameworks.length) skillsItemResponse(skills, response);
+
 
         // add badges if available
             if(badges) response = attachBadges(badges, response, userName);
+
+            response.attachments.push({
+                mrkdwn_in: ['pretext'],
+                pretext: '*Additional Profile Items*',
+                callback_id: 'profileItem',
+                actions: [
+                    { text: 'Story', name: 'story', type: 'button', style: `${ story ? 'primary' : 'default'}` },
+                    { text: 'Skills', name: 'skills', type: 'button', style: `${ skills ? 'primary' : 'default'}` },
+                    { text: 'Projects', name: 'projects', type: 'button', style: `${ projects.length ? 'primary' : 'default'}` },
+                    { text: 'Certifications', name: 'certifications', type: 'button',
+                        style: `${ certifications ? 'primary' : 'default'}` },
+                ]
+            });
 
             return response;
         }
@@ -264,8 +281,6 @@ profileItem = (userName, item, share) => {
 
     skillsItemResponse = (skills, response, userName) => {
 
-        response.text = `*${userName}'s Languages and Frameworks*`;
-
         const languages = skills.languages;
         if(languages.length) {
 
@@ -291,6 +306,8 @@ profileItem = (userName, item, share) => {
 
             response.attachments.push(insertFields(frameworkAttachment, frameworks, 'Framework', 'Skill Level'));
         }
+
+        if(userName) response.text = `*${userName}'s Languages and Frameworks*`;
 
         return response;
 
@@ -340,7 +357,10 @@ profileItem = (userName, item, share) => {
 
                 response.attachments.push(attachment);
             });
-
+    // if the user has more than 3 badges - truncate the attachment
+        // here is a button to add
+            //     { text: 'Certifications', name: 'certifications', type: 'button',
+            //         style: `${ certifications ? 'primary' : 'default'}` },
         if(length > 3) response.attachments.push({
             color: '#666',
             mrkdwn_in: ['text'],
