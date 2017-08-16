@@ -94,7 +94,7 @@ profileCard = (userName, share) => {
                             overViewText += `*Last Check-in:* ${lastCheckin.task} in a ${lastCheckin.kind.toLowerCase()} meeting with ${lastCheckinPartners}\n`;
                             break;
                         case 'Self Check-in':
-                            overViewText += `*Last Check-in:* ${lastCheckin.kind} working on ${lastCheckin.task.toLowerCase()}\n`;
+                            overViewText += `*Last Check-in:* Self check-in working on ${lastCheckin.task.toLowerCase()}\n`;
                             break;
                     }
 
