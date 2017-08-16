@@ -248,7 +248,7 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
                     if(updateItem === 'certifications'){
                         request({url: url, followRedirect: false}, (err, res) => {
                             if(err) reject(err);
-                            else console.log(res);
+                            else console.log(res.headers.location);
                         });
                     }
 
