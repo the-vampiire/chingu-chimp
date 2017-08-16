@@ -62,6 +62,10 @@ argumentParser = arguments => {
             let errorScanOutput = errorScanAndModify(item, flag, data);
 
             if(typeof errorScanOutput === 'string') error = errorScanOutput;
+        //
+            if(errorScanOutput instanceof Promise){
+
+            }
 
             else{
                 // if there is no error errorScan returns an object containing the flag and data (in case they were modified)
@@ -149,12 +153,14 @@ argumentSplitter = arguments => {
 // modification step (as needed)
     switch(true){
 
+    // github repo
         case flag === 'git' || flag === 'g':
             if(!/(https:\/\/github\.com\/)/.test(data) || ~data.indexOf(' '))
                 return `Invalid data: \`${data}\` associated with flag [\`-${flag}\`]. Make sure a valid GitHub repo link has been added of the form  \`https://github.com/yourUserName/repoName\``;
             flag = 'gitHub';
             break;
 
+    // github profile, blog, project, or portfolio url
         case flag === 'url' || flag === 'u':
         // check if the gitHub url is valid
             if(item === 'gitHub'){

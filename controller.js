@@ -143,7 +143,11 @@ router.post('/update', (req, res) => {
                 let parserOutput = argumentParser.parse(arguments);
 
                 if(typeof parserOutput === 'string') res.end(parserOutput);
-                else userProfile.processUpdate(userName, cohortName, parserOutput).then( response => res.end(response));
+                else userProfile.processUpdate(userName, cohortName, parserOutput)
+                // successful save
+                    .then( success => res.end(success))
+                // invalid url passed for update - 404 received on ping test
+                    .catch( error => res.end(error))
             }
         }
 

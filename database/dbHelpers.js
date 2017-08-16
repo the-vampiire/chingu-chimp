@@ -19,7 +19,30 @@ checkAndAddBadges = profileDoc => {
 
     if(certifications.length) badges = addCertBadges(certifications, badges, 'name');
 
-    if(totalCheckins > 100) badges.unshift(newBadge('100checkins'));
+// // projects badges
+//     switch(projects.length){
+//
+//     }
+//
+// // languages badges
+//
+// // check-ins badges
+//     switch(totalCheckins){
+//         case '250':
+//         case '100':
+//         case '50':
+//         case '25':
+//     }
+//
+// // activity streak badges
+//     switch(bestStreak){
+//         case '90':
+//         case '60':
+//         case '30':
+//         case '21':
+//         case '14':
+//         case '7':
+//     }
 
     return badges;
 };

@@ -14,6 +14,7 @@ app.listen(port, e => e ? console.log(e) : console.log(`Server listening on port
 
 // Mongo Database
 const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 const dbURL = process.env.dbURL;
 mongoose.connect(dbURL, {useMongoClient : true}, e => e ? console.log(`database connection error:\n${e}`) : console.log('connected to database'));
 

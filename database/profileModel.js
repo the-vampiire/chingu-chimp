@@ -237,18 +237,39 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
                         break;
                 }
 
-            // after updating is complete check if the user has all earned badges. if not - add them
+                // after updating is complete check if the user has all earned badges. if not - add them
                 profileDoc.badges = dbHelper.checkAndAddBadges(profileDoc);
 
-                return profileDoc.save( (saveError, doc) => {
-                    if(saveError) resolve(`error updating ${updateItem} for ${userName}`);
+            // final validation of urls. executes a head request to determine the validity of the link
+                if(['blog', 'gitHub', 'portfolio', 'projects', 'certifications'].includes(updateItem)){
+                    const request = require('request');
+                    const url = updateData.url ? updateData.url : updateData.gitHub;
 
-                    else if(updateItem === 'skills')
-                        resolve(`*Successfully updated your ${data.subItem}: ${updateData.name} at the ${updateData.level} skill level*`);
+                    request({url: url, method: 'HEAD'}, (error, response) => {
+                        if(error) reject('*Invalid url. Domain is invalid. Connection refused error received during validation*');
 
-                    else resolve(`*Successfully updated your ${updateItem}*`);
+                        else if(response.statusCode !== 200) reject(`*Invalid url. Domain is valid but the route returned a \`${response.statusCode}\` error during validation*`);
+                        else {
+                            profileDoc.save((error, doc) => {
+                                if(error) reject(`Saving to the database failed. Error message:\n${error}`);
+                                resolve(`*Successfully updated your ${updateItem}*`)
+                            });
+                        }
+                    });
+                }
 
-                });
+            // if url validation does not apply then save as usual
+                else {
+                    return profileDoc.save( (saveError, doc) => {
+                        if(saveError) resolve(`error updating ${updateItem} for ${userName}`);
+
+                        else if(updateItem === 'skills')
+                            resolve(`*Successfully updated your ${data.subItem}: ${updateData.name} at the ${updateData.level} skill level*`);
+
+                        else resolve(`*Successfully updated your ${updateItem}*`);
+
+                    });
+                }
             }
 
         // user not found
