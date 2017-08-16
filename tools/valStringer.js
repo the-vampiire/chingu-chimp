@@ -105,7 +105,7 @@ valSubmit = (valueObject, type, reset = false, customText) => {
     };
 
     if(reset) response.attachments[0].actions.push({
-            text: 'Reset',
+            text: 'Start Over',
             name: 'submit',
             type: 'button',
             style: 'danger',
