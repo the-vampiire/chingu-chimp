@@ -256,7 +256,6 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
                         if(error) reject('*Invalid url. Domain is invalid. Connection refused error received during validation*');
 
                         else if(response.statusCode !== 200) reject(`*Invalid url. Domain is valid but the route returned a \`${response.statusCode}\` error during validation*`);
-                        else if(response)
                         else {
                             profileDoc.save((error, doc) => {
                                 if(error) reject(`Saving to the database failed. Error message:\n${error}`);
