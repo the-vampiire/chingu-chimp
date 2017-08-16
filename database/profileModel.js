@@ -201,7 +201,7 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
                         break;
                     case 'projects':
                         const addNewProject = !profileDoc[updateItem].some( (project, index, projects) => {
-                            if(project.name === updateData.name || project.gitHub === updateData.name){
+                            if(project.name === updateData.name || project.gitHub === updateData.gitHub){
                                 projects[index] = updateData;
                                 return true
                             }
