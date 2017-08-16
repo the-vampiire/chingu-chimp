@@ -24,7 +24,7 @@ languageSelect = valueObject => {
     // set the languages array to the database array of languages used in the dropdown menus of the profile form
 
     const languages = ['JavaScript', 'Java', 'Python', 'Ruby', 'C++', 'C#.Net', 'Assembly', 'Bash', 'Basic', 'C', 'C#',
-        'Fortran', 'Go', 'MATLAB', 'Objective-C', 'Perl', 'PHP', 'Powershell', 'VBA'];
+        'Fortran', 'Go', 'MATLAB', 'MongoDB', 'MySQL', 'Objective-C', 'Perl', 'PHP', 'PostgreSQL', 'Powershell', 'SQL', 'VBA'];
 
     let response = updateSkillsResponse();
     response.attachments = [val.menu( null, valueObject, languages, 'Select a language', 'languageSelect', 'name')];
@@ -34,7 +34,7 @@ languageSelect = valueObject => {
 frameworkSelect = valueObject => {
     // set the frameworks array to the database array of frameworks used in the dropdown menus of the profile form
 
-    const frameworks = ['jQuery', 'Bootstrap', 'Angular2/4', 'AngularJS', 'Backbone', 'Electron', 'Ember', 'jQueryUI', 'React', 'React Native', 'Vue'];
+    const frameworks = ['Node.js', 'Express', 'jQuery', 'Bootstrap', 'Angular2/4', 'AngularJS', 'Backbone', 'Electron', 'Ember', 'jQueryUI', 'React', 'React Native', 'Vue'];
 
     let response = updateSkillsResponse();
     response.attachments = [val.menu( null, valueObject, frameworks, 'Select a framework', 'frameworkSelect', 'name')];
