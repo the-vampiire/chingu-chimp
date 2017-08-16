@@ -245,10 +245,18 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
                     const request = require('request');
                     const url = updateData.url ? updateData.url : updateData.gitHub;
 
+                    if(updateItem === 'certifications'){
+                        request({url: url, followRedirect: false}, (err, res) => {
+                            if(err) reject(err);
+                            else console.log(res);
+                        });
+                    }
+
                     request({url: url, method: 'HEAD'}, (error, response) => {
                         if(error) reject('*Invalid url. Domain is invalid. Connection refused error received during validation*');
 
                         else if(response.statusCode !== 200) reject(`*Invalid url. Domain is valid but the route returned a \`${response.statusCode}\` error during validation*`);
+                        else if(response)
                         else {
                             profileDoc.save((error, doc) => {
                                 if(error) reject(`Saving to the database failed. Error message:\n${error}`);
