@@ -267,7 +267,7 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
 
             // if url validation does not apply then save as usual
                 else {
-                        profileDoc.save( (saveError, doc) => {
+                        profileDoc.save( (saveError, success) => {
                             if(saveError) reject(`error updating ${updateItem} for ${userName}`);
 
                             if(success){
