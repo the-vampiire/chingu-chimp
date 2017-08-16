@@ -30,6 +30,7 @@ profileHelp = () => {
                 pretext: '*Examples*',
                 text: `\`/profile @vampiire\` *will display Vampiire's profile card _privately_ to you*\n\n\`/profile @vampiire share\` *will display Vampiire's profile card _publicly_ to the channel*\n\n\`/profile @vampiire projects\` *will display Vampiire's projects _privately_ to you*\n\n\`/profile @vampiire share projects\` *will display Vampiire's projects _publicly_ to the channel*`
             },
+
 // ----------- REMOVE AFTER BETA -----------------
             {
                 color: '#FF0000',
@@ -139,7 +140,7 @@ profileCard = (userName, share) => {
                 };
 
 
-                // add gitHub / blog / portfolio links if available
+            // add gitHub / blog / portfolio links if available
                 if(gitHub || blog || portfolio) {
                     let socialMediaString = ``;
                     if(blog) socialMediaString += `*Blog:* ${blog}\n`;

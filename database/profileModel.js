@@ -121,11 +121,13 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
             if(profileDoc){
 
 
-// REMOVE AFTER TESING ------ remove this line after beta testing
+// REMOVE AFTER BETA TESING
+
                 if(!profileDoc.badges.some( e => e.name === 'Beta Tester: Chingu Chimp'))
                     profileDoc.badges.unshift(dbHelper.newBadge('Chingu Chimp Beta Tester'));
                 // profileDoc.badges.unshift(dbHelper.newBadge('father'));
-// REMOVE AFTER TESING
+
+// REMOVE AFTER BETA  TESING
 
                 // check if the cohort the user is updating from is in the user's cohorts array. if not - add it
                 profileDoc.cohorts = dbHelper.checkAndAddCohort(profileDoc.cohorts, cohortName);
@@ -148,13 +150,15 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
                 profileDoc.lastCheckin = checkinSessionData;
                 profileDoc.totalCheckins++;
 
-                profileDoc.save( (saveError, success) => {
+            // after updating is complete check if the user has all earned badges. if not - add them
+                profileDoc.badges = dbHelper.checkAndAddBadges(profileDoc);
 
-                    userName = `${userName.slice(0,1).toUpperCase()}${userName.slice(1)}`;
+                profileDoc.save( (saveError, success) => {
 
                     if(saveError) resolve(saveError);
 
                     if(success){
+                        userName = `${userName.slice(0,1).toUpperCase()}${userName.slice(1)}`;
 
                         if(channel) resolve(`Succesfully saved the check-in for ${userName}. you have \`${channel.sessions.length}\` check-ins on this channel!\n*Total check-ins:* \`${profileDoc.totalCheckins}\`\n*Current streak:* \`${profileDoc.currentStreak.value}\` days\n*Best streak:* \`${profileDoc.bestStreak}\` days\n`);
 
@@ -181,9 +185,6 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
                 // check if the cohort the user is updating from is in the user's cohorts array. if not - add it
                 profileDoc.cohorts = dbHelper.checkAndAddCohort(profileDoc.cohorts, cohortName);
 
-                // check if the user has all appropriate badges. if not - add them
-                profileDoc.badges = dbHelper.checkAndAddBadges(profileDoc);
-
                 let updateItem = data.item;
                 let updateData = data.updateData;
 
@@ -191,20 +192,22 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
 
                 // pushing updateData into a profile item array
                     case 'certifications':
-                        // add a badge for each certification
                         const certifications = profileDoc[updateItem];
+
                     // checks if the passed certificate already exists
                         const addNewCertificate = !certifications.some( certificate => certificate.name === updateData.name );
-                        if(addNewCertificate) {
-                            profileDoc.badges.unshift(dbHelper.newBadge(updateData.name));
-                            profileDoc[updateItem].unshift(updateData);
-                        }
+
+                        if(addNewCertificate) profileDoc[updateItem].unshift(updateData);
                         break;
                     case 'projects':
-                        // add a badge after 5 - 10 etc completed projects
-                        // move higher badge to front of badges array
-                // consider the ability of updating projects. similar to the way skills is handled
-                        profileDoc[updateItem].unshift(updateData);
+                        const addNewProject = !projects.some( (project, index, projects) => {
+                            if(project.name === updateData.name || project.gitHub === updateData.name){
+                                projects[index] = updateData;
+                                return true
+                            }
+                        });
+
+                        if(addNewProject) profileDoc[updateItem].unshift(updateData);
                         break;
 
                 // pushing updateData into a nested profile item array
@@ -215,16 +218,13 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
                         const skillsItem = profileDoc[updateItem][subUpdateItem];
 
                         // handles updating an existing skill
-                        let skillsItemIndex;
-                        if(skillsItem.some( (skill, index) => {
-                                if(skill.name === updateData.name){
-                                    skillsItemIndex = index;
-                                    return true
-                                }
-                            })) skillsItem[skillsItemIndex].level = updateData.level;
-
-                        // no existing skill, add a new one
-                        else skillsItem.push(updateData);
+                        const addNewSkill = !skillsItem.some( (skill, index, skills) => {
+                            if(skill.name === updateData.name){
+                                skills[index].level = updateData.level;
+                                return true
+                            }
+                        });
+                        if(addNewSkill) skillsItem.push(updateData);
                         break;
 
                 // setting the url field
@@ -240,6 +240,9 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
                         profileDoc[updateItem] = updateData;
                         break;
                 }
+
+            // after updating is complete check if the user has all earned badges. if not - add them
+                profileDoc.badges = dbHelper.checkAndAddBadges(profileDoc);
 
                 return profileDoc.save( (saveError, doc) => {
                     if(saveError) resolve(`error updating ${updateItem} for ${userName}`);
