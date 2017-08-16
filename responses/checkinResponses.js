@@ -34,10 +34,10 @@ taskSelect = valueObject => {
             break;
         case 'Team Meeting':
         case 'Self Check-in':
-            menuItems = ['Brainstorming', 'Planning', 'Coding', 'Bug-fixing', 'Refactoring'];
+            menuItems = ['Brainstorming', 'Planning', 'Coding', 'Bug-fixing', 'Refactoring', 'Other'];
             break;
         case 'Accountability':
-            menuItems = ['On track', 'Drifting', 'Non-responsive'];
+            menuItems = ['Catching up', 'Setting goals', 'Reviewing code', 'Other'];
             break;
     }
 

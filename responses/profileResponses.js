@@ -87,7 +87,6 @@ profileCard = (userName, share) => {
 
                     switch(lastCheckin.kind){
                         case 'Accountability':
-                            break;
                         case 'Pair Programming':
                             lastCheckin.kind = `${lastCheckin.kind} session`;
                             overViewText += `*Last Check-in:* ${lastCheckin.task} ${lastCheckin.kind} with ${lastCheckinPartners}\n`;
