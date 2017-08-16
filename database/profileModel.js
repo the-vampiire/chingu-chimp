@@ -169,7 +169,7 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
             }
 
         // user not found
-            else reject(`*Check-in for \`@${userName}\` failed:*\n*Profile \`@${userName}\` not found*\n*Create a profile <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>*\n`);
+            else resolve(`*Check-in for \`@${userName}\` failed:*\n*Profile \`@${userName}\` not found*\n*Create a profile <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>*\n`);
         });
     });
 };
@@ -281,7 +281,7 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
             }
 
         // user not found
-            else reject (`*Update for \`@${userName}\` failed:*\n*Profile \`@${userName}\` not found.*\nCreate a profile <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>*\n`);
+            else resolve (`*Update for \`@${userName}\` failed:*\n*Profile \`@${userName}\` not found.*\nCreate a profile <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>*\n`);
 
         })
 
