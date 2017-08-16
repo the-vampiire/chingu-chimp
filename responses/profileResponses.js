@@ -396,9 +396,10 @@ profileItem = (userName, item, share) => {
 
             // add a pretext signifying remaining badges (if truncated)
                 if(index === 0)
-                    attachment.pretext = `${length > 3 ? 
-                        `*Badges - press the button to view the remaining \`${length -3}\` badges*` : 
-                        `*Badges*`}`;
+                    // attachment.pretext = `${length > 3 ?
+                    //     `*Badges - press the button to view the remaining \`${length -3}\` badges*` :
+                    //     `*Badges*`}`;
+                    attachment.pretext = '*Badges*';
 
                 response.attachments.push(attachment);
             });
@@ -409,7 +410,7 @@ profileItem = (userName, item, share) => {
             mrkdwn_in: ['text'],
             text: '',
             callback_id: 'profileItem',
-            actions: [{ text: 'Badges', name: 'badges', type: 'button',
+            actions: [{ text: `${length-3} other badges`, name: 'badges', type: 'button',
                 style: 'primary', value: JSON.stringify({ userName, item: 'badges' }) }]
         });
 
