@@ -30,7 +30,7 @@ taskSelect = valueObject => {
 
     switch(JSON.parse(valueObject).kind){
         case 'Pair Programming':
-            menuItems = ['Code Wars', 'Tutorial', 'FCC Algorithms', 'Other'];
+            menuItems = ['Code Wars', 'Tutorial', 'FCC Algorithms', 'Project', 'Other'];
             break;
         case 'Team Meeting':
         case 'Self Check-in':
@@ -67,7 +67,7 @@ submitCheckin = valueObject => {
     });
 
     return valSubmit(valueObject, 'checkin', true,
-        `Check-in to *${kind}* to work on *${valueObject.task}*\nCheck-in will be processed for: *${partnerString}*`);
+        `Check-in to *${kind}* to work on *${valueObject.task.toLowerCase()}*\nCheck-in will be processed for: *${partnerString}*`);
 };
 
 module.exports = {

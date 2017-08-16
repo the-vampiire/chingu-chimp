@@ -387,8 +387,8 @@ profileItem = (userName, item, share) => {
                 if(index > 2 && userName) return true;
 
                 const attachment = {
-                    color: '#15df89',
                     text: '',
+                    color: `${badge.color ? badge.color : '#15df89'}`,
                     mrkdwn_in: ['text', 'pretext'],
                     footer: badge.name,
                     footer_icon: badge.url

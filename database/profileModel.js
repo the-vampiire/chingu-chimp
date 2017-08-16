@@ -89,7 +89,8 @@ const userSchema = new mongoose.Schema({
     badges : [{
         badgeType : String,
         name : String,
-        url : String
+        url : String,
+        color : {type: String, default: null}
     }],
 
 }, { runSettersOnQuery : true });
@@ -112,7 +113,7 @@ const userSchema = new mongoose.Schema({
 
 // ----------------- CUSTOM METHODS ----------------- //
 
-// ------- CHECKIN PROCESSING ------- //
+// ------- CHECK-IN PROCESSING ------- //
 userSchema.statics.processCheckin = function(userName, cohortName, channelID, checkinSessionData){
 
     return new Promise( (resolve, reject) => {

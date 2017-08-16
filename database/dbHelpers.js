@@ -17,13 +17,15 @@ checkAndAddBadges = profileDoc => {
     const projects = profileDoc.projects;
     const totalCheckins = profileDoc.totalCheckins;
 
-    if(certifications.length) badges = updateBadges(certifications, badges, 'name');
+    if(certifications.length) badges = addCertBadges(certifications, badges, 'name');
+
+    if(totalCheckins > 100) badges.unshift(newBadge('100checkins'));
 
     return badges;
 };
 
 // checks an array against the user's badges. adds any missing badges the user has earned
-updateBadges = (eachArray, badges, matchProperty) => {
+addCertBadges = (eachArray, badges, matchProperty) => {
 
     eachArray.forEach( eachE => {
         if(!badges.some( badge => badge[matchProperty] === eachE[matchProperty]))
@@ -97,6 +99,7 @@ newBadge = (type, color) => {
             newBadge.badgeType = 'beta';
             newBadge.name = 'Beta Tester: Chingu Chimp';
             newBadge.url = 'http://www.monkeymods.com/wp-content/uploads/2015/05/monkey-fav2.png';
+            // newBadge.color = '';
             break;
         case 'Chimp Breaker':
             newBadge.badgeType = 'beta';
@@ -109,16 +112,19 @@ newBadge = (type, color) => {
             newBadge.badgeType = 'certification';
             newBadge.name = 'Front End Certification';
             newBadge.url = 'http://i.imgur.com/gXpgAdi.png';
+            newBadge.color = '#fec901';
             break;
         case 'Back End Certification':
             newBadge.badgeType = 'certification';
             newBadge.name = 'Back End Certification';
             newBadge.url = 'http://i.imgur.com/mY5qQew.png';
+            newBadge.color = '#009345';
             break;
         case 'Data Visualization Certification':
             newBadge.badgeType = 'certification';
             newBadge.name = 'Data Visualization Certification';
             newBadge.url = 'http://i.imgur.com/IoTeInz.png';
+            newBadge.color = '#41778f';
             break;
 
     // CUSTOM
