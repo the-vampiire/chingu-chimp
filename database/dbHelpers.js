@@ -24,7 +24,6 @@ checkAndAddBadges = profileDoc => {
 
 // checks an array against the user's badges. adds any missing badges the user has earned
 updateBadges = (eachArray, badges, matchProperty) => {
-    console.log(eachArray);
 
     eachArray.forEach( eachE => {
         if(!badges.some( badge => badge[matchProperty] === eachE[matchProperty]))

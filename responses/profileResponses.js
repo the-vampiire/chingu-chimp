@@ -67,10 +67,11 @@ profileCard = (userName, share) => {
                 const lastCheckin = user.lastCheckin;
                 const totalCheckins = user.totalCheckins;
 
-            // build up overview text based on available data
+        // build up overview text based on available data
+
                 let overViewText = `*Member Since:* ${joinDate}\n`;
 
-                // format the check-in partners and check-in kind strings
+            // format the check-in partners and check-in kind strings
                 let lastCheckinPartners = ``;
                 if(lastCheckin){
                     lastCheckin.partners.forEach( (partner, index) => {
@@ -86,6 +87,7 @@ profileCard = (userName, share) => {
 
                     switch(lastCheckin.kind){
                         case 'Accountability':
+                            break;
                         case 'Pair Programming':
                             lastCheckin.kind = `${lastCheckin.kind} session`;
                             overViewText += `*Last Check-in:* ${lastCheckin.task} ${lastCheckin.kind} with ${lastCheckinPartners}\n`;
@@ -96,14 +98,13 @@ profileCard = (userName, share) => {
                         case 'Self Check-in':
                             overViewText += `*Last Check-in:* ${lastCheckin.kind} working on ${lastCheckin.task.toLowerCase()}\n`;
                             break;
-
                     }
-
 
                 }
 
                 if(lastProject) overViewText += `*Last Completed Project:* <${lastProject.gitHub}|${lastProject.name}>\n`;
-            // end overview text buildup
+
+        // end overview text buildup
 
                 let response = {
 
@@ -379,8 +380,6 @@ profileItem = (userName, item, share) => {
 
     attachBadges = (badges, response, userName) => {
         const length = badges.length;
-
-        console.log(userName);
 
         if(length)
             badges.some( (badge, index) => {

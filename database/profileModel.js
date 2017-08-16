@@ -183,7 +183,6 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
 
                 // check if the user has all appropriate badges. if not - add them
                 profileDoc.badges = dbHelper.checkAndAddBadges(profileDoc);
-                console.log(profileDoc.badges);
 
                 let updateItem = data.item;
                 let updateData = data.updateData;
