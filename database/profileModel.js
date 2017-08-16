@@ -245,12 +245,12 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
                     const request = require('request');
                     const url = updateData.url ? updateData.url : updateData.gitHub;
 
-                    if(updateItem === 'certifications'){
-                        request({url: url, followRedirect: false}, (err, res) => {
-                            if(err) reject(err);
-                            else console.log(res.headers.location);
-                        });
-                    }
+                    // if(updateItem === 'certifications'){
+                    //     request({url: url, followRedirect: false}, (err, res) => {
+                    //         if(err) reject(err);
+                    //         else console.log(res.headers.location);
+                    //     });
+                    // }
 
                     request({url: url, method: 'HEAD'}, (error, response) => {
                         if(error) reject('*Invalid url. Domain is invalid. Connection refused error received during validation*');
