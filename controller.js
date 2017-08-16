@@ -144,10 +144,8 @@ router.post('/update', (req, res) => {
 
                 if(typeof parserOutput === 'string') res.end(parserOutput);
                 else userProfile.processUpdate(userName, cohortName, parserOutput)
-                // successful save
-                    .then( success => res.end(success))
-                // invalid url passed for update - 404 received on ping test
-                    .catch( error => res.end(error))
+                    .then( successMessage => res.end(successMessage))
+                    .catch( errorMessage => res.end(errorMessage))
             }
         }
 
@@ -173,7 +171,9 @@ router.post('/update', (req, res) => {
 
                 tools.requests.userData('pic', userID).then( picObject => {
                     let data = { item: 'profilePic', updateData : picObject };
-                    userProfile.processUpdate(userName, cohortName, data).then( response => res.end(response));
+                    userProfile.processUpdate(userName, cohortName, data)
+                        .then( successMessage => res.end(successMessage))
+                        .catch( errorMessage => res.end(errorMessage))
                 });
             }
             else {
@@ -198,10 +198,13 @@ router.post('/interactive', (req, res) => {
     if(tools.verify.slash(payload.token)){
         let output = tools.interactive.process(payload);
 
-        if(output instanceof Promise) output.then( response => {
-            if(typeof response === 'string') res.end(response);
-            else res.json(response);
-        });
+        if(output instanceof Promise) output
+            .then( response => {
+                if(typeof response === 'string') res.end(response);
+                else res.json(response);
+            })
+            .catch(error => res.end(error));
+
         else res.json(output);
     }
 

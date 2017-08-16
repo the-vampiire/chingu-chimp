@@ -156,7 +156,7 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
 
                 profileDoc.save( (saveError, success) => {
 
-                    if(saveError) resolve(saveError);
+                    if(saveError) reject(saveError);
 
                     if(success){
                         userName = `${userName.slice(0,1).toUpperCase()}${userName.slice(1)}`;
@@ -169,7 +169,7 @@ userSchema.statics.processCheckin = function(userName, cohortName, channelID, ch
             }
 
         // user not found
-            else resolve(`*Check-in for \`@${userName}\` failed:*\n*Profile \`@${userName}\` not found*\n*Create a profile <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>*\n`);
+            else reject(`*Check-in for \`@${userName}\` failed:*\n*Profile \`@${userName}\` not found*\n*Create a profile <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>*\n`);
         });
     });
 };
@@ -257,9 +257,9 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
 
                         else if(response.statusCode !== 200) reject(`*Invalid url. Domain is valid but the route returned a \`${response.statusCode}\` error during validation*`);
                         else {
-                            profileDoc.save((error, doc) => {
+                            profileDoc.save((error, success) => {
                                 if(error) reject(`Saving to the database failed. Error message:\n${error}`);
-                                resolve(`*Successfully updated your ${updateItem}*`)
+                                else if(success) resolve(`*Successfully updated your ${updateItem}*`)
                             });
                         }
                     });
@@ -267,20 +267,21 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
 
             // if url validation does not apply then save as usual
                 else {
-                    return profileDoc.save( (saveError, doc) => {
-                        if(saveError) resolve(`error updating ${updateItem} for ${userName}`);
+                        profileDoc.save( (saveError, doc) => {
+                            if(saveError) reject(`error updating ${updateItem} for ${userName}`);
 
-                        else if(updateItem === 'skills')
-                            resolve(`*Successfully updated your ${data.subItem}: ${updateData.name} at the ${updateData.level} skill level*`);
+                            if(success){
+                                if(updateItem === 'skills')
+                                    resolve(`*Successfully updated your ${data.subItem}: ${updateData.name} at the ${updateData.level} skill level*`);
 
-                        else resolve(`*Successfully updated your ${updateItem}*`);
-
-                    });
+                                else resolve(`*Successfully updated your ${updateItem}*`);
+                            }
+                        });
                 }
             }
 
         // user not found
-            else resolve (`*Update for \`@${userName}\` failed:*\n*Profile \`@${userName}\` not found.*\nCreate a profile <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>*\n`);
+            else reject (`*Update for \`@${userName}\` failed:*\n*Profile \`@${userName}\` not found.*\nCreate a profile <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>*\n`);
 
         })
 
