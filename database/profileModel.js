@@ -200,7 +200,7 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
                         if(addNewCertificate) profileDoc[updateItem].unshift(updateData);
                         break;
                     case 'projects':
-                        const addNewProject = !projects.some( (project, index, projects) => {
+                        const addNewProject = !profileDoc[updateItem].some( (project, index, projects) => {
                             if(project.name === updateData.name || project.gitHub === updateData.name){
                                 projects[index] = updateData;
                                 return true
