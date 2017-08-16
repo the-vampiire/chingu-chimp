@@ -189,17 +189,17 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
                 let updateData = data.updateData;
 
                 switch(updateItem){
-
-                // pushing updateData into a profile item array
                     case 'certifications':
                         const certifications = profileDoc[updateItem];
 
-                    // checks if the passed certificate already exists
+                    // checks if the passed certificate already exists. adds it if it doesn't
                         const addNewCertificate = !certifications.some( certificate => certificate.name === updateData.name );
 
                         if(addNewCertificate) profileDoc[updateItem].unshift(updateData);
                         break;
                     case 'projects':
+                    // checks for an existing project - matching either project name or gitHub repo
+                    // if it exists it is updated with the new data, if not a new project is added
                         const addNewProject = !profileDoc[updateItem].some( (project, index, projects) => {
                             if(project.name === updateData.name || project.gitHub === updateData.gitHub){
                                 projects[index] = updateData;
@@ -209,24 +209,19 @@ userSchema.statics.processUpdate = function(userName, cohortName, data){
 
                         if(addNewProject) profileDoc[updateItem].unshift(updateData);
                         break;
-
-                // pushing updateData into a nested profile item array
                     case 'skills':
-                        // add a badge after 2+ languages
-                        // add a badge after 2+ frameworks
                         const subUpdateItem = data.subItem;
                         const skillsItem = profileDoc[updateItem][subUpdateItem];
 
-                        // handles updating an existing skill
                         const addNewSkill = !skillsItem.some( (skill, index, skills) => {
                             if(skill.name === updateData.name){
                                 skills[index].level = updateData.level;
                                 return true
                             }
                         });
+
                         if(addNewSkill) skillsItem.push(updateData);
                         break;
-
                 // setting the url field
                     case 'blog':
                     case 'gitHub':
