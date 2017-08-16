@@ -394,8 +394,10 @@ profileItem = (userName, item, share) => {
                 };
 
             // add a pretext signifying remaining badges (if truncated)
-                if(index === 0 && length > 3)
-                    attachment.pretext = `*Badges - press the button to view the remaining \`${length -3}\` badges*`
+                if(index === 0)
+                    attachment.pretext = `${length > 3 ? 
+                        `*Badges - press the button to view the remaining \`${length -3}\` badges*` : 
+                        `*Badges*`}`;
 
                 response.attachments.push(attachment);
             });
