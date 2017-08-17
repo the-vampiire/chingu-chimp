@@ -41,28 +41,28 @@ app.use('/done', done);
 // --------------------------- ROUTES --------------------------- //
 
 // --------- API --------- // 
-    const APIendpoints = require('./routes/APIendpoints');
+    const APIendpoints = require('./routes/backend/APIendpoints');
     app.use('/API', APIendpoints);
 
 // --------- SLASH COMMANDS --------- //
 
     // check-in slash command
-        const checkin = require('./routes/slashCheckin');
+        const checkin = require('./routes/backend/slashCheckin');
         app.use('/checkin', checkin);
 
     // profile slash command
-        const profile = require('./routes/slashProfile');
+        const profile = require('./routes/backend/slashProfile');
         app.use('/profile', profile);
     
     // update slash command
-        const update = require('./routes/slashUpdate');
+        const update = require('./routes/backend/slashUpdate');
         app.use('/update', update); 
 
     // interactive messages
-        const interactive = require('./routes/slashInteractive');
+        const interactive = require('./routes/backend/slashInteractive');
         app.use('/interactive', interactive);
 
 // ------------ FRONT END ---------- //
 
-const frontend = require('./frontendController');
+const frontend = require('./routes/frontend/frontendController');
 app.use('/', frontend);
