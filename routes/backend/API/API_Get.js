@@ -153,7 +153,7 @@ function bulkUsersBulkItems(bulkUsers, bulkItems) {
                                 itemName: itemValue
                             },
                             {
-                                itemNameN: itemValueN
+                                itemName,N: itemValue,N
                             }
                         ]
                     }
