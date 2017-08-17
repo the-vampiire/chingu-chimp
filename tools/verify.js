@@ -2,12 +2,12 @@
  * Created by Vampiire on 7/4/17.
  *
  *
- * holds all verification functions
+ * FOR ADDITIONAL SECURITY
+ *      get list of all chingu team names (team ID's) and add them to the slash verify function
+ *      to check alongside the slack token. ensures all requests only occur between chingu teams and bot
  *
- *
- * slash --> verify all incoming slash post requests
- *
- * site --> verify all incoming post requests are from the Chingu website
+ *      // userid: U5XJSS683, username: vampiire
+ *      // teamid: T5YFJ3Y7Q, team name: test team
  *
  */
 

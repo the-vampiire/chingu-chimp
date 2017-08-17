@@ -40,10 +40,29 @@ app.use('/done', done);
 
 // --------------------------- ROUTES --------------------------- //
 
-// ------ API
-const APIendpoints = require('./routes/APIendpoints');
-app.use('/API', APIendpoints);
+// --------- API --------- // 
+    const APIendpoints = require('./routes/APIendpoints');
+    app.use('/API', APIendpoints);
 
-// ------ SLASH COMMANDS
-const controller = require('./controller');
-app.use('/', controller);
+// --------- SLASH COMMANDS --------- //
+
+    // check-in slash command
+        const checkin = require('./routes/slashCheckin');
+        app.use('/checkin', checkin);
+
+    // profile slash command
+        const profile = require('./routes/slashProfile');
+        app.use('/profile', profile);
+    
+    // update slash command
+        const update = require('./routes/slashUpdate');
+        app.use('/update', update); 
+
+    // interactive messages
+        const interactive = require('./routes/slashInteractive');
+        app.use('/interactive', interactive);
+
+// ------------ FRONT END ---------- //
+
+const frontend = require('./frontendController');
+app.use('/', frontend);
