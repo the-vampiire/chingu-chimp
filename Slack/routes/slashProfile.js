@@ -1,8 +1,8 @@
 const express = require('express');
 const router = module.exports = express.Router();
 
-const tools = require('../../tools/exporter');
-const profileResponse = require('../../responses/profileResponses');
+const tools = require('../tools/exporter');
+const profileResponse = require('../responses/profileResponses');
 
 // handles profile requests / interactions
 router.post('/', (req, res) => {

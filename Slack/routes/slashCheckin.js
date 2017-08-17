@@ -1,7 +1,7 @@
 const express = require('express');
 const router = module.exports = express.Router();
 
-const tools = require('../../tools/exporter');
+const tools = require('../tools/exporter');
 
 // handles the check-in process
 router.post('/', (req, res) => {

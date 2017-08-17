@@ -1,7 +1,7 @@
 const express = require('express');
 const router = module.exports = express.Router();
 
-const tools = require('../../tools/exporter');
+const tools = require('../../Slack/tools/exporter');
 
 // handles incoming profile creation and validation 
 router.post ('/create-profile', (req, res) => {

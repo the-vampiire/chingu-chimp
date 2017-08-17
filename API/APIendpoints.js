@@ -2,12 +2,18 @@
 const express = require('express');
 const router = module.exports = express.Router();
 
+// GET requests 
+    // bulk users bulk items
+    // bulk users one item
+    // one user bulk items
+    // one user one item
 router.get('/item', (req, res) => {
 
-    const api = require('./API_Get');
+    const GET = require('./getMethods');
 
     const request = req.query;
     let error = {};
+    
 // accepted request content 
     const chinguAPIKey = request.key;
     const userName = request.userName;
@@ -18,11 +24,11 @@ router.get('/item', (req, res) => {
     if(chinguAPIKey === 'test'){
     
     // bulk users
-        if(bulkUsers){
+        if(bulkUsers){  
 
         // process bulk users request for bulk items
             if(bulkItems){
-                api.bulkUsersBulkItems(bulkUsers, bulkItems)
+                GET.bulkUsersBulkItems(bulkUsers, bulkItems)
                 .then( output => res.json(output))
                 .catch( mongoError => APIerror('mongo', error, request, mongoError));
             }
@@ -31,7 +37,7 @@ router.get('/item', (req, res) => {
        
         // process bulk users request for a single item
             else{
-                api.bulkUsersOneItem(bulkUsers, profileItem)
+                GET.bulkUsersOneItem(bulkUsers, profileItem)
                 .then( output => res.json(output))
                 .catch( mongoError => APIerror('mongo', error, request, mongoError));
             }
@@ -44,7 +50,7 @@ router.get('/item', (req, res) => {
 
         // process a bulk items request for a single user
             if(bulkItems){
-                api.oneUserBulkItems(userName, bulkItems, true)
+                GET.oneUserBulkItems(userName, bulkItems, true)
                 .then(output => res.json(output))
                 .catch(mongoError => res.json(APIerror('mongo', error, request, mongoError)))
             }
@@ -53,7 +59,7 @@ router.get('/item', (req, res) => {
             else if(!profileItem) error = APIerror('item', error, request);
 
         // process a request for a single user and single item
-            else api.oneUserOneItem(userName, profileItem)
+            else GET.oneUserOneItem(userName, profileItem)
                 .then( output => res.json(output))
                 .catch( mongoError => res.json(APIerror('mongo', error, request, mongoError)));
         }
@@ -64,10 +70,35 @@ router.get('/item', (req, res) => {
     if(error.error) res.json(error);
 });
 
-// TESTING
-router.get('/', (req, res) => {
-    const request = require('request');
-    const queries = req.query;
+// errror handler
+APIerror = (type, error, request, mongoError) => {
+
+    error.ok = false;
+    error.originalRequest = request;
+
+    switch(type){
+        case 'item':
+            error.error = 'Requests must include either an item or a bulk items array';
+            break;
+        case 'user':
+            error.error = 'Requests must include either a user name or a bulk users array';
+            break;
+        case 'key':
+            error.error = 'Invalid API key';
+            break;
+        case 'mongo':
+            error.error = mongoError;
+    }
+
+    return error;
+};
+
+
+
+// // TESTING
+// router.get('/', (req, res) => {
+//     const request = require('request');
+//     const queries = req.query;
 
 // test get one user one item
     // request({
@@ -106,40 +137,4 @@ router.get('/', (req, res) => {
 //         res.json(JSON.parse(returned.body));
 //  });
 
-});
-
-
-APIerror = (type, error, request, mongoError) => {
-
-    error.ok = false;
-    error.originalRequest = request;
-
-    switch(type){
-        case 'item':
-            error.error = 'Requests must include either an item or a bulk items array';
-            break;
-        case 'user':
-            error.error = 'Requests must include either a user name or a bulk users array';
-            break;
-        case 'key':
-            error.error = 'Invalid API key';
-            break;
-        case 'mongo':
-            error.error = mongoError;
-    }
-
-    return error;
-};
-
-// APIsuccess = (output, content, request) => {
-//     const item = request.item;
-
-//     output.ok = true;
-//     output.request = request;
-
-//     output.body = {};
-//     output.userName = request.userName;
-//     output[request.item] = content;
-
-//     return output;
-// };
+// });

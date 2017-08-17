@@ -41,28 +41,28 @@ app.use('/done', done);
 // --------------------------- ROUTES --------------------------- //
 
 // --------- API --------- // 
-    const APIendpoints = require('./routes/backend/API/APIendpoints');
+    const APIendpoints = require('./API/APIendpoints');
     app.use('/API', APIendpoints);
 
 // --------- SLASH COMMANDS --------- //
 
     // check-in slash command
-        const checkin = require('./routes/backend/slashCheckin');
+        const checkin = require('./Slack/routes/Slack/slashCheckin');
         app.use('/checkin', checkin);
 
     // profile slash command
-        const profile = require('./routes/backend/slashProfile');
+        const profile = require('./Slack/routes/Slack/slashProfile');
         app.use('/profile', profile);
     
     // update slash command
-        const update = require('./routes/backend/slashUpdate');
+        const update = require('./Slack/routes/Slack/slashUpdate');
         app.use('/update', update); 
 
     // interactive messages
-        const interactive = require('./routes/backend/slashInteractive');
+        const interactive = require('./Slack/routes/Slack/slashInteractive');
         app.use('/interactive', interactive);
 
 // ------------ FRONT END ---------- //
 
-const frontend = require('./routes/frontend/frontendController');
+const frontend = require('./public/Form/formController');
 app.use('/', frontend);

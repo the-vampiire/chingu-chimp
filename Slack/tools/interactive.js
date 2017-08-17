@@ -6,7 +6,7 @@
 const checkinResponse = require('../responses/checkinResponses');
 const profileResponse = require('../responses/profileResponses');
 const updateResponse = require('../responses/updateResponses');
-const userProfile = require('../database/profileModel').userProfile;
+const userProfile = require('../../database/profileModel').userProfile;
 
 interaction = (type, valueObject) => {
     let response;

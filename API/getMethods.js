@@ -1,7 +1,7 @@
 // API helper functions to collect and format requested data
 
 
-const userProfile = require('../../../database/profileModel').userProfile;
+const userProfile = require('../database/profileModel').userProfile;
 
 function oneUserOneItem(userName, requestItem){
 
@@ -26,10 +26,9 @@ function oneUserOneItem(userName, requestItem){
                 
                 resolve(output);
             }
-        })
-        .catch( mongoError => reject('User not found'));
+        }).catch( mongoError => reject('User not found'));
     });
-};
+};k
 
 function oneUserBulkItems(userName, bulkItems, requested){
 
