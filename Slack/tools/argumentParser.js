@@ -161,7 +161,7 @@ argumentSplitter = arguments => {
 
         // check if certificate link is valid
             if(item === 'certifications')
-                if(!/(https:\/\/www\.freecodecamp\.com\/[A-Za-z-]+\/((front)|(back)|(data))\-((end)|(visualization))\-(certification))/.test(data))
+                if(!/(https:\/\/www\.freecodecamp\.(com|org)\/[A-Za-z-]+\/((front)|(back)|(data))\-((end)|(visualization))\-(certification))/.test(data))
                     return `Invalid certificate url, must be a direct certificate link of the form \`https://www.freecodecamp.com/userName/x-x-certification\``;
 
         // check if general url is valid
