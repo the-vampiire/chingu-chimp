@@ -41,7 +41,7 @@ app.use('/done', done);
 // --------------------------- ROUTES --------------------------- //
 
 // --------- API --------- // 
-    const APIendpoints = require('./routes/backend/APIendpoints');
+    const APIendpoints = require('./routes/backend/API/APIendpoints');
     app.use('/API', APIendpoints);
 
 // --------- SLASH COMMANDS --------- //
