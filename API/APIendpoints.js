@@ -37,12 +37,12 @@ router.get('/request', (req, res) => {
                 if(itemScan === true){
                     GET.bulkUsersBulkItems(bulkUsers, bulkItems)
                     .then( output => res.json(output))
-                    .catch( mongoError => res.json(APIerror('mongo', error, request, mongoError)));
+                    .catch( mongoError => res.json(APIerror('userNotFound', error, request, mongoError)));
                 }
-                else error = APIerror('bad item', error, itemScan);
+                else error = APIerror('invalidItem', error, itemScan);
             }
 
-            else if(!profileItem) error = APIerror('item', error, request);
+            else if(!profileItem) error = APIerror('itemMissing', error, request);
        
         // process bulk users request for a single item
             else{
@@ -50,16 +50,16 @@ router.get('/request', (req, res) => {
                 if(itemScan === true){
                     GET.bulkUsersOneItem(bulkUsers, profileItem)
                     .then( output => res.json(output))
-                    .catch( mongoError => res.json(APIerror('mongo', error, request, mongoError)));
+                    .catch( mongoError => res.json(APIerror('userNotFound', error, request, mongoError)));
                 }
-                else error = APIerror('bad item', error, itemScan);  
+                else error = APIerror('invalidItem', error, itemScan);  
             }
         }
 
     // one user
         else {
 
-            if(!userName) error = APIerror('user', error, request);
+            if(!userName) error = APIerror('userMissing', error, request);
 
         // process a bulk items request for a single user
             if(bulkItems){
@@ -67,12 +67,12 @@ router.get('/request', (req, res) => {
                 if(itemScan === true){
                     GET.oneUserBulkItems(userName, bulkItems, true)
                     .then(output => res.json(output))
-                    .catch(mongoError => res.json(APIerror('mongo', error, request, mongoError)))
+                    .catch(mongoError => res.json(APIerror('userNotFound', error, request, mongoError)))
                 }
-                else error = APIerror('bad item', error, itemScan);  
+                else error = APIerror('invalidItem', error, itemScan);  
             }
 
-            else if(!profileItem) error = APIerror('item', error, request);
+            else if(!profileItem) error = APIerror('itemMissing', error, request);
 
         // process a request for a single user and single item
             else {
@@ -80,14 +80,14 @@ router.get('/request', (req, res) => {
                 if(itemScan === true){
                     GET.oneUserOneItem(userName, profileItem)
                     .then( output => res.json(output))
-                    .catch( mongoError => res.json(APIerror('mongo', error, request, mongoError)));
+                    .catch( mongoError => res.json(APIerror('userNotFound', error, request, mongoError)));
                 }
-                else error = APIerror('bad item', error, itemScan); 
+                else error = APIerror('invalidItem', error, itemScan); 
             }
         }
     }
 
-    else error = APIerror('key', error, request);
+    else error = APIerror('invalidKey', error, request);
     
     if(error.error) res.json(error);
 });
@@ -117,23 +117,23 @@ function APIerror(type, error, specificErrorMessage){
     error.ok = false;
 
     switch(type){
-        case 'item':
+        case 'itemMissing':
             error.status = 400;
             error.error = 'Requests must include either an item or a bulk items array';
             break;
-        case 'user':
+        case 'userMissing':
             error.status = 400;
             error.error = 'Requests must include either a user name or a bulk users array';
             break;
-        case 'key':
+        case 'invalidKey':
             error.status = 401;
             error.error = 'Invalid API key';
             break;
-        case 'bad item':
+        case 'invalidItem':
             error.status = 401;
             error.error = `Invalid profile item [${specificErrorMessage}] requested`
             break;
-        case 'mongo':
+        case 'userNotFound':
             error.status = 404;
             error.error = specificErrorMessage;
     }
