@@ -108,7 +108,12 @@ class User {
     }
 
     static getProfileItem(userName, item) {
-        return this.findOne({userName : userName}, item);
+        return new Promise((resolve, reject) => {
+            this.findOne({userName : userName}, item).then(profileItem => {
+                if(profileItem) resolve(profileItem[item]);
+                else reject('User not found');
+            })
+        });
     }
 
 // custom static methods 

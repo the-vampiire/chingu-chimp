@@ -27,7 +27,7 @@ router.get('/item', (req, res) => {
             }
 
             else if(!profileItem) error = APIerror('item', error, request);
-            
+
             else if(!userName) error = APIerror('user', error, request);
        
         // process bulk users request for a single item
@@ -40,7 +40,7 @@ router.get('/item', (req, res) => {
         else {
         // process a bulk items request for a single user
             if(bulkItems){
-                oneUserBulkItems(userName, bulkItems)
+                api.oneUserBulkItems(userName, bulkItems)
                 .then(output => res.json(output))
                 .catch(mongoError => res.json(APIerror('mongo', error, request, mongoError)))
             }
@@ -67,18 +67,19 @@ router.get('/', (req, res) => {
 //     request({
 //        uri: 'https://65974b37.ngrok.io/API/item',
 //        method: 'GET',
-//        qs: { key: 'test', userName:'tits', profileItem: 'projects' },
+//        qs: { key: 'test', userName:'vampiire', profileItem: 'projects' },
 //     }, (err, returned) => {
 //         res.json(JSON.parse(returned.body));
 //     });
 
-// sample bulk item request format (one user)
-    // request.get({url: 'https://8edff876.ngrok.io/API/item', 
-    // form: {  APIkey: process.env.ChinguAPIkey, user:'vampiire', bulkItems: ['projects', 'certifications'] }}, 
-    // (err, returned) => {
-    //         if(typeof returned.body === 'string') res.send(returned.body);
-    //         else res.json(JSON.parse(returned.body));
-    // });
+// // test get one user with bulk items
+//     request({
+//        uri: 'https://65974b37.ngrok.io/API/item',
+//        method: 'GET',
+//        qs: { key: 'test', userName:'vampiire', bulkItems: ['blog', 'gitHub', 'portfolio'] },
+//     }, (err, returned) => {
+//         res.json(JSON.parse(returned.body));
+//     });
 
 });
 
