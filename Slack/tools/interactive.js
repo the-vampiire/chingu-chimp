@@ -7,6 +7,9 @@ const checkinResponse = require('../responses/checkinResponses');
 const profileResponse = require('../responses/profileResponses');
 const updateResponse = require('../responses/updateResponses');
 // const userProfile = require('../../Database/profileModel').userProfile;
+const userProfile = require('../../Database/profileModel').userProfile;
+
+userProfile.testMethod();
 
 interaction = (type, valueObject) => {
     let response;
