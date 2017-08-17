@@ -4,7 +4,7 @@ const router = module.exports = express.Router();
 const tools = require('../tools/exporter');
 const updateResponse = require('../responses/updateResponses');
 
-const userProfile = require('../../database/profileModel').userProfile;
+const userProfile = require('../../Database/profileModel').userProfile;
 
 // handles updating user profiles / interactions
 router.post('/', (req, res) => {

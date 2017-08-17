@@ -1,7 +1,7 @@
 // API helper functions to collect and format requested data
 
 
-const userProfile = require('../database/profileModel').userProfile;
+const userProfile = require('../Database/profileModel').userProfile;
 
 function oneUserOneItem(userName, requestItem){
 
