@@ -3,7 +3,7 @@ const express = require('express');
 const router = module.exports = express.Router();
 
 
-const userProfile = require('../database/profileModel').userProfile;
+const userProfile = require('../../database/profileModel').userProfile;
 
 router.post('/item', (req, res) => {
 
