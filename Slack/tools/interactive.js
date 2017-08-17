@@ -4,16 +4,9 @@
  */
 
 const checkinResponse = require('../responses/checkinResponses');
+const profileResponse = require('../responses/profileResponses');
 const updateResponse = require('../responses/updateResponses');
-const userProfile = require('../database/profileModel').userProfile;
-
-// ------------ REMOVE AFTER BETA TESTING -----------------------
-
-const betaResponse = require('../Beta/betaSlashResponses');
-const doneResponse = require('../Beta/doneSlashResponses');
-
-// ------------ REMOVE AFTER BETA TESTING -----------------------
-
+const userProfile = require('../../Database/profileModel').userProfile;
 
 interaction = (type, valueObject) => {
     let response;
@@ -25,12 +18,6 @@ interaction = (type, valueObject) => {
         case 'update':
             response = updateResponse.skillSelect({});
             break;
-// ------------ REMOVE AFTER BETA TESTING -----------------------
-
-        // case 'start':
-
-
-// ------------ REMOVE AFTER BETA TESTING -----------------------
     }
 
     return response;
@@ -115,14 +102,19 @@ processInteraction = payload => {
             }
 
             else response = updateResponse.skillSelect(JSON.stringify(value));
-
             break;
 
-// ------------ REMOVE AFTER BETA TESTING -----------------------
+    // -------------- PROFILE CARD -------------- //
+        case 'profileCard':
+            value = JSON.parse(value);
+            response = profileResponse.profileCard(value.userName);
+            break;
 
-        // case '':
-
-// ------------ REMOVE AFTER BETA TESTING -----------------------
+    // -------------- PROFILE ITEM -------------- //
+        case 'profileItem':
+            value = JSON.parse(value);
+            response = profileResponse.profileItem(value.userName, value.item);
+            break;
 
     }
 

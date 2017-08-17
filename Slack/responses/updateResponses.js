@@ -24,7 +24,7 @@ languageSelect = valueObject => {
     // set the languages array to the database array of languages used in the dropdown menus of the profile form
 
     const languages = ['JavaScript', 'Java', 'Python', 'Ruby', 'C++', 'C#.Net', 'Assembly', 'Bash', 'Basic', 'C', 'C#',
-        'Fortran', 'Go', 'MATLAB', 'Objective-C', 'Perl', 'PHP', 'Powershell', 'VBA'];
+        'Fortran', 'Go', 'MATLAB', 'MongoDB', 'MySQL', 'Objective-C', 'Perl', 'PHP', 'PostgreSQL', 'Powershell', 'SQL', 'VBA'];
 
     let response = updateSkillsResponse();
     response.attachments = [val.menu( null, valueObject, languages, 'Select a language', 'languageSelect', 'name')];
@@ -34,7 +34,7 @@ languageSelect = valueObject => {
 frameworkSelect = valueObject => {
     // set the frameworks array to the database array of frameworks used in the dropdown menus of the profile form
 
-    const frameworks = ['jQuery', 'Bootstrap', 'Angular2/4', 'AngularJS', 'Electron', 'jQueryUI', 'React', 'React Native', 'Vue'];
+    const frameworks = [ 'Angular2/4', 'AngularJS', 'Backbone', 'Bootstrap', 'Django', 'Electron', 'Ember', 'Express', 'jQuery', 'jQueryUI', 'Node.js', 'React', 'React Native', 'Vue'];
 
     let response = updateSkillsResponse();
     response.attachments = [val.menu( null, valueObject, frameworks, 'Select a framework', 'frameworkSelect', 'name')];
@@ -42,7 +42,8 @@ frameworkSelect = valueObject => {
 };
 
 levelSelect = valueObject => {
-    const levels = ['novice', 'intermediate', 'expert', 'wizard'];
+    console.log(valueObject);
+    const levels = ['remove', 'heard the name before', 'tutorial phase', 'under 5 projects', 'over 5 projects', 'flowing code', `${JSON.parse(valueObject).name} Wizard`];
     let response = updateSkillsResponse();
     response.attachments = [val.menu( null, valueObject, levels, 'Select your skill level', 'levelSelect', 'level')];
     return response;
@@ -55,37 +56,7 @@ submitSkill = valueObject => {
 
 helpResponse = (type) => {
 
-    const help1 = `*How to use the \`/update\` command:* \n\nUpdating functions similarly to git in stringing together mandatory and/or optional \`[-flag data]\` pairs to build the update command\n
-        *General form: \`/update [profile item] [-flag data]\`*\n
-        *List of update items: \`blog\`, \`certifications\`, \`gitHub\`, \`picture\`, \`portfolio\`, \`projects\`, \`skills\`, \`story\`*\n
-        *List of update flags: \`-date\` or \`-d\`, \`-git\` or \`-g\`, \`-name\` or \`-n\`, \`-url\` or \`-u\`*\n\n
-        *Updating Blog, Portfolio, or GitHub Profile Links*\n
-        \t\`/update blog\` or \`/update portfolio\` or \`/update gitHub\`\n
-        *Updating Certifications*\n
-        \t\`/update certifications\`\n
-        *Updating Projects*\n
-        \t\`/update projects\`\n
-         *Updating Skills*\n
-        \t\`/update skills\`\n
-        *Updating User Story*
-        \t*Item(s)*
-        \t\t[\`story\`]: your user story (that you entered in the Intro channel)
-        \t*Flag(s)*
-        \t\tNone. 
-        \t\t*Note:* You can preserve the formatting [markdown] by copying directly from the edit message window in your intro post
-        \t_example update of user story:_ \`/update story Hello you can call me Vamp I am a...\`
-        \n
-        *Updating Your Profile Picture*
-        \t*Item(s)*
-        \t\t[\`picture\`]: the profile picture that is displayed on your profile card
-        \t*Flag(s)*
-        \t\tNone.
-        \tUse the command \`/update picture\` and your current Slack profile picture will be added to your profile card.
-        
-        *if you need more help, have suggestions for improvement, or want to report a bug please add an issue on <https://www.github.com/the-vampiire/Chingu-Chimp/issues|GitHub>*\n\n*Next:* call the second help version using \`/update help2\``;
-    // ----------- REMOVE LAST "NEXT" LINE AFTER BETA -----------------
-
-    const help2 = {
+    const help = {
         text: `*How to use the \`/update\` command:* \n\nUpdating behaves similarly to git. \nYou string together mandatory and/or optional \`[-flag data]\` pairs to build the update command`,
         response_type: 'ephemeral',
 
@@ -107,41 +78,21 @@ helpResponse = (type) => {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Help Sub-Guides*',
-                text: `*Enter any of the following commands to be returned a detailed help guide specific to that item*\n\n*Updating Blog, GitHub Profile, or Portfolio Links*\n\t\`/update blog\` or \`/update gitHub\` or \`/update portfolio\`\n\n*Updating Certifications*\n\t\`/update certifications\`\n\n*Updating Projects*\n\t\`/update projects\`\n\n*Updating your User Story*\n\t\`/update story\``,
+                text: `*Call any of the following commands to be returned a guide for that item*\n\n*Updating Blog, GitHub Profile, or Portfolio Links*\n\t\`/update blog\` or \`/update gitHub\` or \`/update portfolio\`\n\n*Updating Certifications*\n\t\`/update certifications\`\n\n*Updating Projects*\n\t\`/update projects\`\n\n*Updating your User Story*\n\t\`/update story\``,
 
             },
             {
-                color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
+                color: '#15df89',
                 pretext: '*Updating your Profile Picture*',
-                fields: [
-                    {
-                        title: 'Item',
-                        value: `[picture]: the profile picture that is displayed on your profile card`
-                    }
-                ]
-            },
-            {
-                mrkdwn_in: ['text', 'pretext'],
-                color: '#666',
-                text: `*Example - updating your profile card picture*\nUse the command \`/update picture\` and your current Slack profile picture will be added to your profile card`
+                text: `*Example - updating your profile card picture*\nUse the command \`/update picture\` to update from your Slack profile picture`
 
             },
             {
+                mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
-                mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Updating Skills*',
-                fields: [
-                    {
-                        title: 'Item',
-                        value: `[skills]: the skills section of your profile which includes languages, frameworks, and their associated skill-levels`
-                    }
-                ]
-            },
-            {
-                mrkdwn_in: ['text', 'pretext'],
-                color: '#666',
-                text: `*Example - updating your skills*\nUse the command \`/update skills\` an interactive message will be returned to select your skill and skill-level`
+                text: `*Example - updating your skills*\nUse the command \`/update skills\` and an interactive message will be returned`
 
             },
             {
@@ -363,7 +314,7 @@ helpResponse = (type) => {
             {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
-                pretext: '*General form: \`/update certifications -url certificateURL [ -date mm/dd/yy ]\`*'
+                pretext: '*General form: \`/update certifications -url certificateURL [-date mm/dd/yy]\`*'
 
             },
             {
@@ -422,11 +373,8 @@ helpResponse = (type) => {
 
     let response;
     switch(type){
-        case 'help1':
-            response = help1;
-            break;
-        case 'help2':
-            response = help2;
+        case 'help':
+            response = help;
             break;
         case 'story':
             response = story;
@@ -447,7 +395,7 @@ helpResponse = (type) => {
             break;
         default:
 // CHANGE AFTER BETA TESTING
-            response = `invalid item [\`${type}\`]. Try \`/update help1\` or \`/update help2\` for a detailed help guide`
+            response = `invalid item [\`${type}\`]. Try \`/update help1\` for a detailed help guide`
 // CHANGE AFTER BETA TESTING
     }
 

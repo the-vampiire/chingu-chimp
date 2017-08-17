@@ -15,6 +15,12 @@
 * will need to change the argumentSplitter to handle this
 *
 *
+*
+* // BETA SUGGESTIONS //
+*
+* work on replacing -g / -git with -r / -repo for clarity
+*
+*
 * */
 
 argumentParser = arguments => {
@@ -29,13 +35,7 @@ argumentParser = arguments => {
     let item = output.item;
 
 // initial check to ensure the update item is valid
-    if(!~acceptedUpdateItems.indexOf(item)) {
-
-// -------------- CHANGE AFTER BETA
-        return `Invalid update item [\`${item}\`]\n Use \`/update help1\` or \`/update help2\` for a list of available update items.`;
-// -------------- CHANGE AFTER BETA
-
-    }
+    if(!~acceptedUpdateItems.indexOf(item)) return `Invalid update item [\`${item}\`]\n Use \`/update help\` for a list of available update items.`;
 
 // handle the special case of the story item which only has the storyString as its data
     let storyString = output.storyString ? output.storyString : null;
@@ -54,9 +54,14 @@ argumentParser = arguments => {
 
             // if there is an error it is returned from errorScan as a string
             let errorScanOutput = errorScanAndModify(item, flag, data);
-            if(typeof errorScanOutput === 'string'){
-                error = errorScanOutput;
-            }else{
+
+            if(typeof errorScanOutput === 'string') error = errorScanOutput;
+        //
+            if(errorScanOutput instanceof Promise){
+
+            }
+
+            else{
                 // if there is no error errorScan returns an object containing the flag and data (in case they were modified)
                 let output = errorScanOutput;
                 flag = output.flag;
@@ -84,27 +89,30 @@ argumentParser = arguments => {
 argumentSplitter = arguments => {
 
     if(!/^(story .+)/.test(arguments)){
-
-// CHANGE AFTER BETA TESTING
-        if(!~arguments.indexOf('-')) return 'No flags detected. Try `/update help1` or `/update help2` for help using the /update command';
-// CHANGE AFTER BETA TESTING
+        if(!~arguments.indexOf('-')) return 'No flags detected. Try `/update help` for a list of update items and flags using the /update command';
 
         const multipleItems = arguments.slice(0, arguments.indexOf('-')+1);
         if(!/^[A-Za-z]+( )-$/.test(multipleItems))
             return `Invalid item [\`${multipleItems.replace(/ -/, '')}\`]. You can only pass one update item at a time`;
     }
 
-    const item = arguments.slice(0, arguments.indexOf(' '));
+    let item = arguments.slice(0, arguments.indexOf(' '));
     const flagsAndData = arguments.slice(arguments.indexOf('-'));
 
-// story is a simple string with no flags
+// accept lowercase or camelcase item
+    if(item === 'github') item = 'gitHub';
+
     if(item === 'story'){
         const storyString = arguments.slice(arguments.indexOf(' ')+1);
         return { item : item, storyString: storyString }
     }
 
-    if(item === 'projects' && !(flagsAndData.includes('-g') || flagsAndData.includes('-git')))
-        return `No GitHub repo link detected for this project. All projects require at minimum a name and GitHub repo link.\nTry again or type \`/update projects\` for help`;
+    if(item === 'projects'){
+        if(!(flagsAndData.includes('-n') || flagsAndData.includes('-name')))
+            return `Missing a project name. All projects require at minimum a project name and GitHub repo link.\nTry again or type \`/update projects\` for more detailed help`;
+        if(!(flagsAndData.includes('-g') || flagsAndData.includes('-git')))
+            return `Missing a GitHub repo. All projects require at minimum a project name and GitHub repo link.\nTry again or type \`/update projects\` for more detailed help`;
+    }
 
     const pairsArray = flagsAndData.split(/ (?=-)/).map( e => e.replace(/-/, ''));
 
@@ -136,26 +144,29 @@ argumentSplitter = arguments => {
 // modification step (as needed)
     switch(true){
 
+    // github repo
         case flag === 'git' || flag === 'g':
-            if(!/(https:\/\/github\.com\/)/.test(data))
-                return `Invalid data: \`${data}\` associated with flag [\`-${flag}\`] does not begin with \`https://github.com/\``;
+            if(!/(https:\/\/github\.com\/)/.test(data) || ~data.indexOf(' '))
+                return `Invalid data: \`${data}\` associated with flag [\`-${flag}\`]. Make sure a valid GitHub repo link has been added of the form  \`https://github.com/yourUserName/repoName\``;
             flag = 'gitHub';
             break;
 
+    // github profile, blog, project, or portfolio url
         case flag === 'url' || flag === 'u':
         // check if the gitHub url is valid
             if(item === 'gitHub'){
-                if(!/^(https:\/\/github\.com\/)/.test(data))
+                if(!/(https:\/\/github\.com\/)[^\. ]+/.test(data) || ~data.indexOf(' '))
                     return `Invalid gitHub profile url, ensure the url entered is of the form \`https://github.com/yourUserName\``
             }
 
         // check if certificate link is valid
             if(item === 'certifications')
                 if(!/(https:\/\/www\.freecodecamp\.com\/[A-Za-z-]+\/((front)|(back)|(data))\-((end)|(visualization))\-(certification))/.test(data))
-                    return `Invalid certificate url, must be of the form \`https://www.freecodecamp.com/userName/x-x-certification\``;
+                    return `Invalid certificate url, must be a direct certificate link of the form \`https://www.freecodecamp.com/userName/x-x-certification\``;
 
         // check if general url is valid
-            if(!/(http:\/\/|https:\/\/)(www\.)?/.test(data)) return `Invalid data: \`${data}\` associated with flag [\`-${flag}\`]. ensure the full [\`http://www.\`] or [\`http\`url is being passed`;
+            if(data.length > 75) return `*Invalid url. Must be below 75 characters*`;
+            if(!/(http:\/\/|https:\/\/)(www\.)?/.test(data) || ~data.indexOf(' ')) return `Invalid data: \`${data}\` associated with flag [\`-${flag}\`]. Check that a valid and complete [\`http://www.\`] or [\`http\`] url is being passed`;
 
             flag = 'url';
             break;

@@ -14,8 +14,9 @@ app.listen(port, e => e ? console.log(e) : console.log(`Server listening on port
 
 // Mongo Database
 const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 const dbURL = process.env.dbURL;
-mongoose.connect(dbURL, {useMongoClient : true}, e => e ? console.log(`error: ${e}`) : console.log('connected to database'));
+mongoose.connect(dbURL, {useMongoClient : true}, e => e ? console.log(`database connection error:\n${e}`) : console.log('connected to database'));
 
 // Middleware
 const BP = require('body-parser');
@@ -37,6 +38,31 @@ const done = require('./Beta/BETA_doneSlash');
 app.use('/done', done);
 // ---------- REMOVE AFTER BETA TESTING ----------------
 
-// Pass all routing to the controller
-const controller = require('./controller');
-app.use('/', controller);
+// --------------------------- ROUTES --------------------------- //
+
+// --------- API --------- // 
+    const APIendpoints = require('./API/APIendpoints');
+    app.use('/API', APIendpoints);
+
+// --------- SLASH COMMANDS --------- //
+
+    // check-in slash command
+        const checkin = require('./Slack/routes/slashCheckin');
+        app.use('/checkin', checkin);
+
+    // profile slash command
+        const profile = require('./Slack/routes/slashProfile');
+        app.use('/profile', profile);
+    
+    // update slash command
+        const update = require('./Slack/routes/slashUpdate');
+        app.use('/update', update); 
+
+    // interactive messages
+        const interactive = require('./Slack/routes/slashInteractive');
+        app.use('/interactive', interactive);
+
+// ------------ FRONT END ---------- //
+
+const frontend = require('./public/Form/formController');
+app.use('/', frontend);

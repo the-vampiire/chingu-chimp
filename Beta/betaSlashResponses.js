@@ -2,6 +2,15 @@
  * Created by Vampiire on 8/13/17.
  */
 
+
+
+/*
+*
+*
+* ADD SOME INFORMATION ABOUT CHECK-INS AND WHAT THEY WILL BE USED FOR
+*
+* */
+
 startResponse = () => {
     return {
         response_type: 'in_channel',
@@ -210,20 +219,20 @@ profileCommandResponse = () => {
             {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
-                pretext: `*2) Request a user's profile card publicly - _using_ the \`share\` argument*`,
+                pretext: `*2) Share a user's profile card publicly - _using_ the \`share\` argument*`,
                 text: '*command:* `/profile @userName share`'
             },
             {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
-                pretext: `*3) Request a user's gitHub, portfolio or blog link publicly - _using_ the \`share\` argument*`,
+                pretext: `*3) Share a user's gitHub, portfolio or blog link publicly - _using_ the \`share\` argument*`,
                 text: '*command:* `/profile @userName share [gitHub, portfolio, blog]`'
             },
             {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
-                pretext: `*4) Request a user's certifications - publicly or privately*`,
-                text: '*command:* `/profile @userName certifications`'
+                pretext: `*4) Request a user's story - stories default to private responses*`,
+                text: '*command:* `/profile @userName story`'
             },
             {
                 color: '#15df89',

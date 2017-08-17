@@ -5,9 +5,11 @@
 const interactive = require('./interactive');
 const verify = require('./verify');
 const requests = require('./requests');
+const argumentParser = require('./argumentParser');
 
 module.exports = {
-    interactive : interactive,
-    verify : verify,
-    requests : requests
+    interactive,
+    verify,
+    requests,
+    argumentParser
 };

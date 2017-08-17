@@ -13,9 +13,9 @@ checkinResponse = () => {
 
 activitySelect = valueObject => {
 
-    const menuItems = ['Accountability', 'Pair programming', 'Team meeting'];
+    const menuItems = ['Pair Programming', 'Team Meeting', 'Self Check-in', 'Accountability'];
 
-    let response = checkinResponse();
+    const response = checkinResponse();
     response.attachments = [val.menu( null, valueObject, menuItems, 'Select a check-in type', 'activitySelect', 'kind')];
 
     return response;
@@ -24,9 +24,24 @@ activitySelect = valueObject => {
 
 taskSelect = valueObject => {
 
-    const menuItems = ['code wars', 'tutorial', 'other'];
+    let menuItems;
 
-    let response = checkinResponse();
+    console.log(valueObject);
+
+    switch(JSON.parse(valueObject).kind){
+        case 'Pair Programming':
+            menuItems = ['Code Wars', 'Tutorial', 'FCC Algorithms', 'Project', 'Other'];
+            break;
+        case 'Team Meeting':
+        case 'Self Check-in':
+            menuItems = ['Brainstorming', 'Planning', 'Coding', 'Bug-fixing', 'Refactoring', 'Other'];
+            break;
+        case 'Accountability':
+            menuItems = ['Catching up', 'Setting goals', 'Reviewing code', 'Other'];
+            break;
+    }
+
+    const response = checkinResponse();
     response.attachments = [val.menu( null, valueObject, menuItems, 'Select a task', 'taskSelect', 'task')];
 
     return response;
@@ -52,7 +67,7 @@ submitCheckin = valueObject => {
     });
 
     return valSubmit(valueObject, 'checkin', true,
-        `Check-in to *${kind}* to work on *${valueObject.task}*\nCheck-in will be processed for: *${partnerString}*`);
+        `Check-in to *${kind}* to work on *${valueObject.task.toLowerCase()}*\nCheck-in will be processed for: *${partnerString}*`);
 };
 
 module.exports = {

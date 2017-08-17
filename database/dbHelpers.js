@@ -5,6 +5,60 @@
  *
  */
 
+
+// checks for existing / adds missing badges
+checkAndAddBadges = profileDoc => {
+
+    let badges = profileDoc.badges;
+    const certifications = profileDoc.certifications;
+    const skills = profileDoc.skills;
+        const languages = skills.languages;
+        const frameworks = skills.frameworks;
+    const projects = profileDoc.projects;
+    const totalCheckins = profileDoc.totalCheckins;
+
+    if(certifications.length) badges = addCertBadges(certifications, badges, 'name');
+
+// // projects badges
+//     switch(projects.length){
+//
+//     }
+//
+// // languages badges
+//
+// // check-ins badges
+//     switch(totalCheckins){
+//         case '250':
+//         case '100':
+//         case '50':
+//         case '25':
+//     }
+//
+// // activity streak badges
+//     switch(bestStreak){
+//         case '90':
+//         case '60':
+//         case '30':
+//         case '21':
+//         case '14':
+//         case '7':
+//     }
+
+    return badges;
+};
+
+// checks an array against the user's badges. adds any missing badges the user has earned
+addCertBadges = (eachArray, badges, matchProperty) => {
+
+    eachArray.forEach( eachE => {
+        if(!badges.some( badge => badge[matchProperty] === eachE[matchProperty]))
+            badges.unshift(newBadge(eachE[matchProperty]))
+    });
+
+    return badges;
+
+};
+
 // checks for an existing /  adds a new cohort
 checkAndAddCohort = (cohorts, cohortName) => {
 
@@ -21,8 +75,6 @@ checkAndAddCohort = (cohorts, cohortName) => {
         // 3+?
         cohorts.push({cohortName: cohortName});
     }
-
-
 
     return cohorts;
 };
@@ -57,38 +109,57 @@ streakUpdater = (checkins, currentStreak, bestStreak) => {
 
 
 // returns a badge object to add to the badges array
-newBadge = type => {
 
-// badge types
-    // 'betaTester',
+newBadge = (type, color) => {
+
+    // let badges have specific colors as well
+
     const newBadge = {};
-
-// allow the community to make badges
-    // have each beta testing team provide a badge that can be added here
-
     switch(type){
+
+    // BETA TESTING: CHINGU CHIMP
         case 'Chingu Chimp Beta Tester':
             newBadge.badgeType = 'beta';
             newBadge.name = 'Beta Tester: Chingu Chimp';
-            // newBadge.url = 'http://chevellestuff.net/styles/images/crown.png';
             newBadge.url = 'http://www.monkeymods.com/wp-content/uploads/2015/05/monkey-fav2.png';
-            // newBadge.url = 'https://www.bernewitness.com/favicon-16x16.png';
-            break;
-        case 'founder':
-            newBadge.badgeType = 'custom';
-            newBadge.name = 'Chingu Founder';
-            newBadge.url = 'http://chevellestuff.net/styles/images/crown.png';
+            // newBadge.color = '';
             break;
         case 'Chimp Breaker':
             newBadge.badgeType = 'beta';
             newBadge.name = 'I broke the Chimp and all I got was a 16px badge';
             newBadge.url = 'https://cdn2.iconfinder.com/data/icons/aspneticons_v1.0_Nov2006/law-add-16x16.gif';
             break;
-        case 'project5':
+
+    // CERTIFICATIONS
+        case 'Front End Certification':
+            newBadge.badgeType = 'certification';
+            newBadge.name = 'Front End Certification';
+            newBadge.url = 'http://i.imgur.com/gXpgAdi.png';
+            newBadge.color = '#fec901';
             break;
-        case 'help5':
+        case 'Back End Certification':
+            newBadge.badgeType = 'certification';
+            newBadge.name = 'Back End Certification';
+            newBadge.url = 'http://i.imgur.com/mY5qQew.png';
+            newBadge.color = '#009345';
             break;
-        case 'help10':
+        case 'Data Visualization Certification':
+            newBadge.badgeType = 'certification';
+            newBadge.name = 'Data Visualization Certification';
+            newBadge.url = 'http://i.imgur.com/IoTeInz.png';
+            newBadge.color = '#41778f';
+            break;
+
+    // CUSTOM
+        case 'founder':
+            newBadge.badgeType = 'custom';
+            newBadge.name = 'Chingu Founder';
+            newBadge.url = 'http://chevellestuff.net/styles/images/crown.png';
+            break;
+        case 'father':
+            newBadge.badgeType = 'custom';
+            newBadge.name = 'Father of the Chimp';
+            newBadge.url = 'http://icons.iconarchive.com/icons/icons8/windows-8/16/Astrology-Year-Of-Monkey-icon.png';
             break;
     }
 
@@ -96,6 +167,7 @@ newBadge = type => {
 };
 
 module.exports = {
+    checkAndAddBadges,
     checkAndAddCohort,
     streakUpdater,
     newBadge
