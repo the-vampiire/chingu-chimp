@@ -5,7 +5,7 @@
 
 
 const mongoose = require('mongoose');
-const requests = require('../tools/requests');
+const requests = require('../Slack/tools/requests');
 const dbHelper = require('./dbHelpers');
 
 // sub-schemas

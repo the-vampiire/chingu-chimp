@@ -47,19 +47,19 @@ app.use('/done', done);
 // --------- SLASH COMMANDS --------- //
 
     // check-in slash command
-        const checkin = require('./Slack/routes/Slack/slashCheckin');
+        const checkin = require('./Slack/routes/slashCheckin');
         app.use('/checkin', checkin);
 
     // profile slash command
-        const profile = require('./Slack/routes/Slack/slashProfile');
+        const profile = require('./Slack/routes/slashProfile');
         app.use('/profile', profile);
     
     // update slash command
-        const update = require('./Slack/routes/Slack/slashUpdate');
+        const update = require('./Slack/routes/slashUpdate');
         app.use('/update', update); 
 
     // interactive messages
-        const interactive = require('./Slack/routes/Slack/slashInteractive');
+        const interactive = require('./Slack/routes/slashInteractive');
         app.use('/interactive', interactive);
 
 // ------------ FRONT END ---------- //
