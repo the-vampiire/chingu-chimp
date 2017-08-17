@@ -78,21 +78,21 @@ helpResponse = (type) => {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Help Sub-Guides*',
-                text: `*Enter any of the following commands to be returned a detailed help guide specific to that item*\n\n*Updating Blog, GitHub Profile, or Portfolio Links*\n\t\`/update blog\` or \`/update gitHub\` or \`/update portfolio\`\n\n*Updating Certifications*\n\t\`/update certifications\`\n\n*Updating Projects*\n\t\`/update projects\`\n\n*Updating your User Story*\n\t\`/update story\``,
+                text: `*Call any of the following commands to be returned a guide for that item*\n\n*Updating Blog, GitHub Profile, or Portfolio Links*\n\t\`/update blog\` or \`/update gitHub\` or \`/update portfolio\`\n\n*Updating Certifications*\n\t\`/update certifications\`\n\n*Updating Projects*\n\t\`/update projects\`\n\n*Updating your User Story*\n\t\`/update story\``,
 
             },
             {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
                 pretext: '*Updating your Profile Picture*',
-                text: `*Example - updating your profile card picture*\nUse the command \`/update picture\` and your current Slack profile picture will be added to your profile card`
+                text: `*Example - updating your profile card picture*\nUse the command \`/update picture\` to update from your Slack profile picture`
 
             },
             {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
                 pretext: '*Updating Skills*',
-                text: `*Example - updating your skills*\nUse the command \`/update skills\` and an interactive message will be returned to select your skill and skill-level`
+                text: `*Example - updating your skills*\nUse the command \`/update skills\` and an interactive message will be returned`
 
             },
             {
