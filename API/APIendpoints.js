@@ -4,6 +4,9 @@ const router = module.exports = express.Router();
 
 const verifyKey = require('./tools/verify');
 const verifyItems = require('./tools/verifyItems');
+    // itemScan is the returned value of verifyItems
+        // if an invalid item is found then that item is returned to be processed by APIerror
+        // if all requested item(s) are valid then it returns true
 
 // GET [request data from the database] 
     // bulk users bulk items
