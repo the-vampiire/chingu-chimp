@@ -87,7 +87,7 @@ helpResponse = (type) => {
                 pretext: '*Updating your Profile Picture*',
                 text: `*Example - updating your profile card picture*\nUse the command \`/update picture\` and your current Slack profile picture will be added to your profile card`
 
-            }
+            },
             {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
