@@ -2,10 +2,10 @@ const express = require('express');
 const router = module.exports = express.Router();
 
 const tools = require('../tools/exporter');
-const profileResponse = require('./responses/profileResponses');
+const profileResponse = require('../responses/profileResponses');
 
 // handles profile requests / interactions
-router.post('/profile', (req, res) => {
+router.post('/', (req, res) => {
     
         const body = req.body;
         const text = body.text;

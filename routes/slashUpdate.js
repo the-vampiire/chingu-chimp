@@ -2,13 +2,12 @@ const express = require('express');
 const router = module.exports = express.Router();
 
 const tools = require('../tools/exporter');
-const updateResponse = require('./responses/updateResponses');
-const argumentParser = require('./tools/argumentParser');
+const updateResponse = require('../responses/updateResponses');
 
-const userProfile = require('./database/profileModel').userProfile;
+const userProfile = require('../database/profileModel').userProfile;
 
 // handles updating user profiles / interactions
-router.post('/update', (req, res) => {
+router.post('/', (req, res) => {
 
         const body = req.body;
         const userName = body.user_name;
@@ -22,7 +21,7 @@ router.post('/update', (req, res) => {
                 else if(/^(picture .+)/.test(arguments)) res.end('*\`/update picture\` does not take any additional parameters*');
     
                 else{
-                    let parserOutput = argumentParser.parse(arguments);
+                    let parserOutput = tools.argumentParser.parse(arguments);
     
                     if(typeof parserOutput === 'string') res.end(parserOutput);
                     else userProfile.processUpdate(userName, cohortName, parserOutput)
@@ -68,4 +67,3 @@ router.post('/update', (req, res) => {
     
         else res.end('invalid Slack token');
     });
-    
