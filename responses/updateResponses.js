@@ -82,37 +82,17 @@ helpResponse = (type) => {
 
             },
             {
+                mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
-                mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Updating your Profile Picture*',
-                fields: [
-                    {
-                        title: 'Item',
-                        value: `[picture]: the profile picture that is displayed on your profile card`
-                    }
-                ]
-            },
-            {
-                mrkdwn_in: ['text', 'pretext'],
-                color: '#666',
                 text: `*Example - updating your profile card picture*\nUse the command \`/update picture\` and your current Slack profile picture will be added to your profile card`
 
-            },
+            }
             {
+                mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
-                mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Updating Skills*',
-                fields: [
-                    {
-                        title: 'Item',
-                        value: `[skills]: the skills section of your profile which includes languages, frameworks, and their associated skill-levels`
-                    }
-                ]
-            },
-            {
-                mrkdwn_in: ['text', 'pretext'],
-                color: '#666',
-                text: `*Example - updating your skills*\nUse the command \`/update skills\` an interactive message will be returned to select your skill and skill-level`
+                text: `*Example - updating your skills*\nUse the command \`/update skills\` and an interactive message will be returned to select your skill and skill-level`
 
             },
             {
