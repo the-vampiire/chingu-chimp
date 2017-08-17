@@ -5,7 +5,6 @@
 
 const userProfile = require('../../Database/profileModel').userProfile;
 
-
 // ------------------- CORE EXPORTS ------------------- //
 
 profileHelp = () => {
