@@ -56,37 +56,7 @@ submitSkill = valueObject => {
 
 helpResponse = (type) => {
 
-    const help1 = `*How to use the \`/update\` command:* \n\nUpdating functions similarly to git in stringing together mandatory and/or optional \`[-flag data]\` pairs to build the update command\n
-        *General form: \`/update [profile item] [-flag data]\`*\n
-        *List of update items: \`blog\`, \`certifications\`, \`gitHub\`, \`picture\`, \`portfolio\`, \`projects\`, \`skills\`, \`story\`*\n
-        *List of update flags: \`-date\` or \`-d\`, \`-git\` or \`-g\`, \`-name\` or \`-n\`, \`-url\` or \`-u\`*\n\n
-        *Updating Blog, Portfolio, or GitHub Profile Links*\n
-        \t\`/update blog\` or \`/update portfolio\` or \`/update gitHub\`\n
-        *Updating Certifications*\n
-        \t\`/update certifications\`\n
-        *Updating Projects*\n
-        \t\`/update projects\`\n
-         *Updating Skills*\n
-        \t\`/update skills\`\n
-        *Updating User Story*
-        \t*Item(s)*
-        \t\t[\`story\`]: your user story (that you entered in the Intro channel)
-        \t*Flag(s)*
-        \t\tNone. 
-        \t\t*Note:* You can preserve the formatting [markdown] by copying directly from the edit message window in your intro post
-        \t_example update of user story:_ \`/update story Hello you can call me Vamp I am a...\`
-        \n
-        *Updating Your Profile Picture*
-        \t*Item(s)*
-        \t\t[\`picture\`]: the profile picture that is displayed on your profile card
-        \t*Flag(s)*
-        \t\tNone.
-        \tUse the command \`/update picture\` and your current Slack profile picture will be added to your profile card.
-        
-        *if you need more help, have suggestions for improvement, or want to report a bug please add an issue on <https://www.github.com/the-vampiire/Chingu-Chimp/issues|GitHub>*\n\n*Next:* call the second help version using \`/update help2\``;
-    // ----------- REMOVE LAST "NEXT" LINE AFTER BETA -----------------
-
-    const help2 = {
+    const help = {
         text: `*How to use the \`/update\` command:* \n\nUpdating behaves similarly to git. \nYou string together mandatory and/or optional \`[-flag data]\` pairs to build the update command`,
         response_type: 'ephemeral',
 
@@ -423,11 +393,8 @@ helpResponse = (type) => {
 
     let response;
     switch(type){
-        case 'help1':
-            response = help1;
-            break;
-        case 'help2':
-            response = help2;
+        case 'help':
+            response = help;
             break;
         case 'story':
             response = story;
@@ -448,7 +415,7 @@ helpResponse = (type) => {
             break;
         default:
 // CHANGE AFTER BETA TESTING
-            response = `invalid item [\`${type}\`]. Try \`/update help1\` or \`/update help2\` for a detailed help guide`
+            response = `invalid item [\`${type}\`]. Try \`/update help1\` for a detailed help guide`
 // CHANGE AFTER BETA TESTING
     }
 

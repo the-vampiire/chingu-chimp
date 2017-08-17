@@ -35,13 +35,7 @@ argumentParser = arguments => {
     let item = output.item;
 
 // initial check to ensure the update item is valid
-    if(!~acceptedUpdateItems.indexOf(item)) {
-
-// -------------- CHANGE AFTER BETA
-        return `Invalid update item [\`${item}\`]\n Use \`/update help1\` or \`/update help2\` for a list of available update items.`;
-// -------------- CHANGE AFTER BETA
-
-    }
+    if(!~acceptedUpdateItems.indexOf(item)) return `Invalid update item [\`${item}\`]\n Use \`/update help\` for a list of available update items.`;
 
 // handle the special case of the story item which only has the storyString as its data
     let storyString = output.storyString ? output.storyString : null;
@@ -95,10 +89,7 @@ argumentParser = arguments => {
 argumentSplitter = arguments => {
 
     if(!/^(story .+)/.test(arguments)){
-
-// CHANGE AFTER BETA TESTING
-        if(!~arguments.indexOf('-')) return 'No flags detected. Try `/update help1` or `/update help2` for help using the /update command';
-// CHANGE AFTER BETA TESTING
+        if(!~arguments.indexOf('-')) return 'No flags detected. Try `/update help` for a list of update items and flags using the /update command';
 
         const multipleItems = arguments.slice(0, arguments.indexOf('-')+1);
         if(!/^[A-Za-z]+( )-$/.test(multipleItems))

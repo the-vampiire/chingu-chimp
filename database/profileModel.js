@@ -120,15 +120,6 @@ class User {
                     this.getProfile(userName).then( profileDoc => {
                         if(profileDoc){
             
-            
-            // REMOVE AFTER BETA TESING
-            
-                            if(!profileDoc.badges.some( e => e.name === 'Beta Tester: Chingu Chimp'))
-                                profileDoc.badges.unshift(dbHelper.newBadge('Chingu Chimp Beta Tester'));
-                            // profileDoc.badges.unshift(dbHelper.newBadge('father'));
-            
-            // REMOVE AFTER BETA  TESING
-            
                             // check if the cohort the user is updating from is in the user's cohorts array. if not - add it
                             profileDoc.cohorts = dbHelper.checkAndAddCohort(profileDoc.cohorts, cohortName);
             
