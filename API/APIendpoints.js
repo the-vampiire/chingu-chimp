@@ -2,7 +2,8 @@
 const express = require('express');
 const router = module.exports = express.Router();
 
-const verified = require('./tools/verify');
+const verifyKey = require('./tools/verify');
+const verifyItems = require('./tools/verifyItems');
 
 // GET [request data from the database] 
     // bulk users bulk items
@@ -23,25 +24,32 @@ router.get('/request', (req, res) => {
     const bulkItems = request.bulkItems;
     const bulkUsers = request.bulkUsers;
 
-    if(verified(chinguAPIKey)){
+    if(verifyKey(chinguAPIKey)){
     
     // bulk users
         if(bulkUsers){  
-
         // process bulk users request for bulk items
             if(bulkItems){
-                GET.bulkUsersBulkItems(bulkUsers, bulkItems)
-                .then( output => res.json(output))
-                .catch( mongoError => APIerror('mongo', error, request, mongoError));
+                const itemScan = verifyItems(bulkItems);
+                if(itemScan === true){
+                    GET.bulkUsersBulkItems(bulkUsers, bulkItems)
+                    .then( output => res.json(output))
+                    .catch( mongoError => res.json(APIerror('mongo', error, request, mongoError)));
+                }
+                else error = APIerror('bad item', error, itemScan);
             }
 
             else if(!profileItem) error = APIerror('item', error, request);
        
         // process bulk users request for a single item
             else{
-                GET.bulkUsersOneItem(bulkUsers, profileItem)
-                .then( output => res.json(output))
-                .catch( mongoError => APIerror('mongo', error, request, mongoError));
+                const itemScan = verifyItems(profileItem);
+                if(itemScan === true){
+                    GET.bulkUsersOneItem(bulkUsers, profileItem)
+                    .then( output => res.json(output))
+                    .catch( mongoError => res.json(APIerror('mongo', error, request, mongoError)));
+                }
+                else error = APIerror('bad item', error, itemScan);  
             }
         }
 
@@ -52,18 +60,27 @@ router.get('/request', (req, res) => {
 
         // process a bulk items request for a single user
             if(bulkItems){
-                GET.oneUserBulkItems(userName, bulkItems, true)
-                .then(output => res.json(output))
-                .catch(mongoError => res.json(APIerror('mongo', error, request, mongoError)))
+                const itemScan = verifyItems(bulkItems);
+                if(itemScan === true){
+                    GET.oneUserBulkItems(userName, bulkItems, true)
+                    .then(output => res.json(output))
+                    .catch(mongoError => res.json(APIerror('mongo', error, request, mongoError)))
+                }
+                else error = APIerror('bad item', error, itemScan);  
             }
 
-            
             else if(!profileItem) error = APIerror('item', error, request);
 
         // process a request for a single user and single item
-            else GET.oneUserOneItem(userName, profileItem)
-                .then( output => res.json(output))
-                .catch( mongoError => res.json(APIerror('mongo', error, request, mongoError)));
+            else {
+                const itemScan = verifyItems(profileItem);
+                if(itemScan === true){
+                    GET.oneUserOneItem(userName, profileItem)
+                    .then( output => res.json(output))
+                    .catch( mongoError => res.json(APIerror('mongo', error, request, mongoError)));
+                }
+                else error = APIerror('bad item', error, itemScan); 
+            }
         }
     }
 
@@ -77,51 +94,65 @@ router.get('/request', (req, res) => {
 router.put('/update', (req, res) => {
 
     const request = req.body;
+    let error = {};
+
+    // accepted request content
     const chinguAPIKey = request.key;
 
-    if(verified(chinguAPIKey)){
+    if(verifyKey(chinguAPIKey)){
         
     }
+
+    else error = APIerror('key', error, request);
+
+    if(error.error) res.json(error);
 });
 
 // errror handler
-APIerror = (type, error, request, mongoError) => {
+function APIerror(type, error, specificErrorMessage){
 
     error.ok = false;
-    error.originalRequest = request;
 
     switch(type){
         case 'item':
+            error.status = 400;
             error.error = 'Requests must include either an item or a bulk items array';
             break;
         case 'user':
+            error.status = 400;
             error.error = 'Requests must include either a user name or a bulk users array';
             break;
         case 'key':
+            error.status = 401;
             error.error = 'Invalid API key';
             break;
+        case 'bad item':
+            error.status = 401;
+            error.error = `Invalid profile item [${specificErrorMessage}] requested`
+            break;
         case 'mongo':
-            error.error = mongoError;
+            error.status = 404;
+            error.error = specificErrorMessage;
     }
 
     return error;
 };
 
 
+// TESTING
+router.get('/', (req, res) => {
+        const request = require('request');
+        const queries = req.query;
 
-// // TESTING
-// router.get('/', (req, res) => {
-    //     const request = require('request');
-    //     const queries = req.query;
-
+// TESTING GET requests
     // test get one user one item
-        // request({
-        //    uri: 'https://65974b37.ngrok.io/API/item',
-        //    method: 'GET',
-        //    qs: { key: 'test', userName:'vampiire', profileItem: 'projects' },
-        // }, (err, returned) => {
-        //     res.json(JSON.parse(returned.body));
-        // });
+    //     request({
+    //        uri: 'https://65974b37.ngrok.io/API/item',
+    //        method: 'GET',
+    //        qs: { key: 'test', userName:'vampiire', profileItem: 'projects' },
+    //     }, (err, returned) => {
+    //         res.json(JSON.parse(returned.body));
+    //     });
 
     // // test get one user with bulk items
     //     request({
@@ -141,14 +172,26 @@ APIerror = (type, error, request, mongoError) => {
     //         res.json(JSON.parse(returned.body));
     //     });
 
-    // // test get bulk users with bulk items
-    // request({
-    //     uri: 'https://65974b37.ngrok.io/API/item', method: 'GET',
-    //     qs: { key: 'test', bulkUsers: ['vampiire', 'dsegovia90', 'chance', 'jessec'], 
-    //     bulkItems: ['blog', 'bestStreak', 'skills'] }}, 
+    // test get bulk users with bulk items
+    request({
+        uri: 'https://1375fa97.ngrok.io/API/request', method: 'GET',
+        qs: { key: 'test', bulkUsers: ['vampiire', 'dsegovia90', 'jessec'], 
+        bulkItems: ['blog', 'github', 'tits'] }}, 
         
-    //     (err, returned) => {
-    //         res.json(JSON.parse(returned.body));
-    //  });
+        (err, returned) => {
+            res.json(JSON.parse(returned.body));
+     });
 
-// });
+
+// TESTING PUT requests
+    // request(
+    //     { uri: 'https://1375fa97.ngrok.io/API/update', method: 'PUT',
+    //     form: {key: 'tits', userName: 'vampiire', profileItem: 'currentStreak'}},
+    //     (error, response) => {
+    //         if(error) res.json(error);
+    //         else res.json(response);
+    //     }
+    // )
+
+});
+

@@ -111,7 +111,7 @@ class User {
         return new Promise((resolve, reject) => {
             this.findOne({userName : userName}, item).then(profileItem => {
                 if(profileItem) resolve(profileItem[item]);
-                else reject('User not found');
+                else reject(`User [${userName}] not found.`);
             })
         });
     }
