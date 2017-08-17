@@ -214,7 +214,6 @@ profileItem = (userName, item, share) => {
         userProfile.getProfileItem(userName, item).then( profileItem => {
 
             if(profileItem){
-                profileItem = profileItem[item];
                 userName = `${userName.slice(0,1).toUpperCase()}${userName.slice(1)}`;
 
                 let response = { attachments: [] };

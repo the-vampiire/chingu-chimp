@@ -108,7 +108,6 @@ processInteraction = payload => {
         case 'profileCard':
             value = JSON.parse(value);
             response = profileResponse.profileCard(value.userName);
-            console.log(response);
             break;
 
     // -------------- PROFILE ITEM -------------- //
