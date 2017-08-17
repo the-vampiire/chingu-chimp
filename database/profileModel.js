@@ -99,21 +99,21 @@ const userSchema = new mongoose.Schema({
 class User {
 
 // general static methods
-    addProfile(formData) {
+    static addProfile(formData) {
         this.create(formData, error => console.log(error));
     }
 
-    getProfile(userName) {
+    static getProfile(userName) {
         return this.findOne({userName : userName});
     }
 
-    getProfileItem(userName, item) {
+    static getProfileItem(userName, item) {
         return this.findOne({userName : userName}, item);
     }
 
 // custom static methods 
 
-    processCheckin(userName, cohortName, channelID, checkinSessionData) {
+    static processCheckin(userName, cohortName, channelID, checkinSessionData) {
 
         return new Promise( (resolve, reject) => {
     
@@ -173,7 +173,7 @@ class User {
                 });
             }
 
-    processUpdate(userName, cohortName, data) {
+    static processUpdate(userName, cohortName, data) {
         return new Promise((resolve, reject) => {
             
                     this.getProfile(userName).then( profileDoc => {
