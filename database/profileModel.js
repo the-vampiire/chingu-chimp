@@ -95,199 +95,198 @@ const userSchema = new mongoose.Schema({
 
 }, { runSettersOnQuery : true });
 
-// ----------------- PROFILE MODEL METHODS ---------------- //
-        // ----- embedded database methods ----- //
+// define a class to hold the static methods
+class User {
 
-    userSchema.statics.addProfile = function(formData){
-        this.create(formData, e => e ? console.log(e) : false);
-    };
+// general static methods
+    addProfile(formData) {
+        this.create(formData, error => console.log(error));
+    }
 
-    userSchema.statics.getProfile = function(userName){
+    getProfile(userName) {
         return this.findOne({userName : userName});
-    };
+    }
 
-    userSchema.statics.getProfileItem = function(userName, item){
+    getProfileItem(userName, item) {
         return this.findOne({userName : userName}, item);
-    };
+    }
 
+// custom static methods 
 
-// ----------------- CUSTOM METHODS ----------------- //
+    processCheckin(userName, cohortName, channelID, checkinSessionData) {
 
-// ------- CHECK-IN PROCESSING ------- //
-userSchema.statics.processCheckin = function(userName, cohortName, channelID, checkinSessionData){
-
-    return new Promise( (resolve, reject) => {
-
-        this.findOne({userName: userName}).then( profileDoc => {
-            if(profileDoc){
-
-
-// REMOVE AFTER BETA TESING
-
-                if(!profileDoc.badges.some( e => e.name === 'Beta Tester: Chingu Chimp'))
-                    profileDoc.badges.unshift(dbHelper.newBadge('Chingu Chimp Beta Tester'));
-                // profileDoc.badges.unshift(dbHelper.newBadge('father'));
-
-// REMOVE AFTER BETA  TESING
-
-                // check if the cohort the user is updating from is in the user's cohorts array. if not - add it
-                profileDoc.cohorts = dbHelper.checkAndAddCohort(profileDoc.cohorts, cohortName);
-
-                // check if the user has all appropriate badges. if not - add them
-                profileDoc.badges = dbHelper.checkAndAddBadges(profileDoc);
-
-                const checkins = profileDoc.checkins;
-                let channel = checkins.find( e => e.channelID === channelID);
-
-                channel ?
-                    channel.sessions.push(checkinSessionData) :
-                    checkins.push(new checkinModel({channelID : channelID, sessions : [checkinSessionData]}));
-
-                const streakUpdate = dbHelper.streakUpdater(checkins, profileDoc.currentStreak, profileDoc.bestStreak);
-                profileDoc.currentStreak = streakUpdate.currentStreak;
-                profileDoc.bestStreak = streakUpdate.bestStreak;
-
-
-                profileDoc.lastCheckin = checkinSessionData;
-                profileDoc.totalCheckins++;
-
-            // after updating is complete check if the user has all earned badges. if not - add them
-                profileDoc.badges = dbHelper.checkAndAddBadges(profileDoc);
-
-                profileDoc.save( (saveError, success) => {
-
-                    if(saveError) reject(saveError);
-
-                    if(success){
-                        userName = `${userName.slice(0,1).toUpperCase()}${userName.slice(1)}`;
-
-                        if(channel) resolve(`Succesfully saved the check-in for ${userName}. you have \`${channel.sessions.length}\` check-ins on this channel!\n*Total check-ins:* \`${profileDoc.totalCheckins}\`\n*Current streak:* \`${profileDoc.currentStreak.value}\` days\n*Best streak:* \`${profileDoc.bestStreak}\` days\n`);
-
-                        else resolve(`Succesfully saved the check-in for ${userName}. This is your first check-in on this channel, keep it up!\n*Total check-ins:* \`${profileDoc.totalCheckins}\`\n*Current streak:* \`${profileDoc.currentStreak.value}\` days\n*Best streak:* \`${profileDoc.bestStreak}\` days\n`);
-                    }
+        return new Promise( (resolve, reject) => {
+    
+                    this.getProfile(userName).then( profileDoc => {
+                        if(profileDoc){
+            
+            
+            // REMOVE AFTER BETA TESING
+            
+                            if(!profileDoc.badges.some( e => e.name === 'Beta Tester: Chingu Chimp'))
+                                profileDoc.badges.unshift(dbHelper.newBadge('Chingu Chimp Beta Tester'));
+                            // profileDoc.badges.unshift(dbHelper.newBadge('father'));
+            
+            // REMOVE AFTER BETA  TESING
+            
+                            // check if the cohort the user is updating from is in the user's cohorts array. if not - add it
+                            profileDoc.cohorts = dbHelper.checkAndAddCohort(profileDoc.cohorts, cohortName);
+            
+                            // check if the user has all appropriate badges. if not - add them
+                            profileDoc.badges = dbHelper.checkAndAddBadges(profileDoc);
+            
+                            const checkins = profileDoc.checkins;
+                            let channel = checkins.find( e => e.channelID === channelID);
+            
+                            channel ?
+                                channel.sessions.push(checkinSessionData) :
+                                checkins.push(new checkinModel({channelID : channelID, sessions : [checkinSessionData]}));
+            
+                            const streakUpdate = dbHelper.streakUpdater(checkins, profileDoc.currentStreak, profileDoc.bestStreak);
+                            profileDoc.currentStreak = streakUpdate.currentStreak;
+                            profileDoc.bestStreak = streakUpdate.bestStreak;
+            
+            
+                            profileDoc.lastCheckin = checkinSessionData;
+                            profileDoc.totalCheckins++;
+            
+                        // after updating is complete check if the user has all earned badges. if not - add them
+                            profileDoc.badges = dbHelper.checkAndAddBadges(profileDoc);
+            
+                            profileDoc.save( (saveError, success) => {
+            
+                                if(saveError) reject(saveError);
+            
+                                if(success){
+                                    userName = `${userName.slice(0,1).toUpperCase()}${userName.slice(1)}`;
+            
+                                    if(channel) resolve(`Succesfully saved the check-in for ${userName}. you have \`${channel.sessions.length}\` check-ins on this channel!\n*Total check-ins:* \`${profileDoc.totalCheckins}\`\n*Current streak:* \`${profileDoc.currentStreak.value}\` days\n*Best streak:* \`${profileDoc.bestStreak}\` days\n`);
+            
+                                    else resolve(`Succesfully saved the check-in for ${userName}. This is your first check-in on this channel, keep it up!\n*Total check-ins:* \`${profileDoc.totalCheckins}\`\n*Current streak:* \`${profileDoc.currentStreak.value}\` days\n*Best streak:* \`${profileDoc.bestStreak}\` days\n`);
+                                }
+                            });
+                        }
+            
+                    // user not found
+                        else resolve(`*Check-in for \`@${userName}\` failed:*\n*Profile \`@${userName}\` not found*\n*Create a profile <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>*\n`);
+                    });
                 });
             }
 
-        // user not found
-            else resolve(`*Check-in for \`@${userName}\` failed:*\n*Profile \`@${userName}\` not found*\n*Create a profile <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>*\n`);
-        });
-    });
-};
-
-// ------- UPDATE PROCESSING ------- //
-userSchema.statics.processUpdate = function(userName, cohortName, data){
-
-    return new Promise((resolve, reject) => {
-
-        this.findOne({userName: userName}).then( profileDoc => {
-
-            if(profileDoc){
-
-                // check if the cohort the user is updating from is in the user's cohorts array. if not - add it
-                profileDoc.cohorts = dbHelper.checkAndAddCohort(profileDoc.cohorts, cohortName);
-
-                let updateItem = data.item;
-                let updateData = data.updateData;
-
-                switch(updateItem){
-                    case 'certifications':
-                        const certifications = profileDoc[updateItem];
-
-                    // checks if the passed certificate already exists. adds it if it doesn't
-                        const addNewCertificate = !certifications.some( certificate => certificate.name === updateData.name );
-
-                        if(addNewCertificate) profileDoc[updateItem].unshift(updateData);
-                        break;
-                    case 'projects':
-                    // checks for an existing project - matching either project name or gitHub repo
-                    // if it exists it is updated with the new data, if not a new project is added
-                        const addNewProject = !profileDoc[updateItem].some( (project, index, projects) => {
-                            if(project.name === updateData.name || project.gitHub === updateData.gitHub){
-                                projects[index] = updateData;
-                                return true
+    processUpdate(userName, cohortName, data) {
+        return new Promise((resolve, reject) => {
+            
+                    this.getProfile(userName).then( profileDoc => {
+            
+                        if(profileDoc){
+            
+                            // check if the cohort the user is updating from is in the user's cohorts array. if not - add it
+                            profileDoc.cohorts = dbHelper.checkAndAddCohort(profileDoc.cohorts, cohortName);
+            
+                            let updateItem = data.item;
+                            let updateData = data.updateData;
+            
+                            switch(updateItem){
+                                case 'certifications':
+                                    const certifications = profileDoc[updateItem];
+            
+                                // checks if the passed certificate already exists. adds it if it doesn't
+                                    const addNewCertificate = !certifications.some( certificate => certificate.name === updateData.name );
+            
+                                    if(addNewCertificate) profileDoc[updateItem].unshift(updateData);
+                                    break;
+                                case 'projects':
+                                // checks for an existing project - matching either project name or gitHub repo
+                                // if it exists it is updated with the new data, if not a new project is added
+                                    const addNewProject = !profileDoc[updateItem].some( (project, index, projects) => {
+                                        if(project.name === updateData.name || project.gitHub === updateData.gitHub){
+                                            projects[index] = updateData;
+                                            return true
+                                        }
+                                    });
+            
+                                    if(addNewProject) profileDoc[updateItem].unshift(updateData);
+                                    break;
+                                case 'skills':
+                                    const subUpdateItem = data.subItem;
+                                    const skillsItem = profileDoc[updateItem][subUpdateItem];
+            
+                                    const addNewSkill = !skillsItem.some( (skill, index, skills) => {
+                                        if(skill.name === updateData.name){
+                                            skills[index].level = updateData.level;
+                                            return true
+                                        }
+                                    });
+            
+                                    if(addNewSkill) skillsItem.push(updateData);
+                                    break;
+                            // setting the url field
+                                case 'blog':
+                                case 'gitHub':
+                                case 'portfolio':
+                                    profileDoc[updateItem] = updateData.url;
+                                    break;
+            
+                            // simple string/number/object
+                                case 'profilePic':
+                                case 'story':
+                                    profileDoc[updateItem] = updateData;
+                                    break;
                             }
-                        });
-
-                        if(addNewProject) profileDoc[updateItem].unshift(updateData);
-                        break;
-                    case 'skills':
-                        const subUpdateItem = data.subItem;
-                        const skillsItem = profileDoc[updateItem][subUpdateItem];
-
-                        const addNewSkill = !skillsItem.some( (skill, index, skills) => {
-                            if(skill.name === updateData.name){
-                                skills[index].level = updateData.level;
-                                return true
+            
+                            // after updating is complete check if the user has all earned badges. if not - add them
+                            profileDoc.badges = dbHelper.checkAndAddBadges(profileDoc);
+            
+                        // final validation of urls. executes a head request to determine the validity of the link
+                            if(['blog', 'gitHub', 'portfolio', 'projects', 'certifications'].includes(updateItem)){
+                                const request = require('request');
+                                const url = updateData.url ? updateData.url : updateData.gitHub;
+            
+                                // if(updateItem === 'certifications'){
+                                //     request({url: url, followRedirect: false}, (err, res) => {
+                                //         if(err) reject(err);
+                                //         else console.log(res.headers.location);
+                                //     });
+                                // }
+            
+                                request({url: url, method: 'HEAD'}, (error, response) => {
+                                    if(error) reject('*Invalid url. Domain is invalid. Connection refused error received during validation*');
+            
+                                    else if(response.statusCode !== 200) reject(`*Invalid url. Domain is valid but the route returned a \`${response.statusCode}\` error during validation*`);
+                                    else {
+                                        profileDoc.save((error, success) => {
+                                            if(error) reject(`Saving to the database failed. Error message:\n${error}`);
+                                            else if(success) resolve(`*Successfully updated your ${updateItem}*`)
+                                        });
+                                    }
+                                });
                             }
-                        });
-
-                        if(addNewSkill) skillsItem.push(updateData);
-                        break;
-                // setting the url field
-                    case 'blog':
-                    case 'gitHub':
-                    case 'portfolio':
-                        profileDoc[updateItem] = updateData.url;
-                        break;
-
-                // simple string/number/object
-                    case 'profilePic':
-                    case 'story':
-                        profileDoc[updateItem] = updateData;
-                        break;
-                }
-
-                // after updating is complete check if the user has all earned badges. if not - add them
-                profileDoc.badges = dbHelper.checkAndAddBadges(profileDoc);
-
-            // final validation of urls. executes a head request to determine the validity of the link
-                if(['blog', 'gitHub', 'portfolio', 'projects', 'certifications'].includes(updateItem)){
-                    const request = require('request');
-                    const url = updateData.url ? updateData.url : updateData.gitHub;
-
-                    // if(updateItem === 'certifications'){
-                    //     request({url: url, followRedirect: false}, (err, res) => {
-                    //         if(err) reject(err);
-                    //         else console.log(res.headers.location);
-                    //     });
-                    // }
-
-                    request({url: url, method: 'HEAD'}, (error, response) => {
-                        if(error) reject('*Invalid url. Domain is invalid. Connection refused error received during validation*');
-
-                        else if(response.statusCode !== 200) reject(`*Invalid url. Domain is valid but the route returned a \`${response.statusCode}\` error during validation*`);
-                        else {
-                            profileDoc.save((error, success) => {
-                                if(error) reject(`Saving to the database failed. Error message:\n${error}`);
-                                else if(success) resolve(`*Successfully updated your ${updateItem}*`)
-                            });
+            
+                        // if url validation does not apply then save as usual
+                            else {
+                                    profileDoc.save( (saveError, success) => {
+                                        if(saveError) reject(`error updating ${updateItem} for ${userName}`);
+            
+                                        if(success){
+                                            if(updateItem === 'skills')
+                                                resolve(`*Successfully updated your ${data.subItem}: ${updateData.name} at the ${updateData.level} skill level*`);
+            
+                                            else resolve(`*Successfully updated your ${updateItem}*`);
+                                        }
+                                    });
+                            }
                         }
-                    });
-                }
+            
+                    // user not found
+                        else resolve (`*Update for \`@${userName}\` failed:*\n*Profile \`@${userName}\` not found.*\nCreate a profile <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>*\n`);
+            
+                    })
+            
+                })
+    }
+}
 
-            // if url validation does not apply then save as usual
-                else {
-                        profileDoc.save( (saveError, success) => {
-                            if(saveError) reject(`error updating ${updateItem} for ${userName}`);
-
-                            if(success){
-                                if(updateItem === 'skills')
-                                    resolve(`*Successfully updated your ${data.subItem}: ${updateData.name} at the ${updateData.level} skill level*`);
-
-                                else resolve(`*Successfully updated your ${updateItem}*`);
-                            }
-                        });
-                }
-            }
-
-        // user not found
-            else resolve (`*Update for \`@${userName}\` failed:*\n*Profile \`@${userName}\` not found.*\nCreate a profile <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>*\n`);
-
-        })
-
-    })
-};
-
+userSchema.loadClass(User);
 
 const userProfile = mongoose.model('userProfile', userSchema);
 

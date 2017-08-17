@@ -38,6 +38,12 @@ const done = require('./Beta/BETA_doneSlash');
 app.use('/done', done);
 // ---------- REMOVE AFTER BETA TESTING ----------------
 
-// Pass all routing to the controller
+// --------------------------- ROUTES --------------------------- //
+
+// ------ API
+const APIendpoints = require('./routes/APIendpoints');
+app.use('/API', APIendpoints);
+
+// ------ SLASH COMMANDS
 const controller = require('./controller');
 app.use('/', controller);
