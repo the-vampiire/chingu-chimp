@@ -283,7 +283,6 @@ class User {
 }
 
 userSchema.loadClass(User);
-
 const userProfile = mongoose.model('userProfile', userSchema);
 
 module.exports = {
