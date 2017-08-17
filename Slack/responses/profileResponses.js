@@ -3,7 +3,7 @@
  */
 
 
-const userProfile = require('../../Database/profileModel').userProfile;
+// const userProfile = require('../../Database/profileModel').userProfile;
 
 // ------------------- CORE EXPORTS ------------------- //
 
