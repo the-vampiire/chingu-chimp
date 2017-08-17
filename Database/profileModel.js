@@ -98,10 +98,6 @@ const userSchema = new mongoose.Schema({
 // define a class to hold the static methods
 class User {
 
-    static testMethod(){
-        console.log('test worked');
-    }
-
 // general static methods
     static addProfile(formData) {
         this.create(formData, error => console.log(error));
