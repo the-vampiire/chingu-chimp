@@ -64,7 +64,7 @@ processInteraction = payload => {
 
                 const promises = [];
                 partners.forEach( user => {
-                    promises.push(userProfile.processCheckin(userName, value, cohortDetails));
+                    promises.push(userProfile.processCheckin(user, value, cohortDetails));
                 });
 
                 return Promise.all(promises).then( responses => {

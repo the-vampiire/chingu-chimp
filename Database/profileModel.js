@@ -102,6 +102,7 @@ const userSchema = new mongoose.Schema({
 
 }, { runSettersOnQuery : true });
 
+
 // define a class to hold the static methods
 class User {
 
@@ -139,12 +140,6 @@ class User {
     
                 // check if the cohort the user is updating from is in the user's cohorts array. if not - add it
                     profileDoc.cohorts = dbHelper.checkAndAddCohort(profileDoc.cohorts, cohortName, teamID, userID);
-    
-                //  // check if the user's profile picture has been updated in the past 14 days
-                //     const profilePicLastUpdate = Math.round(profileDoc.profilePic.lastUpdate/1000);
-                //     if(profilePicLastUpdate >= 604800000){
-                        
-                //     }
         
                     const checkins = profileDoc.checkins;
                     let channel = checkins.find( e => e.channelID === channelID);
