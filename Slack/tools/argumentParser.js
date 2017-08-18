@@ -89,7 +89,7 @@ argumentParser = arguments => {
 argumentSplitter = arguments => {
 
     if(!/^(story .+)/.test(arguments)){
-        if(!~arguments.indexOf('-')) return 'No flags detected. Try `/update help` for a list of update items and flags using the /update command';
+        if(!~arguments.indexOf('-')) return '*No flags detected. Try `/update help` for a list of update items and flags using the /update command*';
 
         const multipleItems = arguments.slice(0, arguments.indexOf('-')+1);
         if(!/^[A-Za-z]+( )-$/.test(multipleItems))
@@ -109,9 +109,9 @@ argumentSplitter = arguments => {
 
     if(item === 'projects'){
         if(!(flagsAndData.includes('-n') || flagsAndData.includes('-name')))
-            return `Missing a project name. All projects require at minimum a project name and GitHub repo link.\nTry again or type \`/update projects\` for more detailed help`;
+            return `*Missing a project name. All projects require at minimum a project name and GitHub repo link.*\n*Try again or type \`/update projects\` for more detailed help*`;
         if(!(flagsAndData.includes('-r') || flagsAndData.includes('-repo')))
-            return `Missing a GitHub repo. All projects require at minimum a project name and GitHub repo link.\nTry again or type \`/update projects\` for more detailed help`;
+            return `*Missing a GitHub repo. All projects require at minimum a project name and GitHub repo link.*\n*Try again or type \`/update projects\` for more detailed help*`;
     }
 
     const pairsArray = flagsAndData.split(/ (?=-)/).map( e => e.replace(/-/, ''));
