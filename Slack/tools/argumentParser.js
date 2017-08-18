@@ -110,7 +110,7 @@ argumentSplitter = arguments => {
     if(item === 'projects'){
         if(!(flagsAndData.includes('-n') || flagsAndData.includes('-name')))
             return `Missing a project name. All projects require at minimum a project name and GitHub repo link.\nTry again or type \`/update projects\` for more detailed help`;
-        if(!(flagsAndData.includes('-g') || flagsAndData.includes('-git')))
+        if(!(flagsAndData.includes('-r') || flagsAndData.includes('-repo')))
             return `Missing a GitHub repo. All projects require at minimum a project name and GitHub repo link.\nTry again or type \`/update projects\` for more detailed help`;
     }
 
@@ -125,7 +125,7 @@ argumentSplitter = arguments => {
     let expectedFlags;
     switch(item){
         case 'projects':
-            expectedFlags = ['name', 'n', 'url', 'u', 'git', 'g', 'date', 'd'];
+            expectedFlags = ['name', 'n', 'url', 'u', 'repo', 'r', 'date', 'd'];
             break;
         case 'gitHub':
         case 'blog':
@@ -145,7 +145,7 @@ argumentSplitter = arguments => {
     switch(true){
 
     // github repo
-        case flag === 'git' || flag === 'g':
+        case flag === 'repo' || flag === 'r':
             if(!/(https:\/\/github\.com\/)/.test(data) || ~data.indexOf(' '))
                 return `Invalid data: \`${data}\` associated with flag [\`-${flag}\`]. Make sure a valid GitHub repo link has been added of the form  \`https://github.com/yourUserName/repoName\``;
             flag = 'gitHub';

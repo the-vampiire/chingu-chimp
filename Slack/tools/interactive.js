@@ -85,9 +85,6 @@ processInteraction = payload => {
                     response = updateResponse.technologySelect(value);
                     break;
             }
-            // response = JSON.parse(value).skill === 'languages' ?
-            //     updateResponse.languageSelect(value) :
-            //     updateResponse.frameworkSelect(value);
             break;
         case 'technologySelect':
         case 'languageSelect':

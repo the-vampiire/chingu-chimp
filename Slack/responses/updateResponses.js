@@ -81,7 +81,7 @@ helpResponse = (type) => {
             {
                 color: '#666',
                 mrkdwn_in: ['text', 'pretext'],
-                text: `*\`-date\`, \`-git\`, \`-name\`, \`-url\`*\n*All of the flags can also be written shorthand: \`-d\`, \`-g\`, \`-n\`, \`-u\`*`,
+                text: `*\`-date\`, \`-repo\`, \`-name\`, \`-url\`*\n*All of the flags can also be written shorthand: \`-d\`, \`-r\`, \`-n\`, \`-u\`*`,
                 pretext: '*List of update flags*',
             },
             {
@@ -236,7 +236,7 @@ helpResponse = (type) => {
             {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
-                pretext: '*General form: \`/update projects -name Project Name -git gitHubRepoLink [-url projectURL] [-date mm/dd/yy]\`*'
+                pretext: '*General form: \`/update projects -name Project Name -repo gitHubRepoLink [-url projectURL] [-date mm/dd/yy]\`*'
 
             },
             {
@@ -267,7 +267,7 @@ helpResponse = (type) => {
                     },
                     {
                         title: 'Flag',
-                        value: '-git or -g',
+                        value: '-repo or -r',
                         short: true,
                     },
                     {
@@ -304,13 +304,13 @@ helpResponse = (type) => {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#666',
                 pretext: 'Example adding a project:',
-                text: `\`/update projects -name New Project Name -git https://github.com/userName/newproject -url https://www.domain.com/newProject -d 08/08/17\``
+                text: `\`/update projects -name New Project Name -repo https://github.com/userName/newproject -url https://www.domain.com/newProject -d 08/08/17\``
             },
             {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#666',
                 pretext: 'Example *shorthand* adding a project [optional terms neglected]:',
-                text: `\`/update projects -n New Project -g https://github.com/userName/newproject\``
+                text: `\`/update projects -n New Project -r https://github.com/userName/newproject\``
             },
         ]
 
