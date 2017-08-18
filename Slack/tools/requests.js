@@ -29,7 +29,7 @@ userData = (type, userID) => {
 
             if(!ok) reject(ok);
 
-            let user = JSON.parse(body).profile;
+            let profile = JSON.parse(body).profile;
             let data;
 
             switch(type){
