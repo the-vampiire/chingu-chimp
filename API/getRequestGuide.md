@@ -25,7 +25,7 @@
 
 **certifications:** an array of the user's certification objects
 
-    certificate = {
+    certification = {
         name: certification name,
         url: certificate url,
         date: unix timestamp of the certification date 
@@ -69,6 +69,8 @@
             date: unix timestamp date of check-in
         }
 
+**points:** an integer value of the user's Chingu points
+
 **portfolio:** url of the user's portfolio page
 
 **profilePic:** profilePic object containing url links to several profile picture sizes
@@ -104,6 +106,8 @@
     }
 
 **story:** a (lengthy) string with Slack markdown formatting
+
+**totalCheckins:** an integer value of the user's total checkins across all teams and channels
 
 ================================================================================
 ## Request a single item for a single user                                        
