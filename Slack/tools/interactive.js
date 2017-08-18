@@ -56,7 +56,7 @@ processInteraction = payload => {
 
             if(value.submit === true){
                 delete value.submit;
-                const partners = value.partners;
+                value.date = Number(Date.now());
                 
                 const cohortDetails = {};
                 cohortDetails.channelID = channelID;
@@ -64,6 +64,7 @@ processInteraction = payload => {
                 cohortDetails.userID = userID;
                 cohortDetails.teamID = teamID;
 
+                const partners = value.partners;
                 const promises = [];
                 partners.forEach( user => {
                     promises.push(userProfile.processCheckin(user, value, cohortDetails));

@@ -142,15 +142,15 @@ class User {
                     profileDoc.cohorts = dbHelper.checkAndAddCohort(profileDoc.cohorts, cohortName, teamID, userID);
         
                     const checkins = profileDoc.checkins;
-                    let channel = checkins.find( e => e.channelID === channelID);
-    
-                    channel ?
-                        channel.sessions.push(checkinSessionData) :
-                        checkins.push(new checkinModel({channelID : channelID, sessions : [checkinSessionData]}));
-    
+
                     const streakUpdate = dbHelper.streakUpdater(checkins, profileDoc.currentStreak, profileDoc.bestStreak);
                     profileDoc.currentStreak = streakUpdate.currentStreak;
                     profileDoc.bestStreak = streakUpdate.bestStreak;
+
+                    let channel = checkins.find( e => e.channelID === channelID);
+                    channel ?
+                        channel.sessions.push(checkinSessionData) :
+                        checkins.push(new checkinModel({channelID : channelID, sessions : [checkinSessionData]}));
     
                     profileDoc.lastCheckin = checkinSessionData;
                     profileDoc.totalCheckins++;
