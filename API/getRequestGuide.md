@@ -3,7 +3,7 @@
 ### **Endpoint:** `https://chingu-chimp.herokuapp.com/API/request`
 
 ================================================================================
-#### Valid profile items
+### Valid profile items
 
     ['badges', 'bestStreak', 'blog',  'certifications', 
         'checkins', 'cohorts', 'currentStreak', 'gitHub', 
@@ -35,7 +35,7 @@
     }
 
 ================================================================================
-#### Request multiple items for a single user 
+### Request multiple items for a single user 
 
 **Method**: One user bulk items
 
@@ -66,7 +66,7 @@
     }
 
 ================================================================================
-#### Requesting a single item for multiple users
+### Requesting a single item for multiple users
 
 **Method**: Bulk users one item
 
@@ -98,7 +98,7 @@
     }
 
 ================================================================================
-#### Requesting multiple items for multiple users 
+### Requesting multiple items for multiple users 
 
 **Method**: Bulk users bulk items 
 
@@ -144,7 +144,7 @@
     }
 
 ================================================================================
-#### Error Responses
+### Error Responses
 
 **Error**: missing `[profileItem]` or `[bulkItems]`
     
