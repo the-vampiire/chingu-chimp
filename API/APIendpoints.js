@@ -2,8 +2,6 @@
 const express = require('express');
 const router = module.exports = express.Router();
 
-// --------------- TOOLS ---------------- // 
-
 // itemScan is the returned value of verifyItems
         // if an invalid item is found then that item is returned to be processed by APIerror
         // if all requested item(s) are valid then itemScan is true
@@ -144,4 +142,3 @@ router.get('/', (req, res) => {
     // )
 
 });
-
