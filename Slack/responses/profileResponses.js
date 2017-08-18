@@ -280,10 +280,13 @@ profileItem = (userName, item, share) => {
 
         certifications.forEach( (certificate, index) => {
 
+            let certificateName = certificate.name;
+            certificateName = `${certificate.name.slice(0, certificate.name.indexOf('Certification'))}Certificate`;
+
             let attachment = {
                 color: '#15df89',
                 mrkdwn_in: ['pretext', 'text'],
-                title: `${certificate.name}`,
+                title: `${certificateName}`,
                 title_link: `${certificate.url}`
             };
 
@@ -301,7 +304,7 @@ profileItem = (userName, item, share) => {
             let attachment = {
                 color: index % 2 ? '#666' : '#15df89',
                 mrkdwn_in: ['pretext', 'text'],
-                text: `*Project Name:* ${project.name}\n*GitHub Repo:* <${project.gitHub}|${project.gitHub.slice(project.gitHub.indexOf('.com/')+5)}>\n*Project Link:* ${ project.url ?  `<${project.url}|${project.name}>` : `No Link Available`}\n*Completed Date:* <!date^${Math.round((project.completedDate/1000))}^{date_pretty}|Failed to load date>`
+                text: `*Project Name:* ${project.name}\n*GitHub Repo:* <${project.gitHub}|${project.gitHub.slice(project.gitHub.indexOf('.com/')+5)}>${ project.url ?  `\n*Project Link:* <${project.url}|${project.name}>` : ``}\n*Completed Date:* <!date^${Math.round((project.completedDate/1000))}^{date_pretty}|Failed to load date>`
             };
 
             if(index === 0) attachment.pretext = `*${userName}'s Completed Projects*`;
@@ -327,6 +330,18 @@ profileItem = (userName, item, share) => {
             response.attachments.push(insertFields(languageAttachment, languages, 'Language', 'Skill Level'));
         }
 
+        const technologies = skills.technologies;
+        if(technologies.length){
+            const technologyAttachment = {
+                mrkdwn_in: ['text', 'pretext'],
+                color: '#15df89',
+                pretext: '*Technologies*',
+                fields: []
+            };
+
+            response.attachments.push(insertFields(technologyAttachment, technologies, 'Technology', 'Skill Level'));
+        }
+
 
         const frameworks = skills.frameworks;
         if(frameworks.length){
@@ -340,7 +355,7 @@ profileItem = (userName, item, share) => {
             response.attachments.push(insertFields(frameworkAttachment, frameworks, 'Framework', 'Skill Level'));
         }
 
-        if(userName) response.text = `*${userName}'s Languages and Frameworks*`;
+        if(userName) response.text = `*${userName}'s Languages, Technologies and Frameworks*`;
 
         return response;
 
@@ -352,7 +367,7 @@ profileItem = (userName, item, share) => {
         fieldsArray.forEach( (field, index) => {
 
         // to not display "removed" skills
-            if(field.level !== 'remove'){
+            if(field.level !== 'hide'){
                 attachment.fields.push({
                     value: field.name,
                     short: true

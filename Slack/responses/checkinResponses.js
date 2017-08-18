@@ -34,7 +34,7 @@ taskSelect = valueObject => {
             break;
         case 'Team Meeting':
         case 'Self Check-in':
-            menuItems = ['Brainstorming', 'Planning', 'Coding', 'Bug-fixing', 'Refactoring', 'Other'];
+            menuItems = ['Brainstorming', 'Planning', 'Adding new features', 'Bug-fixing', 'Refactoring', 'Other'];
             break;
         case 'Accountability':
             menuItems = ['Catching up', 'Setting goals', 'Reviewing code', 'Other'];
@@ -66,7 +66,7 @@ submitCheckin = valueObject => {
         else partnerString += `@${partner} `;
     });
 
-    return valSubmit(valueObject, 'checkin', true,
+    return valSubmit(valueObject, 'checkin', true, true,
         `Check-in to *${kind}* to work on *${valueObject.task.toLowerCase()}*\nCheck-in will be processed for: *${partnerString}*`);
 };
 

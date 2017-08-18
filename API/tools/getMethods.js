@@ -1,25 +1,15 @@
 // API helper functions to collect and format requested data
 
 
-const userProfile = require('../Database/profileModel').userProfile;
+const userProfile = require('../../Database/profileModel').userProfile;
 
 function oneUserOneItem(userName, requestItem){
-
-    /*
-        output = {
-            ok: true,
-            body: {
-                userName: userName,
-                itemName: itemValue
-            }
-        }
-    */
-
     return new Promise( (resolve, reject) => {
         userProfile.getProfileItem(userName, requestItem).then( item => {
             if(item) {
                 output = {};
                 output.ok = true;
+                output.status = 200;
                 output.body = {};
                 output.body.userName = userName;
                 output.body[requestItem] = item;
@@ -28,27 +18,9 @@ function oneUserOneItem(userName, requestItem){
             }
         }).catch( mongoError => reject('User not found'));
     });
-};k
+};
 
 function oneUserBulkItems(userName, bulkItems, requested){
-
-    /*
-        output = {
-            ok: true,
-            body: {
-                userName: userName,
-                items: [
-                    {
-                        itemName: itemValue
-                    },
-                    {
-                        itemName,N: itemValue,N
-                    }
-                ]
-            }
-        }
-    */
-
     return new Promise((resolve, reject) => {
         const promises = [];
         bulkItems.forEach( item => promises.push(userProfile.getProfileItem(userName, item)));
@@ -67,6 +39,7 @@ function oneUserBulkItems(userName, bulkItems, requested){
         // when requested is true oneUserBulkItems is called directly from an API request
             if(requested){
                 output.ok = true;
+                output.status = 200;
                 output.body = {};
                 output.body.userName = userName;
                 output.body.items = items;
@@ -85,25 +58,6 @@ function oneUserBulkItems(userName, bulkItems, requested){
 };
 
 function bulkUsersOneItem(bulkUsers, item){
-
-    /*
-        output = {
-            ok: true,
-            body: {
-                users: [
-                    {
-                        userName: userName,
-                        itemName: itemValue
-                    },
-                    {
-                        userName,N: userName,N,
-                        itemName,N: itemValue,N
-                    }
-                ]
-            }
-        }
-    */
-
     return new Promise((resolve, reject) => {
         const promises = [];
         bulkUsers.forEach( user => promises.push(userProfile.getProfileItem(user, item)));
@@ -111,6 +65,7 @@ function bulkUsersOneItem(bulkUsers, item){
         Promise.all(promises).then( itemsArray => {
             const output = {};
             output.ok = true;
+            output.status = 200;
             output.body = {};
             output.body.users = [];
             itemsArray.forEach( (profileItem, index) => {
@@ -128,39 +83,6 @@ function bulkUsersOneItem(bulkUsers, item){
 };
 
 function bulkUsersBulkItems(bulkUsers, bulkItems) {
-    
-    /*
-        output: {
-            ok: true,
-            body: {
-                users: [
-                    {
-                        userName: userName,
-                        items: [
-                            {
-                                itemName: itemValue
-                            },
-                            {
-                                itemName,N: itemValue,N
-                            }
-                        ]
-                    },
-                    {
-                        userName,N: userName,N,
-                        items: [
-                            {
-                                itemName: itemValue
-                            },
-                            {
-                                itemName,N: itemValue,N
-                            }
-                        ]
-                    }
-                ]
-            }
-        }
-    */
-
     return new Promise((resolve, reject) => {
         
         const promises = [];
@@ -170,6 +92,7 @@ function bulkUsersBulkItems(bulkUsers, bulkItems) {
 
             const output = {};
             output.ok = true;
+            output.status = 200;
             output.body = {};
             output.body.users = [];
 
@@ -177,7 +100,7 @@ function bulkUsersBulkItems(bulkUsers, bulkItems) {
 
             resolve(output);
 
-        }).catch( error => resolve(error));
+        }).catch( error => reject(error));
     });
 };
 

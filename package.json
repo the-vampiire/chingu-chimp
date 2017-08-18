@@ -16,7 +16,9 @@
     "Chingu",
     "profile",
     "slack",
-    "bot"
+    "bot",
+    "slack-app",
+    "slack-bot"
   ],
   "author": "Vampiire",
   "license": "ISC",

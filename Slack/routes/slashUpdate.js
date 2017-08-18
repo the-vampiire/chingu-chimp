@@ -10,9 +10,12 @@ const userProfile = require('../../Database/profileModel').userProfile;
 router.post('/', (req, res) => {
 
         const body = req.body;
-        const userName = body.user_name;
-        const cohortName = body.team_domain;
         const arguments = body.text;
+
+        const userName = body.user_name;
+        const userID = body.user_id;
+        const cohortName = body.team_domain;
+        const teamID = body.team_id;
     
         if(tools.verify.slash(body.token)){
             if(~arguments.indexOf(' ')){
@@ -21,12 +24,19 @@ router.post('/', (req, res) => {
                 else if(/^(picture .+)/.test(arguments)) res.end('*\`/update picture\` does not take any additional parameters*');
     
                 else{
-                    let parserOutput = tools.argumentParser.parse(arguments);
+                    const parserOutput = tools.argumentParser.parse(arguments);
     
                     if(typeof parserOutput === 'string') res.end(parserOutput);
-                    else userProfile.processUpdate(userName, cohortName, parserOutput)
+                    else {
+                        const cohortDetails = {};
+                        cohortDetails.cohortName = cohortName;
+                        cohortDetails.userID = userID;
+                        cohortDetails.teamID = teamID;
+
+                        userProfile.processUpdate(userName, parserOutput, cohortDetails)
                         .then( successMessage => res.end(successMessage))
                         .catch( errorMessage => res.end(errorMessage))
+                    }
                 }
             }
     
@@ -47,12 +57,17 @@ router.post('/', (req, res) => {
                 }
     
                 else if(arguments === 'picture'){
+                    
                     const userID = body.user_id;
-                    const userProfile = require('./database/profileModel').userProfile;
-    
                     tools.requests.userData('pic', userID).then( picObject => {
                         let data = { item: 'profilePic', updateData : picObject };
-                        userProfile.processUpdate(userName, cohortName, data)
+
+                        const cohortDetails = {};
+                        cohortDetails.cohortName = cohortName;
+                        cohortDetails.userID = userID;
+                        cohortDetails.teamID = teamID;
+
+                        userProfile.processUpdate(userName, data, cohortDetails)
                             .then( successMessage => res.end(successMessage))
                             .catch( errorMessage => res.end(errorMessage))
                     });

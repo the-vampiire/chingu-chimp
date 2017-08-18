@@ -14,7 +14,7 @@ updateSkillsResponse = () => {
 
 skillSelect = valueObject => {
     let response = updateSkillsResponse();
-    response.attachments = [val.menu( null, valueObject, ['languages', 'frameworks'],
+    response.attachments = [val.menu( null, valueObject, ['languages', 'frameworks', 'technologies'],
         'Select a skill to add or update', 'skillSelect', 'skill')];
     return response;
 };
@@ -23,8 +23,9 @@ languageSelect = valueObject => {
     // csv repo https://github.com/jamhall/programming-languages-csv/blob/master/languages.csv
     // set the languages array to the database array of languages used in the dropdown menus of the profile form
 
-    const languages = ['JavaScript', 'Java', 'Python', 'Ruby', 'C++', 'C#.Net', 'Assembly', 'Bash', 'Basic', 'C', 'C#',
-        'Fortran', 'Go', 'MATLAB', 'MongoDB', 'MySQL', 'Objective-C', 'Perl', 'PHP', 'PostgreSQL', 'Powershell', 'SQL', 'VBA'];
+    const languages = ['C++', 'C#.Net', 'Assembly', 'Bash', 'Basic', 'C', 'C#',
+        'Fortran', 'Go', 'JavaScript', 'Java', 'MATLAB', 'Objective-C', 
+        'Perl', 'PHP', 'Powershell', 'Python', 'Ruby', 'VBA'];
 
     let response = updateSkillsResponse();
     response.attachments = [val.menu( null, valueObject, languages, 'Select a language', 'languageSelect', 'name')];
@@ -34,16 +35,28 @@ languageSelect = valueObject => {
 frameworkSelect = valueObject => {
     // set the frameworks array to the database array of frameworks used in the dropdown menus of the profile form
 
-    const frameworks = [ 'Angular2/4', 'AngularJS', 'Backbone', 'Bootstrap', 'Django', 'Electron', 'Ember', 'Express', 'jQuery', 'jQueryUI', 'Node.js', 'React', 'React Native', 'Vue'];
+    const frameworks = [ 'Angular2/4', 'AngularJS', 'Backbone', 'Bootstrap', 
+    'Electron', 'Ember', 'Express', 'jQuery', 'jQueryUI', 'Mongoose', 'React', 
+    'React Native', 'Vue'];
 
     let response = updateSkillsResponse();
     response.attachments = [val.menu( null, valueObject, frameworks, 'Select a framework', 'frameworkSelect', 'name')];
     return response;
 };
 
+technologySelect = valueObject => {
+    // set the frameworks array to the database array of frameworks used in the dropdown menus of the profile form
+
+    const frameworks = [ 'Django', 'MongoDB', 'MySQL', 'Node.js', 'PostgreSQL', 'SQL' ];
+
+    let response = updateSkillsResponse();
+    response.attachments = [val.menu( null, valueObject, frameworks, 'Select a technology', 'technologySelect', 'name')];
+    return response;
+};
+
 levelSelect = valueObject => {
     console.log(valueObject);
-    const levels = ['remove', 'heard the name before', 'tutorial phase', 'under 5 projects', 'over 5 projects', 'flowing code', `${JSON.parse(valueObject).name} Wizard`];
+    const levels = ['hide', 'heard the name before', 'eager noob', 'under 5 projects', 'over 5 projects', 'flowing code', `${JSON.parse(valueObject).name} Wizard`];
     let response = updateSkillsResponse();
     response.attachments = [val.menu( null, valueObject, levels, 'Select your skill level', 'levelSelect', 'level')];
     return response;
@@ -51,7 +64,7 @@ levelSelect = valueObject => {
 
 submitSkill = valueObject => {
     valueObject = JSON.parse(valueObject);
-    return valSubmit(valueObject, 'skill', true, `You have selected *${valueObject.name}* at the *${valueObject.level}* skill level`);
+    return valSubmit(valueObject, 'skill', true, true, `You have selected *${valueObject.name}* at the *${valueObject.level}* skill level`);
 };
 
 helpResponse = (type) => {
@@ -71,7 +84,7 @@ helpResponse = (type) => {
             {
                 color: '#666',
                 mrkdwn_in: ['text', 'pretext'],
-                text: `*\`-date\`, \`-git\`, \`-name\`, \`-url\`*\n*All of the flags can also be written shorthand: \`-d\`, \`-g\`, \`-n\`, \`-u\`*`,
+                text: `*\`-date\`, \`-name\`, \`-repo\`, \`-url\`*\n*All of the flags can also be written shorthand: \`-d\`, \`-n\`, \`-r\`, \`-u\`*`,
                 pretext: '*List of update flags*',
             },
             {
@@ -226,7 +239,7 @@ helpResponse = (type) => {
             {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
-                pretext: '*General form: \`/update projects -name Project Name -git gitHubRepoLink [-url projectURL] [-date mm/dd/yy]\`*'
+                pretext: '*General form: \`/update projects -name Project Name -repo gitHubRepoLink [-url projectURL] [-date mm/dd/yy]\`*'
 
             },
             {
@@ -257,7 +270,7 @@ helpResponse = (type) => {
                     },
                     {
                         title: 'Flag',
-                        value: '-git or -g',
+                        value: '-repo or -r',
                         short: true,
                     },
                     {
@@ -294,13 +307,13 @@ helpResponse = (type) => {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#666',
                 pretext: 'Example adding a project:',
-                text: `\`/update projects -name New Project Name -git https://github.com/userName/newproject -url https://www.domain.com/newProject -d 08/08/17\``
+                text: `\`/update projects -name New Project Name -repo https://github.com/userName/newproject -url https://www.domain.com/newProject -d 08/08/17\``
             },
             {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#666',
                 pretext: 'Example *shorthand* adding a project [optional terms neglected]:',
-                text: `\`/update projects -n New Project -g https://github.com/userName/newproject\``
+                text: `\`/update projects -n New Project -r https://github.com/userName/newproject\``
             },
         ]
 
@@ -394,9 +407,7 @@ helpResponse = (type) => {
             response = certifications;
             break;
         default:
-// CHANGE AFTER BETA TESTING
-            response = `invalid item [\`${type}\`]. Try \`/update help1\` for a detailed help guide`
-// CHANGE AFTER BETA TESTING
+            response = `invalid item [\`${type}\`]. Try \`/update help\` for a detailed help guide`
     }
 
     return response;
@@ -407,6 +418,7 @@ module.exports = {
     skillSelect,
     languageSelect,
     frameworkSelect,
+    technologySelect,
     levelSelect,
     submitSkill,
     helpResponse

@@ -84,7 +84,7 @@ valButton = (customAttachment, valueObject, headerText, callbackID, buttonText, 
 };
 
 // builds and returns a submit / reset button /response/ with integrated valStringer support
-valSubmit = (valueObject, type, reset = false, customText) => {
+valSubmit = (valueObject, type, reset, cancel, customText) => {
 
     let response = {
         text: `${customText ? customText : 'Submit or Reset'}`,
@@ -94,7 +94,7 @@ valSubmit = (valueObject, type, reset = false, customText) => {
                 text: '',
                 callback_id: `${type}Submit`,
                 actions: [{
-                    text: 'Submit',
+                    text: 'Confirm',
                     name: 'submit',
                     type: 'button',
                     style: 'primary',
@@ -108,10 +108,17 @@ valSubmit = (valueObject, type, reset = false, customText) => {
             text: 'Start Over',
             name: 'submit',
             type: 'button',
-            style: 'danger',
             value: valStringer(valueObject, 'submit', false)
         }
     );
+
+    if(cancel) response.attachments[0].actions.push({
+        text: 'Cancel',
+        name: 'submit',
+        type: 'button',
+        style: 'danger',
+        value: valStringer(valueObject, 'submit', 'cancel')
+    });
 
     return response;
 };
