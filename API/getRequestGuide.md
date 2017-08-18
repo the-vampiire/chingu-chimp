@@ -2,8 +2,6 @@
 
 ### **Endpoint:** `https://chingu-chimp.herokuapp.com/API/request`
 
-### Pass a query string with the respective parameters for your request
-
 ================================================================================
 #### Request a single item for a single user                               
 ================================================================================         
