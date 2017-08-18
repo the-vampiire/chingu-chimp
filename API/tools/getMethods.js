@@ -4,17 +4,6 @@
 const userProfile = require('../../Database/profileModel').userProfile;
 
 function oneUserOneItem(userName, requestItem){
-
-    /*
-        output = {
-            ok: true,
-            body: {
-                userName: userName,
-                itemName: itemValue
-            }
-        }
-    */
-
     return new Promise( (resolve, reject) => {
         userProfile.getProfileItem(userName, requestItem).then( item => {
             if(item) {
@@ -32,24 +21,6 @@ function oneUserOneItem(userName, requestItem){
 };
 
 function oneUserBulkItems(userName, bulkItems, requested){
-
-    /*
-        output = {
-            ok: true,
-            body: {
-                userName: userName,
-                items: [
-                    {
-                        itemName: itemValue
-                    },
-                    {
-                        itemName,N: itemValue,N
-                    }
-                ]
-            }
-        }
-    */
-
     return new Promise((resolve, reject) => {
         const promises = [];
         bulkItems.forEach( item => promises.push(userProfile.getProfileItem(userName, item)));
@@ -87,25 +58,6 @@ function oneUserBulkItems(userName, bulkItems, requested){
 };
 
 function bulkUsersOneItem(bulkUsers, item){
-
-    /*
-        output = {
-            ok: true,
-            body: {
-                users: [
-                    {
-                        userName: userName,
-                        itemName: itemValue
-                    },
-                    {
-                        userName,N: userName,N,
-                        itemName,N: itemValue,N
-                    }
-                ]
-            }
-        }
-    */
-
     return new Promise((resolve, reject) => {
         const promises = [];
         bulkUsers.forEach( user => promises.push(userProfile.getProfileItem(user, item)));
@@ -131,39 +83,6 @@ function bulkUsersOneItem(bulkUsers, item){
 };
 
 function bulkUsersBulkItems(bulkUsers, bulkItems) {
-    
-    /*
-        output: {
-            ok: true,
-            body: {
-                users: [
-                    {
-                        userName: userName,
-                        items: [
-                            {
-                                itemName: itemValue
-                            },
-                            {
-                                itemName,N: itemValue,N
-                            }
-                        ]
-                    },
-                    {
-                        userName,N: userName,N,
-                        items: [
-                            {
-                                itemName: itemValue
-                            },
-                            {
-                                itemName,N: itemValue,N
-                            }
-                        ]
-                    }
-                ]
-            }
-        }
-    */
-
     return new Promise((resolve, reject) => {
         
         const promises = [];

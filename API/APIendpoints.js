@@ -2,21 +2,17 @@
 const express = require('express');
 const router = module.exports = express.Router();
 
-const verifyKey = require('./tools/verify');
-const verifyItems = require('./tools/verifyItems');
-    // itemScan is the returned value of verifyItems
+// --------------- TOOLS ---------------- // 
+
+// itemScan is the returned value of verifyItems
         // if an invalid item is found then that item is returned to be processed by APIerror
-        // if all requested item(s) are valid then it returns true
+        // if all requested item(s) are valid then itemScan is true
+const verifyItems = require('./tools/verifyItems');
+const verifyKey = require('./tools/verify');
+const GET = require('./tools/getMethods');
+const APIerror = require('./tools/APIerror');
 
-// GET [request data from the database] 
-    // bulk users bulk items
-    // bulk users one item
-    // one user bulk items
-    // one user one item
 router.get('/request', (req, res) => {
-
-    const GET = require('./tools/getMethods');
-
     const request = req.query;
     let error = {};
     
@@ -93,55 +89,6 @@ router.get('/request', (req, res) => {
 });
 
 
-// PUT [update data in the database]
-router.put('/update', (req, res) => {
-
-    const request = req.body;
-    let error = {};
-
-    // accepted request content
-    const chinguAPIKey = request.key;
-
-    if(verifyKey(chinguAPIKey)){
-        
-    }
-
-    else error = APIerror('key', error, request);
-
-    if(error.error) res.json(error);
-});
-
-// errror handler
-function APIerror(type, error, specificErrorMessage){
-
-    error.ok = false;
-
-    switch(type){
-        case 'itemMissing':
-            error.status = 400;
-            error.error = 'Requests must include either an item or a bulk items array';
-            break;
-        case 'userMissing':
-            error.status = 400;
-            error.error = 'Requests must include either a user name or a bulk users array';
-            break;
-        case 'invalidKey':
-            error.status = 401;
-            error.error = 'Invalid API key';
-            break;
-        case 'invalidItem':
-            error.status = 401;
-            error.error = `Invalid profile item [${specificErrorMessage}] requested`
-            break;
-        case 'userNotFound':
-            error.status = 404;
-            error.error = specificErrorMessage;
-    }
-
-    return error;
-};
-
-
 // TESTING
 router.get('/', (req, res) => {
         const request = require('request');
@@ -175,15 +122,15 @@ router.get('/', (req, res) => {
     //         res.json(JSON.parse(returned.body));
     //     });
 
-    // test get bulk users with bulk items
-    request({
-        uri: 'https://1375fa97.ngrok.io/API/request', method: 'GET',
-        qs: { key: 'test', bulkUsers: ['vampiire', 'dsegovia90', 'jessec'], 
-        bulkItems: ['blog', 'github', 'tits'] }}, 
+    // // test get bulk users with bulk items
+    // request({
+    //     uri: 'https://1375fa97.ngrok.io/API/request', method: 'GET',
+    //     qs: { key: 'test', bulkUsers: ['vampiire', 'dsegovia90', 'jessec'], 
+    //     bulkItems: ['blog', 'github', 'tits'] }}, 
         
-        (err, returned) => {
-            res.json(JSON.parse(returned.body));
-     });
+    //     (err, returned) => {
+    //         res.json(JSON.parse(returned.body));
+    //  });
 
 
 // TESTING PUT requests
