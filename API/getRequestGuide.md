@@ -3,15 +3,110 @@
 ### **Endpoint:** `https://chingu-chimp.herokuapp.com/API/request`
 
 ================================================================================
-### Valid profile items
+## Available Profile Items and Descriptions
 
-    ['badges', 'bestStreak', 'blog',  'certifications', 
-        'checkins', 'cohorts', 'currentStreak', 'gitHub', 
-        'github', 'joinDate', 'lastCheckin',
-        'portfolio', 'profilePic', 'skills', 'story'];
+### Notes:
+* All date properties are integer unix timestamps in milliseconds
+* Unless otherwise specified all profile items and item properties can be assumed to be strings
+* Array profile item descriptions will include the format of the their object elements
+
+**badges:** an array of the user's badge objects
+
+    badge = {
+        badgeType : badge category,
+        name : badge name / text,
+        url : badge icon url,
+        color : (SLACK) badge attachment color
+    }
+
+**bestStreak:** an integer value of the user's longest streak days
+
+**blog:** url of the user's blog
+
+**certifications:** an array of the user's certification objects
+
+    certificate = {
+        name: certification name,
+        url: certificate url,
+        date: unix timestamp of the certification date 
+    }
+
+**checkins:** an array checkin objects
+
+    checkin = {
+        channelID: (SLACK) channel ID,
+        sessions: [ array of check-in session objects ]
+    }
+
+        session = {
+            kind: kind of checkin - accountability, pair programming, self check-in, team meeting
+            task: kind-specific task that the user(s) worked on,
+            partners: [ array of partner(s) user names ],
+            date: unix timestamp date of check-in
+        }
+
+**cohorts:** an array of cohorts the user has been a part of
+
+    cohort = {
+        cohortName: the name of the cohort,
+        teamID: (SLACK) cohort team ID,
+        userID: (SLACK) user ID for that team,
+        startDate: unix timestamp cohort start date,
+    }
+
+**currentStreak:** an integer value of the user's current streak days
+
+**gitHub:** url of the user's GitHub profile
+
+**joinDate:** unix timestamp of the user's Chingu join date
+
+**lastCheckin:** session object of the user's last checkin session
+
+    session = {
+            kind: kind of checkin - accountability, pair programming, self check-in, team meeting
+            task: kind-specific task that the user(s) worked on,
+            partners: [ array of partner(s) user names ],
+            date: unix timestamp date of check-in
+        }
+
+**portfolio:** url of the user's portfolio page
+
+**profilePic:** profilePic object containing url links to several profile picture sizes
+
+    profilePic = {
+        size_72 : url to 72x72 image,
+        size_192 : url to 192x192 image,
+        size_512 : url to 512x512 image,
+        size_original : url to original upload image size,
+        lastUpdate: unix timestamp of the last update date
+    }
+
+**skills:** object with sub-objects of the user's languages, frameworks and technologies. each skill sub-object is an array of individual objects having name and level properties representing that skill
+
+##### Note: skill-level "hide" is a way to temporarily hide a skill from the user's profile while that skill is further developed. any skill with a level "hide" should not be displayed. 
+
+    skills = {
+
+        languages: [{
+            name: language name,
+            level: user skill-level
+        }],
+
+        frameworks: [{
+            name: framework name,
+            level: user skill-level
+        }],
+
+        technologies: [{
+            name: technology name,
+            level: user skill-level
+        }]
+    }
+
+**story:** a (lengthy) string with Slack markdown formatting
 
 ================================================================================
-### Request a single item for a single user                                        
+## Request a single item for a single user                                        
 
 **Method**: One user one item 
 
@@ -35,7 +130,7 @@
     }
 
 ================================================================================
-### Request multiple items for a single user 
+## Request multiple items for a single user 
 
 **Method**: One user bulk items
 
@@ -66,7 +161,7 @@
     }
 
 ================================================================================
-### Requesting a single item for multiple users
+## Requesting a single item for multiple users
 
 **Method**: Bulk users one item
 
@@ -98,7 +193,7 @@
     }
 
 ================================================================================
-### Requesting multiple items for multiple users 
+## Requesting multiple items for multiple users 
 
 **Method**: Bulk users bulk items 
 
@@ -144,7 +239,7 @@
     }
 
 ================================================================================
-### Error Responses
+## Error Responses
 
 **Error**: missing `[profileItem]` or `[bulkItems]`
     

@@ -367,7 +367,7 @@ profileItem = (userName, item, share) => {
         fieldsArray.forEach( (field, index) => {
 
         // to not display "removed" skills
-            if(field.level !== 'remove'){
+            if(field.level !== 'hide'){
                 attachment.fields.push({
                     value: field.name,
                     short: true
