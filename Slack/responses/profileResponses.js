@@ -280,10 +280,13 @@ profileItem = (userName, item, share) => {
 
         certifications.forEach( (certificate, index) => {
 
+            let certificateName = certificate.name;
+            certificateName = `${certificate.name.slice(0, certificate.name.indexOf('Certification'))}Certificate`;
+
             let attachment = {
                 color: '#15df89',
                 mrkdwn_in: ['pretext', 'text'],
-                title: `${certificate.name}`,
+                title: `${certificateName}`,
                 title_link: `${certificate.url}`
             };
 
