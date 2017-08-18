@@ -8,7 +8,13 @@ Pass a query string with the respective parameters for your request
 ================================================================================         
 
 **Method**: One user one item           
-**Request parameters**: { key: APIkey, userName: user to request, profileItem: item to request for that user }
+**Request parameters**: 
+
+    { 
+        key: APIkey, 
+        userName: user to request, 
+        profileItem: item to request for that user 
+    }
 
 **Returns**: 
 
