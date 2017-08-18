@@ -35,7 +35,7 @@ argumentParser = arguments => {
     let item = output.item;
 
 // initial check to ensure the update item is valid
-    if(!~acceptedUpdateItems.indexOf(item)) return `Invalid update item [\`${item}\`]\n Use \`/update help\` for a list of available update items.`;
+    if(!~acceptedUpdateItems.indexOf(item)) return `*Invalid update item [\`${item}\`]*\n *Use \`/update help\` for a list of available update items.*`;
 
 // handle the special case of the story item which only has the storyString as its data
     let storyString = output.storyString ? output.storyString : null;
@@ -93,7 +93,7 @@ argumentSplitter = arguments => {
 
         const multipleItems = arguments.slice(0, arguments.indexOf('-')+1);
         if(!/^[A-Za-z]+( )-$/.test(multipleItems))
-            return `Invalid item [\`${multipleItems.replace(/ -/, '')}\`]. You can only pass one update item at a time`;
+            return `*Invalid item [\`${multipleItems.replace(/ -/, '')}\`]. You can only pass one update item at a time*`;
     }
 
     let item = arguments.slice(0, arguments.indexOf(' '));
@@ -138,7 +138,7 @@ argumentSplitter = arguments => {
     }
 
     if(!~expectedFlags.indexOf(flag)){
-        return `Invalid update flag [\`-${flag}\`] for update item [\`${item}\`].\n Try \`/update ${item}\` for a list of required and optional flags`
+        return `*Invalid update flag [\`-${flag}\`] for update item [\`${item}\`]*.\n *Try \`/update ${item}\` for a list of required and optional flags*`
     }
 
 // modification step (as needed)
@@ -147,7 +147,7 @@ argumentSplitter = arguments => {
     // github repo
         case flag === 'repo' || flag === 'r':
             if(!/(https:\/\/github\.com\/)/.test(data) || ~data.indexOf(' '))
-                return `Invalid data: \`${data}\` associated with flag [\`-${flag}\`]. Make sure a valid GitHub repo link has been added of the form  \`https://github.com/yourUserName/repoName\``;
+                return `*Invalid data: \`${data}\` associated with flag [\`-${flag}\`]. Make sure a valid GitHub repo link has been added of the form  \`https://github.com/yourUserName/repoName\`*`;
             flag = 'gitHub';
             break;
 
@@ -156,24 +156,24 @@ argumentSplitter = arguments => {
         // check if the gitHub url is valid
             if(item === 'gitHub'){
                 if(!/(https:\/\/github\.com\/)[^\. ]+/.test(data) || ~data.indexOf(' '))
-                    return `Invalid gitHub profile url, ensure the url entered is of the form \`https://github.com/yourUserName\``
+                    return `*Invalid gitHub profile url, ensure the url entered is of the form \`https://github.com/yourUserName\`*`
             }
 
         // check if certificate link is valid
             if(item === 'certifications')
                 if(!/(https:\/\/www\.freecodecamp\.(com|org)\/[A-Za-z-]+\/((front)|(back)|(data))\-((end)|(visualization))\-(certification))/.test(data))
-                    return `Invalid certificate url, must be a direct certificate link of the form \`https://www.freecodecamp.com/userName/x-x-certification\``;
+                    return `*Invalid certificate url, must be a direct certificate link of the form \`https://www.freecodecamp.com/userName/x-x-certification\`*`;
 
         // check if general url is valid
             if(data.length > 75) return `*Invalid url. Must be below 75 characters*`;
-            if(!/(http:\/\/|https:\/\/)(www\.)?/.test(data) || ~data.indexOf(' ')) return `Invalid data: \`${data}\` associated with flag [\`-${flag}\`]. Check that a valid and complete [\`http://www.\`] or [\`http\`] url is being passed`;
+            if(!/(http:\/\/|https:\/\/)(www\.)?/.test(data) || ~data.indexOf(' ')) return `*Invalid data: \`${data}\` associated with flag [\`-${flag}\`]. Check that a valid and complete [\`http://www.\`] or [\`http\`] url is being passed*`;
 
             flag = 'url';
             break;
 
         case flag === 'date' || flag === 'd':
             if(!/[0-9]{2}\/[0-9]{2}\/[0-9]{2}/.test(data))
-                return `Invalid date [\`${data}\`]. must be in \`mm/dd/yy\` format`;
+                return `*Invalid date [\`${data}\`]. must be in \`mm/dd/yy\` format*`;
 
             data = Date.parse(new Date(data));
 

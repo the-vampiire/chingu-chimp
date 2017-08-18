@@ -81,7 +81,7 @@ helpResponse = (type) => {
             {
                 color: '#666',
                 mrkdwn_in: ['text', 'pretext'],
-                text: `*\`-date\`, \`-repo\`, \`-name\`, \`-url\`*\n*All of the flags can also be written shorthand: \`-d\`, \`-r\`, \`-n\`, \`-u\`*`,
+                text: `*\`-date\`, \`-name\`, \`-repo\`, \`-url\`*\n*All of the flags can also be written shorthand: \`-d\`, \`-n\`, \`-r\`, \`-u\`*`,
                 pretext: '*List of update flags*',
             },
             {
