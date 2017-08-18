@@ -32,7 +32,8 @@ const userSchema = new mongoose.Schema({
         size_72 : String,
         size_192 : String,
         size_512 : String,
-        size_original : String
+        size_original : String,
+        lastUpdate: {type: Number, default: Date.now()}
     },
 
     portfolio: {type: String, default: null},
@@ -136,11 +137,14 @@ class User {
             this.getProfile(userName).then( profileDoc => {
                 if(profileDoc){
     
-                    // check if the cohort the user is updating from is in the user's cohorts array. if not - add it
+                // check if the cohort the user is updating from is in the user's cohorts array. if not - add it
                     profileDoc.cohorts = dbHelper.checkAndAddCohort(profileDoc.cohorts, cohortName, teamID, userID);
     
-                    // check if the user has all appropriate badges. if not - add them
-                    profileDoc.badges = dbHelper.checkAndAddBadges(profileDoc);
+                //  // check if the user's profile picture has been updated in the past 14 days
+                //     const profilePicLastUpdate = Math.round(profileDoc.profilePic.lastUpdate/1000);
+                //     if(profilePicLastUpdate >= 604800000){
+                        
+                //     }
         
                     const checkins = profileDoc.checkins;
                     let channel = checkins.find( e => e.channelID === channelID);
@@ -189,10 +193,16 @@ class User {
             this.getProfile(userName).then( profileDoc => {
     
                 if(profileDoc){
-    
-                    // check if the cohort the user is updating from is in the user's cohorts array. if not - add it
+
+                // check if the cohort the user is updating from is in the user's cohorts array. if not - add it
                     profileDoc.cohorts = dbHelper.checkAndAddCohort(profileDoc.cohorts, cohortName, teamID, userID);
     
+                // // check if the user's profile picture has been updated in the past 14 days
+                    // const profilePicLastUpdate = Math.round(profileDoc.profilePic.lastUpdate/1000);
+                    // if(profilePicLastUpdate >= 604800000){
+
+                    // }
+
                     let updateItem = data.item;
                     let updateData = data.updateData;
     
