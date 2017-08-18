@@ -14,7 +14,7 @@ updateSkillsResponse = () => {
 
 skillSelect = valueObject => {
     let response = updateSkillsResponse();
-    response.attachments = [val.menu( null, valueObject, ['languages', 'frameworks'],
+    response.attachments = [val.menu( null, valueObject, ['languages', 'frameworks', 'technologies'],
         'Select a skill to add or update', 'skillSelect', 'skill')];
     return response;
 };
@@ -24,7 +24,7 @@ languageSelect = valueObject => {
     // set the languages array to the database array of languages used in the dropdown menus of the profile form
 
     const languages = ['JavaScript', 'Java', 'Python', 'Ruby', 'C++', 'C#.Net', 'Assembly', 'Bash', 'Basic', 'C', 'C#',
-        'Fortran', 'Go', 'MATLAB', 'MongoDB', 'MySQL', 'Objective-C', 'Perl', 'PHP', 'PostgreSQL', 'Powershell', 'SQL', 'VBA'];
+        'Fortran', 'Go', 'MATLAB', 'Objective-C', 'Perl', 'PHP', 'Powershell', 'VBA'];
 
     let response = updateSkillsResponse();
     response.attachments = [val.menu( null, valueObject, languages, 'Select a language', 'languageSelect', 'name')];
@@ -34,16 +34,26 @@ languageSelect = valueObject => {
 frameworkSelect = valueObject => {
     // set the frameworks array to the database array of frameworks used in the dropdown menus of the profile form
 
-    const frameworks = [ 'Angular2/4', 'AngularJS', 'Backbone', 'Bootstrap', 'Django', 'Electron', 'Ember', 'Express', 'jQuery', 'jQueryUI', 'Node.js', 'React', 'React Native', 'Vue'];
+    const frameworks = [ 'Angular2/4', 'AngularJS', 'Backbone', 'Bootstrap', 'Electron', 'Ember', 'Express', 'jQuery', 'jQueryUI', 'React', 'React Native', 'Vue'];
 
     let response = updateSkillsResponse();
     response.attachments = [val.menu( null, valueObject, frameworks, 'Select a framework', 'frameworkSelect', 'name')];
     return response;
 };
 
+technologySelect = valueObject => {
+    // set the frameworks array to the database array of frameworks used in the dropdown menus of the profile form
+
+    const frameworks = [ 'Django', 'MongoDB', 'MySQL', 'Node.js', 'PostgreSQL', 'SQL' ];
+
+    let response = updateSkillsResponse();
+    response.attachments = [val.menu( null, valueObject, frameworks, 'Select a technology', 'technologySelect', 'name')];
+    return response;
+};
+
 levelSelect = valueObject => {
     console.log(valueObject);
-    const levels = ['remove', 'heard the name before', 'tutorial phase', 'under 5 projects', 'over 5 projects', 'flowing code', `${JSON.parse(valueObject).name} Wizard`];
+    const levels = ['remove', 'heard the name before', 'eager noob', 'under 5 projects', 'over 5 projects', 'flowing code', `${JSON.parse(valueObject).name} Wizard`];
     let response = updateSkillsResponse();
     response.attachments = [val.menu( null, valueObject, levels, 'Select your skill level', 'levelSelect', 'level')];
     return response;
@@ -407,6 +417,7 @@ module.exports = {
     skillSelect,
     languageSelect,
     frameworkSelect,
+    technologySelect,
     levelSelect,
     submitSkill,
     helpResponse

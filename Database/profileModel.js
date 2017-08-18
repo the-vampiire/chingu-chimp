@@ -59,6 +59,11 @@ const userSchema = new mongoose.Schema({
         frameworks: [{
             name: String,
             level: String
+        }],
+
+        technologies: [{
+            name: String,
+            level: String
         }]
     },
 
