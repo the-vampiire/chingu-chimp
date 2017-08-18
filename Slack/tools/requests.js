@@ -29,6 +29,38 @@ userData = (type, userID) => {
 
             if(!ok) reject(ok);
 
+            let user = JSON.parse(body).profile;
+            let data;
+
+            switch(type){
+                case 'pic':
+                    data = {
+                        size_72 : profile.image_72,
+                        size_192: profile.image_192,
+                        size_512: profile.image_512,
+                        original: profile.image_original
+                    };
+                    break;
+                case 'name':
+                    data = user.name;
+                    break;
+            }
+
+            resolve(data);
+        });
+    });
+};
+
+userProfile = (type, userID) => {
+    return new Promise((resolve, reject) => {
+
+        request.post({url: `https://slack.com/api/users.profile.get?token=${oAuthToken}&user=${userID}`},
+            (error, response, body) => {
+
+            let ok = JSON.parse(body).ok;
+
+            if(!ok) reject(ok);
+
             let user = JSON.parse(body).user;
             let data;
 
