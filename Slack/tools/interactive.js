@@ -9,6 +9,7 @@ const updateResponse = require('../responses/updateResponses');
 
 const userProfile = require('../../Database/profileModel').userProfile;
 
+// Initial interaction message 
 interaction = (type, valueObject) => {
     let response;
 
@@ -24,10 +25,15 @@ interaction = (type, valueObject) => {
     return response;
 };
 
+// Subsequent interaction messages
 processInteraction = payload => {
     const type = payload.callback_id;
+
     const userName = payload.user.name;
+    const userID = payload.user.id;
+    const channelID = payload.channel.id;
     const cohortName = payload.team.domain;
+    const teamID = payload.team.id;
 
     let value = payload.actions[0].selected_options ?
         payload.actions[0].selected_options[0].value : payload.actions[0].value;
@@ -35,26 +41,30 @@ processInteraction = payload => {
     let response;
 
     switch(type){
-
     // -------------- CHECKIN -------------- //
-
         case 'activitySelect':
             response = checkinResponse.taskSelect(value);
             break;
         case 'taskSelect':
             response = checkinResponse.submitCheckin(value);
             break;
-    // SUBMIT
+    // CHECk-IN SUBMIT
         case 'checkinSubmit':
             value = JSON.parse(value);
 
             if(value.submit){
                 delete value.submit;
                 const partners = value.partners;
+                
+                const cohortDetails = {};
+                cohortDetails.channelID = channelID;
+                cohortDetails.cohortName = cohortName;
+                cohortDetails.userID = userID;
+                cohortDetails.teamID = teamID;
 
-                let promises = [];
+                const promises = [];
                 partners.forEach( user => {
-                    promises.push(userProfile.processCheckin(user, cohortName, payload.channel.id, value));
+                    promises.push(userProfile.processCheckin(userName, value, cohortDetails));
                 });
 
                 return Promise.all(promises).then( responses => {
@@ -62,7 +72,6 @@ processInteraction = payload => {
                     responses.forEach( response => {
                         saveResponse += `\n${response}`
                     });
-
                     return saveResponse;
                 })
             }
@@ -72,7 +81,6 @@ processInteraction = payload => {
             break;
 
     // -------------- UPDATE SKILLS -------------- //
-
         case 'skillSelect':
             switch(JSON.parse(value).skill){
                 case 'frameworks':
@@ -94,6 +102,7 @@ processInteraction = payload => {
         case 'levelSelect':
             response = updateResponse.submitSkill(value);
             break;
+    // SKILL SUBMIT
         case 'skillSubmit':
             value = JSON.parse(value);
 
@@ -108,7 +117,13 @@ processInteraction = payload => {
                     level : value.level
                 };
 
-                response = userProfile.processUpdate(userName, cohortName, processUpdateData);
+                const cohortDetails = {};
+                cohortDetails.cohortName = cohortName;
+                cohortDetails.userID = userID;
+                cohortDetails.teamID = teamID;
+
+                response = userProfile.processUpdate(userName, 
+                    processUpdateData, cohortDetails);
             }
 
             else response = updateResponse.skillSelect(JSON.stringify(value));

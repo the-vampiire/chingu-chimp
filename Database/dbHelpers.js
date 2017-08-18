@@ -60,20 +60,18 @@ addCertBadges = (eachArray, badges, matchProperty) => {
 };
 
 // checks for an existing /  adds a new cohort
-checkAndAddCohort = (cohorts, cohortName) => {
+checkAndAddCohort = (cohorts, cohortName, teamID) => {
 
-// cohortName comes in in the form [cohort-name-style] and must be processed to [Cohort Name Style] for comparison
+// cohortName comes in in the form [cohort-name-style] and must be processed 
+// to [Cohort Name Style] for comparison
     cohortName = cohortName.slice(cohortName.lastIndexOf('/')+1)
         .split('-')
         .map(word => word = `${word.slice(0,1).toUpperCase()}${word.slice(1)}`)
         .join(' ');
 
-// if the passed match is not found in the array of then add it
+// if the passed match is not found in the array of then add the cohort
     if(!cohorts.some( e => e.cohortName === cohortName)){
-        // add a badge for each cohort?
-        // new cohort?
-        // 3+?
-        cohorts.push({cohortName: cohortName});
+        cohorts.push({ cohortName, teamID });
     }
 
     return cohorts;
@@ -84,7 +82,7 @@ streakUpdater = (checkins, currentStreak, bestStreak) => {
 
     if(currentStreak.value === 0 && bestStreak === 0) currentStreak.value++;
 
-    let currentDate = Number(Date.now());
+    const currentDate = Number(Date.now());
 
     if(currentDate - currentStreak.lastUpdate >= 86400000){
 
