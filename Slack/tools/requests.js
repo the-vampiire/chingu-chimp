@@ -34,7 +34,8 @@ userPicture = userID => {
                 size_72 : profile.image_72,
                 size_192: profile.image_192,
                 size_512: profile.image_512,
-                size_original: profile.image_original
+                size_original: profile.image_original,
+                lastUpdate: Number(Date.now())
             };
         
             resolve(data);

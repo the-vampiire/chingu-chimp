@@ -317,9 +317,10 @@ class User {
         requests.userPicture(userID).then( picData => {
             this.getProfile(userName).then( profileDoc => {
                 profileDoc.profilePic = picData;
+
                 profileDoc.save((saveError, success) => {
-                    if(saveError) reject(saveError);
-                    else resolve('Saved image');
+                    if(saveError) console.log(saveError);
+                    else console.log('saved image successfully');
                 })  
             })
         })
