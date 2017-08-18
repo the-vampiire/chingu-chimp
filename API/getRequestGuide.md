@@ -11,12 +11,19 @@ Pass a query string with the respective parameters for your request
 **Request parameters**: { key: APIkey, userName: user to request, profileItem: item to request for that user }
 
 **Returns**: JSON = {
+
             ok: true,
+
             status: 200,
+
             body: {
+
                 userName: userName,
+
                 itemName: itemValue
+
             }
+            
         }
 
 ================================================================================ 
