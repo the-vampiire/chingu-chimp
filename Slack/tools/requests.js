@@ -22,14 +22,15 @@ channelMembers = (channelID) => {
 userData = (type, userID) => {
     return new Promise((resolve, reject) => {
 
-        request.post({url: `https://slack.com/api/users.info?token=${oAuthToken}&user=${userID}`},
+        request.post({url: `https://slack.com/api/users.profile.get?token=${oAuthToken}&user=${userID}`},
             (error, response, body) => {
 
             let ok = JSON.parse(body).ok;
 
             if(!ok) reject(ok);
 
-            let profile = JSON.parse(body).profile;
+            let profile = JSON.parse(body).profile
+            
             let data;
 
             switch(type){

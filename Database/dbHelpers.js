@@ -60,7 +60,7 @@ addCertBadges = (eachArray, badges, matchProperty) => {
 };
 
 // checks for an existing /  adds a new cohort
-checkAndAddCohort = (cohorts, cohortName, teamID) => {
+checkAndAddCohort = (cohorts, cohortName, teamID, userID) => {
 
 // cohortName comes in in the form [cohort-name-style] and must be processed 
 // to [Cohort Name Style] for comparison
@@ -71,7 +71,7 @@ checkAndAddCohort = (cohorts, cohortName, teamID) => {
 
 // if the passed match is not found in the array of then add the cohort
     if(!cohorts.some( e => e.cohortName === cohortName)){
-        cohorts.push({ cohortName, teamID });
+        cohorts.push({ cohortName, teamID, userID });
     }
 
     return cohorts;

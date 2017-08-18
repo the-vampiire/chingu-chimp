@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
         size_72 : String,
         size_192 : String,
         size_512 : String,
-        origina : String
+        size_original : String
     },
 
     portfolio: {type: String, default: null},
@@ -137,7 +137,7 @@ class User {
                 if(profileDoc){
     
                     // check if the cohort the user is updating from is in the user's cohorts array. if not - add it
-                    profileDoc.cohorts = dbHelper.checkAndAddCohort(profileDoc.cohorts, cohortName, teamID);
+                    profileDoc.cohorts = dbHelper.checkAndAddCohort(profileDoc.cohorts, cohortName, teamID, userID);
     
                     // check if the user has all appropriate badges. if not - add them
                     profileDoc.badges = dbHelper.checkAndAddBadges(profileDoc);
