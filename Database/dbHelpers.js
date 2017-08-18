@@ -86,10 +86,14 @@ streakUpdater = (checkins, currentStreak, bestStreak) => {
 
     if(currentDate - currentStreak.lastUpdate >= 86400000){
 
-        let resetStreak = !checkins.some( checkin => {
-            let sessionsArray = checkin.sessions, lastDate = sessionsArray[sessionsArray.length - 1].date;
+        // if it has been more than 24 hours since the last currentStreak update
+            // if it has been <= 24 hours since the last checkin 
 
-            if (currentDate - lastDate <= 86400000) {
+        let resetStreak = !checkins.some( checkin => {
+            const sessionsArray = checkin.sessions;
+            const lastDate = sessionsArray[sessionsArray.length - 1].date;
+
+            if (currentDate - lastDate <= 129600000) {
                 currentStreak.value++;
                 return true;
             }

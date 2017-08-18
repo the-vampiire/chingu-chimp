@@ -35,6 +35,8 @@ processInteraction = payload => {
     const cohortName = payload.team.domain;
     const teamID = payload.team.id;
 
+// sets the value for buttons or menus
+// the "selected options" property is only found in interactive menus
     let value = payload.actions[0].selected_options ?
         payload.actions[0].selected_options[0].value : payload.actions[0].value;
 

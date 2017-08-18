@@ -4,8 +4,9 @@ const router = module.exports = express.Router();
 
 // itemScan is the returned value of verifyItems
         // if an invalid item is found then that item is returned to be processed by APIerror
-        // if all requested item(s) are valid then itemScan is true
+        // if all requested item(s) are valid then itemScan is true and the get function is executed
 const verifyItems = require('./tools/verifyItems');
+
 const verifyKey = require('./tools/verify');
 const GET = require('./tools/getMethods');
 const APIerror = require('./tools/APIerror');
@@ -23,9 +24,9 @@ router.get('/request', (req, res) => {
 
     if(verifyKey(chinguAPIKey)){
     
-    // bulk users
+    // multiple user requests
         if(bulkUsers){  
-        // process bulk users request for bulk items
+        // process multiple user requests for multiple items
             if(bulkItems){
                 const itemScan = verifyItems(bulkItems);
                 if(itemScan === true){
@@ -38,7 +39,7 @@ router.get('/request', (req, res) => {
 
             else if(!profileItem) error = APIerror('itemMissing', error, request);
        
-        // process bulk users request for a single item
+        // process multiple user requests for a single item
             else{
                 const itemScan = verifyItems(profileItem);
                 if(itemScan === true){
@@ -50,12 +51,12 @@ router.get('/request', (req, res) => {
             }
         }
 
-    // one user
+    // single user request
         else {
 
             if(!userName) error = APIerror('userMissing', error, request);
 
-        // process a bulk items request for a single user
+        // process a multiple items request for a single user
             if(bulkItems){
                 const itemScan = verifyItems(bulkItems);
                 if(itemScan === true){
@@ -102,7 +103,7 @@ router.get('/', (req, res) => {
     //         res.json(JSON.parse(returned.body));
     //     });
 
-    // // test get one user with bulk items
+    // // test get one user with multiple items
     //     request({
     //        uri: 'https://65974b37.ngrok.io/API/item',
     //        method: 'GET',
@@ -111,7 +112,7 @@ router.get('/', (req, res) => {
     //         res.json(JSON.parse(returned.body));
     //     });
 
-    // // test get bulk users with one item
+    // // test get multiple users with one item
     //     request({
     //        uri: 'https://65974b37.ngrok.io/API/item',
     //        method: 'GET',
@@ -120,7 +121,7 @@ router.get('/', (req, res) => {
     //         res.json(JSON.parse(returned.body));
     //     });
 
-    // // test get bulk users with bulk items
+    // // test get multiple users with multiple items
     // request({
     //     uri: 'https://1375fa97.ngrok.io/API/request', method: 'GET',
     //     qs: { key: 'test', bulkUsers: ['vampiire', 'dsegovia90', 'jessec'], 
