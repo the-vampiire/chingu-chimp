@@ -10,21 +10,15 @@ Pass a query string with the respective parameters for your request
 **Method**: One user one item           
 **Request parameters**: { key: APIkey, userName: user to request, profileItem: item to request for that user }
 
-**Returns**: JSON = {
-
-            ok: true,
-
-            status: 200,
-
-            body: {
-
-                userName: userName,
-
-                itemName: itemValue
-
+**Returns**: 
+    JSON = {
+                ok: true,
+                status: 200,
+                body: {
+                    userName: userName,
+                    itemName: itemValue
+                }
             }
-            
-        }
 
 ================================================================================ 
 #### Request multiple items for a single user
