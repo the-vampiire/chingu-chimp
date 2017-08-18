@@ -52,7 +52,7 @@ processInteraction = payload => {
         case 'checkinSubmit':
             value = JSON.parse(value);
 
-            if(value.submit){
+            if(value.submit === true){
                 delete value.submit;
                 const partners = value.partners;
                 
@@ -76,10 +76,8 @@ processInteraction = payload => {
                 })
             }
 
-            else if(value.submit === 'cancel'){
-                response = 'Check-in cancelled';
-            }
-
+            else if(value.submit === 'cancel') response = '*Check-in cancelled*';
+        
             else response = checkinResponse.activitySelect(value);
 
             break;
@@ -110,7 +108,7 @@ processInteraction = payload => {
         case 'skillSubmit':
             value = JSON.parse(value);
 
-            if(value.submit){
+            if(value.submit === true){
                 delete value.submit;
 
                 const processUpdateData = {};
@@ -130,6 +128,8 @@ processInteraction = payload => {
                     processUpdateData, cohortDetails);
             }
 
+            else if(value.submit === 'cancel') response = `*Skills update cancelled.*`
+    
             else response = updateResponse.skillSelect(JSON.stringify(value));
             break;
 
