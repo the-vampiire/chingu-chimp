@@ -36,7 +36,8 @@ userData = (type, userID) => {
                 case 'pic':
                     data = {
                         size_72 : user.profile.image_72,
-                        size_192: user.profile.image_192
+                        size_192: user.profile.image_192,
+                        size_512: user.profile.image_512
                     };
                     break;
                 case 'name':
