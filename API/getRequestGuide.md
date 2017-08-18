@@ -2,17 +2,16 @@
 
 ### **Endpoint:** `https://chingu-chimp.herokuapp.com/API/request`
 
-#### Valid profile items                               
 ================================================================================
+#### Valid profile items
 
     ['badges', 'bestStreak', 'blog',  'certifications', 
         'checkins', 'cohorts', 'currentStreak', 'gitHub', 
         'github', 'joinDate', 'lastCheckin',
         'portfolio', 'profilePic', 'skills', 'story'];
 
-
-#### Request a single item for a single user                               
-================================================================================         
+================================================================================
+### Request a single item for a single user                                        
 
 **Method**: One user one item 
 
@@ -35,9 +34,8 @@
         }
     }
 
- 
-#### Request multiple items for a single user
-================================================================================ 
+================================================================================
+#### Request multiple items for a single user 
 
 **Method**: One user bulk items
 
@@ -67,9 +65,8 @@
         }
     }
 
-
-#### Requesting a single item for multiple users 
-================================================================================ 
+================================================================================
+#### Requesting a single item for multiple users
 
 **Method**: Bulk users one item
 
@@ -100,9 +97,8 @@
         }
     }
 
-
-#### Requesting multiple items for multiple users
-================================================================================ 
+================================================================================
+#### Requesting multiple items for multiple users 
 
 **Method**: Bulk users bulk items 
 
@@ -147,11 +143,10 @@
         }
     }
 
+================================================================================
+#### Error Responses
 
-#### Error Responses -> ok: false, status: !== 200
-================================================================================ 
-
-**Error**: missing [profileItem] or [bulkItems]
+**Error**: missing `[profileItem]` or `[bulkItems]`
     
     JSON = {
         ok: false,
@@ -162,7 +157,7 @@
         }
     }
 
-**Error**: missing [userName] or [bulkUsers]
+**Error**: missing `[userName]` or `[bulkUsers]`
     
     JSON = {
         ok: false,
