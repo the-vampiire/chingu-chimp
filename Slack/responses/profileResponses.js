@@ -352,7 +352,7 @@ profileItem = (userName, item, share) => {
             response.attachments.push(insertFields(frameworkAttachment, frameworks, 'Framework', 'Skill Level'));
         }
 
-        if(userName) response.text = `*${userName}'s Languages and Frameworks*`;
+        if(userName) response.text = `*${userName}'s Languages, Technologies and Frameworks*`;
 
         return response;
 
