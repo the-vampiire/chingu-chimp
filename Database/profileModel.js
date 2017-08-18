@@ -254,7 +254,7 @@ class User {
                 // if the user does not have a profilePic then pull it from Slack
                     if(profileDoc.profilePic){
                     // if the user has a picture but it hasn't been updated in 14 days - update it
-                        if(profileDoc.profilePic.lastUpdate >= 1209600000){
+                        if(Number(Date.now()) - profileDoc.profilePic.lastUpdate >= 1209600000){
                             this.updatePicture(userName, userID);
                         }
                     }
