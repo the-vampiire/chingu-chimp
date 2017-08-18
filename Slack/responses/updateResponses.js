@@ -23,8 +23,9 @@ languageSelect = valueObject => {
     // csv repo https://github.com/jamhall/programming-languages-csv/blob/master/languages.csv
     // set the languages array to the database array of languages used in the dropdown menus of the profile form
 
-    const languages = ['JavaScript', 'Java', 'Python', 'Ruby', 'C++', 'C#.Net', 'Assembly', 'Bash', 'Basic', 'C', 'C#',
-        'Fortran', 'Go', 'MATLAB', 'Objective-C', 'Perl', 'PHP', 'Powershell', 'VBA'];
+    const languages = ['C++', 'C#.Net', 'Assembly', 'Bash', 'Basic', 'C', 'C#',
+        'Fortran', 'Go', 'JavaScript', 'Java', 'MATLAB', 'Objective-C', 
+        'Perl', 'PHP', 'Powershell', 'Python', 'Ruby', 'VBA'];
 
     let response = updateSkillsResponse();
     response.attachments = [val.menu( null, valueObject, languages, 'Select a language', 'languageSelect', 'name')];
@@ -34,7 +35,9 @@ languageSelect = valueObject => {
 frameworkSelect = valueObject => {
     // set the frameworks array to the database array of frameworks used in the dropdown menus of the profile form
 
-    const frameworks = [ 'Angular2/4', 'AngularJS', 'Backbone', 'Bootstrap', 'Electron', 'Ember', 'Express', 'jQuery', 'jQueryUI', 'React', 'React Native', 'Vue'];
+    const frameworks = [ 'Angular2/4', 'AngularJS', 'Backbone', 'Bootstrap', 
+    'Electron', 'Ember', 'Express', 'jQuery', 'jQueryUI', 'Mongoose', 'React', 
+    'React Native', 'Vue'];
 
     let response = updateSkillsResponse();
     response.attachments = [val.menu( null, valueObject, frameworks, 'Select a framework', 'frameworkSelect', 'name')];
