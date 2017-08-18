@@ -301,7 +301,7 @@ profileItem = (userName, item, share) => {
             let attachment = {
                 color: index % 2 ? '#666' : '#15df89',
                 mrkdwn_in: ['pretext', 'text'],
-                text: `*Project Name:* ${project.name}\n*GitHub Repo:* <${project.gitHub}|${project.gitHub.slice(project.gitHub.indexOf('.com/')+5)}>\n*Project Link:* ${ project.url ?  `<${project.url}|${project.name}>` : ``}\n*Completed Date:* <!date^${Math.round((project.completedDate/1000))}^{date_pretty}|Failed to load date>`
+                text: `*Project Name:* ${project.name}\n*GitHub Repo:* <${project.gitHub}|${project.gitHub.slice(project.gitHub.indexOf('.com/')+5)}>\n${ project.url ?  `*Project Link:* <${project.url}|${project.name}>` : ``}\n*Completed Date:* <!date^${Math.round((project.completedDate/1000))}^{date_pretty}|Failed to load date>`
             };
 
             if(index === 0) attachment.pretext = `*${userName}'s Completed Projects*`;
