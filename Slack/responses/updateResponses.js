@@ -64,7 +64,12 @@ levelSelect = valueObject => {
 
 submitSkill = valueObject => {
     valueObject = JSON.parse(valueObject);
-    return valSubmit(valueObject, 'skill', true, true, `You have selected *${valueObject.name}* at the *${valueObject.level}* skill level`);
+    
+    const response = valueObject.level === 'hide' ? 
+    `You have chosen to hide *${valueObject.name}*` :
+    `You have selected *${valueObject.name}* at the *${valueObject.level}* skill level`;
+
+    return valSubmit(valueObject, 'skill', true, true, response);
 };
 
 helpResponse = (type) => {

@@ -289,9 +289,13 @@ class User {
                                 if(saveError) reject(`error updating ${updateItem} for ${userName}`);
     
                                 if(success){
-                                    if(updateItem === 'skills')
-                                        resolve(`*Successfully updated your ${data.subItem}: ${updateData.name} at the ${updateData.level} skill level*`);
-    
+                                    if(updateItem === 'skills'){
+                                        const response = updateData.level === 'hide' ? 
+                                        `*Succesfully hid the ${data.subItem}: ${updateData.name}*` :
+                                        `*Successfully updated your ${data.subItem}: ${updateData.name} at the ${updateData.level} skill level*`
+                                        resolve(response);
+                                    }
+                                
                                     else resolve(`*Successfully updated your ${updateItem}*`);
                                 }
                             });
