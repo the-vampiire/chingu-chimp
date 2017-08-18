@@ -102,6 +102,7 @@ const userSchema = new mongoose.Schema({
 
 }, { runSettersOnQuery : true });
 
+
 // define a class to hold the static methods
 class User {
 
