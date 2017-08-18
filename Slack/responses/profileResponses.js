@@ -327,6 +327,18 @@ profileItem = (userName, item, share) => {
             response.attachments.push(insertFields(languageAttachment, languages, 'Language', 'Skill Level'));
         }
 
+        const technologies = skills.technologies;
+        if(technologies.length){
+            const technologyAttachment = {
+                mrkdwn_in: ['text', 'pretext'],
+                color: '#15df89',
+                pretext: '*Technologies*',
+                fields: []
+            };
+
+            response.attachments.push(insertFields(technologyAttachment, technologies, 'Technology', 'Skill Level'));
+        }
+
 
         const frameworks = skills.frameworks;
         if(frameworks.length){
