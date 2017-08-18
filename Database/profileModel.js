@@ -196,12 +196,6 @@ class User {
 
                 // check if the cohort the user is updating from is in the user's cohorts array. if not - add it
                     profileDoc.cohorts = dbHelper.checkAndAddCohort(profileDoc.cohorts, cohortName, teamID, userID);
-    
-                // // check if the user's profile picture has been updated in the past 14 days
-                    // const profilePicLastUpdate = Math.round(profileDoc.profilePic.lastUpdate/1000);
-                    // if(profilePicLastUpdate >= 604800000){
-
-                    // }
 
                     let updateItem = data.item;
                     let updateData = data.updateData;
@@ -254,8 +248,17 @@ class User {
                             break;
                     }
     
-                    // after updating is complete check if the user has all earned badges. if not - add them
+                // after updating is complete check if the user has all earned badges. if not - add them
                     profileDoc.badges = dbHelper.checkAndAddBadges(profileDoc);
+
+                // if the user does not have a profilePic then pull it from Slack
+                    if(profileDoc.profilePic){
+                    // if the user has a picture but it hasn't been updated in 14 days - update it
+                        if(profileDoc.profilePic.lastUpdate >= 1209600000){
+                            this.updatePicture(userName, userID);
+                        }
+                    }
+                    else this.updatePicture(userName, userID);
     
                 // final validation of urls. executes a head request to determine the validity of the link
                     if(['blog', 'gitHub', 'portfolio', 'projects', 'certifications'].includes(updateItem)){
@@ -291,7 +294,7 @@ class User {
                                 if(success){
                                     if(updateItem === 'skills'){
                                         const response = updateData.level === 'hide' ? 
-                                        `*Succesfully hid the ${data.subItem}: ${updateData.name}*` :
+                                        `*Succesfully hid the ${data.subItem.slice(0, -1)}: ${updateData.name}*` :
                                         `*Successfully updated your ${data.subItem}: ${updateData.name} at the ${updateData.level} skill level*`
                                         resolve(response);
                                     }
@@ -308,6 +311,18 @@ class User {
             })
             
                 })
+    }
+
+    static updatePicture(userName, userID){
+        requests.userPicture(userID).then( picData => {
+            this.getProfile(userName).then( profileDoc => {
+                profileDoc.profilePic = picData;
+                profileDoc.save((saveError, success) => {
+                    if(saveError) reject(saveError);
+                    else resolve('Saved image');
+                })  
+            })
+        })
     }
 }
 
