@@ -64,7 +64,7 @@ levelSelect = valueObject => {
 
 submitSkill = valueObject => {
     valueObject = JSON.parse(valueObject);
-    return valSubmit(valueObject, 'skill', true, `You have selected *${valueObject.name}* at the *${valueObject.level}* skill level`);
+    return valSubmit(valueObject, 'skill', true, true, `You have selected *${valueObject.name}* at the *${valueObject.level}* skill level`);
 };
 
 helpResponse = (type) => {

@@ -76,6 +76,10 @@ processInteraction = payload => {
                 })
             }
 
+            else if(value.submit === 'cancel'){
+                response = 'Check-in cancelled';
+            }
+
             else response = checkinResponse.activitySelect(value);
 
             break;
