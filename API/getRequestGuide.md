@@ -1,4 +1,4 @@
-# GET endpoint: /API/request
+# Chingu Chimp API: Get Requests
 
 ### **Endpoint:** `https://chingu-chimp.herokuapp.com/API/request`
 
