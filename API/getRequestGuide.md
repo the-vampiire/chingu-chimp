@@ -2,7 +2,15 @@
 
 ### **Endpoint:** `https://chingu-chimp.herokuapp.com/API/request`
 
+#### Valid profile items                               
 ================================================================================
+
+    ['badges', 'bestStreak', 'blog',  'certifications', 
+        'checkins', 'cohorts', 'currentStreak', 'gitHub', 
+        'github', 'joinDate', 'lastCheckin',
+        'portfolio', 'profilePic', 'skills', 'story'];
+
+
 #### Request a single item for a single user                               
 ================================================================================         
 
@@ -27,7 +35,7 @@
         }
     }
 
-================================================================================ 
+ 
 #### Request multiple items for a single user
 ================================================================================ 
 
@@ -59,7 +67,7 @@
         }
     }
 
-================================================================================ 
+
 #### Requesting a single item for multiple users 
 ================================================================================ 
 
@@ -92,7 +100,7 @@
         }
     }
 
-================================================================================ 
+
 #### Requesting multiple items for multiple users
 ================================================================================ 
 
@@ -139,13 +147,11 @@
         }
     }
 
-================================================================================ 
+
 #### Error Responses -> ok: false, status: !== 200
 ================================================================================ 
 
 **Error**: missing [profileItem] or [bulkItems]
-
-**Returns:** 
     
     JSON = {
         ok: false,
@@ -157,8 +163,6 @@
     }
 
 **Error**: missing [userName] or [bulkUsers]
-
-**Returns**: 
     
     JSON = {
         ok: false,
@@ -171,8 +175,6 @@
 
 **Error**: invalid API key
 
-**Returns:**
-
     JSON = {
         ok: false,
         status: 401,
@@ -184,7 +186,16 @@
 
 **Error**: invalid profile item requested 
 
-**Returns:**
+    JSON = {
+        ok: false,
+        status: 401,
+        error: {
+            message: 'Invalid profile item [invalid item] requested',
+            code: 'invalid_item'
+        }
+    }
+
+**Error**: user not found 
 
     JSON = {
         ok: false,
