@@ -94,7 +94,7 @@ valSubmit = (valueObject, type, reset, cancel, customText) => {
                 text: '',
                 callback_id: `${type}Submit`,
                 actions: [{
-                    text: 'Submit',
+                    text: 'Confirm',
                     name: 'submit',
                     type: 'button',
                     style: 'primary',
