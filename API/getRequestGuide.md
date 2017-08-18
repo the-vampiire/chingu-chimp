@@ -7,7 +7,8 @@ Pass a query string with the respective parameters for your request
 #### Request a single item for a single user                               
 ================================================================================         
 
-**Method**: One user one item           
+**Method**: One user one item 
+
 **Request parameters**: 
 
     { 
@@ -32,6 +33,7 @@ Pass a query string with the respective parameters for your request
 ================================================================================ 
 
 **Method**: One user bulk items
+
 **Request parameters**: 
 
     { 
@@ -63,6 +65,7 @@ Pass a query string with the respective parameters for your request
 ================================================================================ 
 
 **Method**: Bulk users one item
+
 **Request parameters**: 
 
     { 
@@ -94,7 +97,8 @@ Pass a query string with the respective parameters for your request
 #### Requesting multiple items for multiple users
 ================================================================================ 
 
-**Method**: Bulk users bulk items       
+**Method**: Bulk users bulk items 
+
 **Request parameters**: 
 
     { 
@@ -141,6 +145,7 @@ Pass a query string with the respective parameters for your request
 ================================================================================ 
 
 **Error**: missing [profileItem] or [bulkItems]
+
 **Returns:** 
     
     JSON = {
@@ -153,6 +158,7 @@ Pass a query string with the respective parameters for your request
     }
 
 **Error**: missing [userName] or [bulkUsers]
+
 **Returns**: 
     
     JSON = {
@@ -165,6 +171,7 @@ Pass a query string with the respective parameters for your request
     }
 
 **Error**: invalid API key
+
 **Returns:**
 
     JSON = {
@@ -177,6 +184,7 @@ Pass a query string with the respective parameters for your request
     }
 
 **Error**: invalid profile item requested 
+
 **Returns:**
 
     JSON = {
