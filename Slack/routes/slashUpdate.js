@@ -57,9 +57,8 @@ router.post('/', (req, res) => {
                 }
     
                 else if(arguments === 'picture'){
+                    
                     const userID = body.user_id;
-                    const userProfile = require('./database/profileModel').userProfile;
-    
                     tools.requests.userData('pic', userID).then( picObject => {
                         let data = { item: 'profilePic', updateData : picObject };
 
