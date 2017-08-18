@@ -29,8 +29,10 @@ const userSchema = new mongoose.Schema({
     userName: {type: String, lowercase: true},
 
     profilePic : {
-        size_72 : {type: String, default: null},
-        size_192 : {type: String, default: null}
+        size_72 : String,
+        size_192 : String,
+        size_512 : String,
+        origina : String
     },
 
     portfolio: {type: String, default: null},
