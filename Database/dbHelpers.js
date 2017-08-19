@@ -14,6 +14,7 @@ checkAndAddBadges = profileDoc => {
     const skills = profileDoc.skills;
         const languages = skills.languages;
         const frameworks = skills.frameworks;
+        const technologies = skills.technologies;
     const projects = profileDoc.projects;
     const totalCheckins = profileDoc.totalCheckins;
 
