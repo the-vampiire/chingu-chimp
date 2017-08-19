@@ -73,7 +73,6 @@ submitSkill = valueObject => {
 };
 
 helpResponse = (type) => {
-
     const help = {
         text: `*How to use the \`/update\` command:* \n\nUpdating behaves similarly to git. \nYou string together a profile item with its\`[-flag data]\` pairs to build the command`,
         response_type: 'ephemeral',
