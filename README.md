@@ -22,13 +22,32 @@ The following is the help guide that is returned when a user issues the `/update
 
 >Updating behaves similarly to git. You build your command by passing a `profile item` and its associated [`-flag data`] pairs. 
 
-> **List of Update Items:**
-
+### List of Update Items
 >`blog`, `certifications`, `gitHub`, `picture`, `portfolio`, `projects`, `skills`, `story`
 
-> **List of Update Flags**
-
+### List of Update Flags
 >`-date`, `-name`, `-repo`, `-url` All of the flags can also be written shorthand: `-d`, `-n`, `-r`, `-u`
 
-**Updating Your Blog, GitHub Profile, or Portfolio**
+type/format | string | mm/dd/yy | string | string
+--- | --- | --- | --- | ---
+ `-flag`| `-url` / `-u` | `-date` / `-d` | `-name` / `-n` | `-repo` / `-r`
+**blog** |blog url||| 
+**certifications** | certificate url | completion date || 
+**gitHub** |GitHub profile url ||| 
+**portfolio** | portfolio url ||| 
+**projects** | project url | completion date | project name | GitHub repo url |
+
+ **Note:** Dates are optional. If no date is passed then the current date is inserted.
+ **Note:** Projects require at minimum a project name and GitHub repo link
+
+ 
+
+### Updating Your Blog, GitHub Profile, or Portfolio URL
+
+#### General form: `/update blog -url https://blogurl.com`
+
+### Updating Free Code Camp Certficiations
+
+#### General form: `/update certifications -url https://www.freecodecamp.com/x/x-x-certification [ -d mm/dd/yy ]`
+
 
