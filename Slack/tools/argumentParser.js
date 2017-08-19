@@ -109,9 +109,9 @@ argumentSplitter = arguments => {
 
     if(item === 'projects'){
         if(!(flagsAndData.includes('-n') || flagsAndData.includes('-name')))
-            return `Missing a project name. All projects require at minimum a project name and GitHub repo link.*\n*Try again or type \`/update projects\` for more detailed help`;
+            return `Missing a project name. All projects require at minimum a project name and GitHub repo link.\nTry again or type \`/update projects\` for more detailed help`;
         if(!(flagsAndData.includes('-r') || flagsAndData.includes('-repo')))
-            return `Missing a GitHub repo. All projects require at minimum a project name and GitHub repo link.*\n*Try again or type \`/update projects\` for more detailed help`;
+            return `Missing a GitHub repo. All projects require at minimum a project name and GitHub repo link.\nTry again or type \`/update projects\` for more detailed help`;
     }
 
     const pairsArray = flagsAndData.split(/ (?=-)/).map( e => e.replace(/-/, ''));
@@ -138,7 +138,7 @@ argumentSplitter = arguments => {
     }
 
     if(!~expectedFlags.indexOf(flag)){
-        return `Invalid update flag [\`-${flag}\`] for update item [\`${item}\`]*.\n *Try \`/update ${item}\` for a list of required and optional flags`
+        return `Invalid update flag [\`-${flag}\`] for update item [\`${item}\`].\n Try \`/update ${item}\` for a list of required and optional flags`
     }
 
 // modification step (as needed)

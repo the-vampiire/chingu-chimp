@@ -158,13 +158,13 @@ module.exports = class profileMethods {
                             const request = require('request');
                             const url = updateData.url ? updateData.url : updateData.gitHub;
         
-                            request({url: url, method: 'HEAD'}, (error, response) => {
+                            request({url: url, method: 'HEAD', followRedirect: false}, (error, response) => {
                                 if(error) reject('*Invalid url. Domain is invalid. Connection refused error received during validation*');
 
                                 const status = response.statusCode;
 
                                 if(status > 300 && status < 400 && updateItem === 'certifications'){
-                                    reject(`*Invalid certification link. Free Code Camp validation failed.`);
+                                    reject(`*Invalid certification link. Free Code Camp certificate validation failed.*`);
                                 }
 
                                 else if(status !== 200){
