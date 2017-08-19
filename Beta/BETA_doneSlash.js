@@ -28,13 +28,7 @@ router.post('/', (req, res) => {
             break;
         case 'profile command':
             res.json(respond.profileCommandResponse());
-            break;
-        case '':
-            res.json(respond.doneResponse());
-            break;
-        case 'chimp':
-            res.json(respond.chimpResponse());
-            break;
+            break;  
     }
 
 });

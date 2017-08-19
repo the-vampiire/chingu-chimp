@@ -66,7 +66,7 @@ updateHelpResponse = () => {
                 color: '#FF0000',
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Next Step*',
-                text: `type \`/beta profile command\``
+                text: `type \`/beta update command\``
             }
         ]
     }
