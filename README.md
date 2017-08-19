@@ -1,50 +1,34 @@
-## Chingu Profile Bot
+# The Chingu Chimp
 
-### Project Name/Intro
+## What is the Chingu Chimp?
 
-- This is a slack bot used to create and view a user's Chingu profile through slack, easily pair with others, and log activity within chingu cohorts. 
-- TODO: add noteworthy features.
-- This bot was built in an effort to help users have a more seamless experience working within the Chingu slack environment. 
-- This bot also assists Admin's with moderating user activity and growth.
-- TODO: add link to chingu bot page
-- Currently in active development
-- TODO: badges?
-- TODO: demo screenshots/video?
+### I created the Chimp to give members of Chingu a more "tangible" sense of community and personal growth. The Chimp is a robust profile bot that lets users update, view, and share each others profiles and profile items. 
 
-### Getting Started Using Chingu Profile Bot With Slack
-TODO: add instructions for installing app for use in production
-- Getting it
-- Installing It
-- Configuring It
-- Running it
+### It also handles check-ins where users can keep track of personal, team, pair-programming, and accountability progress.
 
-### Profile Bot API
-TODO: add basic documentation for bot's api server
+### All of this has been designed to function seamlessly without ever having to leave the home of Chingu - our Slack Team cohorts.  
 
-### Contributing
-TODO: add guidelines for contributing to the project 
-- code style
-- code/commit message formatting
-- other general guidelines
-- thank you section for contributors)
+## How does it work?
+### There are three commands that handle all of the Chimp's duties: 
 
-### How To Contribute 
-TODO: add instructions for installing app for use in development
-- Getting it
-- Installing It
-- Configuring It
-- Running it
+#### 1) The `/update` command: lets the user update all of their profile items directly from Slack using a git-style inline interface
 
-| Scripts              | Use                                           |
-|----------------------|-----------------------------------------------|
-| `npm start`          | start server locally                          |
-| `npm run dev`        | start persistent server locally using nodemon |
+#### 2) The `/checkin` command: lets a user check-in themselves and any other partner(s) into a team meeting, pair-programming session, accountability session, or a self-checkin
 
+#### 3) the `/profile` command: lets users view and share profile cards or specific profile items
 
-### TODO
-TODO: populate this column with next steps asap
-- create basic form that posts to database
-- move hard coded cohorts, programming languages, and framework values into one file to use throghout the project 
+## The `/update` command
+The following is the help guide that is returned when a user issues the `/update help` command in Slack
 
-### Contact
-TODO: add contact information for core contributors
+>Updating behaves similarly to git. You build your command by passing a `profile item` and its associated [`-flag data`] pairs. 
+
+> **List of Update Items:**
+
+>`blog`, `certifications`, `gitHub`, `picture`, `portfolio`, `projects`, `skills`, `story`
+
+> **List of Update Flags**
+
+>`-date`, `-name`, `-repo`, `-url` All of the flags can also be written shorthand: `-d`, `-n`, `-r`, `-u`
+
+**Updating Your Blog, GitHub Profile, or Portfolio**
+
