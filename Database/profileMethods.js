@@ -158,25 +158,26 @@ module.exports = class profileMethods {
                             const request = require('request');
                             const url = updateData.url ? updateData.url : updateData.gitHub;
         
-                            // if(updateItem === 'certifications'){
-                            //     request({url: url, followRedirect: false}, (err, res) => {
-                            //         if(err) reject(err);
-                            //         else console.log(res.headers.location);
-                            //     });
-                            // }
-        
-    // put a try / catch here?
                             request({url: url, method: 'HEAD'}, (error, response) => {
                                 if(error) reject('*Invalid url. Domain is invalid. Connection refused error received during validation*');
-        
-                                else if(response.statusCode !== 200) reject(`*Invalid url. Domain is valid but the route returned a \`${response.statusCode}\` error during validation*`);
+
+                                const status = response.statusCode;
+
+                                if(status > 300 && status < 400 && updateItem === 'certifications'){
+                                    reject(`*Invalid certification link. Free Code Camp validation failed.`);
+                                }
+
+                                else if(status !== 200){
+                                    reject(`*Invalid url. Domain is valid but the route returned a \`${response.statusCode}\` error during validation*`);
+                                }
+
                                 else {
                                     profileDoc.save((error, success) => {
                                         if(error) reject(`Saving to the database failed. Error message:\n${error}`);
                                         else if(success) resolve(`*Successfully updated your ${updateItem}*`)
                                     });
                                 }
-                            });
+                            });  
                         }
         
                     // if url validation does not apply then save as usual
@@ -189,7 +190,7 @@ module.exports = class profileMethods {
                                             const response = updateData.level === 'hide' ? 
                                             `*Succesfully hid ${updateData.name} from your ${data.subItem} section*` :
                                             `*Successfully updated your ${data.subItem}: ${updateData.name} at the ${updateData.level} skill level*`
-                                            
+
                                             resolve(response);
                                         }
                                     
