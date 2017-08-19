@@ -110,7 +110,7 @@ helpResponse = (type) => {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
                 pretext: '*Updating Skills*',
-                text: `*Example - updating your skills*\nUse the command \`/update skills\` and an interactive message will be returned`
+                text: `Use the command \`/update skills\` and an interactive message will be returned where you can pick a language, framework, or technology and set its associated skill-level`
 
             },
             {
