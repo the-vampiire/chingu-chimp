@@ -1,3 +1,7 @@
+// Profile Methods -> imported into profileModel.js and loaded into the schema
+
+const dbHelper = require('./dbHelpers');
+
 module.exports = class profileMethods {
     
     // general static methods
