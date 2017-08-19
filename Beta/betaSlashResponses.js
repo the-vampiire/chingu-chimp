@@ -16,25 +16,6 @@ startResponse = () => {
         response_type: 'in_channel',
         text: '*Closed Beta Test: Chingu Chimp*',
         attachments: [
-            // {
-            //     mrkdwn_in: ['text', 'pretext'],
-            //     color: '#666',
-            //     pretext: '*Why Help?*',
-            //     fields: [
-            //         {
-            //             value: 'Early access to learning the ins and outs of the app and its features'
-            //         },
-            //         {
-            //             value: 'Contribute to improving a Chingu community tool'
-            //         },
-            //         {
-            //             value: 'Get a unique Beta Tester badge on your profile'
-            //         },
-            //         {
-            //             value: 'Get credited as a beta tester in the GitHub readme'
-            //         }
-            //     ]
-            // },
             {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
@@ -234,7 +215,7 @@ profileCommandResponse = () => {
                 color: '#FF0000',
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Next Step*',
-                text: `type \`/done\` with no other parameters`
+                text: `type \`/beta done\` with no other parameters`
             }
         ]
     }
@@ -249,54 +230,12 @@ doneResponse = () => {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Review*',
-                text: `If you have any other questions / suggestions / comments / complaints send a message to <@U5XJSS683|vampiire>. If you would like to review the code here is the <https://github.com/the-vampiire/chingu-chimp|GitHub Repo>.\n\nThank you for your help I really appreciate your time. If you ever need my help feel free to message me. I am up and coding most of the day and especially through the night.\n\n\- Vamp`
-            },
-            {
-                mrkdwn_in: ['text', 'pretext'],
-                pretext: '*Optional - Break the Chimp*',
-                text: `Sign up to break the Chimp so weird bugs can be found and fixed before launching.\n\nThis will take about 30+ minutes. For more details type \`/done chimp\``
+                text: `If you have any other questions / suggestions / comments / complaints / or want to help send a message to <@U5XJSS683|vampiire>. If you would like to review the code here is the <https://github.com/the-vampiire/chingu-chimp|GitHub Repo>.`
             }
         ]
 
     }
 };
-
-chimpResponse = () => {
-    return {
-        response_type: 'in_channel',
-        text: '*Break The Chimp*',
-        attachments: [
-            {
-                color: '#666',
-                mrkdwn_in: ['text', 'pretext'],
-                pretext: '*Individual Sessions*',
-                text: `I expect some server crashing as a result of this area of testing.\n\nBecause of this I will need at least 30 minutes (up to you on duration) individual sessions with anyone interested so it doesn't impact the rest of the beta testing.`
-            },
-            {
-                color: '#15df89',
-                mrkdwn_in: ['text', 'pretext'],
-                pretext: '*Task: break the `/update`, `/checkin`, and `/profile` commands*',
-                text: `please try _anything_ you can to break each of the commands\n
-If you do not receive an error message for your attempt send a message in this channel with the command you entered and any additional notes.\n
-If you break the command send a message in this channel with the command you entered and any additional notes.`
-            },
-            {
-                color: '#15df89',
-                mrkdwn_in: ['text', 'pretext'],
-                pretext: '*Perks*',
-                text: `If you manage to break the Chimp you will be credited in the Chimp Breaker section of the readme.\n\nIf, in addition, you would like to work on a fix for the issue with me you will also receive a custom badge titled "I broke the Chimp and all I got was a 16px badge"`
-            },
-            {
-                mrkdwn_in: ['pretext', 'text'],
-                color: '#666',
-                pretext: '*Sign Up*',
-                text: `If you are interested message @vampiire to sign up`
-            }
-        ]
-
-    }
-};
-
 
 module.exports = {
     startResponse,
@@ -305,6 +244,5 @@ module.exports = {
     checkinCommandResponse,
     profileHelpResponse,
     profileCommandResponse,
-    doneResponse,
-    chimpResponse
+    doneResponse
 };
