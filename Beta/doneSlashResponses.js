@@ -12,24 +12,15 @@ updateHelpResponse = () => {
             },
             {
                 color: `#15df89`,
-                text: '1) Did you prefer version 1 or version 2?'
+                text: '1) Was the guide clear or is there anything you are still confused about?'
             },
             {
                 color: `#15df89`,
-                text: '2) Was the guide clear or is there anything you are still confused about?'
+                text: '2) Was the guide structured in an easily digestible way or can you suggest moving any items or changing the markdown?'
             },
             {
                 color: `#15df89`,
-                text: '3) Was the guide structured in an easily digestible way or can you suggest moving any items or changing the markdown?'
-            },
-            {
-                color: `#15df89`,
-                text: '4) Any other suggestions / alternatives / complaints / bugs?'
-            },
-            {
-                pretext: '*Help*',
-                mrkdwn_in: ['text', 'pretext'],
-                text: `If you need help or clarification at any time message <@U5XJSS683|vampiire>`
+                text: '3) Any other suggestions / alternatives / complaints / bugs?'
             },
             {
                 mrkdwn_in: ['text', 'pretext'],
@@ -64,11 +55,6 @@ updateCommandResponse = () => {
             {
                 color: `#15df89`,
                 text: '4) Any other suggestions / alternatives / complaints / bugs?'
-            },
-            {
-                pretext: '*Help*',
-                mrkdwn_in: ['text', 'pretext'],
-                text: `If you need help or clarification at any time message <@U5XJSS683|vampiire>`
             },
             {
                 color: '#FF0000',
@@ -114,11 +100,6 @@ checkinCommandResponse = () => {
                 text: '6) Any other suggestions / alternatives / complaints / bugs?'
             },
             {
-                pretext: '*Help*',
-                mrkdwn_in: ['text', 'pretext'],
-                text: `If you need help or clarification at any time message <@U5XJSS683|vampiire>`
-            },
-            {
                 color: '#FF0000',
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Next Step*',
@@ -147,11 +128,6 @@ profileHelpResponse = () => {
             {
                 color: `#15df89`,
                 text: '3) Any other suggestions / alternatives / complaints / bugs?'
-            },
-            {
-                pretext: '*Help*',
-                mrkdwn_in: ['text', 'pretext'],
-                text: `If you need help or clarification at any time message <@U5XJSS683|vampiire>`
             },
             {
                 color: '#FF0000',
@@ -190,11 +166,6 @@ profileCommandResponse = () => {
             {
                 color: `#15df89`,
                 text: '5) Any other suggestions / alternatives / complaints / bugs?'
-            },
-            {
-                pretext: '*Help*',
-                mrkdwn_in: ['text', 'pretext'],
-                text: `If you need help or clarification at any time message <@U5XJSS683|vampiire>`
             },
             {
                 color: '#FF0000',

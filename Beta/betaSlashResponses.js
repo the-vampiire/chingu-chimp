@@ -16,25 +16,25 @@ startResponse = () => {
         response_type: 'in_channel',
         text: '*Closed Beta Test: Chingu Chimp*',
         attachments: [
-            {
-                mrkdwn_in: ['text', 'pretext'],
-                color: '#666',
-                pretext: '*Why Help?*',
-                fields: [
-                    {
-                        value: 'Early access to learning the ins and outs of the app and its features'
-                    },
-                    {
-                        value: 'Contribute to improving a Chingu community tool'
-                    },
-                    {
-                        value: 'Get a unique Beta Tester badge on your profile'
-                    },
-                    {
-                        value: 'Get credited as a beta tester in the GitHub readme'
-                    }
-                ]
-            },
+            // {
+            //     mrkdwn_in: ['text', 'pretext'],
+            //     color: '#666',
+            //     pretext: '*Why Help?*',
+            //     fields: [
+            //         {
+            //             value: 'Early access to learning the ins and outs of the app and its features'
+            //         },
+            //         {
+            //             value: 'Contribute to improving a Chingu community tool'
+            //         },
+            //         {
+            //             value: 'Get a unique Beta Tester badge on your profile'
+            //         },
+            //         {
+            //             value: 'Get credited as a beta tester in the GitHub readme'
+            //         }
+            //     ]
+            // },
             {
                 mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
@@ -60,7 +60,7 @@ updateHelpResponse = () => {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Learn how to use the `/update command`*',
-                text: `Call each of the help guides:\n\n*command:* \`/update help1\` for the first version\n\n*command:* \`/update help2\` for the second version`
+                text: `*Call the help guide \`/update help\`*`
             },
             {
                 color: '#FF0000',
