@@ -40,6 +40,7 @@ type/format | string | mm/dd/yy | string | string
 **gitHub** |GitHub profile url ||| 
 **portfolio** | portfolio url ||| 
 **projects** | project url | completion date | project name | GitHub repo url |
+
  **Note:** Dates are optional. If no date is passed then the current date is inserted.
 
  **Note:** Projects require at minimum a project name and GitHub repo link
