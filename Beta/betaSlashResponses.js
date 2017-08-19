@@ -230,7 +230,7 @@ doneResponse = () => {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Review*',
-                text: `If you have any suggestions / complaints / bugs or want to help you can raise an issue on GitHub <https://github.com/the-vampiire/chingu-chimp|GitHub Repo>.`
+                text: `If you want to review the code or have any suggestions / complaints / bugs / want to help - you can raise an issue on at the <https://github.com/the-vampiire/chingu-chimp|GitHub Repo>.`
             }
         ]
 
