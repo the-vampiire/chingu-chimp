@@ -20,13 +20,17 @@
 ## The `/update` command
 The following is the help guide that is returned when a user issues the `/update help` command in Slack
 
->Updating behaves similarly to git. You build your command by passing a `profile item` and its associated [`-flag data`] pairs. 
+- Updating behaves similarly to git. 
+- You build your command by passing a `profile item` and its associated [`-flag data`] pairs.
+
+### General Form
+- `/update <profile item> [ -flag data ]`
 
 ### List of Update Items
->`blog`, `certifications`, `gitHub`, `picture`, `portfolio`, `projects`, `skills`, `story`
+- `blog`, `certifications`, `gitHub`, `picture`, `portfolio`, `projects`, `skills`, `story`
 
 ### List of Update Flags
->`-date`, `-name`, `-repo`, `-url` All of the flags can also be written shorthand: `-d`, `-n`, `-r`, `-u`
+- `-date`, `-name`, `-repo`, `-url` All of the flags can also be written shorthand: `-d`, `-n`, `-r`, `-u`
 
 type/format | string | mm/dd/yy | string | string
 --- | --- | --- | --- | ---
@@ -36,18 +40,25 @@ type/format | string | mm/dd/yy | string | string
 **gitHub** |GitHub profile url ||| 
 **portfolio** | portfolio url ||| 
 **projects** | project url | completion date | project name | GitHub repo url |
-
  **Note:** Dates are optional. If no date is passed then the current date is inserted.
- **Note:** Projects require at minimum a project name and GitHub repo link
 
- 
+ **Note:** Projects require at minimum a project name and GitHub repo link
 
 ### Updating Your Blog, GitHub Profile, or Portfolio URL
 
-#### General form: `/update blog -url https://blogurl.com`
+#### Example: `/update blog -url https://blogurl.com`
 
 ### Updating Free Code Camp Certficiations
 
 #### General form: `/update certifications -url https://www.freecodecamp.com/x/x-x-certification [ -d mm/dd/yy ]`
+
+### Updating Profile Picture
+The profile picture update command does not take any additional parameters. When the command is entered your current Slack profile picture will be saved and added to your Chingu profile card.
+
+**Note:** The system is designed to update your profile picture automatically during the updating of any item - every 14 days. The `/update picture` command can be used to force an update at any time. 
+
+#### Example: `/update picture`
+
+### Updating Projects
 
 
