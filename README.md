@@ -54,9 +54,9 @@ type/format | string | mm/dd/yy | string | string
 #### Example: `/update certifications -url https://www.freecodecamp.com/userName/x-x-certification -date 01/01/11`
 
 ### Updating Profile Picture
-The profile picture update command does not take any additional parameters. When the command is entered your current Slack profile picture will be saved and added to your Chingu profile card.
+The profile picture update command does not take any additional parameters. When the command is entered the user's current Slack profile picture will be saved and added to your Chingu profile card.
 
-**Note:** The system is designed to update your profile picture automatically during the updating of any item - every 14 days. The `/update picture` command can be used to force an update at any time. 
+**Note:** The system is designed to update a user's profile picture automatically during the updating of any item - every 14 days. The `/update picture` command can be used to force an update at any time. 
 
 #### Example: `/update picture`
 
@@ -71,6 +71,13 @@ flag | data
 
 #### Example: `/update projects -n Project Name -d 01/01/11 -r https://github.com/userName/repoName -u https://projecturl.com`
 
+### Updating Skills
 
+Skills are broken down into three categories: languages, frameworks, and technologies. 
+
+Entering the `/update skills` command will return an interactive message. 
+
+The message interaction order is:
+`skill category` --> `skill name` --> `skill level`
 
 
