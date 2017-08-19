@@ -18,25 +18,6 @@ startResponse = () => {
         attachments: [
             {
                 mrkdwn_in: ['text', 'pretext'],
-                color: '#666',
-                pretext: '*Why Help?*',
-                fields: [
-                    {
-                        value: 'Early access to learning the ins and outs of the app and its features'
-                    },
-                    {
-                        value: 'Contribute to improving a Chingu community tool'
-                    },
-                    {
-                        value: 'Get a unique Beta Tester badge on your profile'
-                    },
-                    {
-                        value: 'Get credited as a beta tester in the GitHub readme'
-                    }
-                ]
-            },
-            {
-                mrkdwn_in: ['text', 'pretext'],
                 color: '#15df89',
                 pretext: '*Steps to Begin*',
                 text: `1) Create a profile <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>.\n*The username you use for your Chingu profile must match your username on Slack*\n\n2) Call your profile using \`/profile @yourUserName\` to confirm its creation\nIf you receive an error - message <@U5XJSS683|vampiire>`,
@@ -60,13 +41,13 @@ updateHelpResponse = () => {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Learn how to use the `/update command`*',
-                text: `Call each of the help guides:\n\n*command:* \`/update help1\` for the first version\n\n*command:* \`/update help2\` for the second version`
+                text: `*Call the help guide \`/update help\`*`
             },
             {
                 color: '#FF0000',
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Next Step*',
-                text: `type \`/done update help\``
+                text: `type \`/beta update command\``
             }
         ]
     }
@@ -84,15 +65,11 @@ updateCommandResponse = () => {
                 fields: [
                     {
                         title: 'Instructions',
-                        value: 'Update your profile with one of each item using appropriate flags as needed'
+                        value: 'Try updating any of the following profile items'
                     },
                     {
                         title: 'List of update items',
                         value: 'blog, certifications, gitHub, picture, portfolio, projects, skills, story'
-                    },
-                    {
-                        title: 'Note',
-                        value: 'If you do not have information for an item you may skip it [:cry:] or put in dummy information [this can be deleted later]'
                     }
 
                 ]
@@ -101,13 +78,13 @@ updateCommandResponse = () => {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Notes*',
-                text: `if you make a mistake you should receive an error message explaining how to fix it.\n\nIf you don't receive an error response for your erroneous command send a message in this channel with the command you entered and any additional notes.\n\nif you forget which flags to use or the correct format you can call the sub-guide for that item at any time using \`/update [item]\``
+                text: `if you make a mistake you should receive an error message explaining how to fix it.\n\nif you forget which flags to use or the correct format you can call the sub-guide for that item at any time using \`/update [item]\``
             },
             {
                 color: '#FF0000',
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Next Step*',
-                text: `type \`/done update command\``
+                text: `type \`/beta checkin command\``
             }
         ]
     }
@@ -118,18 +95,6 @@ checkinCommandResponse = () => {
         response_type: 'in_channel',
         text: 'The Check-in Command',
         attachments: [
-            {
-                color: '#15df89',
-                mrkdwn_in: ['text', 'pretext'],
-                pretext: '*Use the `/checkin` command*',
-                fields: [
-                    {
-                        title: 'Instructions',
-                        value: 'Complete each of the steps below'
-                    }
-
-                ]
-            },
             {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
@@ -145,7 +110,7 @@ checkinCommandResponse = () => {
             {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
-                pretext: '*3) Soft Reset the Check-in Command*',
+                pretext: '*3) Soft Reset and Cancel the Check-in Command*',
                 text: '*command:* `/checkin` with or without partners',
                 fields: [
                     {
@@ -153,11 +118,11 @@ checkinCommandResponse = () => {
                         value: 'When you get to the confirmation message choose reset'
                     },
                     {
-                        value: 'Select different choices then submit'
+                        value: 'Select different choices. You should see the new selections at the confirmation window. Now press cancel to cancel the check-in'
                     },
                     {
                         title: 'Note',
-                        value: 'A soft reset will keep the original partners but allow you to change your choice of check-in type and/or activity'
+                        value: 'A soft reset will keep the original partners but allow you to change your choice of check-in type and/or activity. If you want to change the partners use the cancel button then issue a new check-in command'
                     }
                 ]
             },
@@ -165,7 +130,7 @@ checkinCommandResponse = () => {
                 color: '#FF0000',
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Next Step*',
-                text: `type \`/done checkin command\``
+                text: `type \`/beta profile help\``
             }
         ]
     }
@@ -187,7 +152,7 @@ profileHelpResponse = () => {
                 color: '#FF0000',
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Next Step*',
-                text: `type \`/done profile help\``
+                text: `type \`/beta profile command\``
             }
         ]
     }
@@ -250,12 +215,27 @@ profileCommandResponse = () => {
                 color: '#FF0000',
                 mrkdwn_in: ['text', 'pretext'],
                 pretext: '*Next Step*',
-                text: `type \`/done profile command\``
+                text: `type \`/beta done\` with no other parameters`
             }
         ]
     }
 };
 
+doneResponse = () => {
+    return {
+
+        response_type: 'in_channel',
+        attachments : [
+            {
+                color: '#15df89',
+                mrkdwn_in: ['text', 'pretext'],
+                pretext: '*Review*',
+                text: `If you have any suggestions / complaints / bugs or want to help you can raise an issue on GitHub <https://github.com/the-vampiire/chingu-chimp|GitHub Repo>.`
+            }
+        ]
+
+    }
+};
 
 module.exports = {
     startResponse,
@@ -263,5 +243,6 @@ module.exports = {
     updateCommandResponse,
     checkinCommandResponse,
     profileHelpResponse,
-    profileCommandResponse
+    profileCommandResponse,
+    doneResponse
 };

@@ -30,6 +30,9 @@ router.post('/', (req, res) => {
         case 'profile command':
             res.json(respond.profileCommandResponse());
             break;
+        case 'done':
+            res.json(respond.doneResponse());
+            break;
     }
 
 });
