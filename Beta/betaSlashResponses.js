@@ -117,18 +117,6 @@ checkinCommandResponse = () => {
             {
                 color: '#15df89',
                 mrkdwn_in: ['text', 'pretext'],
-                pretext: '*Use the `/checkin` command*',
-                fields: [
-                    {
-                        title: 'Instructions',
-                        value: 'Complete each of the steps below'
-                    }
-
-                ]
-            },
-            {
-                color: '#15df89',
-                mrkdwn_in: ['text', 'pretext'],
                 pretext: '*1) Call the check-in command for yourself*',
                 text: '*command:* `/checkin` with no parameters'
             },
