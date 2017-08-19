@@ -142,14 +142,14 @@ checkinCommandResponse = () => {
                     {
                         title: 'Note',
                         value: 'A soft reset will keep the original partners but allow you to change your choice of check-in type and/or activity. If you want to change the partners use the cancel button then issue a new check-in command'
-                    },
-                    {
-                        color: '#FF0000',
-                        mrkdwn_in: ['text', 'pretext'],
-                        pretext: '*Next Step*',
-                        text: `type \`/beta profile help\``
                     }
                 ]
+            },
+            {
+                color: '#FF0000',
+                mrkdwn_in: ['text', 'pretext'],
+                pretext: '*Next Step*',
+                text: `type \`/beta profile help\``
             }
         ]
     }
