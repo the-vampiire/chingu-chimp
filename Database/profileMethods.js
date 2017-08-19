@@ -187,8 +187,9 @@ module.exports = class profileMethods {
                                     if(success){
                                         if(updateItem === 'skills'){
                                             const response = updateData.level === 'hide' ? 
-                                            `*Succesfully hid the ${data.subItem.slice(0, -1)}: ${updateData.name}*` :
+                                            `*Succesfully hid ${updateData.name} from your ${data.subItem} section*` :
                                             `*Successfully updated your ${data.subItem}: ${updateData.name} at the ${updateData.level} skill level*`
+                                            
                                             resolve(response);
                                         }
                                     

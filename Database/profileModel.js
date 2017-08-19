@@ -3,10 +3,8 @@
  *
  */
 
-
 const mongoose = require('mongoose');
 const requests = require('../Slack/tools/requests');
-const dbHelper = require('./dbHelpers');
 
 // sub-schemas
 const sessionSchema = new mongoose.Schema({
