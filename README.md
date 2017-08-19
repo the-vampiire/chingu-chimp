@@ -51,7 +51,7 @@ type/format | string | mm/dd/yy | string | string
 
 ### Updating Free Code Camp Certficiations
 
-#### General form: `/update certifications -url https://www.freecodecamp.com/x/x-x-certification [ -d mm/dd/yy ]`
+#### Example: `/update certifications -url https://www.freecodecamp.com/userName/x-x-certification -date 01/01/11`
 
 ### Updating Profile Picture
 The profile picture update command does not take any additional parameters. When the command is entered your current Slack profile picture will be saved and added to your Chingu profile card.
@@ -61,5 +61,16 @@ The profile picture update command does not take any additional parameters. When
 #### Example: `/update picture`
 
 ### Updating Projects
+
+flag | data
+--- | ---
+`-name` | `Project Name`
+`-date` | `01/01/11`
+`-repo` | `https://github.com/userName/repoName`
+`-url` | `https://projecturl.com`
+
+#### Example: `/update projects -n Project Name -d 01/01/11 -r https://github.com/userName/repoName -u https://projecturl.com`
+
+
 
 
