@@ -18,7 +18,7 @@ checkAndAddBadges = profileDoc => {
     const projects = profileDoc.projects;
     const totalCheckins = profileDoc.totalCheckins;
 
-    if(certifications.length) badges = addCertBadges(certifications, badges, 'name');
+    if(certifications.length) badges = addCertificatationBadges(certifications, badges, 'name');
 
 // // projects badges
 //     switch(projects.length){
@@ -49,7 +49,7 @@ checkAndAddBadges = profileDoc => {
 };
 
 // checks an array against the user's badges. adds any missing badges the user has earned
-addCertBadges = (eachArray, badges, matchProperty) => {
+addCertificatationBadges = (eachArray, badges, matchProperty) => {
 
     eachArray.forEach( eachE => {
         if(!badges.some( badge => badge[matchProperty] === eachE[matchProperty]))
@@ -59,6 +59,64 @@ addCertBadges = (eachArray, badges, matchProperty) => {
     return badges;
 
 };
+
+// returns a badge object to add to the badges array
+
+newBadge = (type, color) => {
+    
+        // let badges have specific colors as well
+    
+        const newBadge = {};
+        switch(type){
+    
+        // BETA TESTING: CHINGU CHIMP
+            case 'Chingu Chimp Beta Tester':
+                newBadge.badgeType = 'beta';
+                newBadge.name = 'Beta Tester: Chingu Chimp';
+                newBadge.url = 'http://www.monkeymods.com/wp-content/uploads/2015/05/monkey-fav2.png';
+                // newBadge.color = '';
+                break;
+            case 'Chimp Breaker':
+                newBadge.badgeType = 'beta';
+                newBadge.name = 'I broke the Chimp and all I got was a 16px badge';
+                newBadge.url = 'https://cdn2.iconfinder.com/data/icons/aspneticons_v1.0_Nov2006/law-add-16x16.gif';
+                break;
+    
+        // CERTIFICATIONS
+            case 'Front End Certification':
+                newBadge.badgeType = 'certification';
+                newBadge.name = 'Front End Certification';
+                newBadge.url = 'http://i.imgur.com/gXpgAdi.png';
+                newBadge.color = '#fec901';
+                break;
+            case 'Back End Certification':
+                newBadge.badgeType = 'certification';
+                newBadge.name = 'Back End Certification';
+                newBadge.url = 'http://i.imgur.com/mY5qQew.png';
+                newBadge.color = '#009345';
+                break;
+            case 'Data Visualization Certification':
+                newBadge.badgeType = 'certification';
+                newBadge.name = 'Data Visualization Certification';
+                newBadge.url = 'http://i.imgur.com/IoTeInz.png';
+                newBadge.color = '#41778f';
+                break;
+    
+        // CUSTOM
+            case 'founder':
+                newBadge.badgeType = 'custom';
+                newBadge.name = 'Chingu Founder';
+                newBadge.url = 'http://chevellestuff.net/styles/images/crown.png';
+                break;
+            case 'father':
+                newBadge.badgeType = 'custom';
+                newBadge.name = 'Father of the Chimp';
+                newBadge.url = 'http://icons.iconarchive.com/icons/icons8/windows-8/16/Astrology-Year-Of-Monkey-icon.png';
+                break;
+        }
+    
+        return newBadge;
+    };
 
 // checks for an existing /  adds a new cohort
 checkAndAddCohort = (cohorts, cohortName, teamID, userID) => {
@@ -107,64 +165,6 @@ streakUpdater = (checkins, currentStreak, bestStreak) => {
     return {currentStreak, bestStreak};
 };
 
-
-// returns a badge object to add to the badges array
-
-newBadge = (type, color) => {
-
-    // let badges have specific colors as well
-
-    const newBadge = {};
-    switch(type){
-
-    // BETA TESTING: CHINGU CHIMP
-        case 'Chingu Chimp Beta Tester':
-            newBadge.badgeType = 'beta';
-            newBadge.name = 'Beta Tester: Chingu Chimp';
-            newBadge.url = 'http://www.monkeymods.com/wp-content/uploads/2015/05/monkey-fav2.png';
-            // newBadge.color = '';
-            break;
-        case 'Chimp Breaker':
-            newBadge.badgeType = 'beta';
-            newBadge.name = 'I broke the Chimp and all I got was a 16px badge';
-            newBadge.url = 'https://cdn2.iconfinder.com/data/icons/aspneticons_v1.0_Nov2006/law-add-16x16.gif';
-            break;
-
-    // CERTIFICATIONS
-        case 'Front End Certification':
-            newBadge.badgeType = 'certification';
-            newBadge.name = 'Front End Certification';
-            newBadge.url = 'http://i.imgur.com/gXpgAdi.png';
-            newBadge.color = '#fec901';
-            break;
-        case 'Back End Certification':
-            newBadge.badgeType = 'certification';
-            newBadge.name = 'Back End Certification';
-            newBadge.url = 'http://i.imgur.com/mY5qQew.png';
-            newBadge.color = '#009345';
-            break;
-        case 'Data Visualization Certification':
-            newBadge.badgeType = 'certification';
-            newBadge.name = 'Data Visualization Certification';
-            newBadge.url = 'http://i.imgur.com/IoTeInz.png';
-            newBadge.color = '#41778f';
-            break;
-
-    // CUSTOM
-        case 'founder':
-            newBadge.badgeType = 'custom';
-            newBadge.name = 'Chingu Founder';
-            newBadge.url = 'http://chevellestuff.net/styles/images/crown.png';
-            break;
-        case 'father':
-            newBadge.badgeType = 'custom';
-            newBadge.name = 'Father of the Chimp';
-            newBadge.url = 'http://icons.iconarchive.com/icons/icons8/windows-8/16/Astrology-Year-Of-Monkey-icon.png';
-            break;
-    }
-
-    return newBadge;
-};
 
 module.exports = {
     checkAndAddBadges,
