@@ -32,7 +32,8 @@ The profile command is the heart of the Chimp. It lets users view and share each
 
 #### Each profile card is populated based on the available data for that user. The more you update the more detailed your profile will appear. 
 
-#### At the end of every card are a series of buttons. If a button is green it means a member has added that profile item - if it is grey they have not. Clicking a profile item button will display that item along with a footer button to return back to the original profile card. 
+#### At the end of every card are a series of buttons. If a button is <span style="color: #15df89">green</span> it means a member has added that profile item - if it is <span style="color: #666">grey</span> they have not. 
+#### Clicking a profile item button will display that item along with a footer button to return back to the original profile card. 
 
 ![Chingu Profile Card Buttons Example](https://media.giphy.com/media/3o7OsSAHdvFskTJWcE/giphy.gif) 
 
@@ -49,17 +50,29 @@ The profile command is the heart of the Chimp. It lets users view and share each
         - if a profile item parameter is omitted then the requested user's profile card will be returned
 
 #### Profile items that can be viewed or shared individually
-- `blog`, `portfolio`, `github`: returns the requested user's respective url 
-- `certifications`: returns the requested user's Free Code Camp certifications
-- `projects`: returns the requested user's completed projects
-- `skills`: returns the requested user's skills (languages, frameworks, and technologies)
-- `story`: returns the requested user's Chingu intro story
+- **Blog, Portfolio, Github**
+    - `/profile @userName [share] blog` 
 
-### Sharing a user's GitHub profile _publicly_
-#### Example: `/profile @userName share github`
+![Blog / GitHub / Portfolio Example](https://i.imgur.com/BxpKtw1.png)
 
-### Call a user's profile card _privately_
-#### Example: `/profile @userName`
+- **Certifications**
+    - `/profile @userName [share] certifications`
+
+![Certifications Profile Example](https://i.imgur.com/FW0rWFi.png)
+       
+- **Projects**
+    - `/profile @userName [share] projects`
+![Projects Example](https://i.imgur.com/igBWfTh.png)
+
+- **Skills**
+    - `/profile @userName [share] skills`
+
+![Skills Example](https://i.imgur.com/eFI30pv.png)
+
+- **Story**
+    - `/profile @userName [share] story`
+
+![Story Example](https://i.imgur.com/fwzKTG8.png)
 
 <hr>
 
