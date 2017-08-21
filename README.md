@@ -21,6 +21,7 @@ Made using the following technologies:
 #### 2) The `/checkin` command: lets a user check-in themselves and any other partner(s) into a team meeting, pair-programming session, accountability session, or a self-checkin
 
 #### 3) The `/update` command: lets the user update all of their profile items using a git-style inline interface
+
 <hr>
 
 ## The `/profile` command
@@ -31,13 +32,34 @@ The profile command is the heart of the Chimp. It lets users view and share each
 
 #### Each profile card is populated based on the available data for that user. The more you update the more detailed your profile will appear. 
 
-#### At the end of every card are a series of buttons. If a button is green it means a member has added  
+#### At the end of every card are a series of buttons. If a button is green it means a member has added that profile item - if it is grey they have not. Clicking a profile item button will display that item along with a footer button to return back to the original profile card. 
 
+![Chingu Profile Card Buttons Example](https://media.giphy.com/media/3o7OsSAHdvFskTJWcE/giphy.gif) 
 
 ### General Form:
 - `/profile <@userName> [share] [profile item]`
+    - `<@userName>`: the user to be requested.
+        - **Note:** if the user is in your cohort then their name will auto-complete through Slack. 
+        - **you can still request a user's profile who _isn't_ in your cohort as long as you know how to spell their user name**
+        
+    - `[share]`: an optional parameter which will share the profile card / item _publicly_ into the current channel
+        - all profile card and profile item requests default to _private_ unless the `share` parameter is used
 
+    - `[profile item]`: an optional parameter to call a specific profile item. 
+        - if a profile item parameter is omitted then the requested user's profile card will be returned
 
+#### Profile items that can be viewed or shared individually
+- `blog`, `portfolio`, `github`: returns the requested user's respective url 
+- `certifications`: returns the requested user's Free Code Camp certifications
+- `projects`: returns the requested user's completed projects
+- `skills`: returns the requested user's skills (languages, frameworks, and technologies)
+- `story`: returns the requested user's Chingu intro story
+
+### Sharing a user's GitHub profile _publicly_
+#### Example: `/profile @userName share github`
+
+### Call a user's profile card _privately_
+#### Example: `/profile @userName`
 
 <hr>
 

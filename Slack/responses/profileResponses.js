@@ -204,7 +204,7 @@ profileItem = (userName, item, share) => {
 
     return new Promise((resolve, reject) => {
         userProfile.getProfileItem(userName, item)
-        .then( (error, profileItem) => {
+        .then( profileItem => {
 
             if(profileItem || ['blog', 'gitHub', 'portfolio', 'story'].includes(item)){
 
