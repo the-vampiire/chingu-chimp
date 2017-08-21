@@ -31,8 +31,8 @@ app.use(logger('dev'));
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 // ---------- REMOVE AFTER BETA TESTING ----------------
-const beta = require('./Beta/BETA_betaSlash');
-app.use('/beta', beta);
+    const beta = require('./Beta/BETA_betaSlash');
+    app.use('/beta', beta);
 // ---------- REMOVE AFTER BETA TESTING ----------------
 
 // --------------------------- ROUTES --------------------------- //

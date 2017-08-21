@@ -48,7 +48,7 @@ module.exports = class profileMethods {
                         let channel = checkins.find( e => e.channelID === channelID);
                         channel ?
                             channel.sessions.push(checkinSessionData) :
-                            checkins.push(new checkinModel({channelID : channelID, sessions : [checkinSessionData]}));
+                            checkins.push({channelID : channelID, sessions : [checkinSessionData]});
         
                         profileDoc.lastCheckin = checkinSessionData;
                         profileDoc.totalCheckins++;
