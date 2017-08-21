@@ -62,7 +62,7 @@ The profile command is the heart of the Chimp. It lets users view and share each
        
 - **Projects**
     - `/profile @userName [share] projects`
-    - 
+
 ![Projects Example](https://i.imgur.com/igBWfTh.png)
 
 - **Skills**
