@@ -27,7 +27,7 @@ The check-in command lets users keep track of their progress through a simple 15
 
 My goal for check-ins was a way to quantify a major part of Chingu members' progress within the community and their teams. When team members check-in together they can each add and share the record of their check-ins. Other members can view a user's check-ins as an indication of their ability and, most importantly, reliabilility. 
 
-![Check-in command example gif](http://www.giphy.com/gifs/l3fzAPAPw5E1X8nV6)
+![Check-in command example gif](https://media.giphy.com/media/l3fzAPAPw5E1X8nV6/giphy.gif)
 
 ### How it Works
 Check-ins take place using an interactive message menu (a Slack dropdown menu). When a user selects the type of check-in a new menu of type related activities are returned to select from. 
