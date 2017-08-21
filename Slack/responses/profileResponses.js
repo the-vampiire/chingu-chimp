@@ -203,9 +203,11 @@ profileCard = (userName, share) => {
 profileItem = (userName, item, share) => {
 
     return new Promise((resolve, reject) => {
-        userProfile.getProfileItem(userName, item).then( profileItem => {
+        userProfile.getProfileItem(userName, item)
+        .then( (error, profileItem) => {
 
-            if(profileItem){
+            if(profileItem || ['blog', 'gitHub', 'portfolio', 'story'].includes(item)){
+
                 userName = `${userName.slice(0,1).toUpperCase()}${userName.slice(1)}`;
 
                 let response = { attachments: [] };
@@ -228,15 +230,17 @@ profileItem = (userName, item, share) => {
                     case 'skills':
                         if(profileItem.languages.length || profileItem.frameworks.length)
                             response = skillsItemResponse(profileItem, response, userName);
-                        else response = `${userName} has not added any skills :cry:`;
+                        else response.text = `${userName} has not added any skills :cry:`;
                         break;
                     case 'story':
-                        share = false;
+                        if(profileItem) share = false;    
                     default:
                         if(profileItem){
                             response.attachments.push(simpleItemResponse(profileItem, item, userName));
                         }
-                        else response = `${userName} has not added this information yet :cry:`
+                        else response.text = `${userName} has not addded a ${item !== 'story' ? 
+                            `${item} link` : 
+                            item }`;
                 }
 
             // attach a "return to profile" button to the bottom of individual responses
@@ -247,11 +251,13 @@ profileItem = (userName, item, share) => {
 
                 resolve(response);
             }
-            else resolve({
+
+        })
+        .catch( profileError => {
+            reject({
                 response_type: 'in_channel',
                 text: `User ${userName} does not have a Chingu profile. They can sign up <https://chingu-chimp.herokuapp.com/public/createProfile.html|here>`
-            });
-
+            })
         });
     });
 };
