@@ -188,5 +188,5 @@ User stories can be updated by pasting or writing your user story after the `/up
 All erroneous commands and invalid inputs should return a useful error message to help guide you towards fixing the command. If you do not receive a specific and useful error message for your erroneous command you can raise an issue on this repo to have it fixed. 
 
 ## API
-The API is private right now but if you'd like to read more about it you can navigate to `/API/getRequestGuide.md` in the project
+The API is private right now but if you'd like to read more about it you can navigate to [/API/getRequestGuide.md](https://github.com/the-vampiire/chingu-chimp/blob/master/API/getRequestGuide.md) in the project
 
