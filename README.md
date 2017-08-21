@@ -1,11 +1,14 @@
 # The Chingu Chimp
-Made using the following technologies:
+## Technologies
 * Node.js 
     * Express 
     * Mongoose
+    * Request
+    * Body-Parser
+    * DotEnv
 * MongoDB
 * [ValStringer](https://github.com/the-vampiire/valstringer)
-* Slack API 
+* [Slack API](https://api.slack.com) 
 
 # What is the Chingu Chimp?
 

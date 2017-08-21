@@ -4,7 +4,6 @@
   "description": "Chingu Chimp is a profiling bot for use in the Chingu slack team and website",
   "main": "server",
   "scripts": {
-    "test": "nodemon app.js",
     "start": "node app.js"
   },
   "repository": {
@@ -30,11 +29,8 @@
     "body-parser": "^1.17.2",
     "dotenv": "^4.0.0",
     "express": "^4.15.3",
-    "https": "^1.0.0",
     "mongoose": "^4.11.1",
-    "morgan": "^1.8.2",
-    "request": "^2.81.0",
-    "serve-favicon": "^2.4.3"
+    "request": "^2.81.0"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"

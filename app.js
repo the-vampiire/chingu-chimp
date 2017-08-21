@@ -20,15 +20,9 @@ mongoose.connect(dbURL, {useMongoClient : true}, e => e ? console.log(`database 
 
 // Middleware
 const BP = require('body-parser');
-const logger = require('morgan');
-const favicon = require('serve-favicon');
-
 app.use('/public', express.static('public'));
 app.use(BP.urlencoded({extended:false}));
 app.use(BP.json());
-app.use(logger('dev'));
-// TODO: uncomment after adding favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 // ---------- REMOVE AFTER BETA TESTING ----------------
     const beta = require('./Beta/BETA_betaSlash');
