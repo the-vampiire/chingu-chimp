@@ -52,14 +52,16 @@ router.post('/', (req, res) => {
                     if(output instanceof Promise) output.then( response => {
                         if(typeof response === 'string') res.end(response);
                         else res.json(response);
-                    });
+                    })
+                    .catch( error => console.log(error));
                     else res.json(output);
                 }
     
                 else if(arguments === 'picture'){
                     
                     const userID = body.user_id;
-                    tools.requests.userData('pic', userID).then( picObject => {
+                    tools.requests.userData('pic', userID)
+                    .then( picObject => {
                         let data = { item: 'profilePic', updateData : picObject };
 
                         const cohortDetails = {};
@@ -70,7 +72,8 @@ router.post('/', (req, res) => {
                         userProfile.processUpdate(userName, data, cohortDetails)
                             .then( successMessage => res.end(successMessage))
                             .catch( errorMessage => res.end(errorMessage))
-                    });
+                    })
+                    .catch( error => console.log(error));
                 }
                 else {
                     const helpResponse = updateResponse.helpResponse(arguments);
