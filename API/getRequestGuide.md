@@ -8,7 +8,9 @@
 ### Notes:
 * All date properties are integer unix timestamps in milliseconds
 * Unless otherwise specified all profile items and item properties can be assumed to be strings
-* Array profile item descriptions will include the format of the their object elements
+* Array profile item descriptions are followed by the format and description of the their object elements
+
+================================================================================
 
 **badges:** an array of the user's badge objects
 

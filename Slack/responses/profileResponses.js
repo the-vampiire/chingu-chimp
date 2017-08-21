@@ -118,7 +118,8 @@ profileCard = (userName, share) => {
                             pretext: "*Dashboard*",
                             color: '#15df89',
                             fields: [
-                                { title: 'Chingu Points', value: `${points}`, short: true },
+                                // { title: 'Chingu Points', value: `${points}`, short: true },
+                                { title: 'Completed Projects', value: `${projectsLength}`, short: true },
                                 { title: 'Total Check-ins',
                                     value: `${totalCheckins > 0 ? totalCheckins : "No check-in data available"}`,
                                     short: true
