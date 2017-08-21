@@ -14,7 +14,7 @@ Made using the following technologies:
 #### It also handles check-ins where users can keep track of personal, team, pair-programming, and accountability progress.  
 
 # How does it work?
-### There are three commands that handle all of the Chimp's duties: 
+## There are three commands that handle all of the Chimp's duties: 
 
 #### 1) The `/profile` command: lets users view and share profile cards and individual profile items
 
@@ -24,7 +24,7 @@ Made using the following technologies:
 
 <hr>
 
-## The `/profile` command
+# The `/profile` command
 The profile command is the heart of the Chimp. It lets users view and share each other's profile cards and profile items _across all Chingu cohorts_.
 
 ### Chingu Profile Card
@@ -77,7 +77,7 @@ The profile command is the heart of the Chimp. It lets users view and share each
 
 <hr>
 
-## The `/checkin` Command
+# The `/checkin` Command
 The check-in command lets users keep track of their progress through a simple 15 second process in Slack. Users can check-in to team meetings, pair programming meetings, accountability buddy sessions, or as inviduals in a self-checkin. 
 
 ![Check-in command example gif](https://media.giphy.com/media/l3fzAPAPw5E1X8nV6/giphy.gif)
@@ -109,7 +109,9 @@ All users that are tagged in the command will have the check-in processed on the
 ### Calling a check-in for your team
 #### Example: `/checkin @userName1 @userName2`
 
-## The `/update` Command
+<hr>
+
+# The `/update` Command
 This is a summary of the command. For a detailed help guide you can issue the `/update help` command in Slack 
 - You build your command by passing a `profile item` and its associated [`-flag data`] pairs.
 
