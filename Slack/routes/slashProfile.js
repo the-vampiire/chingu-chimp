@@ -34,9 +34,13 @@ router.post('/', (req, res) => {
                 // accept lowercase but process downstream in camelcase (user request)
                     if(item === 'github') item = 'gitHub';
     
-                    if(item) profileResponse.profileItem(userName, item, share).then( response => res.json(response) );
-                    else profileResponse.profileCard(userName, share).then( response => res.json(response));
-    
+                    if(item) profileResponse.profileItem(userName, item, share)
+                        .then( response => res.json(response))
+                        .catch( error => res.json(error));
+
+                    else profileResponse.profileCard(userName, share)
+                        .then( response => res.json(response))
+                        .catch( error => res.json(error));
                 }
     
                 else res.end(`[\`${text}\`] is not a valid profile request.\nTry again with the format \`/profile <@userName> [share] [profile item]\` or try \`/profile help\``);
