@@ -53,7 +53,7 @@ app.use(BP.json());
         const interactive = require('./Slack/routes/slashInteractive');
         app.use('/interactive', interactive);
 
-// ------------ FRONT END ---------- //
+// ------------ FORM ---------- //
 
-const frontend = require('./public/Form/formController');
-app.use('/', frontend);
+const form = require('./public/router/formController');
+app.use('/', form);
