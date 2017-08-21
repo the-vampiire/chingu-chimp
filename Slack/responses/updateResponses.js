@@ -55,7 +55,6 @@ technologySelect = valueObject => {
 };
 
 levelSelect = valueObject => {
-    console.log(valueObject);
     const levels = ['hide', 'heard the name before', 'eager noob', 'under 5 projects', 'over 5 projects', 'flowing code', `${JSON.parse(valueObject).name} Wizard`];
     let response = updateSkillsResponse();
     response.attachments = [val.menu( null, valueObject, levels, 'Select your skill level', 'levelSelect', 'level')];
