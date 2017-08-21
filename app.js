@@ -33,9 +33,6 @@ app.use(logger('dev'));
 // ---------- REMOVE AFTER BETA TESTING ----------------
 const beta = require('./Beta/BETA_betaSlash');
 app.use('/beta', beta);
-
-const done = require('./Beta/BETA_doneSlash');
-app.use('/done', done);
 // ---------- REMOVE AFTER BETA TESTING ----------------
 
 // --------------------------- ROUTES --------------------------- //
