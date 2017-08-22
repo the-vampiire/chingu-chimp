@@ -19,13 +19,10 @@
 
 // builds and returns the valueObject
 valStringer = (valueObject, key, value) => {
-    console.log(`valStringer "valueObject", before injection:\n${valueObject}`);
-
+    
     if(typeof valueObject === 'string') valueObject = JSON.parse(valueObject);
 
     valueObject[key] = value;
-
-    console.log(`valStringer "valueObject", after injection:\n${valueObject}`);
 
     return JSON.stringify(valueObject);
 };
@@ -221,3 +218,6 @@ module.exports = {
     menu : valMenu,
     submit : valSubmit,
 };
+
+
+
