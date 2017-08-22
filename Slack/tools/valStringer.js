@@ -19,10 +19,14 @@
 
 // builds and returns the valueObject
 valStringer = (valueObject, key, value) => {
+    console.log(`valStringer "valueObject", before injection:\n${valueObject}`);
 
     if(typeof valueObject === 'string') valueObject = JSON.parse(valueObject);
 
     valueObject[key] = value;
+
+    console.log(`valStringer "valueObject", after injection:\n${valueObject}`);
+
     return JSON.stringify(valueObject);
 };
 
@@ -83,7 +87,8 @@ valButton = (customAttachment, valueObject, headerText, callbackID, buttonText, 
     return attachment;
 };
 
-// builds and returns a submit / reset button /response/ with integrated valStringer support
+// builds and returns a submit / reset / cancel multiple-button message 
+// with integrated valStringer support
 valSubmit = (valueObject, type, reset, cancel, customText) => {
 
     let response = {
