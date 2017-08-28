@@ -33,7 +33,7 @@ router.post('/', (req, res) => {
             // set the partners property of the valueObject to the now filtered array of partner(s)
                 valueObject.partners = filtered;
 
-                // solo check-in handling here
+            // if no partners are passed then process a self check-in (skipping the check-in kind menu)
                 if(filtered.length === 1) {
                     const respond = require('../responses/checkinResponses');
                     valueObject.kind = 'Self Check-in';
