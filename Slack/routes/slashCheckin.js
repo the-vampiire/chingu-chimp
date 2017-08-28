@@ -34,7 +34,7 @@ router.post('/', (req, res) => {
                 valueObject.partners = filtered;
 
                 // solo check-in handling here
-                if(filter.length === 1) {
+                if(filtered.length === 1) {
                     const respond = require('../responses/checkinResponses');
                     valueObject.kind = 'Self Check-in'
                     res.json(respond.taskSelect(valueObject));
