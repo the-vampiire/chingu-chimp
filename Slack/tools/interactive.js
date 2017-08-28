@@ -9,6 +9,38 @@ const updateResponse = require('../responses/updateResponses');
 
 const userProfile = require('../../Database/profileModel').userProfile;
 
+
+// valstring test
+valMenuExample = valueObject => {
+    return {
+        response_type: 'in_channel',
+        text: 'ValStringer Example',
+        attachments: [
+            {
+                text: 'First Menu Input',
+                callback_id: 'valMenuItem1',
+                actions: [{
+                    name: 'Select the first item',
+                    type: 'select',
+                    data_source: 'static',
+                    options: val.options(['1st option', '2nd option', 'Nth option'], 'menuItem1', valueObject)
+                }]
+            },
+            {
+                text: 'Second Menu Input',
+                callback_id: 'valMenuItem2',
+                actions: [{
+                    name: 'Select the second item',
+                    type: 'select',
+                    data_source: 'static',
+                    options: val.options(['1st option', '2nd option', 'Nth option'], 'menuItem2', valueObject)
+                }]
+            }
+            
+        ]
+    }
+}
+
 // Initial interaction message 
 interaction = (type, valueObject) => {
     let response;
@@ -148,12 +180,60 @@ processInteraction = payload => {
             response = profileResponse.profileItem(value.userName, value.item);
             break;
 
+
+    // ------------- VALSTRINGER ------------- //
+        case 'valMenuItem1':
+            response = replaceMenu(valMenuExample(value), type, value);
+            break;
+        case 'valMenuItem2':
+            // stuff
+            break;
+        case 'valButtonItem1':
+            // stuff
+            break;
+        case 'valButtonItem2':
+            // stuff
+            break;
+        case 'valSubmit':
+            // stuff
+            break;
+
     }
 
     return response;
 };
 
+
+
+const val = require('./valStringer');
+// valstringer test
+function replaceMenu(response, callbackID, valueObject){
+    console.log(response.attachments[0].actions);
+    response.attachments.some( (attachment, attachmendIndex, attachments) => {
+        if(attachment.callback_id === callbackID){
+            // console.log(JSON.stringify(valueObject));
+            attachments[attachmendIndex] = {
+                text: `${attachment.text} *${attachment.actions[0].options[0].text}*`,
+                mrkdwn_in: ['text', 'pretext'],
+                callbackID: `edit ${attachmendIndex}`,
+                actions: [{
+                    text: 'Edit',
+                    name: 'edit',
+                    type: 'button',
+                    value: val.stringer(valueObject, 'edit', true)
+                }]
+            }
+            // console.log(attachments[attachmendIndex]);
+        }
+    })
+
+    return response;
+}
+
+
 module.exports = {
     interaction: interaction,
     process: processInteraction
 };
+
+

@@ -32,13 +32,18 @@ router.post('/', (req, res) => {
     
             // set the partners property of the valueObject to the now filtered array of partner(s)
                 valueObject.partners = filtered;
+
+                // solo check-in handling here
+                if(filter.length === 1) {
+                    const respond = require('../responses/checkinResponses');
+                    valueObject.kind = 'Self Check-in'
+                    res.json(respond.taskSelect(valueObject));
+                }
     
                 res.json(tools.interactive.interaction('checkin', valueObject));
             }
     
             else res.end('*Invalid checkin command format. Try `/checkin [@userName] [@otherUserName(s)]`. You do not need to tag yourself, the user calling the check-in command is automatically included*');
-    
-    
         }
         
         else res.end('invalid Slack token');
