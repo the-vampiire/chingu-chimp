@@ -66,7 +66,7 @@ submitCheckin = valueObject => {
         else partnerString += `@${partner} `;
     });
 
-    return valSubmit(valueObject, 'checkin', true, true,
+    return val.submit(valueObject, 'checkin', true, true,
         `Check-in to *${kind}* to work on *${valueObject.task.toLowerCase()}*\nCheck-in will be processed for: *${partnerString}*`);
 };
 
