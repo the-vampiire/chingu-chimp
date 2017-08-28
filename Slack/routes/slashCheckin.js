@@ -39,8 +39,8 @@ router.post('/', (req, res) => {
                     valueObject.kind = 'Self Check-in';
                     res.json(respond.taskSelect(JSON.stringify(valueObject)));
                 }
-    
-                res.json(tools.interactive.interaction('checkin', valueObject));
+
+                else res.json(tools.interactive.interaction('checkin', valueObject));
             }
     
             else res.end('*Invalid checkin command format. Try `/checkin [@userName] [@otherUserName(s)]`. You do not need to tag yourself, the user calling the check-in command is automatically included*');
