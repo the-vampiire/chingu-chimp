@@ -58,10 +58,6 @@ app.use('/public', express.static('public'));
         const interactive = require('./Slack/routes/slashInteractive');
         app.use('/interactive', interactive);
 
-
-const valStringer = require('./valStringer.js');
-app.use('/val', valStringer);
-
 // ------------ FORM ---------- //
 
 const form = require('./public/router/formController');

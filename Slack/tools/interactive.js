@@ -179,57 +179,10 @@ processInteraction = payload => {
             value = JSON.parse(value);
             response = profileResponse.profileItem(value.userName, value.item);
             break;
-
-
-    // ------------- VALSTRINGER ------------- //
-        case 'valMenuItem1':
-            response = replaceMenu(valMenuExample(value), type, value);
-            break;
-        case 'valMenuItem2':
-            // stuff
-            break;
-        case 'valButtonItem1':
-            // stuff
-            break;
-        case 'valButtonItem2':
-            // stuff
-            break;
-        case 'valSubmit':
-            // stuff
-            break;
-
     }
 
     return response;
 };
-
-
-
-const val = require('./valStringer');
-// valstringer test
-function replaceMenu(response, callbackID, valueObject){
-    console.log(response.attachments[0].actions);
-    response.attachments.some( (attachment, attachmendIndex, attachments) => {
-        if(attachment.callback_id === callbackID){
-            // console.log(JSON.stringify(valueObject));
-            attachments[attachmendIndex] = {
-                text: `${attachment.text} *${attachment.actions[0].options[0].text}*`,
-                mrkdwn_in: ['text', 'pretext'],
-                callbackID: `edit ${attachmendIndex}`,
-                actions: [{
-                    text: 'Edit',
-                    name: 'edit',
-                    type: 'button',
-                    value: val.stringer(valueObject, 'edit', true)
-                }]
-            }
-            // console.log(attachments[attachmendIndex]);
-        }
-    })
-
-    return response;
-}
-
 
 module.exports = {
     interaction: interaction,

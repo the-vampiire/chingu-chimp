@@ -11,6 +11,36 @@
  if you design the value object's key/value pairs to align with your database schema it greatly simplifies the process
  of gathering and storing data from slack
 *
+
+
+Testing an alternate approach where a complete "form" is displayed and 
+as each option is selected it is replaced with the selection
+when all items have been selected then a confirm button is returned on the form
+
+const val = require('./valStringer');
+// valstringer test
+function replaceMenu(response, callbackID, valueObject){
+    console.log(response.attachments[0].actions);
+    response.attachments.some( (attachment, attachmendIndex, attachments) => {
+        if(attachment.callback_id === callbackID){
+            // console.log(JSON.stringify(valueObject));
+            attachments[attachmendIndex] = {
+                text: `${attachment.text} *${attachment.actions[0].options[0].text}*`,
+                mrkdwn_in: ['text', 'pretext'],
+                callbackID: `edit ${attachmendIndex}`,
+                actions: [{
+                    text: 'Edit',
+                    name: 'edit',
+                    type: 'button',
+                    value: val.stringer(valueObject, 'edit', true)
+                }]
+            }
+            // console.log(attachments[attachmendIndex]);
+        }
+    })
+
+    return response;
+}
 *
 * */
 
