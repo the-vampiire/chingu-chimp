@@ -162,7 +162,7 @@ module.exports = class profileMethods {
                                 if(error) reject('*Invalid url. Domain is invalid. Connection refused error received during validation*');
 
                                 const status = response.statusCode;
-
+                            // invalid FCC certificate links will cause a redirect to the FCC homepage. 
                                 if(status > 300 && status < 400 && updateItem === 'certifications'){
                                     reject(`*Invalid certification link. Free Code Camp certificate validation failed.*`);
                                 }

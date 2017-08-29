@@ -101,8 +101,8 @@ const userSchema = new mongoose.Schema({
 }, { runSettersOnQuery : true });
 
 // Load the profile methods
-const User = require('./profileMethods');
-userSchema.loadClass(User);
+const profileMethods = require('./profileMethods');
+userSchema.loadClass(profileMethods);
 
 const userProfile = mongoose.model('userProfile', userSchema);
 

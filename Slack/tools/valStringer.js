@@ -89,7 +89,7 @@ function valButton(customAttachment, valueObject, headerText, callbackID, button
 function valSubmit(valueObject, type, reset, cancel, customText) {
 
     let response = {
-        text: `${customText ? customText : 'Submit or Reset'}`,
+        text: `${customText ? customText : 'Confirm, Cancel or Start Over'}`,
 
         attachments: [
             {
