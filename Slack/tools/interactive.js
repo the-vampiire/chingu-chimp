@@ -9,6 +9,38 @@ const updateResponse = require('../responses/updateResponses');
 
 const userProfile = require('../../Database/profileModel').userProfile;
 
+
+// valstring test
+valMenuExample = valueObject => {
+    return {
+        response_type: 'in_channel',
+        text: 'ValStringer Example',
+        attachments: [
+            {
+                text: 'First Menu Input',
+                callback_id: 'valMenuItem1',
+                actions: [{
+                    name: 'Select the first item',
+                    type: 'select',
+                    data_source: 'static',
+                    options: val.options(['1st option', '2nd option', 'Nth option'], 'menuItem1', valueObject)
+                }]
+            },
+            {
+                text: 'Second Menu Input',
+                callback_id: 'valMenuItem2',
+                actions: [{
+                    name: 'Select the second item',
+                    type: 'select',
+                    data_source: 'static',
+                    options: val.options(['1st option', '2nd option', 'Nth option'], 'menuItem2', valueObject)
+                }]
+            }
+            
+        ]
+    }
+}
+
 // Initial interaction message 
 interaction = (type, valueObject) => {
     let response;
@@ -147,7 +179,6 @@ processInteraction = payload => {
             value = JSON.parse(value);
             response = profileResponse.profileItem(value.userName, value.item);
             break;
-
     }
 
     return response;
@@ -157,3 +188,5 @@ module.exports = {
     interaction: interaction,
     process: processInteraction
 };
+
+

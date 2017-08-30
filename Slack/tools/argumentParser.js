@@ -146,7 +146,7 @@ argumentSplitter = arguments => {
 
     // github repo
         case flag === 'repo' || flag === 'r':
-            if(!/(https:\/\/github\.com\/)/.test(data) || ~data.indexOf(' '))
+            if(!/(https:\/\/github\.com\/[a-zA-Z\-_]+\/[a-zA-Z\-_]+)/.test(data) || ~data.indexOf(' '))
                 return `Invalid data: \`${data}\` associated with flag [\`-${flag}\`]. Make sure a valid GitHub repo link has been added of the form  \`https://github.com/yourUserName/repoName\``;
             flag = 'gitHub';
             break;
@@ -166,14 +166,14 @@ argumentSplitter = arguments => {
 
         // check if general url is valid
             if(data.length > 75) return `Invalid url. Must be below 75 characters`;
-            if(!/(http:\/\/|https:\/\/)(www\.)?/.test(data) || ~data.indexOf(' ')) return `Invalid data: \`${data}\` associated with flag [\`-${flag}\`]. Check that a valid and complete [\`http://www.\`] or [\`http\`] url is being passed`;
+            if(!/(http:\/\/|https:\/\/)(www\.)?/.test(data) || ~data.indexOf(' ')) return `Invalid data: \`${data}\` associated with flag [\`-${flag}\`]. Check that a valid and complete [\`http(s)://\`] url is being passed`;
 
             flag = 'url';
             break;
 
         case flag === 'date' || flag === 'd':
             if(!/[0-9]{2}\/[0-9]{2}\/[0-9]{2}/.test(data))
-                return `Invalid date [\`${data}\`]. must be in \`mm/dd/yy\` format`;
+                return `Invalid date [\`${data}\`]. Must be in \`mm/dd/yy\` format`;
 
             data = Date.parse(new Date(data));
 

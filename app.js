@@ -9,7 +9,7 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 
-let port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 app.listen(port, e => e ? console.log(e) : console.log(`Server listening on port ${port}`));
 
 // Mongo Database
@@ -42,21 +42,21 @@ app.use('/public', express.static('public'));
 
 // --------- SLASH COMMANDS --------- //
 
-    // check-in slash command
-        const checkin = require('./Slack/routes/slashCheckin');
-        app.use('/checkin', checkin);
+// check-in slash command
+    const checkin = require('./Slack/routes/slashCheckin');
+    app.use('/checkin', checkin);
 
-    // profile slash command
-        const profile = require('./Slack/routes/slashProfile');
-        app.use('/profile', profile);
-    
-    // update slash command
-        const update = require('./Slack/routes/slashUpdate');
-        app.use('/update', update); 
+// profile slash command
+    const profile = require('./Slack/routes/slashProfile');
+    app.use('/profile', profile);
 
-    // interactive messages
-        const interactive = require('./Slack/routes/slashInteractive');
-        app.use('/interactive', interactive);
+// update slash command
+    const update = require('./Slack/routes/slashUpdate');
+    app.use('/update', update); 
+
+// interactive messages
+    const interactive = require('./Slack/routes/slashInteractive');
+    app.use('/interactive', interactive);
 
 // ------------ FORM ---------- //
 

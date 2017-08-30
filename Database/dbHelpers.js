@@ -155,8 +155,8 @@ streakUpdater = (checkins, currentStreak, bestStreak) => {
             }
         });
 
-        if(resetStreak) currentStreak.value = 0;
-
+        if(resetStreak) currentStreak.value = 1;
+        
         currentStreak.lastUpdate = currentDate;
     }
 

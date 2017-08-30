@@ -11,6 +11,36 @@
  if you design the value object's key/value pairs to align with your database schema it greatly simplifies the process
  of gathering and storing data from slack
 *
+
+
+Testing an alternate approach where a complete "form" is displayed and 
+as each option is selected it is replaced with the selection
+when all items have been selected then a confirm button is returned on the form
+
+const val = require('./valStringer');
+// valstringer test
+function replaceMenu(response, callbackID, valueObject){
+    console.log(response.attachments[0].actions);
+    response.attachments.some( (attachment, attachmendIndex, attachments) => {
+        if(attachment.callback_id === callbackID){
+            // console.log(JSON.stringify(valueObject));
+            attachments[attachmendIndex] = {
+                text: `${attachment.text} *${attachment.actions[0].options[0].text}*`,
+                mrkdwn_in: ['text', 'pretext'],
+                callbackID: `edit ${attachmendIndex}`,
+                actions: [{
+                    text: 'Edit',
+                    name: 'edit',
+                    type: 'button',
+                    value: val.stringer(valueObject, 'edit', true)
+                }]
+            }
+            // console.log(attachments[attachmendIndex]);
+        }
+    })
+
+    return response;
+}
 *
 * */
 
@@ -18,16 +48,17 @@
 // ---------------------------- CORE EXPORTS --------------------------------- //
 
 // builds and returns the valueObject
-valStringer = (valueObject, key, value) => {
-
+function valStringer(valueObject, key, value) {
+    
     if(typeof valueObject === 'string') valueObject = JSON.parse(valueObject);
 
     valueObject[key] = value;
+
     return JSON.stringify(valueObject);
 };
 
 // integrates valStringer and returns the options array for message menus
-valOptions = (dataArray, key, valueObject) => {
+function valOptions(dataArray, key, valueObject) {
     let options = [];
 
     dataArray.forEach( e => {
@@ -42,7 +73,7 @@ valOptions = (dataArray, key, valueObject) => {
 };
 
 // modifies and returns a /custom attachment/ to include valStringer support
-valCustom = (type, customAttachment, valueObject, menuItemsArray) => {
+function valCustom(type, customAttachment, valueObject, menuItemsArray) {
 
     const errorScan = errorScan(type, customAttachment);
     if(errorScan) return errorScan;
@@ -56,7 +87,7 @@ valCustom = (type, customAttachment, valueObject, menuItemsArray) => {
 };
 
 // builds and returns a menu /attachment/ with integrated valStringer support
-valMenu = (customAttachment, valueObject, menuItemsArray, headerText, callbackID, menuName) => {
+function valMenu(customAttachment, valueObject, menuItemsArray, headerText, callbackID, menuName) {
 
     let attachment = customAttachment ? errorScan('menu', customAttachment) ? errorScan('menu', customAttachment) :
         customAttachment :
@@ -71,7 +102,7 @@ valMenu = (customAttachment, valueObject, menuItemsArray, headerText, callbackID
 };
 
 // builds and returns a button /attachment/ with integrated valStringer support
-valButton = (customAttachment, valueObject, headerText, callbackID, buttonText, buttonName, buttonValue) => {
+function valButton(customAttachment, valueObject, headerText, callbackID, buttonText, buttonName, buttonValue) {
 
     let attachment = customAttachment ? errorScan('button', customAttachment) ? errorScan('button', customAttachment) :
         customAttachment :
@@ -83,11 +114,12 @@ valButton = (customAttachment, valueObject, headerText, callbackID, buttonText, 
     return attachment;
 };
 
-// builds and returns a submit / reset button /response/ with integrated valStringer support
-valSubmit = (valueObject, type, reset, cancel, customText) => {
+// builds and returns a submit / reset / cancel multiple-button message 
+// with integrated valStringer support
+function valSubmit(valueObject, type, reset, cancel, customText) {
 
     let response = {
-        text: `${customText ? customText : 'Submit or Reset'}`,
+        text: `${customText ? customText : 'Confirm, Cancel or Start Over'}`,
 
         attachments: [
             {
@@ -126,7 +158,7 @@ valSubmit = (valueObject, type, reset, cancel, customText) => {
 // ---------------------------- TOOLS --------------------------------- //
 
 // builds the shell of a menu attachment
-menuAttachment = (headerText, callbackID, menuName) => {
+function menuAttachment(headerText, callbackID, menuName) {
 
     return {
         text: headerText,
@@ -141,7 +173,7 @@ menuAttachment = (headerText, callbackID, menuName) => {
 };
 
 // builds the shell of a button attachment
-buttonAttachment = (headerText, callbackID, buttonText, buttonName, buttonValue, valueObject) => {
+function buttonAttachment(headerText, callbackID, buttonText, buttonName, buttonValue, valueObject) {
 
     return {
         text: headerText,
@@ -156,7 +188,7 @@ buttonAttachment = (headerText, callbackID, buttonText, buttonName, buttonValue,
 
 
 // scans a custom attachment object for errors
-errorScan = (type, customAttachment) => {
+function errorScan(type, customAttachment) {
 
     const expectedKeys = ['text', 'callback_id', 'actions'];
     const expectedSubKeys = type === 'menu' ? ['name', 'type', 'data_source'] : ['text', 'name', 'type'];
@@ -196,7 +228,7 @@ errorScan = (type, customAttachment) => {
 
 
 // verifies the keys of a custom attachment object
-verifyKeys = (object, expectedKeys, location) => {
+function verifyKeys(object, expectedKeys, location) {
     let error;
 
     expectedKeys.forEach( e => {
@@ -216,3 +248,6 @@ module.exports = {
     menu : valMenu,
     submit : valSubmit,
 };
+
+
+
