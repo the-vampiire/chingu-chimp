@@ -32,31 +32,31 @@ app.use('/public', express.static('public'));
 
 
 // ---------- REMOVE AFTER BETA TESTING ----------------
-    const beta = require('./Beta/BETA_betaSlash');
-    app.use('/beta', beta);
+const beta = require('./Beta/BETA_betaSlash');
+app.use('/beta', beta);
 // ---------- REMOVE AFTER BETA TESTING ----------------
 
 // --------- API --------- // 
-    const APIendpoints = require('./API/APIendpoints');
-    app.use('/API', APIendpoints);
+const APIendpoints = require('./API/APIendpoints');
+app.use('/API', APIendpoints);
 
 // --------- SLASH COMMANDS --------- //
 
 // check-in slash command
-    const checkin = require('./Slack/routes/slashCheckin');
-    app.use('/checkin', checkin);
+const checkin = require('./Slack/routes/slashCheckin');
+app.use('/checkin', checkin);
 
 // profile slash command
-    const profile = require('./Slack/routes/slashProfile');
-    app.use('/profile', profile);
+const profile = require('./Slack/routes/slashProfile');
+app.use('/profile', profile);
 
 // update slash command
-    const update = require('./Slack/routes/slashUpdate');
-    app.use('/update', update); 
+const update = require('./Slack/routes/slashUpdate');
+app.use('/update', update); 
 
 // interactive messages
-    const interactive = require('./Slack/routes/slashInteractive');
-    app.use('/interactive', interactive);
+const interactive = require('./Slack/routes/slashInteractive');
+app.use('/interactive', interactive);
 
 // ------------ FORM ---------- //
 

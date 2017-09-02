@@ -24,4 +24,4 @@ router.post('/', (req, res) => {
     
         else res.end('invalid Slack token');
     
-    });
+});
