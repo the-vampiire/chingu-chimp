@@ -1,10 +1,4 @@
-/**
- * Created by Vampiire on 7/3/17.
- *
- */
-
 const mongoose = require('mongoose');
-const requests = require('../Slack/tools/requests');
 
 // sub-schemas
 const sessionSchema = new mongoose.Schema({
@@ -20,6 +14,8 @@ const checkinSchema = new mongoose.Schema({
 });
 
 const checkinModel = mongoose.model('checkinModel', checkinSchema);
+
+const voyageProjectSchema = require('./Partials/voyageProjectSchema');
 
 // main user profile schema
 const userSchema = new mongoose.Schema({
@@ -75,6 +71,8 @@ const userSchema = new mongoose.Schema({
         gitHub: String,
         completedDate: {type: Number, default: Date.now()}
     }],
+
+    voyageProjects: [voyageProjectSchema],
 
     certifications: [{
         name: String,
