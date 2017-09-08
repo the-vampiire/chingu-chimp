@@ -158,25 +158,27 @@ module.exports = class profileMethods {
                             const request = require('request');
                             const url = updateData.url ? updateData.url : updateData.gitHub;
         
-                            request({url: url, method: 'HEAD', followRedirect: false}, (error, response) => {
-                                if(error) reject('*Invalid url. Domain is invalid. Connection refused error received during validation*');
-
-                                const status = response.statusCode;
-                            // invalid FCC certificate links will cause a redirect to the FCC homepage. 
-                                if(status > 300 && status < 400 && updateItem === 'certifications'){
-                                    reject(`*Invalid certification link. Free Code Camp certificate validation failed.*`);
-                                }
-
-                                else if(status !== 200){
-                                    reject(`*Invalid url. Domain is valid but the route returned a \`${response.statusCode}\` error during validation*`);
-                                }
+                            request({url: url, method: 'HEAD', followRedirect: false, timeout: 1}, (error, response) => {
+                                if(error !== undefined) reject(`Invalid url:\n${error}`);
 
                                 else {
-                                    profileDoc.save((error, success) => {
-                                        if(error) reject(`Saving to the database failed. Error message:\n${error}`);
-                                        else if(success) resolve(`*Successfully updated your ${updateItem}*`)
-                                    });
-                                }
+                                    const status = response.statusCode;
+                                    // invalid FCC certificate links will cause a redirect to the FCC homepage. 
+                                        if(status > 300 && status < 400 && updateItem === 'certifications'){
+                                            reject(`*Invalid certification link. Free Code Camp certificate validation failed.*`);
+                                        }
+        
+                                        else if(status !== 200){
+                                            reject(`*Invalid url. Domain is valid but the route returned a \`${response.statusCode}\` error during validation*`);
+                                        }
+        
+                                        else {
+                                            profileDoc.save((error, success) => {
+                                                if(error) reject(`Saving to the database failed. Error message:\n${error}`);
+                                                else if(success) resolve(`*Successfully updated your ${updateItem}*`)
+                                            });
+                                        }
+                                }   
                             });  
                         }
         
