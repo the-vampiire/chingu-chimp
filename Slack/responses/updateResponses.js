@@ -68,7 +68,7 @@ submitSkill = valueObject => {
     `You have chosen to hide *${valueObject.name}*` :
     `You have selected *${valueObject.name}* at the *${valueObject.level}* skill level`;
 
-    return valSubmit(valueObject, 'skill', true, true, response);
+    return val.submit(valueObject, 'skill', true, true, response);
 };
 
 helpResponse = (type) => {
