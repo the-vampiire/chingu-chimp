@@ -159,7 +159,7 @@ module.exports = class profileMethods {
                             const url = updateData.url ? updateData.url : updateData.gitHub;
         
                             request({url: url, method: 'HEAD', followRedirect: false, timeout: 1}, (error, response) => {
-                                if(error !== undefined) reject(`Invalid url:\n${error}`);
+                                if(error) reject(`Invalid url:\n${error}`);
 
                                 else {
                                     const status = response.statusCode;
