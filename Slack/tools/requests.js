@@ -27,7 +27,7 @@ userPicture = userID => {
 
             let ok = JSON.parse(body).ok;
 
-            if(!ok) reject(ok);
+            if(!ok) reject(JSON.parse(body).error);
 
             let profile = JSON.parse(body).profile
             let data = {

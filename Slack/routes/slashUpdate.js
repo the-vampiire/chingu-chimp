@@ -60,7 +60,7 @@ router.post('/', (req, res) => {
                 else if(arguments === 'picture'){
                     
                     const userID = body.user_id;
-                    tools.requests.userData('pic', userID)
+                    tools.requests.userPicture(userID)
                     .then( picObject => {
                         let data = { item: 'profilePic', updateData : picObject };
 

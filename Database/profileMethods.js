@@ -209,6 +209,7 @@ module.exports = class profileMethods {
         }
     
         static updatePicture(userName, userID){
+            const requests = require('../Slack/tools/requests');
             requests.userPicture(userID).then( picData => {
                 this.getProfile(userName).then( profileDoc => {
                     profileDoc.profilePic = picData;
