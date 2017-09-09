@@ -26,8 +26,6 @@ taskSelect = valueObject => {
 
     let menuItems;
 
-    console.log(valueObject);
-
     switch(JSON.parse(valueObject).kind){
         case 'Pair Programming':
             menuItems = ['Code Wars', 'Tutorial', 'FCC Algorithms', 'Project', 'Other'];
