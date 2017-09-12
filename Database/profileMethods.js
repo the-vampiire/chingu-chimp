@@ -158,7 +158,7 @@ module.exports = class profileMethods {
                             const request = require('request');
                             const url = updateData.url ? updateData.url : updateData.gitHub;
         
-                            request({url: url, method: 'HEAD', followRedirect: false, timeout: 1}, (error, response) => {
+                            request({url: url, method: 'HEAD', followRedirect: false, timeout: 1000}, (error, response) => {
                                 if(error) reject(`Invalid url:\n${error}`);
 
                                 else {
