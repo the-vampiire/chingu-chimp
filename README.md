@@ -21,9 +21,9 @@
 
 #### 1) The `/profile` command: lets users view and share profile cards and individual profile items
 
-#### 2) The `/checkin` command: lets a user check-in themselves and any other partner(s) into a team meeting, pair-programming session, accountability session, or a self-checkin
+#### 2) The `/update` command: lets the user update all of their profile items using a git-style inline interface
 
-#### 3) The `/update` command: lets the user update all of their profile items using a git-style inline interface
+#### 3) The `/checkin` command: lets a user check-in themselves and any other partner(s) into a team meeting, pair-programming session, accountability session, or a self-checkin
 
 <hr>
 
@@ -77,40 +77,6 @@ The profile command is the heart of the Chimp. It lets users view and share each
     - `/profile @userName [share] story`
 
 ![Story Example](https://i.imgur.com/fwzKTG8.png)
-
-<hr>
-
-# The `/checkin` Command
-The check-in command lets users keep track of their progress through a simple 15 second process in Slack. Users can check-in to team meetings, pair programming meetings, accountability buddy sessions, or as inviduals in a self-checkin. 
-
-![Check-in command example gif](https://media.giphy.com/media/l3fzAPAPw5E1X8nV6/giphy.gif)
-
-My goal for check-ins was a way to quantify a major part of Chingu members' progress within the community and their teams. When team members check-in together they can each add and share the record of their check-ins on their profiles. Other members can view a user's check-ins as an indication of their ability and, most importantly, reliabilility. 
-
-### How it Works
-Check-ins take place using an interactive message menu (a Slack dropdown menu). When a user selects the type of check-in a new menu of type related activities are returned to select from. 
-
-Currently only pre-defined check-in types and activites can be chosen. You can add them as a comment to the [Types and Activities issue](https://github.com/the-vampiire/chingu-chimp/issues/36) on this repo and I will add them to the menus.  
-
-That being said - according to the Slack API Team's Trello they will be releasing version 3 of interactive messages "in the neat future" which will enable text input into Slack app messages.
-
-In the future when text inputs become available check-ins can become much more specific. Check-ins could have a user input type, activity, and notes. 
-
-At that point it would be nice to build a simple front end that could display check-ins "posts" for users to have a running log of all they have accomplished in Chingu. 
-
-### Using the `/checkin` Command
-### General form
-- `/checkin [@partner] [@partner,N]`
-
-Using the check-in command is simple - you call the command and pass any partners (or none for a self check-in) then follow the interactive menu form that is presented to provide details about the check-in.
-
-All users that are tagged in the command will have the check-in processed on their behalf. The user calling the check-in command is always included in the check-in. 
-
-### Calling a check-in for just yourself
-#### Example: `/checkin`
-
-### Calling a check-in for your team
-#### Example: `/checkin @userName1 @userName2`
 
 <hr>
 
@@ -184,6 +150,40 @@ User stories can be updated by pasting or writing your user story after the `/up
 - **Note: Slack markdown / formatting can be preserved by copying from the "edit message" window of your user story message in the intro-stories channel**
 
 #### Example: `/update story Paste your user story here with *bold* _italic_ and any other Slack supported markdown`
+
+# The `/checkin` Command
+The check-in command lets users keep track of their progress through a simple 15 second process in Slack. Users can check-in to team meetings, pair programming meetings, accountability buddy sessions, or as inviduals in a self-checkin. 
+
+![Check-in command example gif](https://media.giphy.com/media/l3fzAPAPw5E1X8nV6/giphy.gif)
+
+My goal for check-ins was a way to quantify a major part of Chingu members' progress within the community and their teams. When team members check-in together they can each add and share the record of their check-ins on their profiles. Other members can view a user's check-ins as an indication of their ability and, most importantly, reliabilility. 
+
+### How it Works
+Check-ins take place using an interactive message menu (a Slack dropdown menu). When a user selects the type of check-in a new menu of type related activities are returned to select from. 
+
+Currently only pre-defined check-in types and activites can be chosen. You can add them as a comment to the [Types and Activities issue](https://github.com/the-vampiire/chingu-chimp/issues/36) on this repo and I will add them to the menus.  
+
+That being said - according to the Slack API Team's Trello they will be releasing version 3 of interactive messages "in the neat future" which will enable text input into Slack app messages.
+
+In the future when text inputs become available check-ins can become much more specific. Check-ins could have a user input type, activity, and notes. 
+
+At that point it would be nice to build a simple front end that could display check-ins "posts" for users to have a running log of all they have accomplished in Chingu. 
+
+### Using the `/checkin` Command
+### General form
+- `/checkin [@partner] [@partner,N]`
+
+Using the check-in command is simple - you call the command and pass any partners (or none for a self check-in) then follow the interactive menu form that is presented to provide details about the check-in.
+
+All users that are tagged in the command will have the check-in processed on their behalf. The user calling the check-in command is always included in the check-in. 
+
+### Calling a check-in for just yourself
+#### Example: `/checkin`
+
+### Calling a check-in for your team
+#### Example: `/checkin @userName1 @userName2`
+
+<hr>
 
 ## Errors
 ### **Feel free to mess up**
